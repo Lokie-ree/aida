@@ -18,7 +18,6 @@ export default function App() {
             <span className="text-white font-bold text-sm">AI</span>
           </div>
           <h1 className="text-xl font-semibold text-gray-900">A.I.D.A.</h1>
-          <span className="text-sm text-gray-500">Instructional Design Assistant</span>
         </div>
         <Authenticated>
           <SignOutButton />
