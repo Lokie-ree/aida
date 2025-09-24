@@ -1,0 +1,72 @@
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
+
+const applicationTables = {
+  feedbackSessions: defineTable({
+    userId: v.id("users"),
+    lessonPlan: v.string(),
+    feedback: v.string(),
+    title: v.optional(v.string()),
+    spaceId: v.optional(v.id("spaces")), // Associate feedback with spaces
+  }).index("by_user", ["userId"])
+    .index("by_space", ["spaceId"]),
+  
+  documents: defineTable({
+    userId: v.id("users"),
+    fileName: v.string(),
+    fileSize: v.number(),
+    storageId: v.id("_storage"),
+    contentType: v.string(),
+    textContent: v.string(),
+    spaceId: v.optional(v.id("spaces")), // null for personal space
+  }).index("by_user", ["userId"])
+    .index("by_space", ["spaceId"]),
+  
+  scrapedWebsites: defineTable({
+    userId: v.id("users"),
+    url: v.string(),
+    title: v.string(),
+    content: v.string(),
+    chunks: v.array(v.string()),
+    metadata: v.object({
+      description: v.string(),
+      ogImage: v.string(),
+      sourceURL: v.string(),
+    }),
+    spaceId: v.optional(v.id("spaces")), // null for personal space
+  }).index("by_user", ["userId"])
+    .index("by_space", ["spaceId"]),
+  
+  chatMessages: defineTable({
+    userId: v.id("users"),
+    role: v.union(v.literal("user"), v.literal("assistant")),
+    content: v.string(),
+    contextDocuments: v.optional(v.array(v.string())), // Document names used for context
+    contextWebsites: v.optional(v.array(v.string())), // Website titles used for context
+    spaceId: v.optional(v.id("spaces")), // null for personal space
+  }).index("by_user", ["userId"])
+    .index("by_space", ["spaceId"]),
+
+  // New tables for shared spaces
+  spaces: defineTable({
+    name: v.string(),
+    ownerId: v.id("users"),
+    description: v.optional(v.string()),
+  }).index("by_owner", ["ownerId"]),
+
+  spaceMembers: defineTable({
+    spaceId: v.id("spaces"),
+    userId: v.id("users"),
+    invitationStatus: v.union(v.literal("pending"), v.literal("accepted")),
+    invitedBy: v.id("users"),
+    invitedEmail: v.string(), // Store email for invitation tracking
+  }).index("by_space", ["spaceId"])
+    .index("by_user", ["userId"])
+    .index("by_email", ["invitedEmail"]),
+};
+
+export default defineSchema({
+  ...authTables,
+  ...applicationTables,
+});
