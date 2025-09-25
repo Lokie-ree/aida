@@ -13,6 +13,7 @@ import type * as chat from "../chat.js";
 import type * as documents from "../documents.js";
 import type * as feedback from "../feedback.js";
 import type * as http from "../http.js";
+import type * as rag from "../rag.js";
 import type * as router from "../router.js";
 import type * as scrapingActions from "../scrapingActions.js";
 import type * as spaces from "../spaces.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   documents: typeof documents;
   feedback: typeof feedback;
   http: typeof http;
+  rag: typeof rag;
   router: typeof router;
   scrapingActions: typeof scrapingActions;
   spaces: typeof spaces;

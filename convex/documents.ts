@@ -22,6 +22,10 @@ export const processUploadedDocument = action({
     contentType: v.string(),
     spaceId: v.optional(v.id("spaces")),
   },
+  returns: v.object({
+    success: v.boolean(),
+    documentId: v.id("documents"),
+  }),
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
@@ -47,7 +51,7 @@ export const processUploadedDocument = action({
       const textContent = await file.text();
       
       // Save document with space association
-      await ctx.runMutation(api.documents.saveDocument, {
+      const documentId: any = await ctx.runMutation(api.documents.saveDocument, {
         fileName: args.fileName,
         fileSize: args.fileSize,
         storageId: args.storageId,
@@ -56,7 +60,15 @@ export const processUploadedDocument = action({
         spaceId: args.spaceId,
       });
 
-      return { success: true };
+      // Add document to RAG for semantic search
+      await ctx.runAction(api.rag.addDocumentToRAG, {
+        documentId,
+        textContent,
+        fileName: args.fileName,
+        spaceId: args.spaceId,
+      });
+
+      return { success: true, documentId };
     } catch (error) {
       console.error("Error processing document:", error);
       throw new Error("Failed to process document");
@@ -73,6 +85,7 @@ export const saveDocument = mutation({
     textContent: v.string(),
     spaceId: v.optional(v.id("spaces")),
   },
+  returns: v.id("documents"),
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {

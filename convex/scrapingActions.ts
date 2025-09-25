@@ -69,7 +69,7 @@ export const scrapeWebsite = action({
       const chunks = processContentIntoChunks(textContent);
 
       // Save the scraped website data with space association
-      const websiteId: string = await ctx.runMutation(api.webscraping.saveScrapedWebsite, {
+      const websiteId = await ctx.runMutation(api.webscraping.saveScrapedWebsite, {
         url: args.url,
         title,
         content: textContent,
@@ -79,6 +79,15 @@ export const scrapeWebsite = action({
           ogImage: content.metadata?.ogImage || "",
           sourceURL: content.metadata?.sourceURL || args.url,
         },
+        spaceId: args.spaceId,
+      });
+
+      // Add website content to RAG for semantic search
+      await ctx.runAction(api.rag.addWebScrapingToRAG, {
+        websiteId,
+        content: textContent,
+        title,
+        url: args.url,
         spaceId: args.spaceId,
       });
 

@@ -75,90 +75,25 @@ export const sendMessage = action({
         spaceId: args.spaceId,
       });
 
-      // Search for relevant documents using simple text search
-      const relevantDocs: Array<{
-        documentId: string;
-        fileName: string;
-        textContent: string;
-        relevanceScore: number;
-      }> = await ctx.runQuery(api.documents.searchDocuments, {
-        query: args.message,
+      // Use RAG for semantic search and response generation
+      const { response: aiResponse, context } = await ctx.runAction(api.rag.generateResponseWithRAG, {
+        message: args.message,
         spaceId: args.spaceId,
       });
 
-      // Search for relevant scraped websites
-      const relevantWebsites: Array<{
-        websiteId: string;
-        title: string;
-        url: string;
-        content: string;
-        relevanceScore: number;
-      }> = await ctx.runQuery(api.webscraping.searchScrapedWebsites, {
-        query: args.message,
-        spaceId: args.spaceId,
-      });
-
-      // Build context from relevant sources
-      let context: string = "";
+      // Extract context information for tracking
       const contextDocuments: string[] = [];
       const contextWebsites: string[] = [];
       
-      // Add document context
-      if (relevantDocs.length > 0) {
-        context += "Context from uploaded documents:\n\n";
-        relevantDocs.forEach((doc: any) => {
-          context += `Document: ${doc.fileName}\n${doc.textContent}\n\n`;
-          contextDocuments.push(doc.fileName);
+      if (context && context.entries) {
+        context.entries.forEach((entry: any) => {
+          if (entry.key.startsWith('doc_')) {
+            contextDocuments.push(entry.key.replace('doc_', ''));
+          } else if (entry.key.startsWith('web_')) {
+            contextWebsites.push(entry.key.replace('web_', ''));
+          }
         });
       }
-
-      // Add website context
-      if (relevantWebsites.length > 0) {
-        context += "Context from scraped websites:\n\n";
-        relevantWebsites.forEach((website: any) => {
-          context += `Website: ${website.title} (${website.url})\n${website.content}\n\n`;
-          contextWebsites.push(website.title);
-        });
-      }
-
-      // Get recent chat history for context
-      const recentMessages: Array<{
-        _id: string;
-        role: "user" | "assistant";
-        content: string;
-        _creationTime: number;
-      }> = await ctx.runQuery(api.chat.getChatHistory, { spaceId: args.spaceId });
-      
-      const conversationHistory: string = recentMessages
-        .slice(-10) // Last 10 messages
-        .map((msg: any) => `${msg.role}: ${msg.content}`)
-        .join("\n");
-
-      // Create the prompt with space context
-      const spaceContext = args.spaceId ? 
-        "You are responding in a shared team space where multiple users collaborate and share knowledge." :
-        "You are responding in a personal workspace.";
-
-      const prompt: string = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. You provide constructive, actionable feedback to enhance teaching and learning.
-
-${spaceContext}
-
-${context ? `${context}\n` : ""}Previous conversation:
-${conversationHistory}
-
-Current question: ${args.message}
-
-Please provide helpful, specific guidance based on instructional design best practices. If you have relevant context from documents or scraped websites, reference them specifically in your response.`;
-
-      // Generate AI response
-      const response: any = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 1000,
-        temperature: 0.7,
-      });
-
-      const aiResponse: string = response.choices[0].message.content || "I apologize, but I couldn't generate a response. Please try again.";
 
       // Save AI response
       await ctx.runMutation(api.chat.saveMessage, {
