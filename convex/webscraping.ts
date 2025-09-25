@@ -21,7 +21,7 @@ export const saveScrapedWebsite = mutation({
       throw new Error("User must be authenticated");
     }
 
-    return await ctx.db.insert("scrapedWebsites", {
+    const websiteId = await ctx.db.insert("scrapedWebsites", {
       userId,
       url: args.url,
       title: args.title,
@@ -30,6 +30,8 @@ export const saveScrapedWebsite = mutation({
       metadata: args.metadata,
       spaceId: args.spaceId,
     });
+
+    return websiteId;
   },
 });
 
