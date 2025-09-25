@@ -15,19 +15,26 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
   const vapiRef = useRef<Vapi | null>(null);
 
   useEffect(() => {
+    // Check if Vapi API key is configured
+    const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
+    
+    if (!vapiKey) {
+      console.error("VITE_VAPI_PUBLIC_KEY is not configured");
+      toast.error("Voice chat is not configured. Please set up your Vapi API key.");
+      return;
+    }
+
     // Initialize Vapi instance
-    const vapi = new Vapi(import.meta.env.VITE_VAPI_PUBLIC_KEY || "");
+    const vapi = new Vapi(vapiKey);
     vapiRef.current = vapi;
 
     // Set up event listeners
     vapi.on("call-start", () => {
-      console.log("Call started");
       setIsConnected(true);
       setIsLoading(false);
     });
 
     vapi.on("call-end", () => {
-      console.log("Call ended");
       setIsConnected(false);
       setIsListening(false);
       setIsSpeaking(false);
@@ -35,32 +42,35 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
     });
 
     vapi.on("speech-start", () => {
-      console.log("User started speaking");
       setIsListening(true);
       setIsSpeaking(false);
     });
 
     vapi.on("speech-end", () => {
-      console.log("User stopped speaking");
       setIsListening(false);
     });
 
     vapi.on("message", (message: any) => {
-      console.log("Message received:", message);
-      
       if (message.type === "transcript" && message.transcriptType === "final") {
         onTranscription?.(message.transcript);
       }
       
       if (message.type === "function-call") {
         // Handle function calls if needed
-        console.log("Function call:", message);
       }
     });
 
     vapi.on("error", (error: any) => {
       console.error("Vapi error:", error);
-      toast.error("Voice connection error. Please try again.");
+      
+      let errorMessage = "Voice connection error. Please try again.";
+      if (error?.message) {
+        errorMessage = `Voice error: ${error.message}`;
+      } else if (error?.code) {
+        errorMessage = `Voice error (${error.code}): Please check your API key and try again.`;
+      }
+      
+      toast.error(errorMessage);
       setIsConnected(false);
       setIsListening(false);
       setIsSpeaking(false);
@@ -75,11 +85,27 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
   }, [onTranscription, onResponse]);
 
   const startCall = async () => {
-    if (!vapiRef.current) return;
+    if (!vapiRef.current) {
+      toast.error("Voice chat is not configured. Please set up your Vapi API key.");
+      return;
+    }
 
     setIsLoading(true);
     
     try {
+      // For development, we need to use a secure URL for Vapi webhook
+      // Use environment variable if available, otherwise construct from Convex URL
+      const convexUrl = import.meta.env.VITE_CONVEX_URL;
+      let webhookUrl = convexUrl 
+        ? `${convexUrl}/api/vapi/webhook`
+        : `${window.location.origin}/api/vapi/webhook`;
+
+      // Ensure we're using HTTPS for Vapi compatibility
+      if (webhookUrl.startsWith('http://')) {
+        webhookUrl = webhookUrl.replace('http://', 'https://');
+      }
+
+
       await vapiRef.current.start({
         name: "A.I.D.A.",
         model: {
@@ -98,12 +124,22 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
         },
         firstMessage: "Hello! I'm A.I.D.A., your instructional design assistant. How can I help you improve your teaching today?",
         server: {
-          url: `${window.location.origin}/api/vapi/webhook`
+          url: webhookUrl
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to start call:", error);
-      toast.error("Failed to start voice session. Please check your microphone permissions.");
+      
+      let errorMessage = "Failed to start voice session. Please check your microphone permissions.";
+      if (error?.message?.includes("API key")) {
+        errorMessage = "Invalid API key. Please check your Vapi configuration.";
+      } else if (error?.message?.includes("microphone")) {
+        errorMessage = "Microphone access denied. Please allow microphone permissions and try again.";
+      } else if (error?.message) {
+        errorMessage = `Voice error: ${error.message}`;
+      }
+      
+      toast.error(errorMessage);
       setIsLoading(false);
     }
   };
@@ -115,6 +151,8 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
   };
 
   const getStatusText = () => {
+    const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
+    if (!vapiKey) return "Not configured - API key missing";
     if (isLoading) return "Connecting...";
     if (!isConnected) return "Ready to talk";
     if (isListening) return "Listening...";
@@ -123,6 +161,8 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
   };
 
   const getStatusColor = () => {
+    const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
+    if (!vapiKey) return "text-red-600";
     if (isLoading) return "text-yellow-600";
     if (!isConnected) return "text-gray-600";
     if (isListening) return "text-green-600";
@@ -142,12 +182,14 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
       <div className="relative">
         <button
           onClick={isConnected ? stopCall : startCall}
-          disabled={isLoading}
+          disabled={isLoading || !import.meta.env.VITE_VAPI_PUBLIC_KEY}
           className={`
             w-20 h-20 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg
-            ${isConnected 
-              ? 'bg-red-500 hover:bg-red-600 text-white' 
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
+            ${!import.meta.env.VITE_VAPI_PUBLIC_KEY
+              ? 'bg-gray-400 cursor-not-allowed text-white'
+              : isConnected 
+                ? 'bg-red-500 hover:bg-red-600 text-white' 
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
             }
             ${isListening ? 'animate-pulse ring-4 ring-green-300' : ''}
             ${isSpeaking ? 'animate-pulse ring-4 ring-blue-300' : ''}
@@ -177,9 +219,11 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
       </div>
 
       <div className="text-center text-xs text-gray-500 max-w-xs">
-        {!isConnected 
-          ? "Click the microphone to start a voice conversation with A.I.D.A."
-          : "Click the X to end the voice session"
+        {!import.meta.env.VITE_VAPI_PUBLIC_KEY
+          ? "Voice chat requires a Vapi API key. Please configure VITE_VAPI_PUBLIC_KEY in your environment."
+          : !isConnected 
+            ? "Click the microphone to start a voice conversation with A.I.D.A."
+            : "Click the X to end the voice session"
         }
       </div>
     </div>

@@ -5851,4 +5851,5 @@ export declare const components: {
       >;
     };
   };
+  autumn: {};
 };
