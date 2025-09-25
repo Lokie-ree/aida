@@ -65,10 +65,27 @@ A.I.D.A. is a voice-enabled, context-aware AI assistant designed to solve the cr
    ```
 
 3. **Set up environment variables**
+   Create a `.env.local` file in the root directory with the following variables:
    ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your API keys
+   # Vapi Configuration (Required for voice chat)
+   VITE_VAPI_PUBLIC_KEY=your_vapi_public_key_here
+   
+   # Convex Configuration (Required)
+   VITE_CONVEX_URL=your_convex_url_here
+   
+   # OpenAI Configuration (Required for AI responses)
+   CONVEX_OPENAI_API_KEY=your_openai_api_key_here
+   CONVEX_OPENAI_BASE_URL=https://api.openai.com/v1
+   
+   # Other API Keys (Optional)
+   FIRECRAWL_API_KEY=your_firecrawl_api_key_here
    ```
+   
+   **Getting your API keys:**
+   - **Vapi**: Sign up at [vapi.ai](https://vapi.ai) and get your public key from the dashboard
+   - **Convex**: Run `npx convex dev` and follow the setup instructions
+   - **OpenAI**: Get your API key from [platform.openai.com](https://platform.openai.com)
+   - **Firecrawl**: Get your API key from [firecrawl.dev](https://firecrawl.dev) (optional)
 
 4. **Start development servers**
    ```bash
