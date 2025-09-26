@@ -4,6 +4,10 @@ import { toast } from "sonner";
 import { useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Mic, MicOff, X, Loader2 } from "lucide-react";
 
 interface VoiceInterfaceProps {
   onTranscription?: (text: string) => void;
@@ -236,98 +240,100 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
 
   const getStatusColor = () => {
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
-    if (!vapiKey) return "text-red-600";
-    if (isLoading) return "text-yellow-600";
-    if (!isConnected) return "text-gray-600";
-    if (isListening) return "text-green-600";
-    if (isSpeaking) return "text-blue-600";
-    return "text-gray-600";
+    if (!vapiKey) return "text-destructive";
+    if (isLoading) return "text-warning-500";
+    if (!isConnected) return "text-muted-foreground";
+    if (isListening) return "text-success-500";
+    if (isSpeaking) return "text-primary";
+    return "text-muted-foreground";
   };
 
   return (
-    <div className={`flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-xs border ${className || ""}`}>
-      <div className="text-center">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Voice Chat with A.I.D.A.</h3>
-        <p id="voice-status" className={`text-sm ${getStatusColor()}`} role="status" aria-live="polite">
+    <Card className={`${className || ""}`}>
+      <CardHeader className="text-center">
+        <CardTitle>Voice Chat with A.I.D.A.</CardTitle>
+        <CardDescription id="voice-status" role="status" aria-live="polite">
           {getStatusText()}
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
-      <div className="relative">
-        <button
-          onClick={isConnected ? stopCall : startCall}
-          disabled={isLoading || !import.meta.env.VITE_VAPI_PUBLIC_KEY}
-          aria-label={isConnected ? "Stop voice conversation" : "Start voice conversation"}
-          aria-describedby="voice-status"
-          className={`
-            w-20 h-20 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg
-            focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2
-            ${!import.meta.env.VITE_VAPI_PUBLIC_KEY
-              ? 'bg-gray-400 cursor-not-allowed text-white'
-              : isConnected 
-                ? 'bg-red-500 hover:bg-red-600 text-white' 
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
-            }
-            ${isListening ? 'animate-pulse ring-4 ring-green-300' : ''}
-            ${isSpeaking ? 'animate-pulse ring-4 ring-blue-300' : ''}
-            ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
-          `}
-        >
-          {isLoading ? (
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-white border-t-transparent"></div>
-          ) : isConnected ? (
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            </svg>
-          )}
-        </button>
-
-        {/* Visual indicators */}
-        {isListening && (
-          <div className="absolute -inset-2 rounded-full border-4 border-green-400 animate-ping"></div>
-        )}
-        {isSpeaking && (
-          <div className="absolute -inset-2 rounded-full border-4 border-blue-400 animate-ping"></div>
-        )}
-      </div>
-
-      <div className="text-center text-xs text-gray-500 max-w-xs">
-        {!import.meta.env.VITE_VAPI_PUBLIC_KEY
-          ? "Voice chat requires a Vapi API key. Please configure VITE_VAPI_PUBLIC_KEY in your environment."
-          : !isConnected 
-            ? "Click the microphone to start a voice conversation with A.I.D.A."
-            : "Click the X to end the voice session"
-        }
-      </div>
-      
-      {/* Keyboard shortcuts help */}
-      <div className="text-center text-xs text-gray-400 max-w-xs">
-        <p>Keyboard shortcuts:</p>
-        <p>Space: Start/Stop • Escape: Stop</p>
-      </div>
-
-      {/* Show sources if available */}
-      {lastResponse && lastResponse.sources.length > 0 && (
-        <div className="w-full mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-          <h4 className="text-sm font-semibold text-blue-900 mb-2">Sources:</h4>
-          <div className="space-y-1">
-            {lastResponse.sources.slice(0, 3).map((source, index) => (
-              <div key={index} className="text-xs text-blue-800 truncate">
-                • {source}
-              </div>
-            ))}
-            {lastResponse.sources.length > 3 && (
-              <div className="text-xs text-blue-600">
-                +{lastResponse.sources.length - 3} more sources
-              </div>
+      <CardContent className="flex flex-col items-center gap-4">
+        <div className="relative">
+          <Button
+            onClick={isConnected ? stopCall : startCall}
+            disabled={isLoading || !import.meta.env.VITE_VAPI_PUBLIC_KEY}
+            aria-label={isConnected ? "Stop voice conversation" : "Start voice conversation"}
+            aria-describedby="voice-status"
+            size="lg"
+            className={`
+              w-20 h-20 rounded-full transition-all duration-200 shadow-lg
+              ${!import.meta.env.VITE_VAPI_PUBLIC_KEY
+                ? 'bg-muted cursor-not-allowed'
+                : isConnected 
+                  ? 'bg-destructive hover:bg-destructive/90' 
+                  : 'bg-primary hover:bg-primary/90'
+              }
+              ${isListening ? 'animate-pulse ring-4 ring-green-300' : ''}
+              ${isSpeaking ? 'animate-pulse ring-4 ring-blue-300' : ''}
+              ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+            `}
+          >
+            {isLoading ? (
+              <Loader2 className="w-8 h-8 animate-spin" />
+            ) : isConnected ? (
+              <X className="w-8 h-8" />
+            ) : (
+              <Mic className="w-8 h-8" />
             )}
-          </div>
+          </Button>
+
+          {/* Visual indicators */}
+          {isListening && (
+            <div className="absolute -inset-2 rounded-full border-4 border-success-400 animate-ping"></div>
+          )}
+          {isSpeaking && (
+            <div className="absolute -inset-2 rounded-full border-4 border-primary animate-ping"></div>
+          )}
         </div>
-      )}
-    </div>
+
+        <div className="text-center text-xs text-muted-foreground max-w-xs">
+          {!import.meta.env.VITE_VAPI_PUBLIC_KEY
+            ? "Voice chat requires a Vapi API key. Please configure VITE_VAPI_PUBLIC_KEY in your environment."
+            : !isConnected 
+              ? "Click the microphone to start a voice conversation with A.I.D.A."
+              : "Click the X to end the voice session"
+          }
+        </div>
+        
+        {/* Keyboard shortcuts help */}
+        <div className="text-center text-xs text-muted-foreground max-w-xs">
+          <p>Keyboard shortcuts:</p>
+          <p>Space: Start/Stop • Escape: Stop</p>
+        </div>
+
+        {/* Show sources if available */}
+        {lastResponse && lastResponse.sources.length > 0 && (
+          <Card className="w-full">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Sources</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-1">
+                {lastResponse.sources.slice(0, 3).map((source, index) => (
+                  <div key={index} className="text-xs text-muted-foreground truncate">
+                    • {source}
+                  </div>
+                ))}
+                {lastResponse.sources.length > 3 && (
+                  <div className="text-xs text-muted-foreground">
+                    +{lastResponse.sources.length - 3} more sources
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </CardContent>
+    </Card>
   );
 }
