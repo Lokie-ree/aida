@@ -13,6 +13,7 @@ export const generateFeedback = action({
   args: {
     lessonPlan: v.string(),
     title: v.optional(v.string()),
+    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -20,19 +21,24 @@ export const generateFeedback = action({
       throw new Error("User must be authenticated");
     }
 
-    const prompt = `You are an expert instructional coach with years of experience in curriculum design and pedagogy. Review the following lesson plan and provide constructive feedback to enhance engagement and rigor. Focus on:
+    // Enhanced prompt for better feedback quality
+    const prompt = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. Review the following lesson plan and provide constructive, actionable feedback to enhance engagement and rigor.
 
-1. Learning objectives clarity and alignment
-2. Student engagement strategies
-3. Assessment methods
-4. Differentiation opportunities
-5. Real-world connections
-6. Areas for improvement
+Focus on these key areas:
+1. Learning objectives clarity and alignment with standards
+2. Student engagement strategies and active learning opportunities
+3. Assessment methods and formative evaluation
+4. Differentiation opportunities for diverse learners
+5. Real-world connections and relevance
+6. Specific areas for improvement with concrete suggestions
+7. Pedagogical soundness and best practices
+
+${args.spaceId ? "Note: This feedback is being generated in a shared team space where multiple educators collaborate." : ""}
 
 Lesson Plan:
 ${args.lessonPlan}
 
-Please provide specific, actionable feedback that will help improve this lesson:`;
+Please provide specific, actionable feedback that will help improve this lesson. Structure your response with clear headings and bullet points for easy reading:`;
 
     try {
       const response = await openai.chat.completions.create({
@@ -49,6 +55,15 @@ Please provide specific, actionable feedback that will help improve this lesson:
         lessonPlan: args.lessonPlan,
         feedback,
         title: args.title,
+        spaceId: args.spaceId,
+      });
+
+      // Log the feedback generation for audit purposes
+      await ctx.runMutation(api.security.createAuditLog, {
+        action: "generate_feedback",
+        resource: "lesson_plan",
+        details: `Generated feedback for lesson: ${args.title || "Untitled"}`,
+        spaceId: args.spaceId,
       });
 
       return feedback;
@@ -64,6 +79,7 @@ export const saveFeedbackSession = mutation({
     lessonPlan: v.string(),
     feedback: v.string(),
     title: v.optional(v.string()),
+    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -76,22 +92,32 @@ export const saveFeedbackSession = mutation({
       lessonPlan: args.lessonPlan,
       feedback: args.feedback,
       title: args.title,
+      spaceId: args.spaceId,
     });
   },
 });
 
 export const getFeedbackHistory = query({
-  args: {},
-  handler: async (ctx) => {
+  args: { spaceId: v.optional(v.id("spaces")) },
+  handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       return [];
     }
 
-    return await ctx.db
-      .query("feedbackSessions")
-      .withIndex("by_user", (q) => q.eq("userId", userId))
-      .order("desc")
-      .take(10);
+    if (args.spaceId) {
+      return await ctx.db
+        .query("feedbackSessions")
+        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId))
+        .order("desc")
+        .take(10);
+    } else {
+      return await ctx.db
+        .query("feedbackSessions")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .filter((q) => q.eq(q.field("spaceId"), undefined))
+        .order("desc")
+        .take(10);
+    }
   },
 });

@@ -1,18 +1,57 @@
 import { useState, useEffect, useRef } from "react";
 import Vapi from "@vapi-ai/web";
 import { toast } from "sonner";
+import { useAction } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 
 interface VoiceInterfaceProps {
   onTranscription?: (text: string) => void;
   onResponse?: (text: string) => void;
+  currentSpaceId?: Id<"spaces"> | null;
+  className?: string;
 }
 
-export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfaceProps) {
+export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, className }: VoiceInterfaceProps) {
   const [isConnected, setIsConnected] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [lastResponse, setLastResponse] = useState<{
+    response: string;
+    sources: string[];
+    isPolicyQuery: boolean;
+  } | null>(null);
   const vapiRef = useRef<Vapi | null>(null);
+  
+  const processAuthenticatedVoiceQuery = useAction(api.vapi.processAuthenticatedVoiceQuery);
+
+  // Handle authenticated voice queries with RAG
+  const handleAuthenticatedQuery = async (message: string) => {
+    try {
+      const result = await processAuthenticatedVoiceQuery({
+        message,
+        spaceId: currentSpaceId || undefined
+      });
+      
+      setLastResponse(result);
+      onResponse?.(result.response);
+      
+      // Show sources if available
+      if (result.sources.length > 0) {
+        toast.success(`Found ${result.sources.length} relevant source(s)`, {
+          description: result.sources.slice(0, 3).join(", ") + (result.sources.length > 3 ? "..." : "")
+        });
+      }
+      
+      return result.response;
+    } catch (error) {
+      console.error("Error processing authenticated voice query:", error);
+      toast.error("Failed to process voice query");
+      return "I'm sorry, I encountered an error processing your request. Please try again.";
+    }
+  };
+
 
   useEffect(() => {
     // Check if Vapi API key is configured
@@ -50,9 +89,21 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
       setIsListening(false);
     });
 
-    vapi.on("message", (message: any) => {
+    vapi.on("message", async (message: any) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         onTranscription?.(message.transcript);
+        
+        // Process the transcript with RAG if it's a policy query
+        const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(message.transcript);
+        
+        if (isPolicyQuery) {
+          try {
+            const response = await handleAuthenticatedQuery(message.transcript);
+            // The response will be handled by the Vapi system
+          } catch (error) {
+            console.error("Error processing policy query:", error);
+          }
+        }
       }
       
       if (message.type === "function-call") {
@@ -150,6 +201,29 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
     }
   };
 
+  // Keyboard shortcuts for accessibility
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Space bar to start/stop voice (when focused on the button)
+      if (event.code === 'Space' && event.target === document.activeElement) {
+        event.preventDefault();
+        if (isConnected) {
+          stopCall();
+        } else {
+          startCall();
+        }
+      }
+      
+      // Escape to stop voice
+      if (event.code === 'Escape' && isConnected) {
+        stopCall();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isConnected, startCall, stopCall]);
+
   const getStatusText = () => {
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
     if (!vapiKey) return "Not configured - API key missing";
@@ -171,10 +245,10 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-xs border">
+    <div className={`flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-xs border ${className || ""}`}>
       <div className="text-center">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Voice Chat with A.I.D.A.</h3>
-        <p className={`text-sm ${getStatusColor()}`}>
+        <p id="voice-status" className={`text-sm ${getStatusColor()}`} role="status" aria-live="polite">
           {getStatusText()}
         </p>
       </div>
@@ -183,8 +257,11 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
         <button
           onClick={isConnected ? stopCall : startCall}
           disabled={isLoading || !import.meta.env.VITE_VAPI_PUBLIC_KEY}
+          aria-label={isConnected ? "Stop voice conversation" : "Start voice conversation"}
+          aria-describedby="voice-status"
           className={`
             w-20 h-20 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg
+            focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2
             ${!import.meta.env.VITE_VAPI_PUBLIC_KEY
               ? 'bg-gray-400 cursor-not-allowed text-white'
               : isConnected 
@@ -226,6 +303,31 @@ export function VoiceInterface({ onTranscription, onResponse }: VoiceInterfacePr
             : "Click the X to end the voice session"
         }
       </div>
+      
+      {/* Keyboard shortcuts help */}
+      <div className="text-center text-xs text-gray-400 max-w-xs">
+        <p>Keyboard shortcuts:</p>
+        <p>Space: Start/Stop • Escape: Stop</p>
+      </div>
+
+      {/* Show sources if available */}
+      {lastResponse && lastResponse.sources.length > 0 && (
+        <div className="w-full mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <h4 className="text-sm font-semibold text-blue-900 mb-2">Sources:</h4>
+          <div className="space-y-1">
+            {lastResponse.sources.slice(0, 3).map((source, index) => (
+              <div key={index} className="text-xs text-blue-800 truncate">
+                • {source}
+              </div>
+            ))}
+            {lastResponse.sources.length > 3 && (
+              <div className="text-xs text-blue-600">
+                +{lastResponse.sources.length - 3} more sources
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
+import { Id } from "../convex/_generated/dataModel";
 import { toast } from "sonner";
 
-export function AidaFeedback() {
+interface AidaFeedbackProps {
+  currentSpaceId?: Id<"spaces"> | null;
+}
+
+export function AidaFeedback({ currentSpaceId }: AidaFeedbackProps) {
   const [lessonPlan, setLessonPlan] = useState("");
   const [title, setTitle] = useState("");
   const [feedback, setFeedback] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
   const generateFeedback = useAction(api.feedback.generateFeedback);
-  const feedbackHistory = useQuery(api.feedback.getFeedbackHistory);
+  const feedbackHistory = useQuery(api.feedback.getFeedbackHistory, { 
+    spaceId: currentSpaceId || undefined 
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +34,7 @@ export function AidaFeedback() {
       const result = await generateFeedback({
         lessonPlan: lessonPlan.trim(),
         title: title.trim() || undefined,
+        spaceId: currentSpaceId || undefined,
       });
       
       setFeedback(result);
@@ -63,9 +71,13 @@ export function AidaFeedback() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Introduction to Photosynthesis"
-              className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-hidden transition-all shadow-xs hover:shadow"
+              className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all shadow-xs hover:shadow"
               aria-label="Lesson title"
+              aria-describedby="title-help"
             />
+            <p id="title-help" className="text-xs text-gray-500 mt-1">
+              Optional: Give your lesson a descriptive title
+            </p>
           </div>
 
           <div>
@@ -81,10 +93,14 @@ export function AidaFeedback() {
               onChange={(e) => setLessonPlan(e.target.value)}
               placeholder="Paste your lesson plan, teaching objectives, activities, or any instructional content you'd like feedback on..."
               rows={12}
-              className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-hidden transition-all shadow-xs hover:shadow resize-y min-h-[200px]"
+              className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all shadow-xs hover:shadow resize-y min-h-[200px]"
               aria-label="Lesson plan content"
+              aria-describedby="lesson-plan-help"
               required
             />
+            <p id="lesson-plan-help" className="text-xs text-gray-500 mt-1">
+              Required: Enter your lesson plan or instructional content for AI feedback
+            </p>
           </div>
 
           <div className="flex gap-3">

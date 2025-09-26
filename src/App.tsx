@@ -7,11 +7,22 @@ import { Toaster } from "sonner";
 import { ChatInterface } from "./components/ChatInterface";
 import { DocumentManager } from "./components/DocumentManager";
 import { SpaceSelector } from "./components/SpaceSelector";
+import { VoiceInterface } from "./components/VoiceInterface";
+import { OnboardingGuide } from "./components/OnboardingGuide";
+import { AidaFeedback } from "./AidaFeedback";
 import { Id } from "../convex/_generated/dataModel";
 
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Skip link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      >
+        Skip to main content
+      </a>
+      
       <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-xs h-16 flex justify-between items-center border-b shadow-xs px-6">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -24,7 +35,7 @@ export default function App() {
         </Authenticated>
       </header>
       
-      <main className="flex-1 p-6">
+      <main id="main-content" className="flex-1 p-6" role="main">
         <div className="max-w-7xl mx-auto h-full">
           <Content />
         </div>
@@ -53,20 +64,36 @@ function Content() {
   return (
     <>
       <Authenticated>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-          {/* Left Column - Chat Interface */}
-          <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-8rem)]">
-            <ChatInterface currentSpaceId={currentSpaceId} />
-          </div>
-          
-          {/* Right Column - Space Selector & Document Manager */}
-          <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-8rem)] space-y-4">
+        <OnboardingGuide 
+          currentSpaceId={currentSpaceId}
+          onComplete={() => console.log("Onboarding completed")}
+        />
+        
+        <div className="space-y-6">
+          {/* Top Row - Voice Interface and Space Selector */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <VoiceInterface 
+              currentSpaceId={currentSpaceId}
+              className="h-64"
+            />
             <SpaceSelector 
               currentSpaceId={currentSpaceId}
               onSpaceChange={setCurrentSpaceId}
             />
-            <div className="flex-1">
+          </div>
+          
+          {/* Bottom Row - Chat Interface, Document Manager, and Feedback */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
+              <ChatInterface currentSpaceId={currentSpaceId} />
+            </div>
+            
+            <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
               <DocumentManager currentSpaceId={currentSpaceId} />
+            </div>
+            
+            <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
+              <AidaFeedback currentSpaceId={currentSpaceId} />
             </div>
           </div>
         </div>
