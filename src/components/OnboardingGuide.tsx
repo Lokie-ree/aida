@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
+import { X, Lightbulb } from "lucide-react";
 
 interface OnboardingGuideProps {
   currentSpaceId?: Id<"spaces"> | null;
@@ -112,71 +117,69 @@ export function OnboardingGuide({ currentSpaceId, onComplete }: OnboardingGuideP
   const currentStepData = onboardingSteps[currentStep];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              {currentStepData.title}
-            </h2>
-            <div className="flex items-center mt-2">
-              <span className="text-sm text-gray-500">
+    <Dialog open={isVisible} onOpenChange={() => setIsVisible(false)}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <DialogTitle>{currentStepData.title}</DialogTitle>
+              <DialogDescription className="mt-2">
                 Step {currentStep + 1} of {onboardingSteps.length}
-              </span>
-              <div className="ml-4 flex space-x-1">
-                {onboardingSteps.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full ${
-                      index <= currentStep ? 'bg-blue-600' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
+              </DialogDescription>
             </div>
-          </div>
-          <button
-            onClick={handleSkip}
-            className="text-gray-400 hover:text-gray-600 text-sm"
-            aria-label="Skip onboarding"
-          >
-            Skip
-          </button>
-        </div>
-
-        <p className="text-gray-600 mb-6">
-          {currentStepData.description}
-        </p>
-
-        <div className="flex gap-3">
-          <button
-            onClick={() => handleStepComplete(currentStepData.id)}
-            className="flex-1 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all"
-          >
-            {currentStepData.action}
-          </button>
-          
-          {currentStep > 0 && (
-            <button
-              onClick={() => setCurrentStep(currentStep - 1)}
-              className="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all"
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSkip}
+              className="h-8 w-8 p-0"
             >
-              Back
-            </button>
-          )}
-        </div>
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </DialogHeader>
 
-        {/* Quick tips */}
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Quick Tips:</h3>
-          <ul className="text-xs text-blue-800 space-y-1">
-            <li>• Use voice commands for hands-free operation</li>
-            <li>• Upload district documents for better context</li>
-            <li>• Create team spaces to collaborate with colleagues</li>
-            <li>• Ask specific questions about policies and procedures</li>
-          </ul>
+        <div className="space-y-4">
+          <Progress value={(currentStep + 1) / onboardingSteps.length * 100} className="w-full" />
+          
+          <p className="text-sm text-muted-foreground">
+            {currentStepData.description}
+          </p>
+
+          <div className="flex gap-3">
+            <Button
+              onClick={() => handleStepComplete(currentStepData.id)}
+              className="flex-1"
+            >
+              {currentStepData.action}
+            </Button>
+            
+            {currentStep > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => setCurrentStep(currentStep - 1)}
+              >
+                Back
+              </Button>
+            )}
+          </div>
+
+          {/* Quick tips */}
+          <Card className="bg-muted/50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Lightbulb className="w-4 h-4 text-yellow-600" />
+                <h3 className="text-sm font-semibold">Quick Tips:</h3>
+              </div>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Use voice commands for hands-free operation</li>
+                <li>• Upload district documents for better context</li>
+                <li>• Create team spaces to collaborate with colleagues</li>
+                <li>• Ask specific questions about policies and procedures</li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
