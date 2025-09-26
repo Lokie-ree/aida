@@ -16,6 +16,7 @@ import type * as http from "../http.js";
 import type * as rag from "../rag.js";
 import type * as router from "../router.js";
 import type * as scrapingActions from "../scrapingActions.js";
+import type * as security from "../security.js";
 import type * as spaces from "../spaces.js";
 import type * as vapi from "../vapi.js";
 import type * as webscraping from "../webscraping.js";
@@ -43,6 +44,7 @@ declare const fullApi: ApiFromModules<{
   rag: typeof rag;
   router: typeof router;
   scrapingActions: typeof scrapingActions;
+  security: typeof security;
   spaces: typeof spaces;
   vapi: typeof vapi;
   webscraping: typeof webscraping;

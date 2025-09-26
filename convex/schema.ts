@@ -64,6 +64,19 @@ const applicationTables = {
   }).index("by_space", ["spaceId"])
     .index("by_user", ["userId"])
     .index("by_email", ["invitedEmail"]),
+
+  // Security audit logs for FERPA compliance
+  auditLogs: defineTable({
+    userId: v.id("users"),
+    action: v.string(),
+    resource: v.string(),
+    details: v.optional(v.string()),
+    spaceId: v.optional(v.id("spaces")),
+    timestamp: v.number(),
+    ipAddress: v.string(),
+  }).index("by_user", ["userId"])
+    .index("by_space", ["spaceId"])
+    .index("by_timestamp", ["timestamp"]),
 };
 
 export default defineSchema({

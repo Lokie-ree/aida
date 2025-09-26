@@ -1,6 +1,7 @@
-import { httpAction, internalAction } from "./_generated/server";
-import { internal } from "./_generated/api";
+import { httpAction, internalAction, action } from "./_generated/server";
+import { internal, api } from "./_generated/api";
 import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -62,8 +63,12 @@ async function handleFunctionCall(ctx: any, body: any) {
       }
 
       // Use the internal action to process the voice message
+      // For now, we'll process without user context since webhooks don't have auth
+      // In a production system, you'd want to pass user context through the webhook
       const aiResponse = await ctx.runAction(internal.vapi.processVoiceMessage, {
-        message: userMessage
+        message: userMessage,
+        userId: undefined, // TODO: Extract from webhook if available
+        spaceId: undefined // TODO: Extract from webhook if available
       });
 
       return new Response(JSON.stringify({
@@ -92,20 +97,47 @@ async function handleFunctionCall(ctx: any, body: any) {
   });
 }
 
-// Internal action to process voice messages without authentication
+// Internal action to process voice messages with RAG integration
 export const processVoiceMessage = internalAction({
-  args: { message: v.string() },
+  args: { 
+    message: v.string(),
+    userId: v.optional(v.id("users")),
+    spaceId: v.optional(v.id("spaces"))
+  },
   handler: async (ctx, args): Promise<string> => {
     try {
-      // For voice interactions, we'll provide a simpler response without document context
-      // since we don't have user authentication in webhooks
-      const prompt = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. You provide constructive, actionable feedback to enhance teaching and learning.
+      // Check if this is a district policy query
+      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(args.message);
+      
+      let prompt = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. You provide constructive, actionable feedback to enhance teaching and learning.
 
 Keep your response concise and conversational for voice interaction (under 200 words).
 
-User question: ${args.message}
+User question: ${args.message}`;
 
-Please provide helpful, specific guidance based on instructional design best practices.`;
+      // If it's a policy query and we have user context, try to use RAG
+      if (isPolicyQuery && args.userId) {
+        try {
+          // Use RAG to search for relevant district policies
+          const ragResult = await ctx.runAction(api.rag.semanticSearch, {
+            query: args.message,
+            spaceId: args.spaceId,
+            limit: 5
+          });
+
+          if (ragResult.results.length > 0) {
+            prompt += `\n\nRelevant district information found:\n${ragResult.text}`;
+            prompt += `\n\nPlease provide specific guidance based on the district policies and procedures found above. Reference specific policies when applicable.`;
+          } else {
+            prompt += `\n\nNote: No specific district policies were found for this query. Provide general best practices guidance.`;
+          }
+        } catch (ragError) {
+          console.log("RAG search failed, falling back to general response:", ragError);
+          prompt += `\n\nPlease provide helpful, specific guidance based on instructional design best practices.`;
+        }
+      } else {
+        prompt += `\n\nPlease provide helpful, specific guidance based on instructional design best practices.`;
+      }
 
       // Generate AI response
       const response = await openai.chat.completions.create({
@@ -121,6 +153,101 @@ Please provide helpful, specific guidance based on instructional design best pra
     } catch (error) {
       console.error("Error in voice message processing:", error);
       return "I'm sorry, I encountered an error processing your request. Please try again.";
+    }
+  },
+});
+
+// Action for authenticated voice queries with RAG integration
+export const processAuthenticatedVoiceQuery = action({
+  args: {
+    message: v.string(),
+    spaceId: v.optional(v.id("spaces")),
+  },
+  handler: async (ctx, args): Promise<{
+    response: string;
+    sources: string[];
+    isPolicyQuery: boolean;
+  }> => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User must be authenticated");
+    }
+
+    try {
+      // Check if this is a district policy query
+      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(args.message);
+      
+      let response = "";
+      let sources: string[] = [];
+
+      if (isPolicyQuery) {
+        try {
+          // Use RAG to search for relevant district policies
+          const ragResult = await ctx.runAction(api.rag.semanticSearch, {
+            query: args.message,
+            spaceId: args.spaceId,
+            limit: 5
+          });
+
+          if (ragResult.results.length > 0) {
+            // Generate response with RAG context
+            const ragResponse = await ctx.runAction(api.rag.generateResponseWithRAG, {
+              message: args.message,
+              spaceId: args.spaceId
+            });
+
+            response = ragResponse.response;
+            sources = ragResult.results.map((result: any) => 
+              result.metadata?.fileName || result.metadata?.title || "Unknown source"
+            );
+          } else {
+            // No RAG results, provide general guidance
+            response = await ctx.runAction(internal.vapi.processVoiceMessage, {
+              message: args.message,
+              userId,
+              spaceId: args.spaceId
+            });
+            sources = [];
+          }
+        } catch (ragError) {
+          console.log("RAG search failed, falling back to general response:", ragError);
+          response = await ctx.runAction(internal.vapi.processVoiceMessage, {
+            message: args.message,
+            userId,
+            spaceId: args.spaceId
+          });
+          sources = [];
+        }
+      } else {
+        // Not a policy query, use general processing
+        response = await ctx.runAction(internal.vapi.processVoiceMessage, {
+          message: args.message,
+          userId,
+          spaceId: args.spaceId
+        });
+        sources = [];
+      }
+
+      // Log the voice query for audit purposes
+      await ctx.runMutation(api.security.createAuditLog, {
+        action: "voice_query",
+        resource: isPolicyQuery ? "district_policy" : "general_query",
+        details: `Voice query: ${args.message.substring(0, 100)}${args.message.length > 100 ? "..." : ""}`,
+        spaceId: args.spaceId,
+      });
+
+      return {
+        response,
+        sources,
+        isPolicyQuery
+      };
+    } catch (error) {
+      console.error("Error in authenticated voice query processing:", error);
+      return {
+        response: "I'm sorry, I encountered an error processing your request. Please try again.",
+        sources: [],
+        isPolicyQuery: false
+      };
     }
   },
 });
