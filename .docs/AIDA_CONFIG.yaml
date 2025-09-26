@@ -8,8 +8,12 @@ metadata:
   version: "1.0.0"
   schema_version: "1.0"
   source_files:
-    - "AIDA_AGENTS.md"
-    - "AIDA_PROJECT_CONTEXT.md"
+    - "AIDA_AGENTS.md (archived)"
+    - "AIDA_PROJECT_CONTEXT.md (archived)"
+    - "DESIGN.md (archived)"
+    - "LANDING.md (archived)"
+    - "AIDA_USER_STORIES.json (archived)"
+    - "REGISTRY_INTEGRATION_CONFIG.yaml"
   maintainer: "A.I.D.A. Development Team"
   validation:
     schema_type: "YAML"
@@ -302,6 +306,242 @@ mvp_core_features:
       - "Recent interactions and feedback"
       - "District context indicators"
 
+user_stories:
+  voice_district_assistant:
+    - id: "VDA-001"
+      title: "Voice Query District Policy"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a K-12 educator, I want to ask voice questions about district policies so that I can get instant, accurate answers while multitasking."
+      acceptance_criteria:
+        - "I can activate voice interface with a simple voice command or button press"
+        - "I can ask natural language questions about district policies"
+        - "I receive accurate, district-specific answers within 2 seconds"
+        - "The system provides source citations for all policy information"
+        - "The voice interface works hands-free while I'm doing other tasks"
+        - "The system maintains conversation context for follow-up questions"
+      priority: "P0"
+      business_value: "Eliminates time-consuming policy searches, reduces administrative burden"
+      success_metrics:
+        - ">90% voice recognition accuracy in quiet environments"
+        - "<2 second response time for voice queries"
+        - ">80% user satisfaction with policy answers"
+      technical_requirements:
+        - "Vapi integration for speech-to-text and text-to-speech"
+        - "RAG pipeline with district document ingestion"
+        - "Real-time voice processing with <500ms latency"
+        - "Source citation system for all responses"
+    
+    - id: "VDA-002"
+      title: "Voice Query Curriculum Guidelines"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a curriculum coordinator, I want to ask voice questions about curriculum guidelines so that I can quickly access alignment information without interrupting my workflow."
+      acceptance_criteria:
+        - "I can ask about specific grade-level curriculum requirements"
+        - "I can inquire about standards alignment and pacing guides"
+        - "I receive detailed curriculum information with specific references"
+        - "The system understands educational terminology and context"
+        - "I can ask follow-up questions about implementation strategies"
+      priority: "P0"
+      business_value: "Ensures curriculum compliance and alignment"
+      success_metrics:
+        - ">90% accuracy for curriculum-related questions"
+        - ">70% weekly active usage by curriculum coordinators"
+    
+    - id: "VDA-003"
+      title: "Voice Query Professional Development"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want to ask about available professional development opportunities so that I can quickly find relevant training without searching through multiple documents."
+      acceptance_criteria:
+        - "I can ask about upcoming PD sessions and requirements"
+        - "I can inquire about specific training topics and availability"
+        - "I receive information about registration and prerequisites"
+        - "The system can filter PD opportunities by subject area or grade level"
+      priority: "P1"
+      business_value: "Increases PD participation and teacher development"
+
+  ai_instructional_feedback:
+    - id: "AIF-001"
+      title: "Upload Lesson Plan for AI Feedback"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want to upload my lesson plan and receive AI-powered feedback so that I can improve engagement and rigor in my instruction."
+      acceptance_criteria:
+        - "I can upload lesson plans in multiple formats (PDF, Word, Google Docs)"
+        - "I receive specific feedback on engagement strategies"
+        - "I get suggestions for increasing instructional rigor"
+        - "The feedback is pedagogically sound and aligned with best practices"
+        - "I can ask follow-up questions about the feedback"
+        - "The system provides actionable, specific recommendations"
+      priority: "P0"
+      business_value: "Improves teaching effectiveness and student outcomes"
+      success_metrics:
+        - ">80% teacher satisfaction with feedback quality"
+        - "5+ lesson plans uploaded per teacher per month"
+        - ">90% of feedback rated as helpful or very helpful"
+      technical_requirements:
+        - "Document upload and processing system"
+        - "AI analysis using OpenAI GPT-4o-mini"
+        - "Pedagogical knowledge base integration"
+        - "Feedback generation with specific examples"
+    
+    - id: "AIF-002"
+      title: "Voice-Based Lesson Plan Feedback"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want to describe my lesson plan verbally and receive immediate feedback so that I can get quick insights while planning without stopping to type."
+      acceptance_criteria:
+        - "I can describe my lesson plan through voice input"
+        - "The system accurately transcribes my description"
+        - "I receive voice feedback with specific suggestions"
+        - "I can ask clarifying questions about the feedback"
+        - "The system maintains context throughout the conversation"
+      priority: "P1"
+      business_value: "Enables hands-free lesson planning and feedback"
+    
+    - id: "AIF-003"
+      title: "District-Specific Feedback Alignment"
+      persona: "Curriculum Coordinator (Jennifer)"
+      story: "As a curriculum coordinator, I want AI feedback to align with our district's specific standards and initiatives so that teachers receive relevant, actionable guidance."
+      acceptance_criteria:
+        - "Feedback references specific district standards and policies"
+        - "Suggestions align with district curriculum frameworks"
+        - "The system understands district-specific terminology and requirements"
+        - "Feedback includes references to district resources and materials"
+      priority: "P1"
+      business_value: "Ensures feedback relevance and district compliance"
+
+  teacher_dashboard:
+    - id: "TCD-001"
+      title: "Quick Voice Assistant Access"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want quick access to the voice assistant from my dashboard so that I can get help without navigating through multiple screens."
+      acceptance_criteria:
+        - "Voice assistant is prominently displayed on the main dashboard"
+        - "I can activate voice input with one click or voice command"
+        - "The interface shows my recent voice interactions"
+        - "I can see the status of my current voice session"
+        - "The dashboard is optimized for mobile and tablet use"
+      priority: "P0"
+      business_value: "Reduces friction in accessing core functionality"
+    
+    - id: "TCD-002"
+      title: "Recent Interactions History"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want to see my recent voice interactions and feedback so that I can easily reference previous conversations and track my progress."
+      acceptance_criteria:
+        - "I can view my last 10 voice interactions"
+        - "Each interaction shows the question asked and response received"
+        - "I can search through my interaction history"
+        - "I can bookmark important interactions for future reference"
+        - "The system shows timestamps and source citations"
+      priority: "P1"
+      business_value: "Improves user experience and knowledge retention"
+    
+    - id: "TCD-003"
+      title: "District Context Indicators"
+      persona: "K-12 Educator (Sarah)"
+      story: "As a teacher, I want to see my district context and available resources so that I know what information and tools are available to me."
+      acceptance_criteria:
+        - "Dashboard shows my current district and school information"
+        - "I can see available document collections and knowledge bases"
+        - "The system displays my access level and permissions"
+        - "I can see recent district updates and announcements"
+        - "The interface adapts based on my role and responsibilities"
+      priority: "P1"
+      business_value: "Provides clear context and resource visibility"
+
+  district_administrator:
+    - id: "DA-001"
+      title: "Teacher Usage Analytics"
+      persona: "District Administrator (Michael)"
+      story: "As a district administrator, I want to see how teachers are using A.I.D.A. so that I can measure ROI and identify areas for improvement."
+      acceptance_criteria:
+        - "I can view usage statistics across all district teachers"
+        - "I can see which features are most popular and effective"
+        - "I can track teacher satisfaction and feedback scores"
+        - "I can generate reports for district leadership"
+        - "The system provides insights on time savings and efficiency gains"
+      priority: "P1"
+      business_value: "Demonstrates ROI and guides district investment decisions"
+    
+    - id: "DA-002"
+      title: "District-Wide Document Management"
+      persona: "District Administrator (Michael)"
+      story: "As a district administrator, I want to manage which documents are available to teachers so that I can ensure they have access to current, relevant information."
+      acceptance_criteria:
+        - "I can upload and manage district policy documents"
+        - "I can control which documents are available to which user groups"
+        - "I can track document usage and effectiveness"
+        - "I can update documents and notify teachers of changes"
+        - "The system maintains version control and audit trails"
+      priority: "P1"
+      business_value: "Ensures policy compliance and information accuracy"
+
+  new_teacher:
+    - id: "NT-001"
+      title: "Onboarding Voice Assistant"
+      persona: "New Teacher (David)"
+      story: "As a new teacher, I want to use the voice assistant to learn about district policies and procedures so that I can quickly understand what I need to know without bothering colleagues."
+      acceptance_criteria:
+        - "I can ask basic questions about district policies and procedures"
+        - "The system provides clear, beginner-friendly explanations"
+        - "I can ask follow-up questions for clarification"
+        - "The system offers additional resources and next steps"
+        - "I can save important information for future reference"
+      priority: "P0"
+      business_value: "Reduces onboarding time and improves new teacher confidence"
+    
+    - id: "NT-002"
+      title: "Mentorship and Support"
+      persona: "New Teacher (David)"
+      story: "As a new teacher, I want to receive personalized guidance and support through the voice assistant so that I can improve my teaching effectiveness and confidence."
+      acceptance_criteria:
+        - "The system provides personalized recommendations based on my experience level"
+        - "I can ask questions about classroom management and teaching strategies"
+        - "The system offers step-by-step guidance for common teaching tasks"
+        - "I can track my progress and development over time"
+        - "The system connects me with relevant resources and professional development"
+      priority: "P1"
+      business_value: "Improves new teacher retention and effectiveness"
+
+  cross_cutting_stories:
+    - id: "CC-001"
+      title: "FERPA Compliance and Data Security"
+      persona: "All Users"
+      story: "As any user of A.I.D.A., I want my data to be secure and FERPA-compliant so that I can trust the system with sensitive educational information."
+      acceptance_criteria:
+        - "All data processing happens within the Convex deployment"
+        - "No third-party sharing of authentication or document data"
+        - "Complete audit trails for all data access and modifications"
+        - "Role-based permissions for different user types"
+        - "Clear data retention and deletion policies"
+      priority: "P0"
+      business_value: "Ensures legal compliance and user trust"
+    
+    - id: "CC-002"
+      title: "Accessibility and Voice Interface"
+      persona: "All Users"
+      story: "As a user with accessibility needs, I want the voice interface to work with assistive technologies so that I can fully participate in the A.I.D.A. experience."
+      acceptance_criteria:
+        - "Voice interface works with screen readers and assistive technologies"
+        - "All interactive elements are keyboard accessible"
+        - "Color contrast meets WCAG 2.1 AA standards"
+        - "Clear audio feedback and visual indicators"
+        - "Fallback options for voice interface failures"
+      priority: "P0"
+      business_value: "Ensures inclusive access for all users"
+    
+    - id: "CC-003"
+      title: "Mobile-First Voice Experience"
+      persona: "All Users"
+      story: "As a mobile user, I want the voice interface to work seamlessly on my phone or tablet so that I can access A.I.D.A. anywhere in my school."
+      acceptance_criteria:
+        - "Voice interface optimized for mobile touch interactions"
+        - "Responsive design that works on all screen sizes"
+        - "Lighthouse performance score >90 on mobile"
+        - "Touch-friendly voice controls and buttons"
+        - "Offline capability for basic voice functions"
+      priority: "P0"
+      business_value: "Enables anywhere, anytime access to A.I.D.A."
+
 design_system:
   typography:
     primary_font: "Inter - Used for all headings and body text"
@@ -335,6 +575,129 @@ design_system:
     grid_system: "12-column responsive grid with Tailwind CSS, mobile-first approach"
     spacing_scale: "4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px (Tailwind spacing scale)"
     voice_interface: "Extra spacing around voice elements for touch accessibility"
+
+design_specifications:
+  philosophy: "Invisible Intelligence, Empathic Design - Bold Simplicity Meets Human Empathy"
+  core_principles:
+    - "Bold simplicity with breathable whitespace"
+    - "Real-time responsiveness to user's emotional state"
+    - "Voice-first, hands-free experience for busy educators"
+    - "Clean, trustworthy, and innovative visual language"
+  
+  voice_orb:
+    name: "The Voice Orb"
+    description: "Hero element of the UI - dynamic, glowing orb representing A.I.D.A. itself"
+    positioning: "Prominent, accessible position for easy voice interaction"
+    states:
+      idle:
+        color: "Calm blue glow"
+        animation: "Gentle pulsing"
+        description: "Ready for voice commands"
+      listening:
+        color: "Purple light"
+        animation: "Active pulsing"
+        description: "Processing voice input"
+      success:
+        color: "Steady green"
+        animation: "Confirmation pulse"
+        description: "Task completed successfully"
+    design_goals:
+      - "Minimalist and hands-free operation"
+      - "No extraneous buttons or chat windows"
+      - "Always ready for voice commands"
+      - "Perfect alignment with hands-free teacher experience"
+  
+  empathy_bar:
+    name: "The Empathy Bar"
+    description: "Innovative, hackathon-winning feature - real-time emotional analysis visualization"
+    positioning: "Subtly located at top or bottom of screen"
+    visual_cues:
+      calm_state:
+        color: "Calm blue"
+        description: "Normal, relaxed teacher state"
+      stress_detection:
+        color: "Warm orange or red"
+        description: "AI detects frustration or stress in teacher's voice"
+    adaptive_responses:
+      - "Interface automatically simplifies when stress detected"
+      - "Reduces on-screen clutter to show only critical information"
+      - "Offers calming, focused experience"
+      - "Provides simplified, calming answers instead of technical documents"
+    intelligence_showcase:
+      - "Shows deeper level of AI intelligence beyond simple retrieval"
+      - "Demonstrates emotional awareness and adaptive responses"
+      - "Key differentiator for hackathon judges"
+  
+  insights_hub:
+    name: "The Insights Hub"
+    description: "Main dashboard with modular widgets for at-a-glance overview"
+    purpose: "Make teacher's life 'more about teaching and less about busy work'"
+    widgets:
+      lesson_plan_feedback:
+        name: "Lesson Plan Feedback Widget"
+        description: "Interactive panel for real-time AI-generated feedback"
+        functionality:
+          - "Quick lesson plan upload"
+          - "Real-time AI feedback appearance"
+          - "Alignment with core MVP feature"
+      
+      classroom_dynamics:
+        name: "Classroom Dynamics Widget"
+        description: "Live, real-time teacher vs student participation ratio"
+        powered_by: "Speaker diarization feature"
+        value_proposition: "Immediate, actionable data for pedagogical improvement"
+        target_user: "Administrator persona"
+      
+      recent_interactions:
+        name: "Recent Interactions & Analytics Widget"
+        description: "Searchable history of past voice queries and answers"
+        features:
+          - "Quick conversation revisiting"
+          - "Value demonstration over time"
+          - "Rich, interactive dashboard preview"
+          - "Automatic data generation from interactions"
+  
+  design_goals:
+    - "Seamless blend of voice interaction, emotional awareness, and actionable data"
+    - "Supportive partner in the classroom, not just a tool"
+    - "Clear, innovative, and human-centric vision"
+    - "Showcase of intelligent, empathic AI assistance"
+
+component_integration_strategy:
+  registry_priorities:
+    primary: "shadcn/ui - Foundation components and accessibility"
+    secondary: "react-bits + tweakcn - Innovation and customization"
+  
+  voice_orb_implementation:
+    base_component: "shadcn/ui Button with custom styling"
+    animations: "react-bits for state transitions and pulsing effects"
+    theming: "tweakcn for dynamic color states (idle: blue, listening: purple, success: green)"
+    accessibility: "shadcn/ui focus states and ARIA labels"
+  
+  empathy_bar_implementation:
+    base_component: "shadcn/ui Progress with custom styling"
+    animations: "react-bits for smooth color transitions"
+    theming: "tweakcn for emotional state colors (calm: blue, stress: orange/red)"
+    responsiveness: "Real-time color changes based on voice analysis"
+  
+  landing_page_implementation:
+    hero_section: "react-bits particle system with Voice Orb at center"
+    interactive_elements: "react-bits for data visualization animations"
+    base_components: "shadcn/ui for buttons, forms, and layout"
+    theming: "tweakcn for consistent color palette and brand identity"
+  
+  existing_component_migration:
+    voice_interface: "Enhance with react-bits animations and tweakcn theming"
+    chat_interface: "Maintain shadcn/ui foundation, add subtle react-bits animations"
+    dashboard_widgets: "shadcn/ui base with tweakcn color customization"
+    forms_and_inputs: "Keep shadcn/ui for accessibility, add tweakcn theming"
+  
+  integration_approach:
+    - "Maintain existing shadcn/ui components as foundation"
+    - "Layer react-bits animations on top for visual enhancement"
+    - "Use tweakcn for dynamic theming and emotional responsiveness"
+    - "Ensure accessibility compliance throughout all components"
+    - "Test performance impact of animations on voice interface"
 
 accessibility_guidelines:
   keyboard_navigation:
@@ -379,6 +742,87 @@ brand_identity:
       district-specific information and personalized instructional feedback 
       through natural voice interactions.
 
+landing_page_strategy:
+  objective: "Convert visitors into hackathon participants through visual and emotional storytelling"
+  design_approach: "Bold minimalism and interactive storytelling with established color palette"
+  visual_identity: "Intelligent, supportive, and empowering brand extension"
+  
+  hero_section:
+    name: "Your Voice, Our Mission"
+    description: "Full-screen interactive experience designed to captivate and explain core value proposition"
+    visuals:
+      main_element: "Dynamic, abstract particle system or data visualization"
+      source: "Glowing purple 'Voice Orb' at center of screen"
+      interaction: "Chaotic 'data overload' particles coalesce into clean, structured visualization"
+      meaning: "Embodies mission to bring order to information chaos"
+      experience: "Mesmerizing, immersive experience explaining technology without text"
+    headline: "Your Voice-Powered Educational Command Center"
+    typography: "Bold, minimalist typography overlaid on visual"
+    call_to_action:
+      button_text: "Hack the Future of Ed-Tech"
+      animation: "Subtle pulsing animation"
+      positioning: "Prominently at center"
+      form: "Simple sign-up form for conversion"
+  
+  problem_solution_section:
+    layout: "Clean, grid-based layout"
+    problem_side:
+      title: "K-12 Educator Pain Points"
+      content: "Concise, bulleted list of pain points"
+      examples:
+        - "Perpetual information overload"
+        - "Fragmented workflows"
+    solution_side:
+      title: "A.I.D.A. Solution"
+      content: "Equally concise list presenting A.I.D.A. as solution"
+      emphasis: "Hands-free, integrated approach"
+    design_principles:
+      - "Simple design and typography hierarchy"
+      - "Scannable information for quick evaluation"
+      - "Clear problem-solution alignment"
+  
+  how_it_works_section:
+    layout: "Modular design showcasing key features"
+    features:
+      voice_district_assistant:
+        icon: "Microphone icon"
+        headline: "Ask Anything"
+        description: "Voice-enabled district assistant"
+      ai_instructional_feedback:
+        icon: "Pencil and notepad icon"
+        headline: "Get Instant Insight"
+        description: "AI-powered instructional feedback"
+      hyper_contextualization:
+        icon: "Location pin or globe icon"
+        headline: "Your District, Your Data"
+        description: "Hyper-contextualization features"
+  
+  trust_tech_section:
+    purpose: "Build credibility and appeal to technical hackathon audience"
+    social_proof:
+      testimonials: "Carousel of genuine educator testimonials"
+      trust_badges: "FERPA compliance and privacy guarantees"
+    technology_stack:
+      layout: "Simple grid of core technology logos"
+      technologies: ["Vapi", "Convex", "OpenAI", "Firecrawl"]
+      interaction: "Hover reveals micro-interaction with brief description"
+      purpose: "Demonstrate technical sophistication and transparency"
+  
+  final_cta:
+    design: "Powerful, minimalist footer"
+    content: "Restate mission with large, final CTA button"
+    goal: "Clear path to hackathon registration"
+    reinforcement: "Core objective reinforcement"
+  
+  conversion_optimization:
+    primary_goal: "Convert visitors into hackathon participants"
+    key_elements:
+      - "Immediate value proposition communication"
+      - "Strong, compelling CTAs"
+      - "Technical credibility demonstration"
+      - "Emotional connection through storytelling"
+      - "Clear registration pathway"
+
 revenue_model:
   teacher_pro_plan:
     price: "$50/month"
@@ -398,8 +842,11 @@ revenue_model:
       - "FERPA-compliant data handling and audit trails"
 
 implementation_roadmap:
-  phase_1:
+  phase_1_mvp:
     name: "MVP Development (Hackathon - 3 days)"
+    duration: "3 days (Hackathon)"
+    focus: "Core voice assistant and instructional feedback"
+    key_stories: ["VDA-001", "AIF-001", "TCD-001", "CC-001", "CC-002"]
     goal: "Build and demonstrate core voice assistant and instructional feedback capabilities"
     key_deliverables:
       - "Voice-enabled district assistant with Vapi integration"
@@ -408,8 +855,11 @@ implementation_roadmap:
       - "RAG pipeline with Firecrawl document ingestion"
       - "Working demo for hackathon judges"
   
-  phase_2:
+  phase_2_pilot:
     name: "Pilot & Validation (Post-Hackathon - 3 months)"
+    duration: "3 months"
+    focus: "User validation and refinement"
+    key_stories: ["VDA-002", "AIF-002", "TCD-002", "NT-001"]
     goal: "Validate product-market fit with early adopter teachers"
     key_deliverables:
       - "Refined voice interface based on user feedback"
@@ -418,8 +868,11 @@ implementation_roadmap:
       - "Pilot program with 10-20 teachers"
       - "Case study and success metrics"
   
-  phase_3:
+  phase_3_rollout:
     name: "District Rollout (6-12 months)"
+    duration: "6-12 months"
+    focus: "District-wide implementation"
+    key_stories: ["DA-001", "DA-002", "NT-002", "CC-003"]
     goal: "Scale to full district-wide implementation with enterprise features"
     key_deliverables:
       - "Enterprise authentication and security"
@@ -477,6 +930,26 @@ available_mcps:
       - "Quick component generation for voice-first interfaces"
       - "Full control over component styling for voice-specific needs"
     usage: "Primary tool for all UI component development and voice interface implementation"
+  
+  react_bits:
+    description: "Animated, interactive & fully customizable React components for landing page innovation"
+    capabilities:
+      - "Dynamic particle systems and data visualizations"
+      - "Interactive animations for hero sections"
+      - "Voice Orb state animations and transitions"
+      - "Landing page interactive elements"
+    usage: "Landing page hero section, Voice Orb animations, interactive data visualizations"
+    registry_url: "https://reactbits.dev"
+  
+  tweakcn:
+    description: "Powerful Theme Editor for shadcn/ui customization and emotional responsiveness"
+    capabilities:
+      - "Real-time theme customization"
+      - "Voice Orb state color management"
+      - "Empathy Bar emotional state theming"
+      - "Dynamic color palette adjustments"
+    usage: "Voice Orb states, Empathy Bar colors, theme customization, emotional responsiveness"
+    registry_url: "https://tweakcn.com"
 
 agent_coordination:
   workflow:

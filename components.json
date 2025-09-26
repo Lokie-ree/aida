@@ -17,5 +17,27 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "registries": [
+    {
+      "name": "shadcn",
+      "url": "https://ui.shadcn.com/registry",
+      "description": "Official shadcn/ui components",
+      "priority": "primary"
+    },
+    {
+      "name": "react-bits",
+      "url": "https://reactbits.dev",
+      "description": "Animated, interactive & fully customizable React components",
+      "priority": "secondary",
+      "useFor": ["landing-page", "animations", "interactive-components"]
+    },
+    {
+      "name": "tweakcn",
+      "url": "https://tweakcn.com",
+      "description": "Powerful Theme Editor for shadcn/ui",
+      "priority": "secondary",
+      "useFor": ["theming", "voice-orb-states", "empathy-bar-colors", "customization"]
+    }
+  ]
 }
