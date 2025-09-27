@@ -1,0 +1,1310 @@
+{
+  "metadata": {
+    "title": "A.I.D.A. Data Contracts Documentation",
+    "version": "1.0.0",
+    "description": "Complete documentation of all data contracts, schemas, and interfaces throughout the A.I.D.A. codebase",
+    "generated": "2025-09-26",
+    "schema_version": "1.0"
+  },
+  "database_schema": {
+    "description": "Convex database schema definitions from schema.ts",
+    "tables": {
+      "feedbackSessions": {
+        "description": "Stores AI-generated feedback sessions for lesson plans",
+        "fields": {
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who created the feedback session",
+            "required": true
+          },
+          "lessonPlan": {
+            "type": "string",
+            "description": "The lesson plan content that was analyzed",
+            "required": true
+          },
+          "feedback": {
+            "type": "string",
+            "description": "AI-generated feedback for the lesson plan",
+            "required": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for the feedback session",
+            "required": false
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Optional reference to the space this feedback belongs to",
+            "required": false
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          }
+        ]
+      },
+      "documents": {
+        "description": "Stores uploaded documents and their metadata",
+        "fields": {
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who uploaded the document",
+            "required": true
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Original filename of the uploaded document",
+            "required": true
+          },
+          "fileSize": {
+            "type": "number",
+            "description": "Size of the file in bytes",
+            "required": true
+          },
+          "storageId": {
+            "type": "Id<\"_storage\">",
+            "description": "Reference to the file in Convex storage",
+            "required": true
+          },
+          "contentType": {
+            "type": "string",
+            "description": "MIME type of the uploaded file",
+            "required": true
+          },
+          "textContent": {
+            "type": "string",
+            "description": "Extracted text content from the document",
+            "required": true
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Optional reference to the space this document belongs to",
+            "required": false
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          }
+        ]
+      },
+      "scrapedWebsites": {
+        "description": "Stores scraped website content and metadata",
+        "fields": {
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who scraped the website",
+            "required": true
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the scraped website",
+            "required": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the scraped webpage",
+            "required": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Full text content of the scraped webpage",
+            "required": true
+          },
+          "chunks": {
+            "type": "string[]",
+            "description": "Array of text chunks for better search and processing",
+            "required": true
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Additional metadata about the scraped content",
+            "required": true,
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Meta description of the webpage"
+              },
+              "ogImage": {
+                "type": "string",
+                "description": "Open Graph image URL"
+              },
+              "sourceURL": {
+                "type": "string",
+                "description": "Original source URL"
+              }
+            }
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Optional reference to the space this website belongs to",
+            "required": false
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          }
+        ]
+      },
+      "chatMessages": {
+        "description": "Stores chat messages between users and A.I.D.A.",
+        "fields": {
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who sent the message",
+            "required": true
+          },
+          "role": {
+            "type": "\"user\" | \"assistant\"",
+            "description": "Role of the message sender",
+            "required": true
+          },
+          "content": {
+            "type": "string",
+            "description": "Content of the chat message",
+            "required": true
+          },
+          "contextDocuments": {
+            "type": "string[]",
+            "description": "Array of document names used as context for this message",
+            "required": false
+          },
+          "contextWebsites": {
+            "type": "string[]",
+            "description": "Array of website titles used as context for this message",
+            "required": false
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Optional reference to the space this message belongs to",
+            "required": false
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          }
+        ]
+      },
+      "spaces": {
+        "description": "Stores shared workspace information",
+        "fields": {
+          "name": {
+            "type": "string",
+            "description": "Name of the shared space",
+            "required": true
+          },
+          "ownerId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who owns this space",
+            "required": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the space",
+            "required": false
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_owner",
+            "fields": ["ownerId"]
+          }
+        ]
+      },
+      "spaceMembers": {
+        "description": "Stores membership information for shared spaces",
+        "fields": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Reference to the space",
+            "required": true
+          },
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user",
+            "required": true
+          },
+          "invitationStatus": {
+            "type": "\"pending\" | \"accepted\"",
+            "description": "Status of the invitation",
+            "required": true
+          },
+          "invitedBy": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who sent the invitation",
+            "required": true
+          },
+          "invitedEmail": {
+            "type": "string",
+            "description": "Email address used for the invitation",
+            "required": true
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          },
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_email",
+            "fields": ["invitedEmail"]
+          }
+        ]
+      },
+      "auditLogs": {
+        "description": "Stores security audit logs for FERPA compliance",
+        "fields": {
+          "userId": {
+            "type": "Id<\"users\">",
+            "description": "Reference to the user who performed the action",
+            "required": true
+          },
+          "action": {
+            "type": "string",
+            "description": "Type of action performed",
+            "required": true
+          },
+          "resource": {
+            "type": "string",
+            "description": "Resource that was accessed or modified",
+            "required": true
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional details about the action",
+            "required": false
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "description": "Optional reference to the space where the action occurred",
+            "required": false
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Unix timestamp when the action occurred",
+            "required": true
+          },
+          "ipAddress": {
+            "type": "string",
+            "description": "IP address of the user (placeholder for now)",
+            "required": true
+          }
+        },
+        "indexes": [
+          {
+            "name": "by_user",
+            "fields": ["userId"]
+          },
+          {
+            "name": "by_space",
+            "fields": ["spaceId"]
+          },
+          {
+            "name": "by_timestamp",
+            "fields": ["timestamp"]
+          }
+        ]
+      }
+    }
+  },
+  "convex_functions": {
+    "description": "Data contracts for Convex functions (queries, mutations, actions)",
+    "chat": {
+      "getChatHistory": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to filter chat history"
+          }
+        },
+        "returns": "Array of chat message documents",
+        "description": "Retrieves chat history for a user, optionally filtered by space"
+      },
+      "sendMessage": {
+        "type": "action",
+        "args": {
+          "message": {
+            "type": "string",
+            "required": true,
+            "description": "The message content to send"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to associate the message with"
+          }
+        },
+        "returns": "string (AI response)",
+        "description": "Sends a message and returns AI response with RAG context"
+      },
+      "saveMessage": {
+        "type": "mutation",
+        "args": {
+          "role": {
+            "type": "\"user\" | \"assistant\"",
+            "required": true,
+            "description": "Role of the message sender"
+          },
+          "content": {
+            "type": "string",
+            "required": true,
+            "description": "Content of the message"
+          },
+          "contextDocuments": {
+            "type": "string[]",
+            "required": false,
+            "description": "Document names used as context"
+          },
+          "contextWebsites": {
+            "type": "string[]",
+            "required": false,
+            "description": "Website titles used as context"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID"
+          }
+        },
+        "returns": "Id<\"chatMessages\">",
+        "description": "Saves a chat message to the database"
+      },
+      "clearChatHistory": {
+        "type": "mutation",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to clear history for"
+          }
+        },
+        "returns": "void",
+        "description": "Clears chat history for a user or space"
+      }
+    },
+    "documents": {
+      "generateUploadUrl": {
+        "type": "mutation",
+        "args": {},
+        "returns": "string (upload URL)",
+        "description": "Generates a secure upload URL for file uploads"
+      },
+      "processUploadedDocument": {
+        "type": "action",
+        "args": {
+          "storageId": {
+            "type": "Id<\"_storage\">",
+            "required": true,
+            "description": "Storage ID of the uploaded file"
+          },
+          "fileName": {
+            "type": "string",
+            "required": true,
+            "description": "Original filename"
+          },
+          "fileSize": {
+            "type": "number",
+            "required": true,
+            "description": "File size in bytes"
+          },
+          "contentType": {
+            "type": "string",
+            "required": true,
+            "description": "MIME type of the file"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to associate with"
+          }
+        },
+        "returns": {
+          "success": "boolean",
+          "documentId": "Id<\"documents\">"
+        },
+        "description": "Processes an uploaded document and adds it to RAG"
+      },
+      "saveDocument": {
+        "type": "mutation",
+        "args": {
+          "fileName": {
+            "type": "string",
+            "required": true,
+            "description": "Original filename"
+          },
+          "fileSize": {
+            "type": "number",
+            "required": true,
+            "description": "File size in bytes"
+          },
+          "storageId": {
+            "type": "Id<\"_storage\">",
+            "required": true,
+            "description": "Storage ID"
+          },
+          "contentType": {
+            "type": "string",
+            "required": true,
+            "description": "MIME type"
+          },
+          "textContent": {
+            "type": "string",
+            "required": true,
+            "description": "Extracted text content"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID"
+          }
+        },
+        "returns": "Id<\"documents\">",
+        "description": "Saves document metadata to the database"
+      },
+      "getUserDocuments": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to filter documents"
+          }
+        },
+        "returns": "Array of document documents",
+        "description": "Retrieves documents for a user, optionally filtered by space"
+      },
+      "getDocumentById": {
+        "type": "query",
+        "args": {
+          "documentId": {
+            "type": "Id<\"documents\">",
+            "required": true,
+            "description": "Document ID to retrieve"
+          }
+        },
+        "returns": "Document document or null",
+        "description": "Retrieves a specific document by ID"
+      },
+      "deleteDocument": {
+        "type": "mutation",
+        "args": {
+          "documentId": {
+            "type": "Id<\"documents\">",
+            "required": true,
+            "description": "Document ID to delete"
+          }
+        },
+        "returns": "void",
+        "description": "Deletes a document and its associated storage"
+      },
+      "searchDocuments": {
+        "type": "query",
+        "args": {
+          "query": {
+            "type": "string",
+            "required": true,
+            "description": "Search query string"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to search within"
+          }
+        },
+        "returns": "Array of search results with relevance scores",
+        "description": "Performs text-based search across documents"
+      }
+    },
+    "feedback": {
+      "generateFeedback": {
+        "type": "action",
+        "args": {
+          "lessonPlan": {
+            "type": "string",
+            "required": true,
+            "description": "Lesson plan content to analyze"
+          },
+          "title": {
+            "type": "string",
+            "required": false,
+            "description": "Optional title for the feedback session"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to associate with"
+          }
+        },
+        "returns": "string (AI-generated feedback)",
+        "description": "Generates AI feedback for a lesson plan using OpenAI"
+      },
+      "saveFeedbackSession": {
+        "type": "mutation",
+        "args": {
+          "lessonPlan": {
+            "type": "string",
+            "required": true,
+            "description": "Lesson plan content"
+          },
+          "feedback": {
+            "type": "string",
+            "required": true,
+            "description": "AI-generated feedback"
+          },
+          "title": {
+            "type": "string",
+            "required": false,
+            "description": "Optional title"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID"
+          }
+        },
+        "returns": "Id<\"feedbackSessions\">",
+        "description": "Saves a feedback session to the database"
+      },
+      "getFeedbackHistory": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to filter feedback history"
+          }
+        },
+        "returns": "Array of feedback session documents",
+        "description": "Retrieves feedback history for a user or space"
+      }
+    },
+    "spaces": {
+      "createSpace": {
+        "type": "mutation",
+        "args": {
+          "name": {
+            "type": "string",
+            "required": true,
+            "description": "Name of the space to create"
+          },
+          "description": {
+            "type": "string",
+            "required": false,
+            "description": "Optional description of the space"
+          }
+        },
+        "returns": "Id<\"spaces\">",
+        "description": "Creates a new shared space and adds the creator as a member"
+      },
+      "getUserSpaces": {
+        "type": "query",
+        "args": {},
+        "returns": "Array of space documents with owner information",
+        "description": "Retrieves all spaces where the user is a member"
+      },
+      "getSpaceById": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": true,
+            "description": "Space ID to retrieve"
+          }
+        },
+        "returns": "Space document with owner information or null",
+        "description": "Retrieves a specific space by ID if user has access"
+      },
+      "inviteUserToSpace": {
+        "type": "mutation",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": true,
+            "description": "Space ID to invite user to"
+          },
+          "email": {
+            "type": "string",
+            "required": true,
+            "description": "Email address of the user to invite"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Invites a user to join a space"
+      },
+      "getPendingInvitations": {
+        "type": "query",
+        "args": {},
+        "returns": "Array of pending invitation documents with space and inviter information",
+        "description": "Retrieves pending space invitations for the current user"
+      },
+      "acceptInvitation": {
+        "type": "mutation",
+        "args": {
+          "invitationId": {
+            "type": "Id<\"spaceMembers\">",
+            "required": true,
+            "description": "Invitation ID to accept"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Accepts a pending space invitation"
+      },
+      "declineInvitation": {
+        "type": "mutation",
+        "args": {
+          "invitationId": {
+            "type": "Id<\"spaceMembers\">",
+            "required": true,
+            "description": "Invitation ID to decline"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Declines a pending space invitation"
+      },
+      "getSpaceMembers": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": true,
+            "description": "Space ID to get members for"
+          }
+        },
+        "returns": "Array of space member documents with user information",
+        "description": "Retrieves all members of a space"
+      },
+      "leaveSpace": {
+        "type": "mutation",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": true,
+            "description": "Space ID to leave"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Removes the current user from a space (owners cannot leave)"
+      }
+    },
+    "rag": {
+      "addDocumentToRAG": {
+        "type": "action",
+        "args": {
+          "documentId": {
+            "type": "Id<\"documents\">",
+            "required": true,
+            "description": "Document ID to add to RAG"
+          },
+          "textContent": {
+            "type": "string",
+            "required": true,
+            "description": "Text content to index"
+          },
+          "fileName": {
+            "type": "string",
+            "required": true,
+            "description": "Filename for the RAG entry"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for namespacing"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Adds document content to the RAG system for semantic search"
+      },
+      "addWebScrapingToRAG": {
+        "type": "action",
+        "args": {
+          "websiteId": {
+            "type": "Id<\"scrapedWebsites\">",
+            "required": true,
+            "description": "Website ID to add to RAG"
+          },
+          "content": {
+            "type": "string",
+            "required": true,
+            "description": "Website content to index"
+          },
+          "title": {
+            "type": "string",
+            "required": true,
+            "description": "Website title for the RAG entry"
+          },
+          "url": {
+            "type": "string",
+            "required": true,
+            "description": "Website URL"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for namespacing"
+          }
+        },
+        "returns": "{ success: boolean }",
+        "description": "Adds scraped website content to the RAG system"
+      },
+      "semanticSearch": {
+        "type": "action",
+        "args": {
+          "query": {
+            "type": "string",
+            "required": true,
+            "description": "Search query string"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to search within"
+          },
+          "limit": {
+            "type": "number",
+            "required": false,
+            "description": "Maximum number of results to return"
+          }
+        },
+        "returns": "RAG search results with entries and usage information",
+        "description": "Performs semantic search across all indexed content"
+      },
+      "generateResponseWithRAG": {
+        "type": "action",
+        "args": {
+          "message": {
+            "type": "string",
+            "required": true,
+            "description": "User message to generate response for"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for context"
+          }
+        },
+        "returns": "{ response: string, context: any }",
+        "description": "Generates AI response using RAG context and OpenAI"
+      },
+      "getRAGStats": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to get stats for"
+          }
+        },
+        "returns": "RAG statistics including entry count and namespace information",
+        "description": "Retrieves statistics about RAG entries for a namespace"
+      }
+    },
+    "webscraping": {
+      "saveScrapedWebsite": {
+        "type": "mutation",
+        "args": {
+          "url": {
+            "type": "string",
+            "required": true,
+            "description": "URL of the scraped website"
+          },
+          "title": {
+            "type": "string",
+            "required": true,
+            "description": "Title of the webpage"
+          },
+          "content": {
+            "type": "string",
+            "required": true,
+            "description": "Full text content"
+          },
+          "chunks": {
+            "type": "string[]",
+            "required": true,
+            "description": "Array of text chunks"
+          },
+          "metadata": {
+            "type": "object",
+            "required": true,
+            "description": "Additional metadata",
+            "properties": {
+              "description": "string",
+              "ogImage": "string",
+              "sourceURL": "string"
+            }
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID"
+          }
+        },
+        "returns": "Id<\"scrapedWebsites\">",
+        "description": "Saves scraped website content to the database"
+      },
+      "getUserScrapedWebsites": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to filter websites"
+          }
+        },
+        "returns": "Array of scraped website documents",
+        "description": "Retrieves scraped websites for a user or space"
+      },
+      "deleteScrapedWebsite": {
+        "type": "mutation",
+        "args": {
+          "websiteId": {
+            "type": "Id<\"scrapedWebsites\">",
+            "required": true,
+            "description": "Website ID to delete"
+          }
+        },
+        "returns": "void",
+        "description": "Deletes a scraped website from the database"
+      },
+      "searchScrapedWebsites": {
+        "type": "query",
+        "args": {
+          "query": {
+            "type": "string",
+            "required": true,
+            "description": "Search query string"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to search within"
+          }
+        },
+        "returns": "Array of search results with relevance scores",
+        "description": "Performs text-based search across scraped website chunks"
+      }
+    },
+    "security": {
+      "createAuditLog": {
+        "type": "mutation",
+        "args": {
+          "action": {
+            "type": "string",
+            "required": true,
+            "description": "Type of action performed"
+          },
+          "resource": {
+            "type": "string",
+            "required": true,
+            "description": "Resource that was accessed or modified"
+          },
+          "details": {
+            "type": "string",
+            "required": false,
+            "description": "Additional details about the action"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID where action occurred"
+          }
+        },
+        "returns": "Id<\"auditLogs\">",
+        "description": "Creates an audit log entry for FERPA compliance"
+      },
+      "getUserAuditLogs": {
+        "type": "query",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to filter audit logs"
+          },
+          "limit": {
+            "type": "number",
+            "required": false,
+            "description": "Maximum number of logs to return"
+          }
+        },
+        "returns": "Array of audit log documents",
+        "description": "Retrieves audit logs for a user or space"
+      },
+      "validateDataAccess": {
+        "type": "action",
+        "args": {
+          "resource": {
+            "type": "string",
+            "required": true,
+            "description": "Resource being accessed"
+          },
+          "action": {
+            "type": "string",
+            "required": true,
+            "description": "Action being performed"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for context"
+          }
+        },
+        "returns": "{ allowed: boolean, reason?: string }",
+        "description": "Validates if a user has permission to access a resource"
+      },
+      "enforceDataRetention": {
+        "type": "action",
+        "args": {
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID to enforce retention for"
+          }
+        },
+        "returns": "{ deletedCount: number, errors: string[] }",
+        "description": "Enforces data retention policies by deleting old records"
+      },
+      "getSecurityStatus": {
+        "type": "query",
+        "args": {},
+        "returns": "Security status information including FERPA compliance",
+        "description": "Retrieves current security and compliance status"
+      }
+    },
+    "vapi": {
+      "webhook": {
+        "type": "httpAction",
+        "args": "HTTP request body from Vapi",
+        "returns": "HTTP response",
+        "description": "Handles webhook calls from Vapi voice AI service"
+      },
+      "processVoiceMessage": {
+        "type": "internalAction",
+        "args": {
+          "message": {
+            "type": "string",
+            "required": true,
+            "description": "Voice message transcript"
+          },
+          "userId": {
+            "type": "Id<\"users\">",
+            "required": false,
+            "description": "Optional user ID for context"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for context"
+          }
+        },
+        "returns": "string (AI response)",
+        "description": "Processes voice messages with optional RAG context"
+      },
+      "processAuthenticatedVoiceQuery": {
+        "type": "action",
+        "args": {
+          "message": {
+            "type": "string",
+            "required": true,
+            "description": "Voice message transcript"
+          },
+          "spaceId": {
+            "type": "Id<\"spaces\">",
+            "required": false,
+            "description": "Optional space ID for context"
+          }
+        },
+        "returns": "{ response: string, sources: string[], isPolicyQuery: boolean }",
+        "description": "Processes authenticated voice queries with RAG integration"
+      }
+    }
+  },
+  "frontend_interfaces": {
+    "description": "TypeScript interfaces used in React components",
+    "components": {
+      "ChatInterface": {
+        "props": {
+          "currentSpaceId": {
+            "type": "Id<\"spaces\"> | null",
+            "description": "Currently selected space ID"
+          }
+        },
+        "state": {
+          "message": "string",
+          "isLoading": "boolean",
+          "showVoiceInterface": "boolean"
+        },
+        "description": "Main chat interface component with voice integration"
+      },
+      "DocumentManager": {
+        "props": {
+          "currentSpaceId": {
+            "type": "Id<\"spaces\"> | null",
+            "description": "Currently selected space ID"
+          }
+        },
+        "state": {
+          "isUploading": "boolean"
+        },
+        "description": "Component for managing document uploads and web scraping"
+      },
+      "VoiceInterface": {
+        "props": {
+          "onTranscription": {
+            "type": "(text: string) => void",
+            "required": false,
+            "description": "Callback for voice transcription"
+          },
+          "onResponse": {
+            "type": "(text: string) => void",
+            "required": false,
+            "description": "Callback for voice response"
+          },
+          "currentSpaceId": {
+            "type": "Id<\"spaces\"> | null",
+            "required": false,
+            "description": "Currently selected space ID"
+          },
+          "className": {
+            "type": "string",
+            "required": false,
+            "description": "Additional CSS classes"
+          }
+        },
+        "state": {
+          "isConnected": "boolean",
+          "isListening": "boolean",
+          "isSpeaking": "boolean",
+          "isLoading": "boolean",
+          "lastResponse": "VoiceResponse | null"
+        },
+        "description": "Voice interface component using Vapi for speech-to-text and text-to-speech"
+      },
+      "SpaceSelector": {
+        "props": {
+          "currentSpaceId": {
+            "type": "Id<\"spaces\"> | null",
+            "description": "Currently selected space ID"
+          },
+          "onSpaceChange": {
+            "type": "(spaceId: Id<\"spaces\"> | null) => void",
+            "description": "Callback for space selection changes"
+          }
+        },
+        "state": {
+          "showCreateModal": "boolean",
+          "showInviteModal": "boolean",
+          "showInvitationsModal": "boolean",
+          "newSpaceName": "string",
+          "newSpaceDescription": "string",
+          "inviteEmail": "string",
+          "isCreating": "boolean",
+          "isInviting": "boolean"
+        },
+        "description": "Component for managing shared spaces and invitations"
+      }
+    },
+    "types": {
+      "VoiceResponse": {
+        "type": "interface",
+        "properties": {
+          "response": "string",
+          "sources": "string[]",
+          "isPolicyQuery": "boolean"
+        },
+        "description": "Response structure from authenticated voice queries"
+      }
+    }
+  },
+  "external_apis": {
+    "description": "Data contracts for external API integrations",
+    "vapi": {
+      "webhook_payload": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["function-call", "transcript", "hang"],
+                "description": "Type of message from Vapi"
+              },
+              "transcript": {
+                "type": "string",
+                "description": "Transcribed text (for transcript messages)"
+              },
+              "transcriptType": {
+                "type": "string",
+                "enum": ["partial", "final"],
+                "description": "Type of transcript (for transcript messages)"
+              },
+              "functionCall": {
+                "type": "object",
+                "properties": {
+                  "name": "string",
+                  "parameters": "object"
+                },
+                "description": "Function call details (for function-call messages)"
+              }
+            }
+          }
+        },
+        "description": "Webhook payload structure from Vapi"
+      }
+    },
+    "openai": {
+      "chat_completion_request": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "default": "gpt-4o-mini",
+            "description": "OpenAI model to use"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "enum": ["system", "user", "assistant"]
+                },
+                "content": "string"
+              }
+            }
+          },
+          "max_tokens": {
+            "type": "number",
+            "description": "Maximum tokens in response"
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Sampling temperature (0-2)"
+          }
+        },
+        "description": "OpenAI chat completion request structure"
+      },
+      "chat_completion_response": {
+        "type": "object",
+        "properties": {
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "object",
+                  "properties": {
+                    "content": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "OpenAI chat completion response structure"
+      }
+    }
+  },
+  "environment_variables": {
+    "description": "Environment variables and their expected types",
+    "convex": {
+      "CONVEX_OPENAI_BASE_URL": {
+        "type": "string",
+        "description": "OpenAI API base URL"
+      },
+      "CONVEX_OPENAI_API_KEY": {
+        "type": "string",
+        "description": "OpenAI API key"
+      },
+      "CONVEX_SITE_URL": {
+        "type": "string",
+        "description": "Convex site URL for auth configuration"
+      }
+    },
+    "frontend": {
+      "VITE_VAPI_PUBLIC_KEY": {
+        "type": "string",
+        "description": "Vapi public API key for voice interface"
+      },
+      "VITE_CONVEX_URL": {
+        "type": "string",
+        "description": "Convex deployment URL"
+      }
+    }
+  },
+  "validation_rules": {
+    "description": "Data validation rules and constraints",
+    "file_uploads": {
+      "max_file_size": "5MB",
+      "allowed_types": [".txt", ".md", "text/*"],
+      "description": "Document upload constraints"
+    },
+    "text_content": {
+      "max_length": "No explicit limit (handled by OpenAI)",
+      "min_length": "1 character",
+      "description": "Text content validation rules"
+    },
+    "space_names": {
+      "max_length": "No explicit limit",
+      "min_length": "1 character",
+      "trimmed": true,
+      "description": "Space name validation rules"
+    },
+    "email_addresses": {
+      "format": "Valid email format",
+      "lowercase": true,
+      "trimmed": true,
+      "description": "Email validation rules"
+    }
+  },
+  "security_considerations": {
+    "description": "Security and compliance considerations for data contracts",
+    "ferpa_compliance": {
+      "audit_logging": "All data access and modifications are logged",
+      "data_retention": "7 years for audit logs, 3 years for feedback sessions",
+      "access_controls": "Role-based permissions for different user types",
+      "data_ownership": "All data stays within Convex deployment"
+    },
+    "authentication": {
+      "required": "All mutations and actions require authentication",
+      "user_context": "User ID is automatically extracted from auth context",
+      "space_access": "Space access is validated for all space-related operations"
+    },
+    "data_validation": {
+      "input_sanitization": "All user inputs are validated and sanitized",
+      "type_safety": "Convex provides runtime type validation",
+      "sql_injection": "Not applicable (Convex uses NoSQL)",
+      "xss_protection": "Frontend components use React's built-in XSS protection"
+    }
+  }
+}
