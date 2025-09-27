@@ -1,19 +1,21 @@
 import { Logo } from "@/components/logo";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
+import { SignInForm } from "../../SignInForm";
 
 const menuItems = [
-  { name: "Features", href: "#link" },
-  { name: "Solution", href: "#link" },
-  { name: "Pricing", href: "#link" },
-  { name: "About", href: "#link" },
+  { name: "Features", href: "#features" },
+  { name: "Technology", href: "#technology" },
+  { name: "Testimonials", href: "#testimonials" },
+  { name: "Get Started", href: "/app" },
 ];
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -90,21 +92,21 @@ export const HeroHeader = () => {
                   variant="outline"
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
-                  onClick={() => window.open("/app", "_self")}
+                  onClick={() => setShowSignIn(true)}
                 >
                   <span>Login</span>
                 </Button>
                 <Button
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
-                  onClick={() => window.open("/app", "_self")}
+                  onClick={() => setShowSignIn(true)}
                 >
                   <span>Sign Up</span>
                 </Button>
                 <Button
                   size="sm"
                   className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                  onClick={() => window.open("/app", "_self")}
+                  onClick={() => setShowSignIn(true)}
                 >
                   <span>Get Started</span>
                 </Button>
@@ -113,6 +115,30 @@ export const HeroHeader = () => {
           </div>
         </div>
       </nav>
+
+      {/* Sign-in Modal */}
+      {showSignIn && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">
+                  Get Started with A.I.D.A.
+                </h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowSignIn(false)}
+                  className="h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <SignInForm />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
