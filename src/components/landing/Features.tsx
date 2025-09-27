@@ -1,11 +1,16 @@
 import { Mic, Heart, BarChart3, Brain } from "lucide-react";
+import { getAidaTailwindClasses } from "@/lib/design-utils";
 
 export default function FeaturesSection() {
+  const tailwindClasses = getAidaTailwindClasses();
+
   return (
-    <section className="py-16 md:py-32">
-      <div className="mx-auto max-w-5xl space-y-12 px-6">
+    <section id="features" className={tailwindClasses.spacing.sectionPadding}>
+      <div
+        className={`mx-auto max-w-5xl ${tailwindClasses.spacing.contentSpacing} ${tailwindClasses.spacing.containerPadding}`}
+      >
         <div className="relative z-10 grid items-center gap-4 md:grid-cols-2 md:gap-12">
-          <h2 className="text-4xl font-semibold">
+          <h2 className={tailwindClasses.typography.headingLarge}>
             A.I.D.A. Command Center: Your Educational AI Partner
           </h2>
           <p className="max-w-sm sm:ml-auto">
@@ -42,44 +47,48 @@ export default function FeaturesSection() {
         <div className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Mic className="size-4 text-blue-500" />
-              <h3 className="text-sm font-medium">Voice Orb</h3>
+              <Mic className={`size-4 ${tailwindClasses.colors.primaryBlue}`} />
+              <h3 className="text-sm font-medium">Voice Interface</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Hands-free voice commands with stateful design that glows blue
-              when idle, pulses purple when listening, and turns green on
-              completion.
+              Hands-free voice interaction with real-time speech-to-text and
+              text-to-speech capabilities for busy educators.
             </p>
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Heart className="size-4 text-purple-500" />
-              <h3 className="text-sm font-medium">Empathy Bar</h3>
+              <Heart
+                className={`size-4 ${tailwindClasses.colors.secondaryPurple}`}
+              />
+              <h3 className="text-sm font-medium">AI Feedback</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Real-time emotional analysis that adapts the interface when
-              detecting frustration or stress, offering calming, focused
-              experiences.
+              Intelligent lesson plan analysis with actionable suggestions for
+              improving engagement and instructional rigor.
             </p>
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <BarChart3 className="size-4 text-green-500" />
-              <h3 className="text-sm font-medium">Insights Hub</h3>
+              <BarChart3
+                className={`size-4 ${tailwindClasses.colors.primaryGreen}`}
+              />
+              <h3 className="text-sm font-medium">Knowledge Base</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Modular widgets providing lesson plan feedback, classroom dynamics
-              analysis, and interaction history for actionable insights.
+              Upload and manage documents, curriculum guides, and policy
+              materials for instant AI-powered retrieval.
             </p>
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Brain className="size-4 text-orange-500" />
-              <h3 className="text-sm font-medium">Adaptive Intelligence</h3>
+              <Brain
+                className={`size-4 ${tailwindClasses.colors.secondaryOrange}`}
+              />
+              <h3 className="text-sm font-medium">Smart Workspaces</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              AI that responds with simplified, calming answers when you're
-              frustrated, showing intelligence beyond simple retrieval.
+              Create shared workspaces for teams, with collaborative document
+              management and context-aware AI assistance.
             </p>
           </div>
         </div>

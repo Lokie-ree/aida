@@ -1,0 +1,68 @@
+# A.I.D.A. Project Rules
+
+## Documentation Reference
+
+Before starting any task, agents MUST reference the complete project documentation in `@./docs`:
+
+- **Primary Configuration**: `@./docs/AIDA_CONFIG.yaml` - Complete project specification, user personas, technical architecture, and agent roles
+- **Hackathon Specifications**: `@./docs/hackathon/hackathon-specs.json` - Design philosophy, landing page requirements, and MVP features
+
+## Current MVP Status (3 Days to Demo)
+
+**Built Features Only:**
+
+- ✅ Voice Interface with Vapi integration (working voice-to-text/text-to-speech)
+- ✅ AI Lesson Plan Feedback system (text input → AI feedback)
+- ✅ Document Manager (upload .txt/.md files for RAG)
+- ✅ Web Scraping Manager (Firecrawl integration)
+- ✅ Workspace/Spaces system (personal + shared workspaces)
+- ✅ Chat Interface (text-based queries)
+- ✅ Authentication system (Convex Auth)
+
+**NOT Built (Do Not Mention):**
+
+- ❌ Voice Orb with stateful design (idle/listening/success states)
+- ❌ Empathy Bar with emotional analysis
+- ❌ Classroom Dynamics Widget
+- ❌ Speaker diarization
+- ❌ Advanced analytics dashboard
+- ❌ District-specific contextualization beyond basic RAG
+
+## Marketing & Content Rules
+
+1. **Only promote built features** - No speculative features
+2. **Target user personas**: K-12 Educators, District Administrators, Curriculum Coordinators
+3. **Focus on value proposition**: Voice-enabled AI assistant for educational information overload
+4. **Avoid hackathon participant language** - This is for end users, not event participants
+
+## Design System
+
+- **Colors**: Blue (#3B82F6) for primary actions, Purple (#8B5CF6) for AI features
+- **Typography**: Inter font family
+- **Voice Interface**: Hands-free operation, mobile-first design
+- **Accessibility**: WCAG 2.1 AA compliance required
+
+## Technical Stack
+
+- **Frontend**: React + TypeScript + Vite + Tailwind CSS
+- **Backend**: Convex (real-time DB + serverless functions)
+- **AI**: OpenAI GPT-4o-mini
+- **Voice**: Vapi integration
+- **Auth**: Convex Auth (FERPA-compliant)
+
+## Agent Coordination
+
+Follow the agent roles defined in AIDA_CONFIG.yaml:
+
+- Product Manager: User stories and business strategy
+- System Architect: Technical architecture
+- UX Designer: Voice-first interface design
+- Backend Engineer: Convex implementation
+- Frontend Engineer: React components
+
+## Quality Gates
+
+- All features must be testable and demonstrable
+- Voice interface must work in <2 seconds
+- Mobile-responsive design required
+- FERPA compliance for all data handling

@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { TextEffect } from "@/components/ui/text-effect";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { HeroHeader } from "./Header";
+import { useState } from "react";
+import { SignInForm } from "../../SignInForm";
+import { getAidaTailwindClasses } from "@/lib/design-utils";
 
 const transitionVariants = {
   item: {
@@ -25,6 +28,44 @@ const transitionVariants = {
 };
 
 export default function HeroSection() {
+  const [showSignIn, setShowSignIn] = useState(false);
+  const tailwindClasses = getAidaTailwindClasses();
+
+  if (showSignIn) {
+    return (
+      <>
+        <HeroHeader />
+        <main className="overflow-hidden">
+          <section className="py-16 md:py-32">
+            <div className="mx-auto max-w-md px-6">
+              <div className="text-center mb-8">
+                <h1 className="text-4xl font-semibold lg:text-5xl mb-4">
+                  Get Started with A.I.D.A.
+                </h1>
+                <p className="text-muted-foreground">
+                  Sign in or create an account to access your voice-powered
+                  educational assistant.
+                </p>
+              </div>
+
+              <SignInForm />
+
+              <div className="text-center mt-6">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowSignIn(false)}
+                  className="text-muted-foreground"
+                >
+                  ← Back to overview
+                </Button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
       <HeroHeader />
@@ -147,11 +188,9 @@ export default function HeroSection() {
                     <Button
                       size="lg"
                       className="rounded-xl px-5 text-base"
-                      onClick={() => window.open("#link", "_blank")}
+                      onClick={() => setShowSignIn(true)}
                     >
-                      <span className="text-nowrap">
-                        Hack the Future of Ed-Tech
-                      </span>
+                      <span className="text-nowrap">Try A.I.D.A. Now</span>
                     </Button>
                   </div>
                   <Button
@@ -159,7 +198,7 @@ export default function HeroSection() {
                     size="lg"
                     variant="ghost"
                     className="h-10.5 rounded-xl px-5"
-                    onClick={() => window.open("#link", "_blank")}
+                    onClick={() => setShowSignIn(true)}
                   >
                     <span className="text-nowrap">See A.I.D.A. in Action</span>
                   </Button>
@@ -214,79 +253,79 @@ export default function HeroSection() {
               </a>
             </div>
             <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
-              <div className="flex">
-                <img
-                  className="mx-auto h-5 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/nvidia.svg"
-                  alt="Nvidia Logo"
-                  height="20"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.primaryBlue}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
               </div>
 
-              <div className="flex">
-                <img
-                  className="mx-auto h-4 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/column.svg"
-                  alt="Column Logo"
-                  height="16"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.secondaryPurple}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
               </div>
-              <div className="flex">
-                <img
-                  className="mx-auto h-4 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/github.svg"
-                  alt="GitHub Logo"
-                  height="16"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.primaryGreen}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                </svg>
               </div>
-              <div className="flex">
-                <img
-                  className="mx-auto h-5 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/nike.svg"
-                  alt="Nike Logo"
-                  height="20"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.secondaryOrange}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
               </div>
-              <div className="flex">
-                <img
-                  className="mx-auto h-5 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
-                  alt="Lemon Squeezy Logo"
-                  height="20"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.primaryBlue}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
               </div>
-              <div className="flex">
-                <img
-                  className="mx-auto h-4 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/laravel.svg"
-                  alt="Laravel Logo"
-                  height="16"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.primaryGreen}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                </svg>
               </div>
-              <div className="flex">
-                <img
-                  className="mx-auto h-7 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/lilly.svg"
-                  alt="Lilly Logo"
-                  height="28"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.secondaryPurple}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
               </div>
 
-              <div className="flex">
-                <img
-                  className="mx-auto h-6 w-fit dark:invert"
-                  src="https://html.tailus.io/blocks/customers/openai.svg"
-                  alt="OpenAI Logo"
-                  height="24"
-                  width="auto"
-                />
+              <div className="flex items-center justify-center">
+                <svg
+                  className={`h-6 w-6 ${tailwindClasses.colors.secondaryOrange}`}
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
               </div>
             </div>
           </div>

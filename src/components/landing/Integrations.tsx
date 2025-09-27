@@ -8,14 +8,21 @@ import {
 } from "@/components/logos";
 import { LogoIcon } from "@/components/logo";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { InfiniteSlider } from "@/components/infinite-slider";
 
+import { getAidaTailwindClasses } from "@/lib/design-utils";
+
 export default function IntegrationsSection() {
+  const tailwindClasses = getAidaTailwindClasses();
+
   return (
-    <section>
-      <div className="bg-muted dark:bg-background py-24 md:py-32">
-        <div className="mx-auto max-w-5xl px-6">
+    <section id="technology">
+      <div
+        className={`bg-muted dark:bg-background ${tailwindClasses.spacing.sectionPadding}`}
+      >
+        <div
+          className={`mx-auto max-w-5xl ${tailwindClasses.spacing.containerPadding}`}
+        >
           <div className="bg-muted/25 group relative mx-auto max-w-[22rem] items-center justify-between space-y-6 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] sm:max-w-md">
             <div
               role="presentation"
@@ -103,12 +110,27 @@ export default function IntegrationsSection() {
             </h2>
             <p className="text-muted-foreground">
               Built on a robust tech stack that ensures reliability, security,
-              and seamless integration with your existing educational tools.
+              and seamless voice interaction for educational environments.
             </p>
 
-            <Button variant="outline" size="sm" asChild>
-              <a href="#">Explore A.I.D.A. Technology</a>
-            </Button>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
+                <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                <span>Vapi Voice AI</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
+                <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                <span>Convex Backend</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
+                <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                <span>OpenAI GPT-4</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
+                <div className="h-2 w-2 rounded-full bg-orange-500"></div>
+                <span>Firecrawl</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -88,27 +88,31 @@ function Content() {
       />
 
       <div className="space-y-6">
-        {/* Top Row - Voice Interface and Space Selector */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <VoiceInterface currentSpaceId={currentSpaceId} className="h-64" />
-          <SpaceSelector
-            currentSpaceId={currentSpaceId}
-            onSpaceChange={setCurrentSpaceId}
-          />
-        </div>
+        {/* Header - Space Selector */}
+        <SpaceSelector
+          currentSpaceId={currentSpaceId}
+          onSpaceChange={setCurrentSpaceId}
+        />
 
-        {/* Bottom Row - Chat Interface, Document Manager, and Feedback */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
-            <ChatInterface currentSpaceId={currentSpaceId} />
+        {/* Main Content - Voice Interface and Core Features */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          {/* Left Column - Voice Interface (Primary Feature) */}
+          <div className="xl:col-span-1">
+            <VoiceInterface currentSpaceId={currentSpaceId} className="h-96" />
           </div>
 
-          <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
-            <DocumentManager currentSpaceId={currentSpaceId} />
-          </div>
+          {/* Right Column - Secondary Features */}
+          <div className="xl:col-span-2 space-y-6">
+            {/* Top Row - Chat Interface */}
+            <div className="h-64">
+              <ChatInterface currentSpaceId={currentSpaceId} />
+            </div>
 
-          <div className="flex flex-col min-h-[600px] lg:min-h-[calc(100vh-12rem)]">
-            <AidaFeedback currentSpaceId={currentSpaceId} />
+            {/* Bottom Row - Document Manager and AI Feedback */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <DocumentManager currentSpaceId={currentSpaceId} />
+              <AidaFeedback currentSpaceId={currentSpaceId} />
+            </div>
           </div>
         </div>
       </div>

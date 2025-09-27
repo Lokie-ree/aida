@@ -1,40 +1,71 @@
 import { Button } from "@/components/ui/button";
-import { Mail, SendHorizonal } from "lucide-react";
+import { useState } from "react";
+import { SignInForm } from "../../SignInForm";
+import { getAidaTailwindClasses } from "@/lib/design-utils";
 
 export default function CallToAction() {
+  const [showSignIn, setShowSignIn] = useState(false);
+  const tailwindClasses = getAidaTailwindClasses();
+
+  if (showSignIn) {
+    return (
+      <section className={tailwindClasses.spacing.sectionPadding}>
+        <div className="mx-auto max-w-md px-6">
+          <div className="text-center mb-8">
+            <h2
+              className={`text-balance ${tailwindClasses.typography.headingLarge} lg:${tailwindClasses.typography.headingXLarge}`}
+            >
+              Get Started with A.I.D.A.
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Sign in or create an account to access your voice-powered
+              educational assistant.
+            </p>
+          </div>
+
+          <SignInForm />
+
+          <div className="text-center mt-6">
+            <Button
+              variant="ghost"
+              onClick={() => setShowSignIn(false)}
+              className="text-muted-foreground"
+            >
+              ← Back to overview
+            </Button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="py-16 md:py-32">
+    <section className={tailwindClasses.spacing.sectionPadding}>
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
-          <h2 className="text-balance text-4xl font-semibold lg:text-5xl">
+          <h2
+            className={`text-balance ${tailwindClasses.typography.headingLarge} lg:${tailwindClasses.typography.headingXLarge}`}
+          >
             Ready to Transform Your Teaching?
           </h2>
           <p className="mt-4">
-            Join thousands of educators who have revolutionized their classroom
-            with A.I.D.A.'s voice-powered AI assistant.
+            Experience the power of voice-enabled AI assistance designed
+            specifically for K-12 educators. Get instant access to district
+            policies, curriculum guidance, and intelligent lesson plan feedback.
           </p>
 
-          <form action="" className="mx-auto mt-10 max-w-sm lg:mt-12">
-            <div className="bg-background has-[input:focus]:ring-muted relative grid grid-cols-[1fr_auto] items-center rounded-[calc(var(--radius)+0.75rem)] border pr-3 shadow shadow-zinc-950/5 has-[input:focus]:ring-2">
-              <Mail className="text-caption pointer-events-none absolute inset-y-0 left-5 my-auto size-5" />
-
-              <input
-                placeholder="Enter your school email"
-                className="h-14 w-full bg-transparent pl-12 focus:outline-none"
-                type="email"
-              />
-
-              <div className="md:pr-1.5 lg:pr-0">
-                <Button aria-label="submit" className="rounded-(--radius)">
-                  <span className="hidden md:block">Start Free Trial</span>
-                  <SendHorizonal
-                    className="relative mx-auto size-5 md:hidden"
-                    strokeWidth={2}
-                  />
-                </Button>
-              </div>
-            </div>
-          </form>
+          <div className="mt-10 flex flex-col items-center gap-4 lg:mt-12">
+            <Button
+              size="lg"
+              className="px-8 py-3"
+              onClick={() => setShowSignIn(true)}
+            >
+              <span>Try A.I.D.A. Now</span>
+            </Button>
+            <p className="text-sm text-muted-foreground">
+              Free to try • FERPA Compliant • No credit card required
+            </p>
+          </div>
         </div>
       </div>
     </section>
