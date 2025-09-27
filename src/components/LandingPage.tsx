@@ -2,10 +2,10 @@ import { ThemeProvider } from "./ui/theme-provider";
 import HeroSection from "./landing/HeroSection";
 import FeaturesSection from "./landing/Features";
 import StatsSection from "./landing/Stats";
-import WallOfLoveSection from "./landing/testimonials";
+import WallOfLoveSection from "./landing/Testimonials";
 import IntegrationsSection from "./landing/Integrations";
 import CallToAction from "./landing/CallToAction";
-import FooterSection from "./landing/footer";
+import FooterSection from "./landing/Footer";
 
 export default function LandingPage() {
   return (
