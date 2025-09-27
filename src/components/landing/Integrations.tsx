@@ -1,9 +1,6 @@
 import {
   Gemini,
-  Replit,
   MagicUI,
-  VSCodium,
-  MediaWiki,
   GooglePaLM,
   Vapi,
   Convex,
