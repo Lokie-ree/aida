@@ -9,7 +9,7 @@ export default function CallToAction() {
 
   if (showSignIn) {
     return (
-      <section className={tailwindClasses.spacing.sectionPadding}>
+      <section id="pricing" className={tailwindClasses.spacing.sectionPadding}>
         <div className="mx-auto max-w-md px-6">
           <div className="text-center mb-8">
             <h2
@@ -40,7 +40,7 @@ export default function CallToAction() {
   }
 
   return (
-    <section className={tailwindClasses.spacing.sectionPadding}>
+    <section id="pricing" className={tailwindClasses.spacing.sectionPadding}>
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Vapi from "@vapi-ai/web";
 import { toast } from "sonner";
 import { useAction } from "convex/react";
@@ -169,7 +169,7 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
           messages: [
             {
               role: "system",
-              content: "You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach. Keep responses concise and conversational for voice interaction. Provide helpful guidance on teaching and curriculum design."
+              content: "You are A.I.D.A. (AI Instructional Design Assistant), a supportive and knowledgeable colleague who helps K-12 educators succeed. You provide district-specific policy guidance, lesson plan feedback, and teaching strategies with empathy and expertise. Keep responses conversational and encouraging, focusing on practical solutions that reduce teacher workload and improve student outcomes."
             }
           ],
         },
@@ -177,7 +177,7 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
           provider: "playht",
           voiceId: "jennifer"
         },
-        firstMessage: "Hello! I'm A.I.D.A., your instructional design assistant. How can I help you improve your teaching today?",
+        firstMessage: "Hi there! I'm A.I.D.A., your supportive teaching assistant. I'm here to help you with district policies, lesson planning, and teaching strategies. What can I help you with today?",
         server: {
           url: webhookUrl
         }
@@ -199,11 +199,11 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
     }
   };
 
-  const stopCall = () => {
+  const stopCall = useCallback(() => {
     if (vapiRef.current) {
       vapiRef.current.stop();
     }
-  };
+  }, []);
 
   // Keyboard shortcuts for accessibility
   useEffect(() => {
@@ -230,12 +230,12 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
 
   const getStatusText = () => {
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
-    if (!vapiKey) return "Not configured - API key missing";
-    if (isLoading) return "Connecting...";
-    if (!isConnected) return "Ready to talk";
-    if (isListening) return "Listening...";
-    if (isSpeaking) return "A.I.D.A. is speaking...";
-    return "Connected - Tap to speak";
+    if (!vapiKey) return "Voice assistant setup required";
+    if (isLoading) return "Getting ready to help you...";
+    if (!isConnected) return "I'm here to support your teaching";
+    if (isListening) return "I'm listening to your question...";
+    if (isSpeaking) return "Sharing insights with you...";
+    return "Ready to assist - I'm here when you need me";
   };
 
   const getStatusColor = () => {
@@ -257,7 +257,7 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center gap-4">
+      <CardContent className="flex flex-col items-center gap-4 min-h-[320px]">
         <div className="relative">
           <Button
             onClick={isConnected ? stopCall : startCall}
@@ -270,12 +270,13 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
               ${!import.meta.env.VITE_VAPI_PUBLIC_KEY
                 ? 'bg-muted cursor-not-allowed'
                 : isConnected 
-                  ? 'bg-destructive hover:bg-destructive/90' 
-                  : 'bg-primary hover:bg-primary/90'
+                  ? 'bg-destructive hover:bg-destructive/90 cursor-pointer' 
+                  : 'bg-primary hover:bg-primary/90 cursor-pointer'
               }
-              ${isListening ? 'animate-pulse ring-4 ring-green-300' : ''}
-              ${isSpeaking ? 'animate-pulse ring-4 ring-blue-300' : ''}
+              ${isListening ? 'animate-pulse ring-4 ring-green-300 ring-inset' : ''}
+              ${isSpeaking ? 'animate-pulse ring-4 ring-blue-300 ring-inset' : ''}
               ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+              relative z-10
             `}
           >
             {isLoading ? (
@@ -298,10 +299,10 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
 
         <div className="text-center text-xs text-muted-foreground max-w-xs">
           {!import.meta.env.VITE_VAPI_PUBLIC_KEY
-            ? "Voice chat requires a Vapi API key. Please configure VITE_VAPI_PUBLIC_KEY in your environment."
+            ? "Voice assistance requires setup. Please configure your API key to get started."
             : !isConnected 
-              ? "Click the microphone to start a voice conversation with A.I.D.A."
-              : "Click the X to end the voice session"
+              ? "Tap the microphone to ask me about district policies, lesson planning, or teaching strategies."
+              : "Tap the X when you're finished - I'll be here whenever you need support."
           }
         </div>
         
@@ -311,28 +312,30 @@ export function VoiceInterface({ onTranscription, onResponse, currentSpaceId, cl
           <p>Space: Start/Stop • Escape: Stop</p>
         </div>
 
-        {/* Show sources if available */}
-        {lastResponse && lastResponse.sources.length > 0 && (
-          <Card className="w-full">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm">Sources</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-1">
-                {lastResponse.sources.slice(0, 3).map((source, index) => (
-                  <div key={index} className="text-xs text-muted-foreground truncate">
-                    • {source}
-                  </div>
-                ))}
-                {lastResponse.sources.length > 3 && (
-                  <div className="text-xs text-muted-foreground">
-                    +{lastResponse.sources.length - 3} more sources
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Show sources if available - fixed height container to prevent layout shift */}
+        <div className="w-full flex-1 min-h-[120px]">
+          {lastResponse && lastResponse.sources.length > 0 && (
+            <Card className="w-full">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Sources</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-1">
+                  {lastResponse.sources.slice(0, 3).map((source, index) => (
+                    <div key={index} className="text-xs text-muted-foreground truncate">
+                      • {source}
+                    </div>
+                  ))}
+                  {lastResponse.sources.length > 3 && (
+                    <div className="text-xs text-muted-foreground">
+                      +{lastResponse.sources.length - 3} more sources
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

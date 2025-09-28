@@ -1,0 +1,285 @@
+{
+  "technicalOverview": {
+    "purpose": "Complete technical framework for A.I.D.A. voice-enabled AI assistant, including system architecture, voice AI integration, and education technology specifications",
+    "documentOwner": "System Architect",
+    "reviewers": "Product Manager, Backend Engineer, Frontend Engineer, UX Designer",
+    "lastUpdated": "2025-09-26"
+  },
+  "systemArchitecture": {
+    "highLevelArchitecture": {
+      "description": "Modern, real-time architecture optimized for voice interactions and AI processing, built on the 'Anti-SaaS' stack for maximum control and data ownership",
+      "components": {
+        "frontend": "React + TypeScript + Vite + Tailwind CSS (deployed on Vercel)",
+        "backend": "Convex (real-time DB + serverless functions, deployed on Convex Cloud)",
+        "ai_engine": "OpenAI GPT-4o-mini for reasoning and generation",
+        "voice_interface": "Vapi for real-time speech-to-text and text-to-speech",
+        "data_ingestion": "Firecrawl for district document scraping and processing",
+        "authentication": "Convex Auth (self-hosted, FERPA-compliant)",
+        "deployment": "Vercel (frontend) + Convex Cloud (backend)"
+      }
+    },
+    "dataModel": {
+      "description": "Convex-based data model optimized for voice interactions, RAG processing, and FERPA compliance",
+      "entities": [
+        {
+          "name": "feedbackSessions",
+          "description": "AI-generated feedback sessions for lesson plans with user association and space context"
+        },
+        {
+          "name": "documents",
+          "description": "Uploaded district documents with extracted text content for RAG processing"
+        },
+        {
+          "name": "scrapedWebsites",
+          "description": "Scraped website content with metadata and chunked text for semantic search"
+        },
+        {
+          "name": "chatMessages",
+          "description": "Voice and text conversations between users and A.I.D.A. with context tracking"
+        },
+        {
+          "name": "spaces",
+          "description": "Shared workspaces for district-level collaboration and document management"
+        },
+        {
+          "name": "auditLogs",
+          "description": "FERPA-compliant audit logs for all data access and modifications"
+        }
+      ]
+    }
+  },
+  "codeStructure": {
+    "repositoryStructure": {
+      "description": "Monorepo structure optimized for voice AI development with clear separation of concerns",
+      "folders": [
+        "/convex - Backend functions, schema, and voice AI integration",
+        "/src - Frontend React application with voice interface components",
+        "/shared - Shared types, utilities, and voice interface constants",
+        "/docs - Technical documentation and API specifications",
+        "/tests - Voice interface tests, integration tests, and E2E tests"
+      ]
+    },
+    "namingConventions": {
+      "files": "voice-interface.tsx, process-voice-query.ts, voice-orb.component.tsx",
+      "components": "PascalCase (VoiceInterface, VoiceOrb, EmpathyBar)",
+      "functionsVariables": "camelCase (processVoiceQuery, voiceResponse)",
+      "voiceComponents": "Voice prefix for voice-related components"
+    }
+  },
+  "performanceRequirements": {
+    "errorHandlingStrategy": {
+      "clientSide": "Voice interface error boundaries, graceful fallback to text input, clear error messages for voice recognition failures",
+      "serverSide": "Structured logging for voice processing errors, OpenAI API error handling, Vapi webhook error recovery"
+    },
+    "performanceStrategy": {
+      "server": "RAG query caching, voice response streaming, optimized vector search, Convex real-time subscriptions",
+      "client": "Voice interface lazy loading, component memoization, voice audio optimization, mobile-first performance"
+    },
+    "requirements": {
+      "voiceResponseTime": "<2s for voice queries (critical for demo), <500ms for speech-to-text conversion",
+      "voiceRecognitionAccuracy": ">90% in quiet environments, >80% in classroom environments",
+      "apiResponse": "<500ms for standard queries, <2s for complex RAG operations",
+      "mobilePerformance": "Lighthouse score >90 for Performance, Accessibility, and SEO on mobile devices",
+      "scalability": "100+ concurrent voice users (demo), 1000+ (production), 1M+ concurrent voice calls via Vapi",
+      "uptime": "99.9% availability target for voice services"
+    }
+  },
+  "scalabilitySecurity": {
+    "scalabilityStrategy": {
+      "architecture": "Serverless Convex architecture with automatic scaling based on voice processing demand",
+      "database": "Convex real-time database with automatic scaling and vector search optimization",
+      "loadBalancing": "Vapi handles voice call load balancing, Convex manages backend scaling",
+      "performanceMonitoring": "Real-time voice performance monitoring, RAG query analytics, voice recognition accuracy tracking"
+    },
+    "securityStrategy": {
+      "authenticationAuthorization": "Convex Auth with role-based permissions for teachers, administrators, and district users",
+      "dataEncryption": "All data encrypted at rest and in transit, FERPA-compliant data handling within Convex deployment",
+      "inputSanitization": "Voice input sanitization, RAG query validation, document content filtering",
+      "securityAudits": "Regular FERPA compliance audits, voice data privacy reviews, security penetration testing"
+    }
+  },
+  "implementationStandards": {
+    "testingStrategy": {
+      "unitTests": "Jest + React Testing Library for voice components, voice interaction testing, RAG pipeline testing",
+      "integrationTests": "Voice interface integration testing, Vapi webhook testing, OpenAI API integration testing",
+      "e2eTests": "Playwright for voice user journey testing, cross-browser voice interface validation, mobile voice testing"
+    },
+    "developmentWorkflow": {
+      "gitWorkflow": "Feature branches for voice features, main branch for production, voice-specific testing branches",
+      "codeQualityStandards": "TypeScript strict mode, ESLint for voice components, Prettier for code formatting, voice interface accessibility testing",
+      "documentationStandards": "Voice API documentation, RAG pipeline documentation, FERPA compliance documentation, voice interface usage guides"
+    }
+  },
+  "designSystem": {
+    "overview": "Voice-first design system optimized for education technology with accessibility and emotional intelligence",
+    "guidelines": {
+      "typography": {
+        "primaryFont": "Inter - Used for all headings and body text, optimized for voice interface readability",
+        "secondaryFont": "Inter - Used for all paragraphs and standard text, consistent with voice interface",
+        "usage": "Font styles managed via Tailwind utility classes, optimized for mobile voice interfaces"
+      },
+      "colorPalette": {
+        "primaryColors": {
+          "blue": "#3B82F6 - Primary actions, voice interface, trust and reliability",
+          "green": "#10B981 - Success states, positive feedback, completion",
+          "red": "#EF4444 - Error states, warnings, critical actions"
+        },
+        "secondaryColors": {
+          "purple": "#8B5CF6 - AI features, voice responses, innovation",
+          "orange": "#F59E0B - Warnings, attention, important information"
+        },
+        "voiceStates": {
+          "idle": "#3B82F6 - Calm blue glow for ready state",
+          "listening": "#8B5CF6 - Purple light for active listening",
+          "success": "#10B981 - Steady green for completion"
+        },
+        "usage": "Colors referenced by semantic names, voice states managed by TweakCN theming"
+      },
+      "layoutSpacing": {
+        "gridSystem": "12-column responsive grid with Tailwind CSS, mobile-first approach for voice interfaces",
+        "spacingScale": "4px, 8px, 12px, 16px, 24px, 32px, 48px, 64px (Tailwind spacing scale)",
+        "voiceInterface": "Extra spacing around voice elements for touch accessibility and visual clarity",
+        "usage": "Use defined spacing scale for all margins, padding, and gaps, especially around voice controls"
+      },
+      "visualStyle": {
+        "bordersShadows": "Rounded corners with subtle shadows for voice interface elements, soft shadows for Voice Orb",
+        "icons": "Clean, flat icons with rounded corners that complement Voice Orb aesthetic",
+        "illustrations": "Voice-related illustrations focusing on hands-free operation and AI assistance"
+      }
+    }
+  },
+  "componentLibrary": {
+    "implementationGuidelines": [
+      "Voice Component Structure: Voice-specific components in /src/components/voice/ with clear naming conventions",
+      "Voice Component Hierarchy: VoiceInterface > VoiceOrb > VoiceResponse, with EmpathyBar as parallel component",
+      "Voice State Management: Loading, listening, processing, success, and error states for all voice components",
+      "Voice Testing: Unit tests for voice components, integration tests for voice workflows, accessibility testing",
+      "Voice Performance: Optimize voice components for mobile, minimize re-renders during voice processing"
+    ],
+    "foundationComponents": {
+      "voiceInterface": "Main voice component with Vapi integration, state management, and accessibility features",
+      "voiceOrb": "Dynamic orb with state animations (idle: blue, listening: purple, success: green)",
+      "empathyBar": "Real-time emotional analysis visualization with color state management",
+      "voiceResponse": "Display voice responses with source citations and accessibility features"
+    },
+    "dataDisplayComponents": {
+      "voiceHistory": "Display recent voice interactions with search and filtering capabilities",
+      "lessonPlanFeedback": "AI-generated feedback display with engagement and rigor suggestions",
+      "districtDocuments": "Document management interface with voice search capabilities"
+    },
+    "structuralComponents": {
+      "teacherDashboard": "Main dashboard with voice interface integration and quick access",
+      "voiceModal": "Voice interface modal for focused voice interactions",
+      "voiceTooltip": "Voice interface help and guidance tooltips"
+    }
+  },
+  "accessibilityGuidelines": [
+    "Voice Interface Accessibility: All voice controls must be keyboard accessible and screen reader friendly",
+    "Color Contrast: Text and interactive elements must meet WCAG 2.1 AA standards, especially for voice states",
+    "Screen Reader Support: Voice interface must work with assistive technologies, clear audio feedback",
+    "Focus States: Clearly visible focus indicators for all voice interface elements",
+    "Voice Fallbacks: Text input fallback when voice recognition fails, clear error messages"
+  ],
+  "motionAnimation": {
+    "purposefulMotion": "Voice interface animations should guide user attention and provide clear feedback",
+    "voiceOrbAnimations": "Gentle pulsing for idle state, active pulsing for listening, confirmation pulse for success",
+    "empathyBarAnimations": "Smooth color transitions based on emotional state detection",
+    "performance": "All voice animations must be smooth (60fps) and not interfere with voice processing"
+  },
+  "voiceTone": {
+    "personality": "Supportive, intelligent, accessible, and reliable - like a trusted colleague who always has your back",
+    "tone": "Expert, yet approachable - knowledgeable about education but never intimidating",
+    "voiceResponses": "Clear, concise responses optimized for voice synthesis, with natural pauses and emphasis",
+    "errorMessages": "Helpful and encouraging error messages that guide users to successful voice interactions"
+  },
+  "designToDevelopmentHandoff": {
+    "handoffChecklist": [
+      "All voice interface screens are finalized with all voice states (idle, listening, processing, success, error)",
+      "Voice Orb and Empathy Bar components are documented with all animation states and color transitions",
+      "Voice interface accessibility annotations are complete (ARIA labels, keyboard navigation, screen reader support)",
+      "Voice interaction prototypes are available with clear user flow documentation",
+      "Mobile voice interface designs are optimized for touch interactions and voice recognition",
+      "FERPA compliance requirements are documented for all voice data handling"
+    ],
+    "handoffProcess": [
+      "Voice Design Review: Designer presents voice interface designs with all states and interactions",
+      "Voice Handoff Meeting: Formal meeting to walk through voice interface requirements and accessibility needs",
+      "Voice Ticket Creation: Development team creates tickets for voice interface implementation with clear acceptance criteria",
+      "Voice Implementation & QA: Development team builds voice features, QA validates against voice interface requirements",
+      "Voice Sign-off: Designer and Product Manager sign off on voice interface implementation"
+    ]
+  },
+  "technicalDecisionMaking": {
+    "architectureDecisionRecord": {
+      "description": "All significant technical decisions for voice AI and education technology must be documented using ADRs",
+      "components": [
+        "Title: Descriptive name for the voice AI or education technology decision",
+        "Date: When the decision was made",
+        "Status: Proposed, Accepted, Rejected, or Superseded",
+        "Context: Voice AI requirements, education market factors, FERPA compliance considerations",
+        "Decision: Chosen solution with reasoning for voice interface and education technology",
+        "Consequences: Impact on voice performance, user experience, and education market adoption"
+      ]
+    },
+    "reviewProcess": [
+      "Proposal: Technical lead proposes voice AI architecture or education technology decision via ADR",
+      "Review: ADR reviewed by System Architect, Product Manager, and education technology stakeholders",
+      "Discussion: Team discusses voice AI trade-offs, education market impact, and FERPA compliance",
+      "Decision & Documentation: ADR finalized and committed with focus on voice interface and education requirements"
+    ]
+  },
+  "voiceAISpecialization": {
+    "vapiIntegration": {
+      "speechToText": "Real-time speech-to-text with <500ms latency, >90% accuracy in quiet environments",
+      "textToSpeech": "Natural voice synthesis with education-appropriate tone and pacing",
+      "webhookHandling": "Robust webhook processing for voice conversation management and state tracking",
+      "errorHandling": "Graceful fallback to text input when voice recognition fails"
+    },
+    "openAIIntegration": {
+      "model": "GPT-4o-mini for cost-effective voice response generation and lesson plan feedback",
+      "prompting": "Education-specific prompts optimized for district policy queries and instructional feedback",
+      "contextManagement": "RAG-enhanced context for district-specific responses and source citations",
+      "responseOptimization": "Voice-optimized responses with natural pauses and emphasis for speech synthesis"
+    },
+    "ragPipeline": {
+      "documentIngestion": "Firecrawl-based district document scraping and processing",
+      "vectorSearch": "Semantic search across district documents with relevance scoring",
+      "contextRetrieval": "Intelligent context selection for voice responses with source citations",
+      "performanceOptimization": "Caching and query optimization for <2s voice response times"
+    }
+  },
+  "educationTechnologySpecialization": {
+    "ferpaCompliance": {
+      "dataOwnership": "All voice data processing within Convex deployment, no third-party sharing",
+      "auditLogging": "Complete audit trails for all voice interactions and data access",
+      "accessControls": "Role-based permissions for teachers, administrators, and district users",
+      "dataRetention": "7 years for audit logs, 3 years for feedback sessions, configurable retention policies"
+    },
+    "districtIntegration": {
+      "documentManagement": "District-wide document ingestion and management with space-based organization",
+      "userManagement": "District user provisioning and role management through Convex Auth",
+      "analytics": "District-level usage analytics and teacher satisfaction reporting",
+      "customization": "District-specific voice responses and document context"
+    },
+    "teacherWorkflowOptimization": {
+      "handsFreeOperation": "Voice interface optimized for busy classroom environments and multitasking",
+      "quickAccess": "One-click voice activation and immediate response for urgent queries",
+      "contextAwareness": "Voice responses tailored to teacher role, subject area, and district context",
+      "mobileOptimization": "Voice interface optimized for mobile devices and tablet use"
+    }
+  },
+  "performanceMonitoring": {
+    "voiceMetrics": {
+      "responseTime": "Track voice query response times with <2s target",
+      "recognitionAccuracy": "Monitor voice recognition accuracy with >90% target",
+      "userSatisfaction": "Measure teacher satisfaction with voice interactions",
+      "errorRates": "Track voice processing errors and fallback usage"
+    },
+    "systemMetrics": {
+      "apiPerformance": "Monitor Convex function performance and RAG query times",
+      "voiceProcessing": "Track Vapi webhook processing and OpenAI API response times",
+      "userEngagement": "Measure voice query frequency and feature adoption",
+      "systemUptime": "Monitor overall system availability and voice service uptime"
+    }
+  }
+}

@@ -112,6 +112,15 @@ export default function IntegrationsSection() {
               Built on a robust tech stack that ensures reliability, security,
               and seamless voice interaction for educational environments.
             </p>
+            <div className="rounded-lg bg-green-50 border border-green-200 p-4 text-left">
+              <h3 className="font-semibold text-green-800 mb-2">FERPA Compliant & Privacy-First</h3>
+              <p className="text-sm text-green-700">
+                A.I.D.A. is designed with education privacy laws in mind. All voice data is processed 
+                securely within our Convex deployment with complete audit trails. Student information 
+                is never shared with third parties, and all AI processing happens on-device or within 
+                our FERPA-compliant infrastructure. Your district's data stays in your control.
+              </p>
+            </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">

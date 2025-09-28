@@ -4,7 +4,7 @@ export default function StatsSection() {
   const tailwindClasses = getAidaTailwindClasses();
 
   return (
-    <section className={tailwindClasses.spacing.sectionPadding}>
+    <section id="stats" className={tailwindClasses.spacing.sectionPadding}>
       <div
         className={`mx-auto max-w-5xl ${tailwindClasses.spacing.contentSpacingSmall} ${tailwindClasses.spacing.containerPadding} md:${tailwindClasses.spacing.contentSpacing}`}
       >

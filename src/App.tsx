@@ -29,20 +29,22 @@ export default function App() {
             Skip to main content
           </a>
 
-          <header className="sticky top-0 z-10 bg-background/90 backdrop-blur-xs h-16 flex justify-between items-center border-b shadow-xs px-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">
-                  AI
-                </span>
+          <header className="sticky top-0 z-10 bg-background/90 backdrop-blur-xs h-16 border-b shadow-xs">
+            <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-sm">
+                    AI
+                  </span>
+                </div>
+                <h1 className="text-xl font-semibold text-foreground">
+                  A.I.D.A.
+                </h1>
               </div>
-              <h1 className="text-xl font-semibold text-foreground">
-                A.I.D.A.
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              <ModeToggle />
-              <SignOutButton />
+              <div className="flex items-center gap-3">
+                <ModeToggle />
+                <SignOutButton />
+              </div>
             </div>
           </header>
 
