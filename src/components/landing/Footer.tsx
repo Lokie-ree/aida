@@ -14,16 +14,8 @@ const links = [
     href: "#testimonials",
   },
   {
-    title: "Pricing",
-    href: "#pricing",
-  },
-  {
     title: "Stats",
     href: "#stats",
-  },
-  {
-    title: "About",
-    href: "#features",
   },
 ];
 

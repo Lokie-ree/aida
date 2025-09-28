@@ -97,23 +97,30 @@ function Content() {
         />
 
         {/* Main Content - Voice Interface and Core Features */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-0">
           {/* Left Column - Voice Interface (Primary Feature) */}
-          <div className="xl:col-span-1">
-            <VoiceInterface currentSpaceId={currentSpaceId} className="h-96" />
+          <div className="xl:col-span-1 flex flex-col">
+            <VoiceInterface
+              currentSpaceId={currentSpaceId}
+              className="flex-1 min-h-[400px]"
+            />
           </div>
 
           {/* Right Column - Secondary Features */}
-          <div className="xl:col-span-2 space-y-6">
+          <div className="xl:col-span-2 flex flex-col space-y-6 min-h-0">
             {/* Top Row - Chat Interface */}
-            <div className="h-64">
+            <div className="flex-1 min-h-[300px]">
               <ChatInterface currentSpaceId={currentSpaceId} />
             </div>
 
             {/* Bottom Row - Document Manager and AI Feedback */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DocumentManager currentSpaceId={currentSpaceId} />
-              <AidaFeedback currentSpaceId={currentSpaceId} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[400px]">
+              <div className="flex flex-col">
+                <DocumentManager currentSpaceId={currentSpaceId} />
+              </div>
+              <div className="flex flex-col">
+                <AidaFeedback currentSpaceId={currentSpaceId} />
+              </div>
             </div>
           </div>
         </div>

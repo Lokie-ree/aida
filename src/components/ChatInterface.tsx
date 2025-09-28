@@ -6,7 +6,13 @@ import { VoiceInterface } from "./VoiceInterface";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mic, Send, Trash2 } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
@@ -20,11 +26,14 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showVoiceInterface, setShowVoiceInterface] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  const chatHistory = useQuery(api.chat.getChatHistory, { spaceId: currentSpaceId ?? undefined });
+
+  const chatHistory = useQuery(api.chat.getChatHistory, {
+    spaceId: currentSpaceId ?? undefined,
+  });
   const sendMessage = useAction(api.chat.sendMessage);
   const clearHistory = useMutation(api.chat.clearChatHistory);
-  const currentSpace = useQuery(api.spaces.getSpaceById, 
+  const currentSpace = useQuery(
+    api.spaces.getSpaceById,
     currentSpaceId ? { spaceId: currentSpaceId } : "skip"
   );
 
@@ -38,7 +47,7 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!message.trim() || isLoading) return;
 
     const userMessage = message.trim();
@@ -46,7 +55,7 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
     setIsLoading(true);
 
     try {
-      await sendMessage({ 
+      await sendMessage({
         message: userMessage,
         spaceId: currentSpaceId ?? undefined,
       });
@@ -60,7 +69,11 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
 
   const handleClearHistory = async () => {
     const spaceContext = currentSpace ? ` for "${currentSpace.name}"` : "";
-    if (window.confirm(`Are you sure you want to clear all chat history${spaceContext}?`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to clear all chat history${spaceContext}?`
+      )
+    ) {
       try {
         await clearHistory({ spaceId: currentSpaceId ?? undefined });
         toast.success("Chat history cleared");
@@ -95,13 +108,15 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
   };
 
   return (
-    <Card className="flex flex-col h-full">
-      <CardHeader>
+    <Card className="flex flex-col h-full min-h-0">
+      <CardHeader className="flex-shrink-0">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>{getHeaderTitle()}</CardTitle>
             {currentSpace && (
-              <CardDescription>Shared workspace with team knowledge base</CardDescription>
+              <CardDescription>
+                Shared workspace with team knowledge base
+              </CardDescription>
             )}
           </div>
           <div className="flex items-center gap-2">
@@ -113,11 +128,7 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
               <Mic className="w-4 h-4 mr-2" />
               Voice
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleClearHistory}
-            >
+            <Button variant="outline" size="sm" onClick={handleClearHistory}>
               <Trash2 className="w-4 h-4 mr-2" />
               Clear
             </Button>
@@ -127,8 +138,8 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
 
       {/* Voice Interface */}
       {showVoiceInterface && (
-        <div className="border-b bg-muted/50">
-          <VoiceInterface 
+        <div className="border-b bg-muted/50 flex-shrink-0">
+          <VoiceInterface
             onTranscription={handleVoiceTranscription}
             onResponse={handleVoiceResponse}
           />
@@ -136,7 +147,7 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
       )}
 
       {/* Messages */}
-      <CardContent className="flex-1 p-0">
+      <CardContent className="flex-1 p-0 min-h-0 overflow-hidden">
         <ScrollArea className="h-full p-4">
           <div className="space-y-4">
             {!chatHistory || chatHistory.length === 0 ? (
@@ -146,7 +157,8 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
                   <p className="text-lg font-medium">Welcome to A.I.D.A.!</p>
                   <p className="text-sm max-w-md">{getWelcomeMessage()}</p>
                   <p className="text-xs text-muted-foreground mt-2">
-                    Use voice chat for hands-free conversations or type your questions below.
+                    Use voice chat for hands-free conversations or type your
+                    questions below.
                   </p>
                 </div>
               </div>
@@ -168,15 +180,23 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
                         {msg.content}
                       </div>
                       {/* Context indicators */}
-                      {(msg.contextDocuments && msg.contextDocuments.length > 0) || 
-                       (msg.contextWebsites && msg.contextWebsites.length > 0) ? (
+                      {(msg.contextDocuments &&
+                        msg.contextDocuments.length > 0) ||
+                      (msg.contextWebsites &&
+                        msg.contextWebsites.length > 0) ? (
                         <div className="mt-2 pt-2 border-t border-current/20 text-xs opacity-75">
-                          {msg.contextDocuments && msg.contextDocuments.length > 0 && (
-                            <div>📄 Documents: {msg.contextDocuments.join(", ")}</div>
-                          )}
-                          {msg.contextWebsites && msg.contextWebsites.length > 0 && (
-                            <div>🌐 Websites: {msg.contextWebsites.join(", ")}</div>
-                          )}
+                          {msg.contextDocuments &&
+                            msg.contextDocuments.length > 0 && (
+                              <div>
+                                📄 Documents: {msg.contextDocuments.join(", ")}
+                              </div>
+                            )}
+                          {msg.contextWebsites &&
+                            msg.contextWebsites.length > 0 && (
+                              <div>
+                                🌐 Websites: {msg.contextWebsites.join(", ")}
+                              </div>
+                            )}
                         </div>
                       ) : null}
                       <div className="text-xs opacity-75 mt-1">

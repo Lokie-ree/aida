@@ -1,0 +1,259 @@
+{
+"agentInstructions": {
+"version": "1.0",
+"lastUpdated": "September 28, 2025",
+"purpose": "High-level instructions for AI agents working on A.I.D.A. project development and sprint management",
+"projectOverview": {
+"name": "A.I.D.A. (AI-powered Instructional District Assistant)",
+"mission": "Solve information overload for K-12 educators through voice-enabled, context-aware AI assistant",
+"coreValue": "District-specific knowledge + voice interface + FERPA compliance",
+"currentPhase": "Hackathon MVP Development (September 23-27, 2025)",
+"targetRelease": "October 1, 2025"
+},
+"keyDocuments": {
+"projectContext": "docs/aida-project-context.json - Complete project foundation, strategy, and business context",
+"dataContracts": "docs/aida-data-contracts.json - Database schema, API endpoints, and technical specifications",
+"marketingBrand": "docs/marketing-brand.md - Brand identity, messaging, and go-to-market strategy",
+"prd": "docs/prd.md - Product requirements and MVP specifications",
+"projectMasterGuide": "docs/project-master-guide.md - Comprehensive project management and strategy",
+"releaseOperations": "docs/release-operations-guide.md - Release cadence and version management"
+},
+"coreCapabilities": {
+"voiceAssistant": {
+"description": "Real-time voice interaction using Vapi for district policy queries",
+"keyFeatures": ["<2s response time", "District-specific RAG", "Hands-free operation"],
+"userStory": "Teacher asks 'What's our district's policy on student-led projects?' and gets instant, accurate answer"
+},
+"lessonPlanFeedback": {
+"description": "AI-powered analysis and suggestions for lesson plans",
+"keyFeatures": ["Upload lesson plans", "AI-generated feedback", "Engagement improvements"],
+"userStory": "Teacher uploads lesson plan and receives intelligent suggestions for enhancement"
+},
+"districtContextualization": {
+"description": "RAG-powered knowledge base with district-specific documents",
+"keyFeatures": ["Firecrawl web scraping", "Convex vector search", "Source citations"],
+"userStory": "System understands specific district policies and procedures"
+}
+},
+"technicalStack": {
+"frontend": "React + TypeScript + Vite + Tailwind CSS (deployed on Vercel)",
+"backend": "Convex (real-time database and serverless functions)",
+"aiEngine": "OpenAI GPT-4o-mini",
+"voiceInterface": "Vapi (speech-to-text and text-to-speech)",
+"dataIngestion": "Firecrawl (document scraping)",
+"authentication": "Convex Auth (FERPA-compliant)",
+"designSystem": "ShadCN + React Bits + TweakCN"
+},
+"targetUsers": {
+"primary": {
+"persona": "K-12 Educator (Sarah)",
+"demographics": "28-45 years old, moderate to high tech comfort",
+"goals": ["Quick district policy access", "Improved lesson plans", "Reduced admin burden"],
+"pains": ["Information overload", "Time-consuming searches", "Lack of personalized feedback"]
+},
+"secondary": [
+"School District Administrator (Michael) - ROI focus, teacher efficiency",
+"Curriculum Coordinator (Jennifer) - Curriculum alignment, teacher support",
+"New Teacher (David) - Learning policies, gaining confidence"
+]
+},
+"competitiveAdvantages": [
+"Hyper-Contextualization: District-specific knowledge competitors can't provide",
+"Voice Interface: Hands-free, conversational experience unmatched by others",
+"Integrated Suite: Cohesive command center vs. fragmented tools",
+"FERPA Compliance: Self-hosted architecture with complete data ownership"
+],
+"currentSprintContext": {
+"phase": "Hackathon Final Polish (Sunday Sprint)",
+"priority": "Critical bug fixes and UI/UX polish for demo",
+"keyIssues": [
+"Lesson plan feedback failure (critical bug)",
+"Dashboard layout overlap (UI unusable)",
+"Inconsistent button styles and broken links",
+"Voice interface needs stop functionality"
+],
+"demoRequirements": [
+"Functional voice assistant with <2s response",
+"Working lesson plan feedback system",
+"Professional UI/UX presentation",
+"Integration of 5+ sponsor technologies"
+]
+},
+"sprintTaskGuidance": {
+"p0Critical": {
+"description": "Must be completed first - working demo is non-negotiable",
+"tasks": [
+"Fix lesson plan feedback failure (debug Convex function, check OpenAI API)",
+"Resolve dashboard layout overlap (use Flexbox/Grid for proper spacing)",
+"Implement voice stop functionality (second click calls vapi.stop())",
+"Add legitimate demo data (3-5 realistic district policy Q&As)"
+],
+"successCriteria": "App is functional and demo-ready"
+},
+"p1HighImpact": {
+"description": "High-priority UI/UX polish that dramatically improves experience",
+"tasks": [
+"Unify landing page CTAs and fix broken links",
+"Overhaul mobile navigation (remove redundant links, use Flexbox)",
+"Redesign tech stack section (clean grid of logos vs floating icons)",
+"Fix footer (remove demo-irrelevant links, add proper social icons)",
+"Enhance dashboard onboarding (interactive, fix extra X button)",
+"Refine voice experience (better prompts, stop functionality, rounded buttons)"
+],
+"successCriteria": "Professional, polished user experience"
+},
+"p2Strategic": {
+"description": "Prize features and final submission preparation",
+"tasks": [
+"Implement AI Teaching Coach (OpenAI prize - vision model for file uploads)",
+"Launch A.I.D.A. Dev Hub (Inkeep prize - embed chat with documentation)",
+"Final submission (README, LICENSE, demo video, project submission)"
+],
+"successCriteria": "Competitive advantage and complete submission"
+}
+},
+"developmentGuidelines": {
+"codeQuality": [
+"Use TypeScript for all new code",
+"Follow React best practices and hooks",
+"Implement proper error handling with try/catch",
+"Add loading states for async operations",
+"Use Tailwind CSS for consistent styling"
+],
+"convexIntegration": [
+"Use proper argument validators (v.string(), v.id(), etc.)",
+"Implement proper error handling in functions",
+"Use appropriate function types (query, mutation, action)",
+"Follow FERPA compliance requirements",
+"Add audit logging for data access"
+],
+"voiceInterface": [
+"Ensure <2s response time for voice queries",
+"Implement proper start/stop functionality",
+"Use supportive, on-brand voice prompts",
+"Handle voice recognition errors gracefully",
+"Provide visual feedback during voice interactions"
+],
+"uiUxPrinciples": [
+"Maintain consistent button styles and spacing",
+"Use proper responsive design (mobile-first)",
+"Implement smooth animations and transitions",
+"Ensure accessibility compliance",
+"Follow the Voice Orb design system"
+]
+},
+"brandGuidelines": {
+"voiceAndTone": {
+"voice": "Expert, yet approachable - knowledgeable about education but never condescending",
+"tone": "Supportive on error messages, celebratory on success states, encouraging throughout"
+},
+"visualIdentity": {
+"colors": {
+"primaryBlue": "#3B82F6 (trust, reliability, voice interface)",
+"secondaryPurple": "#8B5CF6 (AI, innovation, intelligence)",
+"accentGreen": "#10B981 (success, growth, positive feedback)"
+},
+"typography": "Inter font family - modern, readable, professional",
+"voiceOrbStates": {
+"idle": "Calm blue glow with gentle pulsing",
+"listening": "Purple light with active pulsing",
+"success": "Steady green with confirmation pulse"
+}
+},
+"messaging": {
+"tagline": "Your Voice-Powered Educational Command Center",
+"coreMessage": "A.I.D.A. transforms how educators access district information and receive instructional support through voice-enabled AI that understands their specific context and needs"
+}
+},
+"successMetrics": {
+"hackathonSuccess": [
+"Functional prototype deployed and accessible",
+"Voice assistant answers district-specific questions accurately",
+"Instructional feedback system provides relevant suggestions",
+"Integration of at least 5 sponsor technologies demonstrated",
+"Single, compelling user journey showcased effectively"
+],
+"technicalValidation": [
+"Voice interface responds within 2 seconds",
+"RAG pipeline processes district documents successfully",
+"AI feedback is pedagogically sound and actionable",
+"System handles concurrent users during demo",
+"Data privacy and FERPA compliance demonstrated"
+]
+},
+"commonIssuesAndSolutions": {
+"voiceInterfaceProblems": {
+"issue": "Voice not responding or slow response",
+"solutions": [
+"Check Vapi configuration and API keys",
+"Implement proper error handling",
+"Add loading states and user feedback",
+"Test in quiet environment for better recognition"
+]
+},
+"convexFunctionErrors": {
+"issue": "Functions failing or returning errors",
+"solutions": [
+"Check argument validators match function parameters",
+"Verify OpenAI API key is properly configured",
+"Add comprehensive error logging",
+"Test functions individually in Convex dashboard"
+]
+},
+"uiLayoutIssues": {
+"issue": "Components overlapping or misaligned",
+"solutions": [
+"Use Flexbox or CSS Grid for proper layout",
+"Add fixed heights for animated components",
+"Implement responsive design principles",
+"Test on multiple screen sizes"
+]
+},
+"dataIntegrationProblems": {
+"issue": "RAG pipeline not working or returning poor results",
+"solutions": [
+"Verify Firecrawl API configuration",
+"Check document ingestion process",
+"Test semantic search functionality",
+"Ensure proper vector embeddings"
+]
+}
+},
+"agentWorkflow": {
+"whenStartingSprintTask": [
+"1. Read the specific sprint task description carefully",
+"2. Check relevant documentation in @docs/ for context",
+"3. Understand the priority level (P0, P1, P2) and success criteria",
+"4. Identify any technical dependencies or constraints",
+"5. Plan the implementation approach before starting"
+],
+"whenDebuggingIssues": [
+"1. Reproduce the issue consistently",
+"2. Check browser console for JavaScript errors",
+"3. Verify Convex function logs in dashboard",
+"4. Test API endpoints and data flow",
+"5. Check for missing environment variables or configuration"
+],
+"whenImplementingFeatures": [
+"1. Follow the technical stack guidelines",
+"2. Implement proper error handling and loading states",
+"3. Ensure FERPA compliance for data handling",
+"4. Test voice interface performance (<2s response)",
+"5. Verify UI/UX follows brand guidelines"
+],
+"whenCompletingTasks": [
+"1. Test the feature thoroughly across different scenarios",
+"2. Verify it meets the success criteria",
+"3. Check for any regressions in existing functionality",
+"4. Update documentation if needed",
+"5. Mark task as complete in sprint tracking"
+]
+},
+"emergencyContacts": {
+"criticalIssues": "If the app is completely broken or demo is at risk, prioritize P0 tasks immediately",
+"technicalBlockers": "Check Convex dashboard logs, browser console, and API configurations",
+"designQuestions": "Refer to brand guidelines and existing UI patterns in the codebase",
+"businessContext": "Consult project context and marketing brand documents for user experience decisions"
+}
+}
+}

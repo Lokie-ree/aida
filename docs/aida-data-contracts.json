@@ -1,0 +1,626 @@
+{
+  "dataContracts": {
+    "version": "1.0",
+    "lastUpdated": "September 28, 2025",
+    "description": "Complete data contracts and API specifications for A.I.D.A. based on Convex schema and function definitions",
+    "database": {
+      "provider": "Convex",
+      "deployment": "kindly-setter-935.convex.cloud",
+      "tables": {
+        "users": {
+          "description": "User accounts and authentication data",
+          "schema": {
+            "name": "string (optional)",
+            "image": "string (optional)",
+            "email": "string (optional)",
+            "emailVerificationTime": "number (optional)",
+            "phone": "string (optional)",
+            "phoneVerificationTime": "number (optional)",
+            "isAnonymous": "boolean (optional)"
+          },
+          "indexes": ["email", "phone"],
+          "systemFields": {
+            "_id": "Id<users>",
+            "_creationTime": "number"
+          }
+        },
+        "spaces": {
+          "description": "District/workspace containers for organizing content and users",
+          "schema": {
+            "name": "string",
+            "description": "string (optional)",
+            "ownerId": "Id<users>"
+          },
+          "indexes": ["by_owner"],
+          "systemFields": {
+            "_id": "Id<spaces>",
+            "_creationTime": "number"
+          }
+        },
+        "spaceMembers": {
+          "description": "User membership and invitations for spaces",
+          "schema": {
+            "spaceId": "Id<spaces>",
+            "userId": "Id<users>",
+            "invitedEmail": "string",
+            "invitedBy": "Id<users>",
+            "invitationStatus": "union<'pending' | 'accepted'>"
+          },
+          "indexes": ["by_space", "by_user", "by_email"],
+          "systemFields": {
+            "_id": "Id<spaceMembers>",
+            "_creationTime": "number"
+          }
+        },
+        "documents": {
+          "description": "Uploaded lesson plans and district documents",
+          "schema": {
+            "fileName": "string",
+            "contentType": "string",
+            "fileSize": "number",
+            "storageId": "Id<_storage>",
+            "textContent": "string",
+            "userId": "Id<users>",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "indexes": ["by_user", "by_space"],
+          "systemFields": {
+            "_id": "Id<documents>",
+            "_creationTime": "number"
+          }
+        },
+        "scrapedWebsites": {
+          "description": "Web-scraped district content and policies",
+          "schema": {
+            "title": "string",
+            "url": "string",
+            "content": "string",
+            "chunks": "array<string>",
+            "metadata": {
+              "description": "string",
+              "sourceURL": "string",
+              "ogImage": "string"
+            },
+            "userId": "Id<users>",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "indexes": ["by_user", "by_space"],
+          "systemFields": {
+            "_id": "Id<scrapedWebsites>",
+            "_creationTime": "number"
+          }
+        },
+        "chatMessages": {
+          "description": "Voice and text chat interactions with A.I.D.A.",
+          "schema": {
+            "content": "string",
+            "role": "union<'user' | 'assistant'>",
+            "contextDocuments": "array<string> (optional)",
+            "contextWebsites": "array<string> (optional)",
+            "userId": "Id<users>",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "indexes": ["by_user", "by_space"],
+          "systemFields": {
+            "_id": "Id<chatMessages>",
+            "_creationTime": "number"
+          }
+        },
+        "feedbackSessions": {
+          "description": "AI-generated feedback on lesson plans",
+          "schema": {
+            "title": "string (optional)",
+            "lessonPlan": "string",
+            "feedback": "string",
+            "userId": "Id<users>",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "indexes": ["by_user", "by_space"],
+          "systemFields": {
+            "_id": "Id<feedbackSessions>",
+            "_creationTime": "number"
+          }
+        },
+        "auditLogs": {
+          "description": "Security and compliance audit trail",
+          "schema": {
+            "action": "string",
+            "resource": "string",
+            "details": "string (optional)",
+            "ipAddress": "string",
+            "timestamp": "number",
+            "userId": "Id<users>",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "indexes": ["by_user", "by_space", "by_timestamp"],
+          "systemFields": {
+            "_id": "Id<auditLogs>",
+            "_creationTime": "number"
+          }
+        }
+      }
+    },
+    "apiEndpoints": {
+      "authentication": {
+        "isAuthenticated": {
+          "type": "query",
+          "description": "Check if user is currently authenticated",
+          "args": {},
+          "returns": "any"
+        },
+        "loggedInUser": {
+          "type": "query",
+          "description": "Get current logged-in user data",
+          "args": {},
+          "returns": "any"
+        },
+        "signIn": {
+          "type": "action",
+          "description": "Authenticate user with various providers",
+          "args": {
+            "provider": "string (optional)",
+            "params": "any (optional)",
+            "refreshToken": "string (optional)",
+            "verifier": "string (optional)",
+            "calledBy": "string (optional)"
+          },
+          "returns": "any"
+        },
+        "signOut": {
+          "type": "action",
+          "description": "Sign out current user",
+          "args": {},
+          "returns": "any"
+        }
+      },
+      "spaces": {
+        "createSpace": {
+          "type": "mutation",
+          "description": "Create a new district/workspace",
+          "args": {
+            "name": "string",
+            "description": "string (optional)"
+          },
+          "returns": "any"
+        },
+        "getUserSpaces": {
+          "type": "query",
+          "description": "Get all spaces for current user",
+          "args": {},
+          "returns": "any"
+        },
+        "getSpaceById": {
+          "type": "query",
+          "description": "Get specific space details",
+          "args": {
+            "spaceId": "Id<spaces>"
+          },
+          "returns": "any"
+        },
+        "inviteUserToSpace": {
+          "type": "mutation",
+          "description": "Invite user to join space",
+          "args": {
+            "spaceId": "Id<spaces>",
+            "email": "string"
+          },
+          "returns": "any"
+        },
+        "acceptInvitation": {
+          "type": "mutation",
+          "description": "Accept space invitation",
+          "args": {
+            "invitationId": "Id<spaceMembers>"
+          },
+          "returns": "any"
+        },
+        "getSpaceMembers": {
+          "type": "query",
+          "description": "Get all members of a space",
+          "args": {
+            "spaceId": "Id<spaces>"
+          },
+          "returns": "any"
+        }
+      },
+      "documents": {
+        "generateUploadUrl": {
+          "type": "mutation",
+          "description": "Generate signed URL for file upload",
+          "args": {},
+          "returns": "any"
+        },
+        "processUploadedDocument": {
+          "type": "action",
+          "description": "Process uploaded document and extract text",
+          "args": {
+            "storageId": "Id<_storage>",
+            "fileName": "string",
+            "contentType": "string",
+            "fileSize": "number",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": {
+            "documentId": "Id<documents>",
+            "success": "boolean"
+          }
+        },
+        "getUserDocuments": {
+          "type": "query",
+          "description": "Get all documents for current user",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "getDocumentById": {
+          "type": "query",
+          "description": "Get specific document by ID",
+          "args": {
+            "documentId": "Id<documents>"
+          },
+          "returns": "any"
+        },
+        "deleteDocument": {
+          "type": "mutation",
+          "description": "Delete document",
+          "args": {
+            "documentId": "Id<documents>"
+          },
+          "returns": "any"
+        },
+        "searchDocuments": {
+          "type": "query",
+          "description": "Search documents by content",
+          "args": {
+            "query": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "webScraping": {
+        "scrapeWebsite": {
+          "type": "action",
+          "description": "Scrape website content using Firecrawl",
+          "args": {
+            "url": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "getUserScrapedWebsites": {
+          "type": "query",
+          "description": "Get all scraped websites for current user",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "deleteScrapedWebsite": {
+          "type": "mutation",
+          "description": "Delete scraped website",
+          "args": {
+            "websiteId": "Id<scrapedWebsites>"
+          },
+          "returns": "any"
+        },
+        "searchScrapedWebsites": {
+          "type": "query",
+          "description": "Search scraped websites by content",
+          "args": {
+            "query": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "chat": {
+        "getChatHistory": {
+          "type": "query",
+          "description": "Get chat message history",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "sendMessage": {
+          "type": "action",
+          "description": "Send message to A.I.D.A. voice assistant",
+          "args": {
+            "message": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "saveMessage": {
+          "type": "mutation",
+          "description": "Save chat message to database",
+          "args": {
+            "content": "string",
+            "role": "union<'user' | 'assistant'>",
+            "contextDocuments": "array<string> (optional)",
+            "contextWebsites": "array<string> (optional)",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "clearChatHistory": {
+          "type": "mutation",
+          "description": "Clear chat history for space",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "feedback": {
+        "generateFeedback": {
+          "type": "action",
+          "description": "Generate AI feedback for lesson plan",
+          "args": {
+            "lessonPlan": "string",
+            "title": "string (optional)",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "saveFeedbackSession": {
+          "type": "mutation",
+          "description": "Save feedback session to database",
+          "args": {
+            "lessonPlan": "string",
+            "feedback": "string",
+            "title": "string (optional)",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "getFeedbackHistory": {
+          "type": "query",
+          "description": "Get feedback history for user",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "rag": {
+        "addDocumentToRAG": {
+          "type": "action",
+          "description": "Add document to RAG knowledge base",
+          "args": {
+            "documentId": "Id<documents>",
+            "fileName": "string",
+            "textContent": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": {
+            "success": "boolean"
+          }
+        },
+        "addWebScrapingToRAG": {
+          "type": "action",
+          "description": "Add scraped website to RAG knowledge base",
+          "args": {
+            "websiteId": "Id<scrapedWebsites>",
+            "title": "string",
+            "url": "string",
+            "content": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": {
+            "success": "boolean"
+          }
+        },
+        "semanticSearch": {
+          "type": "action",
+          "description": "Perform semantic search across knowledge base",
+          "args": {
+            "query": "string",
+            "spaceId": "Id<spaces> (optional)",
+            "limit": "number (optional)"
+          },
+          "returns": {
+            "results": "array<any>",
+            "entries": "array<any>",
+            "text": "string",
+            "usage": "any"
+          }
+        },
+        "generateResponseWithRAG": {
+          "type": "action",
+          "description": "Generate AI response using RAG context",
+          "args": {
+            "message": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": {
+            "response": "string",
+            "context": "any"
+          }
+        },
+        "getRAGStats": {
+          "type": "query",
+          "description": "Get RAG system statistics",
+          "args": {
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "voice": {
+        "processAuthenticatedVoiceQuery": {
+          "type": "action",
+          "description": "Process voice query with authentication",
+          "args": {
+            "message": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "any"
+        },
+        "processVoiceMessage": {
+          "type": "action",
+          "description": "Process voice message (internal)",
+          "args": {
+            "message": "string",
+            "spaceId": "Id<spaces> (optional)",
+            "userId": "Id<users> (optional)"
+          },
+          "returns": "any"
+        }
+      },
+      "security": {
+        "createAuditLog": {
+          "type": "mutation",
+          "description": "Create audit log entry",
+          "args": {
+            "action": "string",
+            "resource": "string",
+            "details": "string (optional)",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": "Id<auditLogs>"
+        },
+        "getUserAuditLogs": {
+          "type": "query",
+          "description": "Get audit logs for user",
+          "args": {
+            "spaceId": "Id<spaces> (optional)",
+            "limit": "number (optional)"
+          },
+          "returns": "array<auditLogEntry>"
+        },
+        "validateDataAccess": {
+          "type": "action",
+          "description": "Validate user access to data",
+          "args": {
+            "action": "string",
+            "resource": "string",
+            "spaceId": "Id<spaces> (optional)"
+          },
+          "returns": {
+            "allowed": "boolean",
+            "reason": "string (optional)"
+          }
+        },
+        "getSecurityStatus": {
+          "type": "query",
+          "description": "Get security compliance status",
+          "args": {},
+          "returns": {
+            "isFERPACompliant": "boolean",
+            "auditLoggingEnabled": "boolean",
+            "dataRetentionPolicy": "string",
+            "lastSecurityCheck": "number"
+          }
+        }
+      }
+    },
+    "httpEndpoints": {
+      "jwks": {
+        "path": "/.well-known/jwks.json",
+        "method": "GET",
+        "description": "JSON Web Key Set for JWT verification"
+      },
+      "openidConfig": {
+        "path": "/.well-known/openid-configuration",
+        "method": "GET",
+        "description": "OpenID Connect configuration"
+      },
+      "vapiWebhook": {
+        "path": "/api/vapi/webhook",
+        "method": "POST",
+        "description": "Vapi voice interface webhook endpoint"
+      }
+    },
+    "dataTypes": {
+      "Id": {
+        "description": "Convex document ID type",
+        "format": "string with table prefix",
+        "example": "k17ewecqf45cr8ese5ec9jzash7rfnbf"
+      },
+      "auditLogEntry": {
+        "description": "Audit log entry structure",
+        "fields": {
+          "_id": "Id<auditLogs>",
+          "_creationTime": "number",
+          "action": "string",
+          "resource": "string",
+          "details": "string (optional)",
+          "ipAddress": "string",
+          "timestamp": "number",
+          "userId": "Id<users>",
+          "spaceId": "Id<spaces> (optional)"
+        }
+      }
+    },
+    "compliance": {
+      "ferpa": {
+        "description": "Family Educational Rights and Privacy Act compliance",
+        "features": [
+          "Self-hosted authentication",
+          "Full data ownership for districts",
+          "No vendor lock-in",
+          "Secure document processing",
+          "Audit logging for all data access"
+        ]
+      },
+      "dataRetention": {
+        "description": "Data retention and cleanup policies",
+        "policies": [
+          "Audit logs older than 7 years are automatically deleted",
+          "Feedback sessions older than 3 years are cleaned up",
+          "User data is retained according to district policies",
+          "All deletions are logged for compliance"
+        ]
+      },
+      "security": {
+        "description": "Security measures and access controls",
+        "features": [
+          "Role-based access control",
+          "Space-based data isolation",
+          "IP address tracking for audit logs",
+          "Data access validation",
+          "Secure file storage with signed URLs"
+        ]
+      }
+    },
+    "performance": {
+      "limits": {
+        "queryExecution": "1 second maximum",
+        "mutationExecution": "1 second maximum",
+        "actionExecution": "10 minutes maximum",
+        "documentSize": "1MB maximum",
+        "arrayElements": "8192 maximum",
+        "objectEntries": "1024 maximum",
+        "functionArguments": "8MB maximum",
+        "functionReturns": "8MB maximum"
+      },
+      "voiceInterfaceRequirements": {
+        "voiceResponseTime": "<2s for voice queries (critical for demo)",
+        "voiceRecognitionAccuracy": ">90% in quiet environments",
+        "apiResponse": "<500ms for standard queries, <2s for RAG operations",
+        "mobilePerformance": "Lighthouse score >90",
+        "uptime": "99.9% availability target"
+      },
+      "deploymentEnvironments": {
+        "frontend": "React + TypeScript + Vite + Tailwind CSS (deployed on Vercel)",
+        "backend": "Convex (real-time database and serverless functions, deployed on Convex Cloud)",
+        "aiEngine": "OpenAI GPT-4o-mini (reasoning and generation)",
+        "voiceInterface": "Vapi (real-time speech-to-text and text-to-speech)",
+        "dataIngestion": "Firecrawl (district document scraping and processing)",
+        "authentication": "Convex Auth (self-hosted, FERPA-compliant)",
+        "designSystem": "ShadCN + React Bits + TweakCN (voice interface components)"
+      },
+      "indexes": {
+        "description": "Database indexes for optimal query performance",
+        "userIndexes": ["email", "phone"],
+        "spaceIndexes": ["by_owner"],
+        "documentIndexes": ["by_user", "by_space"],
+        "chatIndexes": ["by_user", "by_space"],
+        "auditIndexes": ["by_user", "by_space", "by_timestamp"]
+      }
+    }
+  }
+}
