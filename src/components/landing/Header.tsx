@@ -9,7 +9,6 @@ const menuItems = [
   { name: "Features", href: "#features" },
   { name: "Technology", href: "#technology" },
   { name: "Testimonials", href: "#testimonials" },
-  { name: "Get Started", href: "/app" },
 ];
 
 export const HeroHeader = () => {
@@ -72,14 +71,15 @@ export const HeroHeader = () => {
               </ul>
             </div>
 
-            <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-              <div className="lg:hidden">
-                <ul className="space-y-6 text-base">
+            <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 lg:m-0 lg:flex lg:w-fit lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
+              <div className="lg:hidden mb-6">
+                <ul className="flex flex-col space-y-4 text-base">
                   {menuItems.map((item, index) => (
                     <li key={index}>
                       <a
                         href={item.href}
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                        onClick={() => setMenuState(false)}
                       >
                         <span>{item.name}</span>
                       </a>
@@ -87,28 +87,16 @@ export const HeroHeader = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+              <div className="flex flex-col space-y-3 lg:flex-row lg:gap-3 lg:space-y-0">
+                <Button size="sm" onClick={() => setShowSignIn(true)}>
+                  <span>Try A.I.D.A. Now</span>
+                </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
                   onClick={() => setShowSignIn(true)}
                 >
-                  <span>Login</span>
-                </Button>
-                <Button
-                  size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
-                  onClick={() => setShowSignIn(true)}
-                >
-                  <span>Sign Up</span>
-                </Button>
-                <Button
-                  size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
-                  onClick={() => setShowSignIn(true)}
-                >
-                  <span>Get Started</span>
+                  <span>See A.I.D.A. in Action</span>
                 </Button>
               </div>
             </div>

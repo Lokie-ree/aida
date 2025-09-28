@@ -1,0 +1,793 @@
+{
+  "project": {
+    "name": "A.I.D.A.",
+    "fullName": "AI-powered Instructional District Assistant",
+    "version": "MVP 1.0",
+    "lastUpdated": "September 28, 2025",
+    "status": "Final Polish Phase - Demo Ready",
+    "mvpRelease": "October 1, 2025"
+  },
+  "foundation": {
+    "mission": "To solve the critical problem of information overload faced by K-12 educators through a voice-enabled, context-aware AI assistant that provides district-specific knowledge and intelligent instructional feedback.",
+    "vision": "To become the indispensable AI-powered command center for educators, transforming how teachers access district information and receive instructional support, ultimately freeing up their time for meaningful student interaction.",
+    "corePhilosophy": "Go deep, not wide - focusing on hyper-contextualization and voice interface as defensible differentiators that competitors cannot easily replicate",
+    "completion": "85%",
+    "keyAchievement": "Core MVP functionality implemented with voice interface, RAG pipeline, and dashboard - now in final polish phase",
+    "currentPhase": "Hackathon Day 3: Final Polish & Presentation (September 28, 2025)",
+    "nextPhase": "Demo presentation and project submission"
+  },
+  "currentSprintContext": {
+    "phase": "Hackathon Day 3: Final Polish & Presentation",
+    "priority": "Critical bug fixes and UI/UX polish for demo",
+    "keyIssues": [
+      "Lesson plan feedback failure (critical bug)",
+      "Dashboard layout overlap (UI unusable)",
+      "Inconsistent button styles and broken links",
+      "Voice interface needs stop functionality"
+    ],
+    "demoRequirements": [
+      "Functional voice assistant with <2s response",
+      "Working lesson plan feedback system",
+      "Professional UI/UX presentation",
+      "Integration of 5+ sponsor technologies"
+    ],
+    "completedPhases": [
+      "Day 1: Foundation & Setup (Environment, Backend, Documentation, UI Scaffolding)",
+      "Day 2: Core Build & Iteration (Voice Interface, RAG Pipeline, Landing Page V1, Dashboard V1)"
+    ]
+  },
+  "problemStatement": {
+    "coreProblem": "K-12 educators face perpetual information overload, navigating a constant deluge of district policies, curriculum guides, student handbooks, and professional development materials without a centralized, intelligent system to synthesize this information.",
+    "painPoint": "Teachers waste valuable time searching through multiple documents and systems to find specific information, leading to burnout and fragmented workflows that detract from meaningful student interaction.",
+    "marketValidation": "The AI in EdTech market is projected to grow from $2.21-5.88 billion (2024) to over $90 billion by 2033, driven by demand for personalized learning and administrative automation."
+  },
+  "solution": {
+    "overview": "A.I.D.A. is an AI-powered instructional command center that augments human expertise rather than replacing it. The MVP delivers two core capabilities: Voice-Enabled District Assistant and AI-Powered Instructional Feedback.",
+    "keyDifferentiators": [
+      "Voice-First Interface: Hands-free operation for busy educators",
+      "District-Specific Contextualization: RAG-powered knowledge base with district documents",
+      "FERPA Compliance: Self-hosted architecture ensuring data privacy",
+      "Sub-2-Second Response Times: Critical for voice interface adoption"
+    ]
+  },
+  "targetAudience": {
+    "primary": {
+      "name": "K-12 Educator (Sarah)",
+      "demographics": {
+        "age": "28-45 years old",
+        "technology": "Moderate to high comfort with educational technology, prefers intuitive interfaces",
+        "role": "Classroom teacher, curriculum coordinator, or department head",
+        "experience": "3-15 years in education"
+      },
+      "goals": [
+        "Access district policies and curriculum information quickly",
+        "Improve lesson plan quality and student engagement",
+        "Reduce administrative burden and focus on teaching",
+        "Stay compliant with district requirements"
+      ],
+      "pains": [
+        "Information scattered across multiple documents and systems",
+        "Time-consuming searches for specific policies or procedures",
+        "Lack of personalized feedback on lesson plans",
+        "Overwhelming amount of district documentation to navigate"
+      ]
+    },
+    "secondary": [
+      {
+        "name": "School District Administrator (Michael)",
+        "goals": "Improve teacher efficiency, ensure policy compliance, demonstrate ROI on technology investments",
+        "frustrations": "Difficulty tracking teacher needs, limited visibility into daily challenges, budget constraints",
+        "quote": "I need tools that actually solve real problems for our teachers, not just add to their workload."
+      },
+      {
+        "name": "Curriculum Coordinator (Jennifer)",
+        "goals": "Ensure curriculum alignment, support teacher development, maintain quality standards",
+        "frustrations": "Inconsistent implementation across schools, limited time for teacher support",
+        "quote": "Teachers need quick access to curriculum guidance without having to dig through multiple documents."
+      },
+      {
+        "name": "New Teacher (David)",
+        "goals": "Learn district policies quickly, improve teaching effectiveness, gain confidence",
+        "frustrations": "Overwhelming amount of information to learn, fear of non-compliance, lack of mentorship",
+        "quote": "I need help understanding what I'm supposed to do without bothering my colleagues constantly."
+      }
+    ],
+    "demoAudience": "Hackathon judges and potential investors"
+  },
+  "coreFeatures": {
+    "voiceEnabledDistrictAssistant": {
+      "description": "Real-time, hands-free interaction with district-specific knowledge",
+      "ahaMoment": "A teacher asks, 'What's our district's policy on student-led projects?' and receives an immediate, accurate answer based on their specific district's documents.",
+      "keyCapabilities": [
+        "Real-time voice interaction using Vapi",
+        "District-specific knowledge base powered by RAG",
+        "Natural conversation flow with context awareness",
+        "Hands-free operation for busy educators"
+      ],
+      "userStory": "As a teacher, I want to ask the virtual assistant about the district's policy on student-led projects so I can properly guide my students."
+    },
+    "aiPoweredInstructionalFeedback": {
+      "description": "Intelligent analysis and suggestions for lesson plans",
+      "ahaMoment": "A teacher uploads a lesson plan and receives intelligent suggestions for enhancing engagement and rigor.",
+      "keyCapabilities": [
+        "Upload lesson plans or prompts",
+        "AI-generated feedback and suggestions",
+        "Focus on engagement and rigor improvements",
+        "Pedagogically sound recommendations"
+      ],
+      "userStory": "As an educator, I want to submit my lesson plan to the assistant so it can suggest ways to enhance engagement or add a more rigorous component."
+    },
+    "teacherCommandCenterDashboard": {
+      "description": "Centralized overview of key tasks and insights",
+      "keyCapabilities": [
+        "Voice Orb Interface with state animations",
+        "Quick access to voice assistant",
+        "Lesson plan upload interface",
+        "Recent interactions and feedback",
+        "District context indicators"
+      ],
+      "voiceOrbStates": {
+        "idle": "Calm blue glow with gentle pulsing",
+        "listening": "Purple light with active pulsing",
+        "success": "Steady green with confirmation pulse"
+      }
+    }
+  },
+  "technicalArchitecture": {
+    "coreTechnologyStack": {
+      "frontend": "React + TypeScript + Vite + Tailwind CSS (deployed on Vercel)",
+      "backend": "Convex (real-time database and serverless functions, deployed on Convex Cloud)",
+      "aiEngine": "OpenAI GPT-4o-mini (reasoning and generation)",
+      "voiceInterface": "Vapi (real-time speech-to-text and text-to-speech)",
+      "dataIngestion": "Firecrawl (district document scraping and processing)",
+      "authentication": "Convex Auth (self-hosted, FERPA-compliant)",
+      "designSystem": "ShadCN + React Bits + TweakCN (voice interface components)"
+    },
+    "dataFlow": [
+      "Ingestion: Firecrawl scrapes district documents → Clean, structured data",
+      "Storage: Convex RAG builds searchable knowledge base with vector embeddings",
+      "Voice Interaction: Voice input → Vapi → OpenAI → Contextual response (<2s target)",
+      "Feedback: Lesson plan → OpenAI analysis → Structured feedback with engagement suggestions",
+      "Audit: All interactions logged for FERPA compliance"
+    ],
+    "performanceRequirements": {
+      "voiceResponseTime": "<2s for voice queries (critical for demo)",
+      "voiceRecognitionAccuracy": ">90% in quiet environments",
+      "apiResponse": "<500ms for standard queries, <2s for RAG operations",
+      "mobilePerformance": "Lighthouse score >90",
+      "uptime": "99.9% availability target"
+    }
+  },
+  "brandIdentity": {
+    "coreMessage": "A.I.D.A. transforms how educators access district information and receive instructional support through voice-enabled AI that understands their specific context and needs.",
+    "personality": {
+      "supportive": "Like a trusted colleague who always has your back, providing encouragement and practical help",
+      "intelligent": "Deeply knowledgeable about education, with the ability to understand complex contexts and provide relevant insights",
+      "accessible": "Easy to use and understand, with voice-first design that works for everyone",
+      "reliable": "Consistent, accurate, and dependable - educators can count on A.I.D.A. when they need it most"
+    },
+    "voiceAndTone": {
+      "voice": "Expert, yet approachable - knowledgeable about education but never condescending",
+      "tone": "Supportive on error messages, celebratory on success states, encouraging throughout the user journey"
+    },
+    "coreMessaging": {
+      "tagline": "Your Voice-Powered Educational Command Center",
+      "elevatorPitch": "A.I.D.A. is the AI assistant that gives K-12 educators instant access to district-specific information and personalized instructional feedback through natural voice interactions.",
+      "benefitDrivenStatements": [
+        "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers",
+        "Get personalized feedback on your lesson plans to improve student engagement",
+        "Access district information hands-free while you're teaching or planning",
+        "Save hours of searching through documents and focus on what matters - your students"
+      ]
+    }
+  },
+  "visualIdentity": {
+    "logoSystem": {
+      "name": "The Voice Orb",
+      "usageContext": "All applications - app interfaces, navigation, marketing, business communications, voice interface states",
+      "specifications": {
+        "logoFile": "aida-logo.png (includes Voice Orb symbol + 'A.I.D.A.' text)",
+        "iconMark": "Voice Orb symbol only (favicons, app icons, loading states, voice interface)",
+        "minimumSize": "32px height for readability on mobile voice interfaces"
+      },
+      "voiceOrbStates": {
+        "idle": "Calm blue glow (#3B82F6) with gentle pulsing animation",
+        "listening": "Purple light (#8B5CF6) with active pulsing animation",
+        "success": "Steady green (#10B981) with confirmation pulse animation"
+      },
+      "variations": [
+        "Horizontal/Wordmark: For wide spaces and marketing materials",
+        "Stacked/Square: For compact spaces and mobile interfaces",
+        "Icon Only: For small interfaces, favicons, and voice interface states",
+        "State Variations: Idle (blue), Listening (purple), Success (green) for voice interactions"
+      ]
+    },
+    "visualLanguage": {
+      "colorPalette": {
+        "primaryBlue": "#3B82F6 - Trust, reliability, voice interface",
+        "secondaryPurple": "#8B5CF6 - AI, innovation, intelligence",
+        "accentGreen": "#10B981 - Success, growth, positive feedback",
+        "neutralGrays": "Professional, clean, accessible"
+      },
+      "typography": "Inter font family - modern, readable, professional",
+      "imagery": "Authentic photos of educators using voice technology, clean and professional",
+      "iconography": "Heroicons style - clean, minimal, accessible, with voice-specific icons"
+    }
+  },
+  "marketingStrategy": {
+    "corePrinciples": [
+      "Sell the Transformation, Not Features - Focus on the 'new version' of educators that A.I.D.A. helps them become",
+      "Target by Awareness Level - Recognize varying levels of awareness about information overload problems",
+      "Enter the Existing Conversation - Hook into existing frustrations about document searching and time management",
+      "Specificity Sells - Use specific, concrete details, numbers, and tangible outcomes to build credibility"
+    ],
+    "goToMarketStrategy": {
+      "launchPlan": {
+        "preLaunch": "Sept 23-27: Hackathon demonstration, early adopter teacher recruitment",
+        "launchDay": "Oct 1, 2025: MVP release with limited teacher access",
+        "postLaunch": "Oct-Dec 2025: District pilot programs, enterprise sales outreach"
+      },
+      "channelStrategy": [
+        "Content Marketing: Education blogs, teacher forums, LinkedIn",
+        "Social Media: Twitter, LinkedIn, education-focused communities",
+        "Paid Ads: Google Ads for education keywords, LinkedIn for district administrators",
+        "Events: Education conferences, district meetings, hackathon presentations"
+      ],
+      "initialFocus": "Demonstrate voice interface value, build teacher testimonials, generate district interest",
+      "scalingStrategy": "Bottom-up teacher adoption leading to top-down district sales (Q1-Q2 2026)"
+    },
+    "messagingFramework": {
+      "k12Educator": {
+        "problemAware": "Stop wasting time searching through district documents",
+        "solutionAware": "A.I.D.A. gives you instant access to district information",
+        "productAware": "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers"
+      },
+      "districtAdministrator": {
+        "problemAware": "Teachers are overwhelmed with information overload",
+        "solutionAware": "A.I.D.A. reduces teacher workload and improves efficiency",
+        "productAware": "A.I.D.A. provides district-specific AI assistance that saves teachers 2+ hours per week"
+      },
+      "curriculumCoordinator": {
+        "problemAware": "Teachers need quick access to curriculum guidance",
+        "solutionAware": "A.I.D.A. provides instant curriculum support and feedback",
+        "productAware": "A.I.D.A. offers voice-enabled curriculum assistance and lesson plan feedback"
+      }
+    }
+  },
+  "contentStrategy": {
+    "description": "Content strategy designed to attract, educate, and convert target audience",
+    "topOfFunnel": [
+      "Blog posts about teacher productivity and AI in education",
+      "Infographics showing time saved with voice technology",
+      "Social media content about education challenges"
+    ],
+    "middleOfFunnel": [
+      "Case studies from pilot teachers",
+      "Webinars on voice technology in education",
+      "Demo videos showing A.I.D.A. in action"
+    ],
+    "bottomOfFunnel": [
+      "Live demos for district administrators",
+      "Teacher testimonials and success stories",
+      "Free trial signup and onboarding"
+    ]
+  },
+  "landingPageStrategy": {
+    "description": "Critical conversion tool following proven, data-based approach",
+    "defineAvatar": "Use detailed educator personas to ensure all copy speaks directly to their pains, goals, and emotions about information overload and time management",
+    "focusOnBenefits": "Headline and body copy must be benefit-driven and story-driven, not feature lists. Example: 'Get instant answers to district questions while you're teaching' instead of 'Voice Interface'",
+    "proofAndTrustSignals": "Include teacher testimonials, FERPA compliance badges, and specific time-saving claims",
+    "visualPolish": "Premium feel to act as subconscious authority signal for educators and district administrators",
+    "pricingPageStrategy": "Clear tiered structure with 'popular choice' positioned to encourage upgrades, showing value for both individual teachers and districts"
+  },
+  "performanceMeasurement": {
+    "description": "Comprehensive performance tracking and optimization",
+    "keyPerformanceIndicators": [
+      "Teacher signup rate and activation",
+      "Voice interface usage and engagement",
+      "Free-to-paid conversion rate",
+      "District pilot program success",
+      "Customer lifetime value and retention"
+    ],
+    "attribution": [
+      "UTM tracking",
+      "Voice interface analytics",
+      "Teacher feedback surveys"
+    ],
+    "abTesting": [
+      "Landing page headlines",
+      "Voice interface demos",
+      "Pricing page layouts"
+    ],
+    "feedbackLoop": [
+      "Teacher feedback",
+      "District administrator input",
+      "Usage analytics"
+    ]
+  },
+  "brandGovernance": {
+    "description": "Ensures consistency and prevents unauthorized brand applications",
+    "assetCreationWorkflow": {
+      "request": "Team member submits formal request for new brand asset",
+      "designReview": "Brand Owner and stakeholders review against established guidelines",
+      "voiceInterfaceConsideration": "Special review for voice interface assets and accessibility compliance",
+      "approval": "Upon approval, asset added to official brand library",
+      "rejection": "Clear, actionable feedback provided for refinement"
+    },
+    "brandGuideUpdates": {
+      "quarterlyReview": "Assess brand performance and recognition, update metrics, especially voice interface adoption",
+      "usageAudit": "Ensure consistent application across all touchpoints, including voice interface",
+      "feedbackIntegration": "Incorporate teacher and district administrator feedback on brand perception"
+    }
+  },
+  "monetizationStrategy": {
+    "revenueModel": {
+      "strategy": "Hybrid B2B2C model - freemium for individual teachers, enterprise licensing for districts",
+      "targetConversion": "15% of free users upgrade to Pro within 90 days",
+      "arpuGoals": "$50/month per teacher (Pro), $10,000/year per district (Enterprise)",
+      "growthStrategy": "Bottom-up adoption through teachers, then top-down enterprise sales to districts"
+    },
+    "tieredFeatureStrategy": {
+      "tier1": {
+        "name": "Free/Basic",
+        "features": "5 voice queries per day, basic lesson plan feedback, limited document access"
+      },
+      "tier2": {
+        "name": "Teacher Pro - $50/month",
+        "features": "Unlimited voice queries, advanced lesson plan feedback, custom document ingestion, priority support"
+      },
+      "tier3": {
+        "name": "District Enterprise - $10,000/year",
+        "features": "All Teacher Pro features for all teachers, district-wide document management, advanced analytics, dedicated support"
+      }
+    },
+    "monetizationTriggers": {
+      "behavioral": [
+        "10+ voice queries per week",
+        "5+ lesson plan uploads per month",
+        "Daily usage for 2+ weeks"
+      ],
+      "featureBased": [
+        "Advanced RAG capabilities",
+        "Unlimited lesson plan feedback",
+        "Custom document ingestion"
+      ],
+      "messaging": [
+        "Unlock unlimited voice queries",
+        "Get advanced lesson plan feedback",
+        "Access custom district documents"
+      ]
+    }
+  },
+  "successMetrics": {
+    "hackathonSuccessCriteria": [
+      "Functional prototype deployed and accessible",
+      "Voice assistant answers district-specific questions accurately",
+      "Instructional feedback system provides relevant suggestions",
+      "Integration of at least 5 sponsor technologies demonstrated",
+      "Single, compelling user journey showcased effectively"
+    ],
+    "technicalValidation": [
+      "RAG pipeline processes district documents successfully",
+      "Voice interface responds within 2 seconds",
+      "AI feedback is pedagogically sound and actionable",
+      "System handles concurrent users during demo",
+      "Data privacy and FERPA compliance demonstrated"
+    ],
+    "businessMetrics": {
+      "business": [
+        "MRR growth",
+        "user acquisition cost",
+        "customer lifetime value"
+      ],
+      "engagement": [
+        "Daily active users",
+        "voice queries per session",
+        "lesson plan uploads"
+      ],
+      "technical": [
+        "Voice response time <2s",
+        "RAG accuracy >90%",
+        "system uptime 99.9%"
+      ]
+    }
+  },
+  "roadmap": {
+    "phase1": {
+      "name": "MVP Development (Hackathon - September 23-27, 2025)",
+      "goal": "Build and demonstrate core voice assistant and instructional feedback capabilities",
+      "keyDeliverables": [
+        "Voice-enabled district assistant with Vapi integration",
+        "AI-powered lesson plan feedback system",
+        "Basic dashboard with Convex backend",
+        "RAG pipeline with Firecrawl document ingestion",
+        "Working demo for hackathon judges"
+      ],
+      "successMetrics": "Functional prototype, voice response <2s, accurate policy answers, compelling demo"
+    },
+    "phase2": {
+      "name": "MVP Release & Pilot (October 1 - December 2025)",
+      "goal": "Launch MVP and validate product-market fit with early adopter teachers",
+      "keyDeliverables": [
+        "MVP Release (October 1, 2025)",
+        "Refined voice interface based on user feedback",
+        "Enhanced RAG accuracy and response quality",
+        "Teacher onboarding flow and documentation",
+        "Pilot program with 10-20 teachers",
+        "Case study and success metrics"
+      ],
+      "successMetrics": "80% teacher satisfaction, 70% weekly retention, 5+ voice queries per session"
+    },
+    "phase3": {
+      "name": "District Rollout (Q1-Q2 2026)",
+      "goal": "Scale to full district-wide implementation with enterprise features",
+      "keyDeliverables": [
+        "Enterprise authentication and security",
+        "Advanced analytics and reporting",
+        "District-wide document ingestion",
+        "Custom integrations and APIs",
+        "Full sales and support team"
+      ],
+      "successMetrics": "3+ district contracts, $50K+ ARR, 90%+ renewal rate"
+    }
+  },
+  "taskManagement": {
+    "taskBacklog": [
+      {
+        "task": "Set up Convex backend with RAG component",
+        "priority": "P0",
+        "status": "To Do",
+        "notes": "Core infrastructure for MVP"
+      },
+      {
+        "task": "Integrate Vapi for voice interface",
+        "priority": "P0",
+        "status": "To Do",
+        "notes": "Essential for voice assistant demo"
+      },
+      {
+        "task": "Implement Firecrawl for document ingestion",
+        "priority": "P0",
+        "status": "To Do",
+        "notes": "Required for district-specific knowledge"
+      },
+      {
+        "task": "Build basic dashboard UI",
+        "priority": "P0",
+        "status": "To Do",
+        "notes": "User interface for MVP demo"
+      },
+      {
+        "task": "Create lesson plan feedback system",
+        "priority": "P0",
+        "status": "To Do",
+        "notes": "Core feature for instructional support"
+      },
+      {
+        "task": "Test with sample district documents",
+        "priority": "P1",
+        "status": "To Do",
+        "notes": "Validation before demo"
+      },
+      {
+        "task": "Prepare compelling demo script",
+        "priority": "P1",
+        "status": "To Do",
+        "notes": "Critical for hackathon success"
+      },
+      {
+        "task": "Load realistic district data",
+        "priority": "P1",
+        "status": "To Do",
+        "notes": "Ensure demo shows real value"
+      },
+      {
+        "task": "Practice voice interaction flows",
+        "priority": "P1",
+        "status": "To Do",
+        "notes": "Smooth demo execution"
+      },
+      {
+        "task": "Create pitch materials",
+        "priority": "P2",
+        "status": "To Do",
+        "notes": "Supporting materials for judges"
+      }
+    ]
+  },
+  "riskAssessment": {
+    "voiceInterfaceLatencyIssues": {
+      "description": "Voice interface may not meet <2s response time requirement",
+      "mitigation": "Vapi optimization, fallback to text interface, clear speaking guidelines for demo"
+    },
+    "ragAccuracyProblems": {
+      "description": "RAG system may not provide accurate district-specific answers",
+      "mitigation": "Multiple document sources, fact-checking, human-in-the-loop validation"
+    },
+    "integrationComplexity": {
+      "description": "Multiple technology integrations may be complex",
+      "mitigation": "Thorough testing, backup systems, simplified demo flow"
+    },
+    "demoTechnicalFailures": {
+      "description": "Technical issues during hackathon demo",
+      "mitigation": "Offline mode preparation, backup internet, pre-recorded demo video"
+    },
+    "limitedTimeForDevelopment": {
+      "description": "3-day hackathon timeline limits feature scope",
+      "mitigation": "Focus on core features only, leverage existing components, prioritize demo-ready functionality"
+    }
+  },
+  "competitiveAnalysis": {
+    "directCompetitors": [
+      {
+        "name": "Khanmigo",
+        "strengths": "Free for teachers, good at lesson planning",
+        "weaknesses": "Lacks district-specific context"
+      },
+      {
+        "name": "MagicSchool AI",
+        "strengths": "50+ tools, focused on efficiency",
+        "weaknesses": "No voice interface"
+      },
+      {
+        "name": "Brisk Teaching",
+        "strengths": "Chrome extension, good for Google workflows",
+        "weaknesses": "Limited scope"
+      },
+      {
+        "name": "TeacherMatic",
+        "strengths": "Comprehensive tools",
+        "weaknesses": "No district contextualization"
+      }
+    ],
+    "indirectCompetitors": [
+      {
+        "name": "Google Classroom",
+        "strengths": "Massive user base, adding AI features",
+        "weaknesses": "Not voice-first"
+      },
+      {
+        "name": "Schoology",
+        "strengths": "LMS with some AI",
+        "weaknesses": "Not specialized for teacher assistance"
+      }
+    ],
+    "competitiveAdvantage": "Hyper-contextualization with district-specific knowledge + real-time voice interface",
+    "keyDifferentiators": [
+      "District-specific RAG knowledge base",
+      "Voice-enabled hands-free interaction",
+      "Integrated command center approach",
+      "FERPA-compliant data ownership"
+    ]
+  },
+  "featurePrioritization": {
+    "p0": [
+      {
+        "name": "Voice District Assistant",
+        "description": "Real-time voice queries about district policies",
+        "status": "Planned",
+        "notes": "Core MVP feature for demo"
+      },
+      {
+        "name": "Lesson Plan Feedback",
+        "description": "AI analysis and suggestions for lesson plans",
+        "status": "Planned",
+        "notes": "Core MVP feature for demo"
+      },
+      {
+        "name": "Teacher Dashboard",
+        "description": "Centralized interface for all features",
+        "status": "Planned",
+        "notes": "Required for user experience"
+      },
+      {
+        "name": "RAG Pipeline",
+        "description": "District document ingestion and search",
+        "status": "Planned",
+        "notes": "Essential for contextualization"
+      }
+    ],
+    "p1": [
+      {
+        "name": "Authentication",
+        "description": "User login and session management",
+        "status": "Planned",
+        "notes": "Required for multi-user demo"
+      },
+      {
+        "name": "Document Upload",
+        "description": "Interface for uploading lesson plans",
+        "status": "Planned",
+        "notes": "Required for feedback feature"
+      }
+    ],
+    "p2": [
+      {
+        "name": "Voice Settings",
+        "description": "Configuration for voice interface",
+        "status": "Planned",
+        "notes": "Nice-to-have for demo"
+      },
+      {
+        "name": "Analytics Dashboard",
+        "description": "Usage metrics and insights",
+        "status": "On Hold",
+        "notes": "Post-MVP feature"
+      },
+      {
+        "name": "Mobile App",
+        "description": "Native mobile application",
+        "status": "On Hold",
+        "notes": "Post-MVP feature"
+      },
+      {
+        "name": "Advanced RAG",
+        "description": "Multi-document reasoning and synthesis",
+        "status": "On Hold",
+        "notes": "Post-MVP feature"
+      }
+    ]
+  },
+  "userJourneys": {
+    "voicePolicyQuery": {
+      "goal": "Get quick answer about district policy on student-led projects",
+      "trigger": "Student asks about project requirements, teacher needs clarification",
+      "userActions": [
+        "Opens A.I.D.A. dashboard",
+        "Clicks voice assistant button",
+        "Asks 'What's our district's policy on student-led projects?'",
+        "Reviews AI response and sources"
+      ],
+      "projectResponse": [
+        "Dashboard loads with voice interface ready",
+        "Vapi processes voice input",
+        "RAG system searches district documents",
+        "OpenAI generates contextual response with citations"
+      ],
+      "emotionalState": "Frustrated (searching) → Hopeful (asking) → Relieved (getting answer) → Confident (proceeding)"
+    },
+    "lessonPlanFeedback": {
+      "goal": "Get intelligent feedback on lesson plan to improve engagement",
+      "trigger": "Teacher wants to enhance a lesson before teaching it",
+      "userActions": [
+        "Uploads lesson plan to A.I.D.A.",
+        "Clicks 'Get Feedback' button",
+        "Reviews AI suggestions",
+        "Implements recommended changes"
+      ],
+      "projectResponse": [
+        "System processes uploaded document",
+        "OpenAI analyzes content for engagement opportunities",
+        "Generates specific, actionable suggestions",
+        "Provides implementation guidance"
+      ],
+      "emotionalState": "Uncertain (uploading) → Curious (waiting) → Excited (seeing suggestions) → Empowered (implementing)"
+    }
+  },
+  "userOnboarding": {
+    "step1": {
+      "name": "Welcome & First Interaction",
+      "description": "Welcome message: 'Welcome to A.I.D.A.! Let's get you started with your first voice query.' First action: Click the voice button and ask a question about district policies."
+    },
+    "step2": {
+      "name": "Key Feature Exploration",
+      "description": "Voice interface walkthrough: Guide user through asking a district policy question, then show lesson plan feedback feature."
+    },
+    "step3": {
+      "name": "First 'Aha!' Moment",
+      "description": "User gets an accurate, helpful answer to their district policy question in under 2 seconds, with clear sources and citations."
+    },
+    "step4": {
+      "name": "Habit Formation",
+      "description": "Email follow-up with voice interface tips, new feature announcements, and success stories from other teachers."
+    }
+  },
+  "releaseOperations": {
+    "releaseCadence": {
+      "minorReleases": {
+        "frequency": "Deployed weekly during active development",
+        "focus": "Small feature additions, bug fixes, and performance improvements, especially voice interface",
+        "versioning": "vX.Y.0"
+      },
+      "majorReleases": {
+        "frequency": "Deployed monthly for significant features",
+        "focus": "Major voice interface improvements, RAG pipeline enhancements, new integrations",
+        "versioning": "vX.0.0"
+      },
+      "hotfixes": {
+        "frequency": "Deployed as needed for critical bugs, especially voice interface issues",
+        "versioning": "vX.Y.Z"
+      },
+      "hackathonReleases": {
+        "frequency": "Deployed daily during hackathon development",
+        "focus": "Demo-ready features, sponsor technology integration, voice interface optimization",
+        "versioning": "v0.X.Y (pre-release versions)"
+      }
+    },
+    "versionHistory": [
+      {
+        "version": "v0.1.0",
+        "date": "September 23, 2025",
+        "description": "Hackathon MVP Release",
+        "keyFeatures": "Voice Orb interface, district assistant, lesson plan feedback, Convex backend"
+      },
+      {
+        "version": "v0.2.0",
+        "date": "September 24, 2025",
+        "description": "Voice Interface Optimization",
+        "keyFeatures": "Improved voice recognition, <2s response times, Vapi integration"
+      },
+      {
+        "version": "v0.3.0",
+        "date": "September 25, 2025",
+        "description": "RAG Pipeline Enhancement",
+        "keyFeatures": "Firecrawl document ingestion, improved accuracy, source citations"
+      },
+      {
+        "version": "v1.0.0",
+        "date": "October 1, 2025",
+        "description": "MVP Launch",
+        "keyFeatures": "Full voice interface, FERPA compliance, teacher onboarding"
+      },
+      {
+        "version": "v1.1.0",
+        "date": "November 2025",
+        "description": "Advanced Features",
+        "keyFeatures": "Custom document upload, voice settings, analytics dashboard"
+      },
+      {
+        "version": "v1.2.0",
+        "date": "December 2025",
+        "description": "District Integration",
+        "keyFeatures": "Enterprise authentication, district-wide deployment, admin dashboard"
+      }
+    ]
+  },
+  "dataPrivacyCompliance": {
+    "ferpaCompliance": [
+      "Self-hosted authentication (Better Auth)",
+      "Full data ownership for districts",
+      "No vendor lock-in",
+      "Secure document processing"
+    ],
+    "ethicalConsiderations": [
+      "Human-in-the-loop oversight",
+      "Bias mitigation strategies",
+      "Pedagogical soundness validation",
+      "Teacher empowerment focus"
+    ]
+  },
+  "assumptionsConstraints": {
+    "coreAssumptions": [
+      "Teachers will adopt voice interface for quick queries",
+      "Districts will pay for enterprise features that save teacher time",
+      "RAG accuracy will be sufficient for policy questions",
+      "Voice technology is mature enough for reliable demo",
+      "Teachers have access to district documents for ingestion"
+    ],
+    "constraints": [
+      "3-day hackathon timeline limits feature scope",
+      "Limited budget for external services during development",
+      "Need to demonstrate 5+ sponsor technology integrations",
+      "Must create compelling demo within time constraints",
+      "Voice recognition accuracy depends on environment"
+    ]
+  },
+  "successDefinition": {
+    "mvpSucceedsWhen": [
+      "A teacher can ask a voice question about district policy and get an accurate, helpful answer",
+      "A teacher can upload a lesson plan and receive actionable feedback",
+      "The demo showcases a compelling, defensible solution that judges want to see more of",
+      "The technology stack demonstrates scalability and enterprise readiness",
+      "The solution addresses a real, validated problem in education"
+    ]
+  },
+  "nextSteps": [
+    "Immediate (Sept 23): Begin Convex setup and Vapi integration",
+    "Day 1 (Sept 24): Implement core RAG pipeline with Firecrawl",
+    "Day 2 (Sept 25): Build dashboard UI and lesson plan feedback",
+    "Day 3 (Sept 26-27): Test, refine, and prepare demo",
+    "Demo Day: Execute compelling demonstration",
+    "MVP Release (Oct 1): Launch public beta with core features"
+  ]
+}
