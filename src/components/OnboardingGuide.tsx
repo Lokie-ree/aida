@@ -18,7 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { X, Lightbulb } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 
 interface OnboardingGuideProps {
   currentSpaceId?: Id<"spaces"> | null;
@@ -142,22 +142,10 @@ export function OnboardingGuide({
     <Dialog open={isVisible} onOpenChange={() => setIsVisible(false)}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <DialogTitle>{currentStepData.title}</DialogTitle>
-              <DialogDescription className="mt-2">
-                Step {currentStep + 1} of {onboardingSteps.length}
-              </DialogDescription>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleSkip}
-              className="h-8 w-8 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <DialogTitle>{currentStepData.title}</DialogTitle>
+          <DialogDescription className="mt-2">
+            Step {currentStep + 1} of {onboardingSteps.length}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
