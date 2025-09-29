@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { useAction, useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
-import { WebScrapingManager } from "./WebScrapingManager";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import {
@@ -138,9 +137,9 @@ export function DocumentManager({
 
   const getUploadDescription = () => {
     if (currentSpace) {
-      return `Upload documents to share with ${currentSpace.name} team members`;
+      return `Upload official district documents to share with ${currentSpace.name} members`;
     }
-    return "Upload curriculum guides, policy manuals, or other text documents (max 5MB)";
+    return "Upload district policies, student handbooks, board documents, or curriculum guides (max 5MB)";
   };
 
   const getEmptyStateMessage = () => {
@@ -195,8 +194,6 @@ export function DocumentManager({
           </p>
         </div>
 
-        {/* Web Scraping Section */}
-        <WebScrapingManager currentSpaceId={currentSpaceId} />
       </CardContent>
 
       {/* Content List */}
@@ -208,8 +205,7 @@ export function DocumentManager({
                 <div className="text-4xl mb-2">📚</div>
                 <p className="text-sm">{getEmptyStateMessage()}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Upload documents or scrape websites to provide context for
-                  A.I.D.A.
+                  Upload district documents to build your knowledge base
                 </p>
               </div>
             </div>

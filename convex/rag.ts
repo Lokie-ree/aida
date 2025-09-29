@@ -47,41 +47,7 @@ export const addDocumentToRAG = action({
   },
 });
 
-// Add web scraping content to RAG
-export const addWebScrapingToRAG = action({
-  args: {
-    websiteId: v.id("scrapedWebsites"),
-    content: v.string(),
-    title: v.string(),
-    url: v.string(),
-    spaceId: v.optional(v.id("spaces")),
-  },
-  returns: v.object({
-    success: v.boolean(),
-  }),
-  handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("User must be authenticated");
-    }
-
-    // Create namespace based on space or user
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
-
-    await rag.add(ctx, {
-      namespace,
-      key: `web_${args.websiteId}`,
-      text: args.content,
-      filterValues: [
-        { name: "spaceId", value: args.spaceId || "personal" },
-        { name: "contentType", value: "website" },
-        { name: "userId", value: userId },
-      ],
-    });
-
-    return { success: true };
-  },
-});
+// Web scraping functionality removed - focusing exclusively on document-based district information
 
 // Semantic search across all content
 export const semanticSearch = action({
@@ -141,13 +107,15 @@ export const generateResponseWithRAG = action({
         limit: 10,
         vectorScoreThreshold: 0.5,
       },
-      prompt: `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. You provide constructive, actionable feedback to enhance teaching and learning.
+      prompt: `You are A.I.D.A. (AI-powered Instructional District Assistant), the official voice of the school district. You are the central, trusted source of district information for the entire school community—from parents to administrators to educators.
 
-${args.spaceId ? "You are responding in a shared team space where multiple users collaborate and share knowledge." : "You are responding in a personal workspace."}
+Your role is to provide accurate, helpful, and instant answers to questions about district policies, procedures, handbooks, and official documents. Always cite the specific source document when providing information.
+
+${args.spaceId ? "You are responding in a shared district space where multiple stakeholders can access information." : "You are responding in a personal workspace."}
 
 User question: ${args.message}
 
-Please provide helpful, specific guidance based on instructional design best practices. If you have relevant context from documents or scraped websites, reference them specifically in your response.`,
+Please provide a clear, accurate answer based on the district documents in your knowledge base. Always cite the specific source and section when possible.`,
       model: openai("gpt-4o-mini"),
     });
 
@@ -229,50 +197,7 @@ export const migrateExistingDocuments = action({
   },
 });
 
-// Migration function to add existing web scraping content to RAG
-export const migrateExistingWebsites = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
-  returns: v.object({
-    success: v.boolean(),
-    migratedCount: v.number(),
-    totalWebsites: v.number(),
-    errors: v.array(v.string()),
-  }),
-  handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new Error("User must be authenticated");
-    }
-
-    // Get all scraped websites for the user/space
-    const websites: any = await ctx.runQuery(api.webscraping.getUserScrapedWebsites, { spaceId: args.spaceId });
-    
-    let migratedCount = 0;
-    const errors: string[] = [];
-
-    for (const website of websites) {
-      try {
-        await ctx.runAction(api.rag.addWebScrapingToRAG, {
-          websiteId: website._id,
-          content: website.content,
-          title: website.title,
-          url: website.url,
-          spaceId: args.spaceId,
-        });
-        migratedCount++;
-      } catch (error) {
-        errors.push(`Failed to migrate website ${website.title}: ${error}`);
-      }
-    }
-
-    return {
-      success: true,
-      migratedCount,
-      totalWebsites: websites.length,
-      errors,
-    };
-  },
-});
+// Website migration removed - web scraping functionality deprecated
 
 // Add demo data to RAG for realistic district policy responses
 export const addDemoDataToRAG = action({
@@ -387,7 +312,7 @@ export const addDemoDataToRAG = action({
   },
 });
 
-// Complete migration for all existing content
+// Migration for documents only - web scraping removed
 export const migrateAllExistingContent = action({
   args: { spaceId: v.optional(v.id("spaces")) },
   returns: v.object({
@@ -398,12 +323,6 @@ export const migrateAllExistingContent = action({
       totalDocuments: v.number(),
       errors: v.array(v.string()),
     }),
-    websites: v.object({
-      success: v.boolean(),
-      migratedCount: v.number(),
-      totalWebsites: v.number(),
-      errors: v.array(v.string()),
-    }),
     totalMigrated: v.number(),
   }),
   handler: async (ctx, args) => {
@@ -412,17 +331,13 @@ export const migrateAllExistingContent = action({
       throw new Error("User must be authenticated");
     }
 
-    // Migrate documents
+    // Migrate documents only
     const documentResult: any = await ctx.runAction(api.rag.migrateExistingDocuments, { spaceId: args.spaceId });
-    
-    // Migrate websites
-    const websiteResult: any = await ctx.runAction(api.rag.migrateExistingWebsites, { spaceId: args.spaceId });
 
     return {
       success: true,
       documents: documentResult,
-      websites: websiteResult,
-      totalMigrated: documentResult.migratedCount + websiteResult.migratedCount,
+      totalMigrated: documentResult.migratedCount,
     };
   },
 });

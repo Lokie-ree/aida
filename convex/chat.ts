@@ -83,24 +83,22 @@ export const sendMessage = action({
 
       // Extract context information for tracking
       const contextDocuments: string[] = [];
-      const contextWebsites: string[] = [];
       
       if (context && context.entries) {
         context.entries.forEach((entry: any) => {
           if (entry.key.startsWith('doc_')) {
             contextDocuments.push(entry.key.replace('doc_', ''));
-          } else if (entry.key.startsWith('web_')) {
-            contextWebsites.push(entry.key.replace('web_', ''));
+          } else if (entry.key.startsWith('demo_policy_')) {
+            contextDocuments.push(entry.key.replace('demo_policy_', 'District Policy: '));
           }
         });
       }
 
-      // Save AI response
+      // Save AI response with document context
       await ctx.runMutation(api.chat.saveMessage, {
         role: "assistant",
         content: aiResponse,
         contextDocuments: contextDocuments.length > 0 ? contextDocuments : undefined,
-        contextWebsites: contextWebsites.length > 0 ? contextWebsites : undefined,
         spaceId: args.spaceId,
       });
 
@@ -117,7 +115,6 @@ export const saveMessage = mutation({
     role: v.union(v.literal("user"), v.literal("assistant")),
     content: v.string(),
     contextDocuments: v.optional(v.array(v.string())),
-    contextWebsites: v.optional(v.array(v.string())),
     spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args) => {
@@ -131,7 +128,6 @@ export const saveMessage = mutation({
       role: args.role,
       content: args.content,
       contextDocuments: args.contextDocuments,
-      contextWebsites: args.contextWebsites,
       spaceId: args.spaceId,
     });
   },

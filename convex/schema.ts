@@ -3,6 +3,8 @@ import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
+  // Note: feedbackSessions table deprecated for MVP - focus on voice-first district information queries
+  // Keeping for backward compatibility but can be removed in future cleanup
   feedbackSessions: defineTable({
     userId: v.id("users"),
     lessonPlan: v.string(),
@@ -23,27 +25,11 @@ const applicationTables = {
   }).index("by_user", ["userId"])
     .index("by_space", ["spaceId"]),
   
-  scrapedWebsites: defineTable({
-    userId: v.id("users"),
-    url: v.string(),
-    title: v.string(),
-    content: v.string(),
-    chunks: v.array(v.string()),
-    metadata: v.object({
-      description: v.string(),
-      ogImage: v.string(),
-      sourceURL: v.string(),
-    }),
-    spaceId: v.optional(v.id("spaces")), // null for personal space
-  }).index("by_user", ["userId"])
-    .index("by_space", ["spaceId"]),
-  
   chatMessages: defineTable({
     userId: v.id("users"),
     role: v.union(v.literal("user"), v.literal("assistant")),
     content: v.string(),
     contextDocuments: v.optional(v.array(v.string())), // Document names used for context
-    contextWebsites: v.optional(v.array(v.string())), // Website titles used for context
     spaceId: v.optional(v.id("spaces")), // null for personal space
   }).index("by_user", ["userId"])
     .index("by_space", ["spaceId"]),
