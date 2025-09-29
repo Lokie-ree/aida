@@ -59,11 +59,14 @@ export function EmailIntegration({ currentSpaceId }: EmailIntegrationProps) {
 
   if (emailSent) {
     return (
-      <Card>
+      <Card className="h-full border-0 shadow-none bg-transparent">
         <CardContent className="flex flex-col items-center justify-center py-8">
-          <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+          <div className="relative">
+            <div className="absolute inset-0 bg-green-500/20 rounded-full blur-xl"></div>
+            <CheckCircle className="relative w-16 h-16 text-green-500 mb-4" />
+          </div>
           <h3 className="text-lg font-semibold mb-2">Email Sent!</h3>
-          <p className="text-muted-foreground text-center">
+          <p className="text-muted-foreground text-center text-sm">
             Check your inbox for your welcome email from A.I.D.A. with tips on
             getting started.
           </p>
@@ -73,18 +76,19 @@ export function EmailIntegration({ currentSpaceId }: EmailIntegrationProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Mail className="w-5 h-5" />
+    <Card className="h-full border-0 shadow-none bg-transparent">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+          <Mail className="w-4 h-4" />
           Get Email Updates
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-xs mt-1">
           Receive welcome emails, voice session summaries, and helpful tips for
           using A.I.D.A.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         <form onSubmit={handleSendWelcomeEmail} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
@@ -98,7 +102,7 @@ export function EmailIntegration({ currentSpaceId }: EmailIntegrationProps) {
             />
           </div>
 
-          <Button type="submit" disabled={isLoading} className="w-full">
+          <Button type="submit" disabled={isLoading} className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-md">
             {isLoading ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
@@ -112,7 +116,7 @@ export function EmailIntegration({ currentSpaceId }: EmailIntegrationProps) {
             )}
           </Button>
 
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-xs text-muted-foreground text-center leading-relaxed">
             We'll send you a personalized welcome email with district-specific
             tips and getting started guide.
           </p>
