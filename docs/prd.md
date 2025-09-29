@@ -12,74 +12,74 @@
 
 ## Executive Summary
 
-A.I.D.A. is a voice-enabled, context-aware AI assistant designed to solve the critical problem of information overload faced by K-12 educators. This MVP focuses on a single, compelling user journey that demonstrates the core value proposition: **a teacher asking a voice-enabled assistant about district-specific policies and receiving intelligent, contextual feedback on their lesson plans**.
+A.I.D.A. is the central, trusted source of district information for the entire school community—from parents to administrators to educators—accessible through a hyper-contextualized, voice-first interface. This MVP focuses on a compelling value proposition: **providing instant, accurate answers to district policy questions for all stakeholders through voice interaction**.
 
-The MVP is strategically designed to "go deep, not wide" by focusing on the unique differentiators of hyper-contextualization and voice interface that competitors cannot easily replicate.
+The MVP is strategically designed to "go deep, not wide" by focusing on the unique differentiators of hyper-contextualization and voice interface that competitors cannot easily replicate, serving as the single source of truth for district information.
 
 ---
 
 ## Problem Statement
 
-**The Core Problem:** K-12 educators face perpetual information overload, navigating a constant deluge of district policies, curriculum guides, student handbooks, and professional development materials without a centralized, intelligent system to synthesize this information.
+**The Core Problem:** School communities face a critical communication gap—parents, educators, and administrators struggle to find accurate, up-to-date district information buried in complex websites, PDFs, and multiple systems. This leads to confusion, misinformation, and countless repetitive inquiries.
 
-**The Pain Point:** Teachers waste valuable time searching through multiple documents and systems to find specific information, leading to burnout and fragmented workflows that detract from meaningful student interaction.
+**The Pain Point:** 
+- **Parents:** Navigate confusing district websites trying to find policies on attendance, bus routes, or enrollment
+- **Educators:** Waste valuable time searching through multiple documents for district policies and procedures
+- **Administrators:** Field repetitive inquiries and struggle to ensure consistent information delivery
 
-**Market Validation:** The AI in EdTech market is projected to grow from $2.21-5.88 billion (2024) to over $90 billion by 2033, driven by demand for personalized learning and administrative automation.
+**Market Validation:** The AI in EdTech market is projected to grow from $2.21-5.88 billion (2024) to over $90 billion by 2033, driven by demand for improved communication and administrative automation.
 
 ---
 
 ## Solution Overview
 
-A.I.D.A. is an AI-powered instructional command center that augments human expertise rather than replacing it. The MVP delivers two core capabilities:
+A.I.D.A. is the voice of the school district—a single, trusted source of truth accessible to the entire community. The MVP delivers one core capability executed exceptionally well:
 
-1. **Voice-Enabled District Assistant**: Real-time, hands-free interaction with district-specific knowledge
-2. **AI-Powered Instructional Feedback**: Intelligent analysis and suggestions for lesson plans
+1. **Voice-Enabled District Information Hub**: Real-time, hands-free interaction with district-specific knowledge for all stakeholders
 
 ---
 
 ## Target Audience
 
-- **Primary Users:** K-12 educators (teachers, curriculum coordinators)
-- **Secondary Users:** School district administrators
+- **Primary Users:** Entire school community (educators, parents, administrators)
+- **Key Personas:**
+  - **The Educator (Sarah):** Needs quick access to district policies while teaching
+  - **The Engaged Parent (Maria):** Wants instant answers about attendance, bus routes, enrollment
+  - **The District Leader (Michael):** Ensures policy compliance and improves communication efficiency
 - **Demo Audience:** Hackathon judges and potential investors
 
 ---
 
 ## MVP Core Features
 
-### 1. Voice-Enabled District Assistant
+### 1. Voice-Enabled District Information Hub
 
-**The "Aha!" Moment:** A teacher asks, "What's our district's policy on student-led projects?" and receives an immediate, accurate answer based on their specific district's documents.
+**The "Aha!" Moment:** Multiple user journeys demonstrate the power:
+- A teacher asks, "What's our district's policy on reporting bullying?" during class prep
+- A parent asks, "What time does the school bus arrive at Maple Street?" from home
+- An administrator asks, "Summarize our student wellness goals" before a board meeting
+
+All receive immediate, accurate, sourced answers.
 
 **Key Capabilities:**
 
 - Real-time voice interaction using Vapi
 - District-specific knowledge base powered by RAG
 - Natural conversation flow with context awareness
-- Hands-free operation for busy educators
+- Hands-free operation for all community members
+- Source citation for transparency and trust
 
-**User Story:**
+**User Stories:**
 
-> "As a teacher, I want to ask the virtual assistant about the district's policy on student-led projects so I can properly guide my students."
+> "As a teacher, I want to ask about district policies while I'm planning lessons so I can ensure compliance without interrupting my workflow."
 
-### 2. AI-Powered Instructional Feedback
+> "As a parent, I want instant answers to district questions without having to call the school office or search multiple websites."
 
-**The "Aha!" Moment:** A teacher uploads a lesson plan and receives intelligent suggestions for enhancing engagement and rigor.
+> "As an administrator, I want to ensure consistent information delivery across the entire community to reduce confusion and repetitive inquiries."
 
-**Key Capabilities:**
+### 2. Community Information Dashboard
 
-- Upload lesson plans or prompts
-- AI-generated feedback and suggestions
-- Focus on engagement and rigor improvements
-- Pedagogically sound recommendations
-
-**User Story:**
-
-> "As an educator, I want to submit my lesson plan to the assistant so it can suggest ways to enhance engagement or add a more rigorous component."
-
-### 3. Teacher Command Center Dashboard
-
-**Purpose:** Centralized overview of key tasks and insights
+**Purpose:** Centralized access point for district information
 
 **Key Capabilities:**
 
@@ -88,9 +88,10 @@ A.I.D.A. is an AI-powered instructional command center that augments human exper
   - Listening: Purple light with active pulsing
   - Success: Steady green with confirmation pulse
 - Quick access to voice assistant
-- Lesson plan upload interface
-- Recent interactions and feedback
-- District context indicators
+- Document upload interface for district policies
+- Recent interactions and queries
+- District knowledge base indicators
+- Shared spaces for community collaboration
 
 ---
 
@@ -102,17 +103,17 @@ A.I.D.A. is an AI-powered instructional command center that augments human exper
 - **Backend:** Convex (real-time database and serverless functions, deployed on Convex Cloud)
 - **AI Engine:** OpenAI GPT-4o-mini (reasoning and generation)
 - **Voice Interface:** Vapi (real-time speech-to-text and text-to-speech)
-- **Data Ingestion:** Firecrawl (district document scraping and processing)
+- **Data Ingestion:** Direct document upload (PDFs, text files) - web scraping removed for simplicity
 - **Authentication:** Convex Auth (self-hosted, FERPA-compliant)
 - **Design System:** ShadCN + React Bits + TweakCN (voice interface components)
 
 ### Data Flow
 
-1. **Ingestion:** Firecrawl scrapes district documents → Clean, structured data
+1. **Ingestion:** District staff upload official documents → Clean, structured data
 2. **Storage:** Convex RAG builds searchable knowledge base with vector embeddings
-3. **Voice Interaction:** Voice input → Vapi → OpenAI → Contextual response (<2s target)
-4. **Feedback:** Lesson plan → OpenAI analysis → Structured feedback with engagement suggestions
-5. **Audit:** All interactions logged for FERPA compliance
+3. **Voice Interaction:** Voice input → Vapi → OpenAI → Contextual response with source citation (<2s target)
+4. **Multi-Stakeholder Access:** Parents, educators, and administrators all access the same trusted information
+5. **Audit:** All interactions logged for FERPA compliance and analytics
 
 ### Performance Requirements
 
@@ -154,12 +155,13 @@ A.I.D.A. is an AI-powered instructional command center that augments human exper
 
 ### Competitive Advantage
 
-| Feature                     | A.I.D.A. | Competitors |
-| --------------------------- | -------- | ----------- |
-| Hyper-Contextualization     | ✅       | ❌          |
-| Real-time Voice Interface   | ✅       | ❌          |
-| District-Specific Knowledge | ✅       | ❌          |
-| Integrated Workflow         | ✅       | ❌          |
+| Feature                           | A.I.D.A. | Competitors |
+| --------------------------------- | -------- | ----------- |
+| Hyper-Contextualized District RAG | ✅       | ❌          |
+| Real-time Voice Interface         | ✅       | ❌          |
+| Multi-Stakeholder Access          | ✅       | ❌          |
+| Single Source of Truth            | ✅       | ❌          |
+| Community-Wide Information Hub    | ✅       | ❌          |
 
 ---
 
@@ -236,11 +238,11 @@ A.I.D.A. is an AI-powered instructional command center that augments human exper
 
 **The MVP succeeds when:**
 
-1. A teacher can ask a voice question about district policy and get an accurate, helpful answer
-2. A teacher can upload a lesson plan and receive actionable feedback
-3. The demo showcases a compelling, defensible solution that judges want to see more of
-4. The technology stack demonstrates scalability and enterprise readiness
-5. The solution addresses a real, validated problem in education
+1. Multiple stakeholders (teacher, parent, administrator) can ask voice questions about district policy and get accurate, sourced answers
+2. The demo showcases a compelling, defensible solution that serves the entire school community
+3. The technology stack demonstrates scalability and enterprise readiness
+4. The solution addresses a real, validated problem in education: fragmented district information
+5. The voice interface responds in under 2 seconds with properly cited sources
 
 ---
 

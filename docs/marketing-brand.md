@@ -25,7 +25,7 @@ This document serves as the single source of truth for all marketing activities 
 
 ### Mission-Driven Brand
 
-**Core Message:** A.I.D.A. transforms how educators access district information and receive instructional support through voice-enabled AI that understands their specific context and needs.
+**Core Message:** A.I.D.A. is the voice of the school district—a single, trusted source of truth for the entire school community, providing instant, accurate answers to district policy and information questions through a voice-first interface.
 
 ### Brand Personality
 
@@ -41,13 +41,14 @@ This document serves as the single source of truth for all marketing activities 
 
 ### Core Messaging
 
-- **Tagline:** "Your Voice-Powered Educational Command Center"
-- **Elevator Pitch:** A.I.D.A. is the AI assistant that gives K-12 educators instant access to district-specific information and personalized instructional feedback through natural voice interactions.
+- **Tagline:** "The Voice of Your School District"
+- **Elevator Pitch:** A.I.D.A. is the central, trusted source of district information for the entire school community—from parents to administrators to educators—accessible through a hyper-contextualized, voice-first interface.
 - **Benefit-Driven Statements:**
-  - "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers"
-  - "Get personalized feedback on your lesson plans to improve student engagement"
-  - "Access district information hands-free while you're teaching or planning"
-  - "Save hours of searching through documents and focus on what matters - your students"
+  - **For Parents:** "Get instant, trusted answers to all your district questions"
+  - **For Educators:** "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers"
+  - **For Administrators:** "Ensure consistent, accurate information delivery to your entire community"
+  - **Universal:** "Access district information hands-free through natural voice interactions"
+  - "Save hours of searching through documents and focus on what matters most"
 
 ## 🎨 Visual Identity System
 
@@ -125,11 +126,12 @@ This section outlines the strategic approach to launching and growing the projec
 
 This matrix ensures our messaging is tailored to each persona and their stage of awareness.
 
-| Persona                | Problem-Aware Messaging                                  | Solution-Aware Messaging                                    | Product-Aware Messaging                                                                   |
-| ---------------------- | -------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| K-12 Educator          | "Stop wasting time searching through district documents" | "A.I.D.A. gives you instant access to district information" | "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers"  |
-| District Administrator | "Teachers are overwhelmed with information overload"     | "A.I.D.A. reduces teacher workload and improves efficiency" | "A.I.D.A. provides district-specific AI assistance that saves teachers 2+ hours per week" |
-| Curriculum Coordinator | "Teachers need quick access to curriculum guidance"      | "A.I.D.A. provides instant curriculum support and feedback" | "A.I.D.A. offers voice-enabled curriculum assistance and lesson plan feedback"            |
+| Persona                | Problem-Aware Messaging                                       | Solution-Aware Messaging                                                      | Product-Aware Messaging                                                                           |
+| ---------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| K-12 Educator          | "Stop wasting time searching through district documents"      | "A.I.D.A. gives you instant access to district information"                   | "Ask A.I.D.A. anything about your district's policies and get instant, accurate answers"          |
+| District Administrator | "Parents and staff struggle to find accurate district info"   | "A.I.D.A. ensures consistent information delivery across your community"      | "A.I.D.A. is the official voice of your district—one trusted source of truth for everyone"        |
+| Engaged Parent         | "School websites are confusing and hard to navigate"          | "A.I.D.A. gives you instant answers to district questions"                    | "Ask A.I.D.A. about bus routes, attendance policies, or any district information—get instant answers" |
+| Curriculum Coordinator | "Teachers need quick access to curriculum and policy guidance" | "A.I.D.A. provides instant access to curriculum and district policy documents" | "A.I.D.A. offers voice-enabled access to all curriculum guides and district policies"             |
 
 ## 📝 Content Strategy
 
