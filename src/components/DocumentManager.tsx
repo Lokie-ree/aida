@@ -5,7 +5,13 @@ import { toast } from "sonner";
 import { WebScrapingManager } from "./WebScrapingManager";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Upload, FileText, Trash2, Loader2 } from "lucide-react";
@@ -13,26 +19,39 @@ import { designTokens } from "@/lib/design-tokens";
 
 interface DocumentManagerProps {
   currentSpaceId: Id<"spaces"> | null;
+  className?: string;
 }
 
-export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
+export function DocumentManager({
+  currentSpaceId,
+  className,
+}: DocumentManagerProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  const documents = useQuery(api.documents.getUserDocuments, { spaceId: currentSpaceId ?? undefined });
+
+  const documents = useQuery(api.documents.getUserDocuments, {
+    spaceId: currentSpaceId ?? undefined,
+  });
   const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
   const processDocument = useAction(api.documents.processUploadedDocument);
   const deleteDocument = useMutation(api.documents.deleteDocument);
-  const currentSpace = useQuery(api.spaces.getSpaceById, 
+  const currentSpace = useQuery(
+    api.spaces.getSpaceById,
     currentSpaceId ? { spaceId: currentSpaceId } : "skip"
   );
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     // Validate file type (text files only for now)
-    if (!file.type.startsWith('text/') && !file.name.endsWith('.txt') && !file.name.endsWith('.md')) {
+    if (
+      !file.type.startsWith("text/") &&
+      !file.name.endsWith(".txt") &&
+      !file.name.endsWith(".md")
+    ) {
       toast.error("Please upload text files only (.txt, .md)");
       return;
     }
@@ -72,8 +91,10 @@ export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
       });
 
       const spaceContext = currentSpace ? ` to ${currentSpace.name}` : "";
-      toast.success(`Document uploaded and processed successfully${spaceContext}!`);
-      
+      toast.success(
+        `Document uploaded and processed successfully${spaceContext}!`
+      );
+
       // Clear the file input
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
@@ -101,11 +122,11 @@ export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const getHeaderTitle = () => {
@@ -130,14 +151,14 @@ export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
   };
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className={`flex flex-col h-full ${className || ""}`}>
       <CardHeader>
         <CardTitle>{getHeaderTitle()}</CardTitle>
         <CardDescription>
           Upload and manage documents for your knowledge base
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="space-y-6">
         {/* File Upload Section */}
         <div className="space-y-3">
@@ -181,13 +202,14 @@ export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
       {/* Content List */}
       <CardContent className="flex-1 p-0">
         <ScrollArea className="h-full p-4">
-          {(!documents || documents.length === 0) ? (
+          {!documents || documents.length === 0 ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               <div className="text-center">
                 <div className="text-4xl mb-2">📚</div>
                 <p className="text-sm">{getEmptyStateMessage()}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Upload documents or scrape websites to provide context for A.I.D.A.
+                  Upload documents or scrape websites to provide context for
+                  A.I.D.A.
                 </p>
               </div>
             </div>
@@ -208,10 +230,12 @@ export function DocumentManager({ currentSpaceId }: DocumentManagerProps) {
                         <Badge variant="secondary" className="text-xs">
                           {formatFileSize(doc.fileSize)}
                         </Badge>
-                        <span>{new Date(doc._creationTime).toLocaleDateString()}</span>
+                        <span>
+                          {new Date(doc._creationTime).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
-                    
+
                     <Button
                       variant="ghost"
                       size="sm"

@@ -1,4 +1,3 @@
-import { ThemeProvider } from "./ui/theme-provider";
 import HeroSection from "./landing/HeroSection";
 import FeaturesSection from "./landing/Features";
 import StatsSection from "./landing/Stats";
@@ -9,39 +8,37 @@ import FooterSection from "./landing/Footer";
 
 export default function LandingPage() {
   return (
-    <ThemeProvider>
-      <div className="min-h-screen flex flex-col bg-background">
-        {/* Skip link for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          Skip to main content
-        </a>
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* Skip link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-ring"
+      >
+        Skip to main content
+      </a>
 
-        <main id="main-content" className="flex-1" role="main">
-          {/* Hero Section - includes its own header */}
-          <HeroSection />
+      <main id="main-content" className="flex-1" role="main">
+        {/* Hero Section - includes its own header */}
+        <HeroSection />
 
-          {/* Features Section */}
-          <FeaturesSection />
+        {/* Features Section */}
+        <FeaturesSection />
 
-          {/* Stats Section */}
-          <StatsSection />
+        {/* Stats Section */}
+        <StatsSection />
 
-          {/* Testimonials Section */}
-          <WallOfLoveSection />
+        {/* Testimonials Section */}
+        <WallOfLoveSection />
 
-          {/* Integrations Section */}
-          <IntegrationsSection />
+        {/* Integrations Section */}
+        <IntegrationsSection />
 
-          {/* Call to Action Section */}
-          <CallToAction />
-        </main>
+        {/* Call to Action Section */}
+        <CallToAction />
+      </main>
 
-        {/* Footer */}
-        <FooterSection />
-      </div>
-    </ThemeProvider>
+      {/* Footer */}
+      <FooterSection />
+    </div>
   );
 }
