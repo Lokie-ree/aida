@@ -125,12 +125,15 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
   };
 
   return (
-    <Card className="mb-4">
-      <CardHeader>
+    <Card className="h-full border-0 shadow-none bg-transparent">
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-sm">Workspace</CardTitle>
-            <CardDescription>Select or create a shared workspace</CardDescription>
+            <CardTitle className="text-base flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+              Workspace
+            </CardTitle>
+            <CardDescription className="text-xs mt-1">Select or create a shared workspace</CardDescription>
           </div>
           <div className="flex items-center gap-2">
             {pendingInvitations && pendingInvitations.length > 0 && (
@@ -158,13 +161,13 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="pt-0">
         {/* Space Selector */}
         <Select
           value={currentSpaceId || "personal"}
           onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-muted/30 border-primary/20 hover:border-primary/40 transition-colors">
             <SelectValue placeholder="Select a workspace" />
           </SelectTrigger>
           <SelectContent>
@@ -179,18 +182,20 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
 
         {/* Current Space Info */}
         {currentSpace && (
-          <Card className="mt-3 bg-muted/50">
+          <Card className="mt-3 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className="text-sm font-medium">{currentSpace.name}</h4>
-                  <p className="text-xs text-muted-foreground">Owner: {currentSpace.ownerName}</p>
+                  <h4 className="text-sm font-semibold">{currentSpace.name}</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">Owner: {currentSpace.ownerName}</p>
                   {spaceMembers && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <Users className="w-3 h-3 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">
-                        {spaceMembers.filter(m => m.invitationStatus === "accepted").length} members
-                      </span>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-1.5 px-2 py-1 bg-background/60 rounded-full">
+                        <Users className="w-3 h-3 text-primary" />
+                        <span className="text-xs font-medium text-foreground">
+                          {spaceMembers.filter(m => m.invitationStatus === "accepted").length} members
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -200,7 +205,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowInviteModal(true)}
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary"
                     >
                       <Mail className="w-4 h-4" />
                     </Button>
@@ -210,7 +215,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                       variant="ghost"
                       size="sm"
                       onClick={handleLeaveSpace}
-                      className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                      className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
                     >
                       <LogOut className="w-4 h-4" />
                     </Button>

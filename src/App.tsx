@@ -28,15 +28,19 @@ export default function App() {
             Skip to main content
           </a>
 
-          <header className="sticky top-0 z-10 bg-background/90 backdrop-blur-xs h-16 border-b shadow-xs">
-            <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+          <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-primary/10 shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none"></div>
+            <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center relative">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">
-                    AI
-                  </span>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-lg blur-sm opacity-75"></div>
+                  <div className="relative w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center shadow-md">
+                    <span className="text-primary-foreground font-bold text-sm">
+                      AI
+                    </span>
+                  </div>
                 </div>
-                <h1 className="text-xl font-semibold text-foreground">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   A.I.D.A.
                 </h1>
               </div>
@@ -88,32 +92,41 @@ function Content() {
         onComplete={() => console.log("Onboarding completed")}
       />
 
-      <div className="space-y-6">
-        {/* Header - Space Selector and Email Integration */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SpaceSelector
-            currentSpaceId={currentSpaceId}
-            onSpaceChange={setCurrentSpaceId}
-          />
-          <EmailIntegration currentSpaceId={currentSpaceId} />
+      <div className="space-y-4">
+        {/* Workspace Control Panel */}
+        <div className="bg-gradient-to-br from-primary/5 via-background to-accent/5 rounded-xl p-1 shadow-sm border border-primary/10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-background/95 backdrop-blur-sm rounded-lg p-4">
+            <SpaceSelector
+              currentSpaceId={currentSpaceId}
+              onSpaceChange={setCurrentSpaceId}
+            />
+            <EmailIntegration currentSpaceId={currentSpaceId} />
+          </div>
         </div>
 
-        {/* Main Content - Focused Voice-First Experience */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
-          {/* Left Column - Voice Interface (Primary Feature) */}
-          <div className="flex flex-col">
-            <VoiceInterface
-              currentSpaceId={currentSpaceId}
-              className="flex-1 min-h-[500px]"
-            />
-          </div>
+        {/* Main Dashboard - Voice-First Experience */}
+        <div className="relative">
+          {/* Connecting visual element */}
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 w-px h-full bg-gradient-to-b from-primary/20 via-primary/10 to-transparent hidden lg:block"></div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
+            {/* Left Column - Voice Interface (Primary Feature) */}
+            <div className="flex flex-col relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl blur-sm opacity-50"></div>
+              <VoiceInterface
+                currentSpaceId={currentSpaceId}
+                className="relative flex-1 min-h-[500px] shadow-md border border-primary/20"
+              />
+            </div>
 
-          {/* Right Column - Document Manager for Context */}
-          <div className="flex flex-col">
-            <DocumentManager
-              currentSpaceId={currentSpaceId}
-              className="flex-1 min-h-[500px]"
-            />
+            {/* Right Column - Document Manager for Context */}
+            <div className="flex flex-col relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-bl from-accent/10 to-primary/10 rounded-xl blur-sm opacity-50"></div>
+              <DocumentManager
+                currentSpaceId={currentSpaceId}
+                className="relative flex-1 min-h-[500px] shadow-md border border-accent/20"
+              />
+            </div>
           </div>
         </div>
       </div>

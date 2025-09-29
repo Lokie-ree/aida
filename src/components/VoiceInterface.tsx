@@ -273,16 +273,18 @@ export function VoiceInterface({
   };
 
   return (
-    <Card className={`${className || ""}`}>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Your Voice-Powered Educational Command Center
+    <Card className={`${className || ""} overflow-hidden`}>
+      <CardHeader className="text-center relative pb-4">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 opacity-60"></div>
+        <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
+          Voice-Powered Assistant
         </CardTitle>
         <CardDescription
           id="voice-status"
           role="status"
           aria-live="polite"
-          className="text-base"
+          className="text-sm mt-2 font-medium"
         >
           {getStatusText()}
         </CardDescription>
@@ -350,22 +352,26 @@ export function VoiceInterface({
         {/* Show sources if available - fixed height container to prevent layout shift */}
         <div className="w-full flex-1 min-h-[120px]">
           {lastResponse && lastResponse.sources.length > 0 && (
-            <Card className="w-full">
+            <Card className="w-full bg-gradient-to-br from-primary/5 to-purple-500/5 border-primary/20">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Sources</CardTitle>
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                  Sources Referenced
+                </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   {lastResponse.sources.slice(0, 3).map((source, index) => (
                     <div
                       key={index}
-                      className="text-xs text-muted-foreground truncate"
+                      className="text-xs text-foreground/80 truncate flex items-start gap-2 bg-background/40 px-2 py-1 rounded"
                     >
-                      • {source}
+                      <span className="text-primary font-semibold">{index + 1}.</span>
+                      <span className="flex-1">{source}</span>
                     </div>
                   ))}
                   {lastResponse.sources.length > 3 && (
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-muted-foreground font-medium px-2 py-1">
                       +{lastResponse.sources.length - 3} more sources
                     </div>
                   )}

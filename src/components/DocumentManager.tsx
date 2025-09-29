@@ -150,18 +150,25 @@ export function DocumentManager({
   };
 
   return (
-    <Card className={`flex flex-col h-full ${className || ""}`}>
-      <CardHeader>
-        <CardTitle>{getHeaderTitle()}</CardTitle>
-        <CardDescription>
+    <Card className={`flex flex-col h-full ${className || ""} overflow-hidden`}>
+      <CardHeader className="relative pb-4">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-60"></div>
+        <CardTitle className="flex items-center gap-2 text-xl">
+          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+          {getHeaderTitle()}
+        </CardTitle>
+        <CardDescription className="text-sm mt-2">
           Upload and manage documents for your knowledge base
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* File Upload Section */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium">Upload Documents</h3>
+        <div className="space-y-3 bg-gradient-to-br from-accent/5 to-primary/5 p-4 rounded-lg border border-accent/20">
+          <h3 className="text-sm font-semibold flex items-center gap-2">
+            <Upload className="w-4 h-4 text-accent" />
+            Upload Documents
+          </h3>
           <div className="relative">
             <input
               ref={fileInputRef}
@@ -174,7 +181,7 @@ export function DocumentManager({
             <Button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="w-full"
+              className="w-full bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 shadow-md"
             >
               {isUploading ? (
                 <>
@@ -189,7 +196,7 @@ export function DocumentManager({
               )}
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {getUploadDescription()}
           </p>
         </div>
@@ -201,32 +208,37 @@ export function DocumentManager({
         <ScrollArea className="h-full p-4">
           {!documents || documents.length === 0 ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              <div className="text-center">
-                <div className="text-4xl mb-2">📚</div>
-                <p className="text-sm">{getEmptyStateMessage()}</p>
-                <p className="text-xs text-muted-foreground mt-1">
+              <div className="text-center p-8 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg border border-dashed border-muted-foreground/30">
+                <div className="text-5xl mb-3 opacity-50">📚</div>
+                <p className="text-sm font-medium">{getEmptyStateMessage()}</p>
+                <p className="text-xs text-muted-foreground mt-2 max-w-xs">
                   Upload district documents to build your knowledge base
                 </p>
               </div>
             </div>
           ) : (
             <div className="space-y-3">
-              <h4 className="text-sm font-medium">Uploaded Documents</h4>
+              <h4 className="text-sm font-semibold flex items-center gap-2 px-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                Uploaded Documents
+              </h4>
               {documents.map((doc) => (
-                <Card key={doc._id} className="p-3">
+                <Card key={doc._id} className="p-3 hover:shadow-md transition-shadow bg-gradient-to-br from-background to-muted/20 border-accent/10">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className="p-1.5 bg-accent/10 rounded">
+                          <FileText className="w-3.5 h-3.5 text-accent shrink-0" />
+                        </div>
                         <h3 className="text-sm font-medium truncate">
                           {doc.fileName}
                         </h3>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Badge variant="secondary" className="text-xs">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground ml-7">
+                        <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20">
                           {formatFileSize(doc.fileSize)}
                         </Badge>
-                        <span>
+                        <span className="text-xs">
                           {new Date(doc._creationTime).toLocaleDateString()}
                         </span>
                       </div>
@@ -236,7 +248,7 @@ export function DocumentManager({
                       variant="ghost"
                       size="sm"
                       onClick={() => handleDeleteDocument(doc._id)}
-                      className="ml-2 h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                      className="ml-2 h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
