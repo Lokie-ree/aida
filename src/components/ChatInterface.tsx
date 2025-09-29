@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useAction, useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
-import { VoiceInterface } from "./VoiceInterface";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Mic, Send, Trash2 } from "lucide-react";
+import { Send, Trash2 } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
 
 interface ChatInterfaceProps {
@@ -24,7 +23,6 @@ interface ChatInterfaceProps {
 export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showVoiceInterface, setShowVoiceInterface] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const chatHistory = useQuery(api.chat.getChatHistory, {
@@ -83,16 +81,6 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
     }
   };
 
-  const handleVoiceTranscription = (text: string) => {
-    // Optionally display the transcription in the chat
-    console.log("Voice transcription:", text);
-  };
-
-  const handleVoiceResponse = (text: string) => {
-    // Handle voice response if needed
-    console.log("Voice response:", text);
-  };
-
   const getHeaderTitle = () => {
     if (currentSpace) {
       return `A.I.D.A. Chat - ${currentSpace.name}`;
@@ -120,14 +108,6 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
             )}
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant={showVoiceInterface ? "default" : "outline"}
-              size="sm"
-              onClick={() => setShowVoiceInterface(!showVoiceInterface)}
-            >
-              <Mic className="w-4 h-4 mr-2" />
-              Voice
-            </Button>
             <Button variant="outline" size="sm" onClick={handleClearHistory}>
               <Trash2 className="w-4 h-4 mr-2" />
               Clear
@@ -135,16 +115,6 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
           </div>
         </div>
       </CardHeader>
-
-      {/* Voice Interface */}
-      {showVoiceInterface && (
-        <div className="border-b bg-muted/50 flex-shrink-0">
-          <VoiceInterface
-            onTranscription={handleVoiceTranscription}
-            onResponse={handleVoiceResponse}
-          />
-        </div>
-      )}
 
       {/* Messages */}
       <CardContent className="flex-1 p-0 min-h-0 overflow-hidden">

@@ -80,41 +80,10 @@ export default function HeroSection() {
         </div>
         <section>
           <div className="relative pt-24 md:pt-36">
-            <AnimatedGroup
-              variants={{
-                container: {
-                  visible: {
-                    transition: {
-                      delayChildren: 1,
-                    },
-                  },
-                },
-                item: {
-                  hidden: {
-                    opacity: 0,
-                    y: 20,
-                  },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: 2,
-                    },
-                  },
-                },
-              }}
-              className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32"
-            >
-              <img
-                src="https://ik.imagekit.io/lrigu76hy/tailark/night-background.jpg?updatedAt=1745733451120"
-                alt="background"
-                className="hidden size-full dark:block"
-                width="3276"
-                height="4095"
-              />
-            </AnimatedGroup>
+            {/* Background gradient for dark mode */}
+            <div className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32">
+              <div className="hidden size-full dark:block bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 opacity-50"></div>
+            </div>
 
             <div
               aria-hidden
@@ -129,7 +98,7 @@ export default function HeroSection() {
                     className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950"
                   >
                     <span className="text-foreground text-sm">
-                      Introducing Voice-Powered Educational AI
+                      🎤 The Future of Educational Assistance is Here
                     </span>
                     <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -146,25 +115,34 @@ export default function HeroSection() {
                   </a>
                 </AnimatedGroup>
 
-                <TextEffect
-                  preset="fade-in-blur"
-                  speedSegment={0.3}
-                  as="h1"
-                  className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]"
-                >
-                  Your Voice-Powered Educational Command Center
-                </TextEffect>
+                <h1 className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]">
+                  <TextEffect
+                    preset="fade-in-blur"
+                    speedSegment={0.3}
+                    className="block"
+                  >
+                    Stop Searching. Start Speaking.
+                  </TextEffect>
+                  <TextEffect
+                    preset="fade-in-blur"
+                    speedSegment={0.3}
+                    className="block bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent mt-2"
+                  >
+                    A.I.D.A. Understands Your Voice
+                  </TextEffect>
+                </h1>
                 <TextEffect
                   per="line"
                   preset="fade-in-blur"
                   speedSegment={0.3}
                   delay={0.5}
                   as="p"
-                  className="mx-auto mt-8 max-w-2xl text-balance text-lg"
+                  className="mx-auto mt-8 max-w-3xl text-balance text-xl text-muted-foreground leading-relaxed"
                 >
-                  Transform your teaching experience with AI that understands
-                  your voice, adapts to your emotions, and brings order to
-                  information chaos.
+                  Imagine never having to dig through district documents again.
+                  A.I.D.A. gives you instant, accurate answers to district
+                  policies, curriculum questions, and teaching strategies—all
+                  through natural voice conversation.
                 </TextEffect>
 
                 <AnimatedGroup
@@ -190,7 +168,7 @@ export default function HeroSection() {
                       className="rounded-xl px-5 text-base"
                       onClick={() => setShowSignIn(true)}
                     >
-                      <span className="text-nowrap">Try A.I.D.A. Now</span>
+                      <span className="text-nowrap">🎤 Start Voice Chat</span>
                     </Button>
                   </div>
                   <Button
@@ -200,7 +178,7 @@ export default function HeroSection() {
                     className="h-10.5 rounded-xl px-5"
                     onClick={() => setShowSignIn(true)}
                   >
-                    <span className="text-nowrap">See A.I.D.A. in Action</span>
+                    <span className="text-nowrap">📚 See How It Works</span>
                   </Button>
                 </AnimatedGroup>
               </div>

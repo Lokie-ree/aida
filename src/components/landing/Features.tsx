@@ -11,12 +11,15 @@ export default function FeaturesSection() {
       >
         <div className="relative z-10 grid items-center gap-4 md:grid-cols-2 md:gap-12">
           <h2 className={tailwindClasses.typography.headingLarge}>
-            A.I.D.A. Command Center: Your Educational AI Partner
+            Why Teachers Choose A.I.D.A. Over Everything Else
           </h2>
           <p className="max-w-sm sm:ml-auto">
-            Transform your teaching experience with intelligent voice
-            interaction, emotional awareness, and actionable insights that make
-            your life more about teaching and less about busy work.
+            Stop wasting time searching through documents. A.I.D.A. gives you
+            <strong className="text-foreground">
+              {" "}
+              district-specific answers in under 2 seconds
+            </strong>
+            through natural voice conversation. No more information overload.
           </p>
         </div>
         <div className="px-3 pt-3 md:-mx-8">
@@ -51,8 +54,13 @@ export default function FeaturesSection() {
               <h3 className="text-sm font-medium">Voice Interface</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Hands-free voice interaction with real-time speech-to-text and
-              text-to-speech capabilities for busy educators.
+              Ask "What's our district's policy on student-led projects?" and
+              get
+              <strong className="text-foreground">
+                {" "}
+                instant, accurate answers
+              </strong>{" "}
+              while you're teaching.
             </p>
           </div>
           <div className="space-y-2">
@@ -60,11 +68,12 @@ export default function FeaturesSection() {
               <Heart
                 className={`size-4 ${tailwindClasses.colors.secondaryPurple}`}
               />
-              <h3 className="text-sm font-medium">AI Feedback</h3>
+              <h3 className="text-sm font-medium">District Context</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Intelligent lesson plan analysis with actionable suggestions for
-              improving engagement and instructional rigor.
+              I understand YOUR district's specific policies, curriculum, and
+              requirements— not generic advice that doesn't apply to your
+              situation.
             </p>
           </div>
           <div className="space-y-2">
@@ -72,11 +81,11 @@ export default function FeaturesSection() {
               <BarChart3
                 className={`size-4 ${tailwindClasses.colors.primaryGreen}`}
               />
-              <h3 className="text-sm font-medium">Knowledge Base</h3>
+              <h3 className="text-sm font-medium">Source Citations</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Upload and manage documents, curriculum guides, and policy
-              materials for instant AI-powered retrieval.
+              Every answer includes the specific document and page number it
+              came from— so you always know you can trust the information.
             </p>
           </div>
           <div className="space-y-2">
@@ -84,11 +93,11 @@ export default function FeaturesSection() {
               <Brain
                 className={`size-4 ${tailwindClasses.colors.secondaryOrange}`}
               />
-              <h3 className="text-sm font-medium">Smart Workspaces</h3>
+              <h3 className="text-sm font-medium">FERPA Compliant</h3>
             </div>
             <p className="text-muted-foreground text-sm">
-              Create shared workspaces for teams, with collaborative document
-              management and context-aware AI assistance.
+              Built with education privacy in mind. Your district data stays
+              secure and compliant with all educational privacy regulations.
             </p>
           </div>
         </div>
