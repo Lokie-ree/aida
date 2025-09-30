@@ -1,6 +1,6 @@
 # A.I.D.A. Marketing & Brand Guide
 
-**Last Updated:** September 28, 2025  
+**Last Updated:** September 29, 2025  
 **Owner:** Head of Marketing  
 **Purpose:** Comprehensive marketing strategy and brand system implementation for A.I.D.A.
 
@@ -80,7 +80,7 @@ This document serves as the single source of truth for all marketing activities 
 - **Color Palette:**
   - Primary Blue (#3B82F6) - Trust, reliability, voice interface
   - Secondary Purple (#8B5CF6) - AI, innovation, intelligence
-  - Accent Green (#10B981) - Success, growth, positive feedback
+  - Accent Green (#10B981) - Success, growth, positive outcomes
   - Neutral Grays - Professional, clean, accessible
 - **Typography:** Inter font family - modern, readable, professional
 - **Imagery:** Authentic photos of educators using voice technology, clean and professional
@@ -156,15 +156,15 @@ Our content strategy is designed to attract, educate, and convert our target aud
 
 - **Behavioral Triggers:**
   - 10+ voice queries per week
-  - 5+ lesson plan uploads per month
+  - 5+ district document uploads per month
   - Daily usage for 2+ weeks
 - **Feature-Based Triggers:**
   - Advanced RAG capabilities
-  - Unlimited lesson plan feedback
+  - Unlimited voice queries
   - Custom document ingestion
 - **Messaging Triggers:**
   - "Unlock unlimited voice queries"
-  - "Get advanced lesson plan feedback"
+  - "Get advanced district insights"
   - "Access custom district documents"
 
 ### Revenue Model
@@ -216,9 +216,9 @@ Clear tiered structure with a "popular choice" positioned to encourage upgrades,
   - Free-to-paid conversion rate
   - District pilot program success
   - Customer lifetime value and retention
-- **Attribution:** UTM tracking, voice interface analytics, teacher feedback surveys
+- **Attribution:** UTM tracking, voice interface analytics, community engagement surveys
 - **A/B Testing:** Landing page headlines, voice interface demos, pricing page layouts
-- **Feedback Loop:** Teacher feedback, district administrator input, usage analytics
+- **Community Loop:** Teacher input, district administrator feedback, usage analytics
 
 ## 🎬 User Onboarding
 
@@ -230,7 +230,7 @@ Welcome message: "Welcome to A.I.D.A.! Let's get you started with your first voi
 
 ### Step 2: Key Feature Exploration
 
-Voice interface walkthrough: Guide user through asking a district policy question, then show lesson plan feedback feature.
+Voice interface walkthrough: Guide user through asking a district policy question, then demonstrate source citations and multi-stakeholder access.
 
 ### Step 3: First "Aha!" Moment
 
@@ -250,13 +250,13 @@ This section ensures consistency and prevents unauthorized brand applications by
 2. **Design Review:** The Brand Owner and relevant stakeholders review the proposed asset against the established guidelines.
 3. **Voice Interface Consideration:** Special review for voice interface assets and accessibility compliance
 4. **Approval:** Upon approval, the asset is added to the official brand library and is ready for use.
-5. **Rejection:** If rejected, clear, actionable feedback is provided to ensure the asset can be refined to meet the guidelines.
+5. **Rejection:** If rejected, clear, actionable guidance is provided to ensure the asset can be refined to meet the guidelines.
 
 ### Brand Guide Updates
 
 - **Quarterly Review:** Assess brand performance and recognition, update metrics, especially voice interface adoption
 - **Usage Audit:** Ensure consistent application across all touchpoints, including voice interface
-- **Feedback Integration:** Incorporate teacher and district administrator feedback on brand perception
+- **Community Integration:** Incorporate teacher and district administrator input on brand perception
 
 ---
 

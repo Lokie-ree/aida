@@ -125,15 +125,14 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
   };
 
   return (
-    <Card className="h-full border-0 shadow-none bg-transparent">
-      <CardHeader className="pb-3">
+    <Card className="shadow-lg border border-aida-primary-200">
+      <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+            <CardTitle className="text-lg font-semibold text-aida-primary-600">
               Workspace
             </CardTitle>
-            <CardDescription className="text-xs mt-1">Select or create a shared workspace</CardDescription>
+            <CardDescription className="text-sm mt-1">Select or create a shared workspace</CardDescription>
           </div>
           <div className="flex items-center gap-2">
             {pendingInvitations && pendingInvitations.length > 0 && (
@@ -167,7 +166,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
           value={currentSpaceId || "personal"}
           onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
         >
-          <SelectTrigger className="bg-muted/30 border-primary/20 hover:border-primary/40 transition-colors">
+          <SelectTrigger className="bg-muted/30 border-aida-primary-200 hover:border-aida-primary-400 transition-colors">
             <SelectValue placeholder="Select a workspace" />
           </SelectTrigger>
           <SelectContent>
@@ -182,7 +181,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
 
         {/* Current Space Info */}
         {currentSpace && (
-          <Card className="mt-3 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 shadow-sm">
+          <Card className="mt-3 bg-gradient-to-br from-aida-primary-50 to-aida-secondary-50 border-aida-primary-200 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -190,9 +189,9 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                   <p className="text-xs text-muted-foreground mt-0.5">Owner: {currentSpace.ownerName}</p>
                   {spaceMembers && (
                     <div className="flex items-center gap-2 mt-2">
-                      <div className="flex items-center gap-1.5 px-2 py-1 bg-background/60 rounded-full">
-                        <Users className="w-3 h-3 text-primary" />
-                        <span className="text-xs font-medium text-foreground">
+                      <div className="flex items-center gap-1.5 px-2 py-1 bg-aida-primary-100 rounded-full">
+                        <Users className="w-3 h-3 text-aida-primary-600" />
+                        <span className="text-xs font-medium text-aida-primary-700">
                           {spaceMembers.filter(m => m.invitationStatus === "accepted").length} members
                         </span>
                       </div>

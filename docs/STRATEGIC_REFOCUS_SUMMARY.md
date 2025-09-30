@@ -72,7 +72,7 @@ By concentrating on a **best-in-class voice interface** and a **hyper-contextual
 
 | Persona | Pain Point | A.I.D.A. Solution |
 |---------|-----------|-------------------|
-| **The Educator (Sarah)** | Time wasted searching district policies | Voice queries during lesson planning |
+| **The Educator (Sarah)** | Time wasted searching district policies | Voice queries during lesson preparation |
 | **The Engaged Parent (Maria)** | Confusing district websites | Instant answers about attendance, bus routes |
 | **The District Leader (Michael)** | Repetitive inquiries, inconsistent info | Single source of truth for all stakeholders |
 
@@ -94,7 +94,7 @@ By concentrating on a **best-in-class voice interface** and a **hyper-contextual
 OLD FLOW (Complex):
 District Websites → Firecrawl Scraping → RAG → Voice Interface
            ↓
-    Lesson Plans → OpenAI Analysis → Feedback
+    District Documents → RAG Processing → Voice Responses
 
 NEW FLOW (Focused):
 Official District Documents (Upload) → RAG → Voice Interface → All Stakeholders
@@ -115,7 +115,7 @@ Official District Documents (Upload) → RAG → Voice Interface → All Stakeho
 
 ### Previous (Too Broad)
 
-"AI-powered productivity suite for educators with voice interface and lesson plan feedback"
+"AI-powered productivity suite for educators with voice interface and district information access"
 
 **Problem:** Competing with MagicSchool AI, Khanmigo, and others on feature breadth
 
@@ -131,12 +131,12 @@ Official District Documents (Upload) → RAG → Voice Interface → All Stakeho
 
 ### Old Demo Script
 - Teacher asks policy question
-- Teacher uploads lesson plan for feedback
+- Teacher asks district policy question
 - Show dashboard features
 
 ### New Demo Script (More Compelling)
 1. **Introduction:** The problem of fragmented district information
-2. **Teacher Scenario:** Voice query about bullying policy during lesson planning
+2. **Teacher Scenario:** Voice query about bullying policy during lesson preparation
 3. **Parent Scenario:** Voice query about bus schedule from home
 4. **Administrator Scenario:** Voice query for board meeting preparation
 5. **Conclusion:** "One voice for the entire district"

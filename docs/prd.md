@@ -4,7 +4,7 @@
 
 **Project:** A.I.D.A. (AI-powered Instructional District Assistant)  
 **Version:** MVP 1.0 (Hackathon Focused)  
-**Date:** September 28, 2025  
+**Date:** September 29, 2025  
 **MVP Release:** October 1, 2025  
 **Status:** Ready for Development
 
@@ -105,7 +105,7 @@ All receive immediate, accurate, sourced answers.
 - **Voice Interface:** Vapi (real-time speech-to-text and text-to-speech)
 - **Data Ingestion:** Direct document upload (PDFs, text files) - web scraping removed for simplicity
 - **Authentication:** Convex Auth (self-hosted, FERPA-compliant)
-- **Design System:** ShadCN + React Bits + TweakCN (voice interface components)
+- **Design System:** ShadCN
 
 ### Data Flow
 
@@ -131,7 +131,7 @@ All receive immediate, accurate, sourced answers.
 
 - [ ] Functional prototype deployed and accessible
 - [ ] Voice assistant answers district-specific questions accurately
-- [ ] Instructional feedback system provides relevant suggestions
+- [ ] Voice interface responds accurately to district policy questions
 - [ ] Integration of at least 5 sponsor technologies demonstrated
 - [ ] Single, compelling user journey showcased effectively
 
@@ -139,7 +139,7 @@ All receive immediate, accurate, sourced answers.
 
 - [ ] RAG pipeline processes district documents successfully
 - [ ] Voice interface responds within 2 seconds
-- [ ] AI feedback is pedagogically sound and actionable
+- [ ] AI responses are accurate and properly sourced
 - [ ] System handles concurrent users during demo
 - [ ] Data privacy and FERPA compliance demonstrated
 
@@ -175,7 +175,7 @@ All receive immediate, accurate, sourced answers.
 - [ ] Integrate Vapi for voice interface
 - [ ] Implement Firecrawl for document ingestion
 - [ ] Build basic dashboard UI
-- [ ] Create lesson plan feedback system
+- [ ] Create community information dashboard
 - [ ] Test with sample district documents
 
 ### Phase 2: Demo Preparation
@@ -193,7 +193,7 @@ All receive immediate, accurate, sourced answers.
 **Timeline:** October 1, 2025 - December 2025
 
 - [ ] MVP Release (October 1, 2025)
-- [ ] Gather user feedback
+- [ ] Gather community feedback
 - [ ] Refine RAG pipeline
 - [ ] Add additional features
 - [ ] Prepare for pilot program
@@ -250,7 +250,7 @@ All receive immediate, accurate, sourced answers.
 
 1. **Immediate (Sept 23)**: Begin Convex setup and Vapi integration
 2. **Day 1 (Sept 24)**: Implement core RAG pipeline with Firecrawl
-3. **Day 2 (Sept 25)**: Build dashboard UI and lesson plan feedback
+3. **Day 2 (Sept 25)**: Build dashboard UI and community interface
 4. **Day 3 (Sept 26-27)**: Test, refine, and prepare demo
 5. **Demo Day**: Execute compelling demonstration
 6. **MVP Release (Oct 1)**: Launch public beta with core features

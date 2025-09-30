@@ -254,31 +254,29 @@ export function VoiceInterface({
 
   const getStatusText = () => {
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
-    if (!vapiKey) return "Voice assistant setup required";
-    if (isLoading) return "Getting ready to help you...";
-    if (!isConnected) return "I'm here to support your teaching";
-    if (isListening) return "I'm listening to your question...";
-    if (isSpeaking) return "Sharing insights with you...";
-    return "Ready to assist - I'm here when you need me";
+    if (!vapiKey) return "Setup required";
+    if (isLoading) return "Connecting...";
+    if (!isConnected) return "Ready to help";
+    if (isListening) return "Listening...";
+    if (isSpeaking) return "Speaking...";
+    return "Ready";
   };
 
   const getStatusColor = () => {
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
-    if (!vapiKey) return "text-destructive";
-    if (isLoading) return "text-warning-500";
-    if (!isConnected) return "text-muted-foreground";
-    if (isListening) return "text-success-500";
-    if (isSpeaking) return "text-primary";
-    return "text-muted-foreground";
+    if (!vapiKey) return "text-aida-voice-error-500";
+    if (isLoading) return "text-aida-voice-error-500";
+    if (!isConnected) return "text-aida-voice-idle-500";
+    if (isListening) return "text-aida-voice-listening-500";
+    if (isSpeaking) return "text-aida-voice-speaking-500";
+    return "text-aida-voice-idle-500";
   };
 
   return (
     <Card className={`${className || ""} overflow-hidden`}>
-      <CardHeader className="text-center relative pb-4">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 opacity-60"></div>
-        <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
-          Voice-Powered Assistant
+      <CardHeader className="text-center pb-4">
+        <CardTitle className="text-2xl font-bold text-aida-primary-600 text-center">
+          The Voice of Your District
         </CardTitle>
         <CardDescription
           id="voice-status"
@@ -290,7 +288,8 @@ export function VoiceInterface({
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center gap-4 min-h-[320px]">
+      <CardContent className="flex flex-col items-center gap-4 p-6">
+        {/* Main Voice Button - At the top */}
         <div className="relative">
           <Button
             onClick={isConnected ? stopCall : startCall}
@@ -308,13 +307,14 @@ export function VoiceInterface({
                 !import.meta.env.VITE_VAPI_PUBLIC_KEY
                   ? "bg-muted cursor-not-allowed"
                   : isConnected
-                    ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 cursor-pointer"
-                    : "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 cursor-pointer"
+                  ? "bg-red-500 hover:bg-red-600 cursor-pointer"
+                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 cursor-pointer"
               }
-              ${isListening ? "animate-pulse ring-8 ring-green-300 ring-inset shadow-green-300/50" : ""}
-              ${isSpeaking ? "animate-pulse ring-8 ring-blue-300 ring-inset shadow-blue-300/50" : ""}
+              ${!isLoading && import.meta.env.VITE_VAPI_PUBLIC_KEY ? "animate-pulse" : ""}
+              ${isListening ? "ring-4 ring-green-300" : ""}
+              ${isSpeaking ? "ring-4 ring-blue-300" : ""}
               ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
-              relative z-10 hover:scale-105 transform
+              hover:scale-105 transform
             `}
           >
             {isLoading ? (
@@ -328,58 +328,87 @@ export function VoiceInterface({
 
           {/* Visual indicators */}
           {isListening && (
-            <div className="absolute -inset-2 rounded-full border-4 border-success-400 animate-ping"></div>
+            <div className="absolute -inset-2 rounded-full border-2 border-green-400 animate-ping"></div>
           )}
           {isSpeaking && (
-            <div className="absolute -inset-2 rounded-full border-4 border-primary animate-ping"></div>
+            <div className="absolute -inset-2 rounded-full border-2 border-blue-400 animate-ping"></div>
           )}
         </div>
 
-        <div className="text-center text-sm text-muted-foreground max-w-md leading-relaxed">
-          {!import.meta.env.VITE_VAPI_PUBLIC_KEY
-            ? "Voice assistance requires setup. Please configure your API key to get started."
-            : !isConnected
-              ? "Ask me anything about your district's policies, curriculum standards, or teaching strategies. I have access to your district's documents and can provide instant, accurate answers."
-              : "I'm listening! Ask your question naturally - I'll provide district-specific answers with sources."}
-        </div>
+        {/* Compact Status */}
+        <div className="text-center space-y-3">
+          <div className="text-sm text-muted-foreground">
+            {!import.meta.env.VITE_VAPI_PUBLIC_KEY
+              ? "Setup required"
+              : !isConnected
+                ? "Ask me anything about your district"
+                : "Listening..."}
+          </div>
 
-        {/* Keyboard shortcuts help */}
-        <div className="text-center text-xs text-muted-foreground max-w-xs">
-          <p>Keyboard shortcuts:</p>
-          <p>Space: Start/Stop • Escape: Stop</p>
-        </div>
-
-        {/* Show sources if available - fixed height container to prevent layout shift */}
-        <div className="w-full flex-1 min-h-[120px]">
-          {lastResponse && lastResponse.sources.length > 0 && (
-            <Card className="w-full bg-gradient-to-br from-primary/5 to-purple-500/5 border-primary/20">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                  Sources Referenced
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-1.5">
-                  {lastResponse.sources.slice(0, 3).map((source, index) => (
-                    <div
-                      key={index}
-                      className="text-xs text-foreground/80 truncate flex items-start gap-2 bg-background/40 px-2 py-1 rounded"
-                    >
-                      <span className="text-primary font-semibold">{index + 1}.</span>
-                      <span className="flex-1">{source}</span>
-                    </div>
-                  ))}
-                  {lastResponse.sources.length > 3 && (
-                    <div className="text-xs text-muted-foreground font-medium px-2 py-1">
-                      +{lastResponse.sources.length - 3} more sources
-                    </div>
-                  )}
+          {/* Quick Examples - Only when not connected */}
+          {!isConnected && import.meta.env.VITE_VAPI_PUBLIC_KEY && (
+            <div className="bg-muted/20 rounded-lg p-3">
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="text-center">
+                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mb-1"></div>
+                  <div className="text-muted-foreground">"Bullying policy?"</div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="text-center">
+                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full mx-auto mb-1"></div>
+                  <div className="text-muted-foreground">"Bus schedule?"</div>
+                </div>
+                <div className="text-center">
+                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mx-auto mb-1"></div>
+                  <div className="text-muted-foreground">"Wellness goals?"</div>
+                </div>
+              </div>
+            </div>
           )}
+
+          {/* Trust Signals - Compact */}
+          <div className="flex justify-center items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <span>FERPA</span>
+            </div>
+            <div className="w-px h-2 bg-muted"></div>
+            <div className="flex items-center gap-1">
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+              <span>Sources</span>
+            </div>
+            <div className="w-px h-2 bg-muted"></div>
+            <div className="flex items-center gap-1">
+              <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+              <span>&lt;2s</span>
+            </div>
+          </div>
         </div>
+
+        {/* Sources - Only show when available */}
+        {lastResponse && lastResponse.sources.length > 0 && (
+          <div className="w-full bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+              <span className="text-sm font-medium">Sources</span>
+            </div>
+            <div className="space-y-1">
+              {lastResponse.sources.slice(0, 2).map((source, index) => (
+                <div
+                  key={index}
+                  className="text-xs text-foreground/80 truncate flex items-start gap-2"
+                >
+                  <span className="text-blue-600 font-semibold">{index + 1}.</span>
+                  <span className="flex-1">{source}</span>
+                </div>
+              ))}
+              {lastResponse.sources.length > 2 && (
+                <div className="text-xs text-muted-foreground">
+                  +{lastResponse.sources.length - 2} more
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

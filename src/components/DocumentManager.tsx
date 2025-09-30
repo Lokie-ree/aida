@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Upload, FileText, Trash2, Loader2 } from "lucide-react";
+import { Upload, FileText, Trash2, Loader2, BookOpen } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
 
 interface DocumentManagerProps {
@@ -130,9 +130,9 @@ export function DocumentManager({
 
   const getHeaderTitle = () => {
     if (currentSpace) {
-      return `${currentSpace.name} - Knowledge Base`;
+      return `${currentSpace.name} - District Knowledge Hub`;
     }
-    return "Personal Knowledge Base";
+    return "District Knowledge Hub";
   };
 
   const getUploadDescription = () => {
@@ -151,14 +151,12 @@ export function DocumentManager({
 
   return (
     <Card className={`flex flex-col h-full ${className || ""} overflow-hidden`}>
-      <CardHeader className="relative pb-4">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent opacity-60"></div>
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl">
           {getHeaderTitle()}
         </CardTitle>
         <CardDescription className="text-sm mt-2">
-          Upload and manage documents for your knowledge base
+          Upload and manage official district documents for the entire community
         </CardDescription>
       </CardHeader>
 
@@ -208,12 +206,30 @@ export function DocumentManager({
         <ScrollArea className="h-full p-4">
           {!documents || documents.length === 0 ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              <div className="text-center p-8 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg border border-dashed border-muted-foreground/30">
-                <div className="text-5xl mb-3 opacity-50">📚</div>
-                <p className="text-sm font-medium">{getEmptyStateMessage()}</p>
-                <p className="text-xs text-muted-foreground mt-2 max-w-xs">
-                  Upload district documents to build your knowledge base
+              <div className="text-center p-8 bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg border border-dashed border-muted-foreground/30 max-w-md">
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 mx-auto mb-2 opacity-60 text-muted-foreground">
+                    <BookOpen className="w-full h-full" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-foreground">{getEmptyStateMessage()}</h3>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                  Upload official district documents to create a trusted knowledge base for your entire school community
                 </p>
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-1 h-1 bg-accent rounded-full"></div>
+                    <span>District policies & procedures</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-1 h-1 bg-accent rounded-full"></div>
+                    <span>Student handbooks & guidelines</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-1 h-1 bg-accent rounded-full"></div>
+                    <span>Curriculum standards & resources</span>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
