@@ -3,10 +3,10 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
-import { DocumentManager } from "./components/DocumentManager";
 import { SpaceSelector } from "./components/SpaceSelector";
-import { VoiceInterface } from "./components/VoiceInterface";
 import { OnboardingGuide } from "./components/OnboardingGuide";
+import { CommandCenter } from "./components/CommandCenter";
+import { ConversationPane } from "./components/ConversationPane";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { Id } from "../convex/_generated/dataModel";
@@ -84,9 +84,10 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
         onComplete={() => console.log("Onboarding completed")}
       />
 
-      <div className="space-y-6">
+      {/* Demo-Ready Dashboard Layout */}
+      <div className="h-full flex flex-col">
         {/* Workspace Selector - Top of Dashboard */}
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-6">
           <div className="w-full max-w-md">
             <SpaceSelector
               currentSpaceId={currentSpaceId}
@@ -95,25 +96,16 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
           </div>
         </div>
 
-        {/* Main Dashboard - Clean Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Voice Button - Top Left */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-6">
-              <VoiceInterface
-                currentSpaceId={currentSpaceId}
-                className="shadow-lg border border-aida-primary-200"
-              />
-            </div>
+        {/* Main Dashboard - Two Column Layout */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-0">
+          {/* Column 1: Command Center (Left Side - Fixed Width) */}
+          <div className="lg:col-span-1 flex flex-col space-y-6">
+            <CommandCenter currentSpaceId={currentSpaceId} />
           </div>
 
-          {/* Knowledge Hub - Main Content */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Document Management - Knowledge Hub */}
-            <DocumentManager
-              currentSpaceId={currentSpaceId}
-              className="shadow-lg border border-aida-primary-200"
-            />
+          {/* Column 2: Conversation Pane (Right Side - Flexible Width) */}
+          <div className="lg:col-span-2 flex flex-col min-h-0">
+            <ConversationPane currentSpaceId={currentSpaceId} />
           </div>
         </div>
       </div>

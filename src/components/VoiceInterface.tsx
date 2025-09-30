@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Mic, MicOff, X, Loader2 } from "lucide-react";
+import { designTokens } from "@/lib/design-tokens";
 
 interface VoiceInterfaceProps {
   onTranscription?: (text: string) => void;
@@ -272,6 +273,42 @@ export function VoiceInterface({
     return "text-aida-voice-idle-500";
   };
 
+  // Voice Orb State Management - Exact Brand Colors from Final Sprint Guide
+  const getVoiceOrbColor = () => {
+    if (!import.meta.env.VITE_VAPI_PUBLIC_KEY) {
+      return designTokens.colors.neutral[300]; // Setup required
+    }
+    if (isConnected && isListening) {
+      return designTokens.colors.secondary.purple; // Listening: Purple light (#8B5CF6)
+    }
+    if (isConnected) {
+      return designTokens.colors.primary.green; // Success: Steady green (#10B981)
+    }
+    return designTokens.colors.primary.blue; // Idle: Calm blue glow (#3B82F6)
+  };
+
+  const getVoiceOrbAnimation = () => {
+    if (!import.meta.env.VITE_VAPI_PUBLIC_KEY) return "none";
+    if (isConnected && isListening) {
+      return "pulse 1s ease-in-out infinite"; // Active pulsing animation
+    }
+    if (isConnected) {
+      return "pulse 2s ease-in-out 1"; // Confirmation pulse animation for 1-2 seconds
+    }
+    return "pulse 3s ease-in-out infinite"; // Gentle pulsing animation
+  };
+
+  const getVoiceOrbShadow = () => {
+    const baseShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)";
+    if (isConnected && isListening) {
+      return `${baseShadow}, 0 0 0 4px ${designTokens.colors.secondary.purple}30`;
+    }
+    if (isConnected) {
+      return `${baseShadow}, 0 0 0 4px ${designTokens.colors.primary.green}30`;
+    }
+    return baseShadow;
+  };
+
   return (
     <Card className={`${className || ""} overflow-hidden`}>
       <CardHeader className="text-center pb-4">
@@ -289,7 +326,7 @@ export function VoiceInterface({
       </CardHeader>
 
       <CardContent className="flex flex-col items-center gap-4 p-6">
-        {/* Main Voice Button - At the top */}
+        {/* Main Voice Button - The Voice Orb with Exact Brand Colors */}
         <div className="relative">
           <Button
             onClick={isConnected ? stopCall : startCall}
@@ -301,21 +338,14 @@ export function VoiceInterface({
             }
             aria-describedby="voice-status"
             size="lg"
-            className={`
-              w-24 h-24 rounded-full transition-all duration-300 shadow-xl
-              ${
-                !import.meta.env.VITE_VAPI_PUBLIC_KEY
-                  ? "bg-muted cursor-not-allowed"
-                  : isConnected
-                  ? "bg-red-500 hover:bg-red-600 cursor-pointer"
-                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 cursor-pointer"
-              }
-              ${!isLoading && import.meta.env.VITE_VAPI_PUBLIC_KEY ? "animate-pulse" : ""}
-              ${isListening ? "ring-4 ring-green-300" : ""}
-              ${isSpeaking ? "ring-4 ring-blue-300" : ""}
-              ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
-              hover:scale-105 transform
-            `}
+            className="w-24 h-24 rounded-full transition-all duration-300 shadow-xl hover:scale-105 transform"
+            style={{
+              backgroundColor: getVoiceOrbColor(),
+              opacity: isLoading ? 0.5 : 1,
+              cursor: isLoading || !import.meta.env.VITE_VAPI_PUBLIC_KEY ? "not-allowed" : "pointer",
+              animation: getVoiceOrbAnimation(),
+              boxShadow: getVoiceOrbShadow()
+            }}
           >
             {isLoading ? (
               <Loader2 className="w-8 h-8 animate-spin" />
@@ -326,12 +356,18 @@ export function VoiceInterface({
             )}
           </Button>
 
-          {/* Visual indicators */}
+          {/* Visual indicators with exact brand colors */}
           {isListening && (
-            <div className="absolute -inset-2 rounded-full border-2 border-green-400 animate-ping"></div>
+            <div 
+              className="absolute -inset-2 rounded-full border-2 animate-ping"
+              style={{ borderColor: designTokens.colors.secondary.purple }}
+            ></div>
           )}
           {isSpeaking && (
-            <div className="absolute -inset-2 rounded-full border-2 border-blue-400 animate-ping"></div>
+            <div 
+              className="absolute -inset-2 rounded-full border-2 animate-ping"
+              style={{ borderColor: designTokens.colors.primary.blue }}
+            ></div>
           )}
         </div>
 
@@ -347,18 +383,30 @@ export function VoiceInterface({
 
           {/* Quick Examples - Only when not connected */}
           {!isConnected && import.meta.env.VITE_VAPI_PUBLIC_KEY && (
-            <div className="bg-muted/20 rounded-lg p-3">
+            <div 
+              className="rounded-lg p-3"
+              style={{ backgroundColor: `${designTokens.colors.neutral[100]}50` }}
+            >
               <div className="grid grid-cols-3 gap-2 text-xs">
                 <div className="text-center">
-                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mx-auto mb-1"></div>
+                  <div 
+                    className="w-1.5 h-1.5 rounded-full mx-auto mb-1"
+                    style={{ backgroundColor: designTokens.colors.primary.blue }}
+                  ></div>
                   <div className="text-muted-foreground">"Bullying policy?"</div>
                 </div>
                 <div className="text-center">
-                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full mx-auto mb-1"></div>
+                  <div 
+                    className="w-1.5 h-1.5 rounded-full mx-auto mb-1"
+                    style={{ backgroundColor: designTokens.colors.primary.green }}
+                  ></div>
                   <div className="text-muted-foreground">"Bus schedule?"</div>
                 </div>
                 <div className="text-center">
-                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mx-auto mb-1"></div>
+                  <div 
+                    className="w-1.5 h-1.5 rounded-full mx-auto mb-1"
+                    style={{ backgroundColor: designTokens.colors.secondary.purple }}
+                  ></div>
                   <div className="text-muted-foreground">"Wellness goals?"</div>
                 </div>
               </div>
@@ -368,17 +416,32 @@ export function VoiceInterface({
           {/* Trust Signals - Compact */}
           <div className="flex justify-center items-center gap-3 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <div 
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: designTokens.colors.primary.green }}
+              ></div>
               <span>FERPA</span>
             </div>
-            <div className="w-px h-2 bg-muted"></div>
+            <div 
+              className="w-px h-2"
+              style={{ backgroundColor: designTokens.colors.neutral[300] }}
+            ></div>
             <div className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+              <div 
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: designTokens.colors.primary.blue }}
+              ></div>
               <span>Sources</span>
             </div>
-            <div className="w-px h-2 bg-muted"></div>
+            <div 
+              className="w-px h-2"
+              style={{ backgroundColor: designTokens.colors.neutral[300] }}
+            ></div>
             <div className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+              <div 
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: designTokens.colors.secondary.purple }}
+              ></div>
               <span>&lt;2s</span>
             </div>
           </div>
@@ -386,23 +449,46 @@ export function VoiceInterface({
 
         {/* Sources - Only show when available */}
         {lastResponse && lastResponse.sources.length > 0 && (
-          <div className="w-full bg-blue-50 border border-blue-200 rounded-lg p-3">
+          <div 
+            className="w-full rounded-lg p-3"
+            style={{
+              backgroundColor: `${designTokens.colors.primary.blue}10`,
+              border: `1px solid ${designTokens.colors.primary.blue}20`
+            }}
+          >
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-              <span className="text-sm font-medium">Sources</span>
+              <div 
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: designTokens.colors.primary.blue }}
+              ></div>
+              <span 
+                className="text-sm font-medium"
+                style={{ color: designTokens.colors.primary.blue }}
+              >
+                Sources
+              </span>
             </div>
             <div className="space-y-1">
               {lastResponse.sources.slice(0, 2).map((source, index) => (
                 <div
                   key={index}
-                  className="text-xs text-foreground/80 truncate flex items-start gap-2"
+                  className="text-xs truncate flex items-start gap-2"
+                  style={{ color: designTokens.colors.neutral[700] }}
                 >
-                  <span className="text-blue-600 font-semibold">{index + 1}.</span>
+                  <span 
+                    className="font-semibold"
+                    style={{ color: designTokens.colors.primary.blue }}
+                  >
+                    {index + 1}.
+                  </span>
                   <span className="flex-1">{source}</span>
                 </div>
               ))}
               {lastResponse.sources.length > 2 && (
-                <div className="text-xs text-muted-foreground">
+                <div 
+                  className="text-xs"
+                  style={{ color: designTokens.colors.neutral[500] }}
+                >
                   +{lastResponse.sources.length - 2} more
                 </div>
               )}
