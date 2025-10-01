@@ -33,6 +33,140 @@ export const createSpace = mutation({
   },
 });
 
+// Create space from template with one-click setup
+export const createSpaceFromTemplate = mutation({
+  args: {
+    templateType: v.union(
+      v.literal("district"),
+      v.literal("school"),
+      v.literal("sports"),
+      v.literal("club"),
+      v.literal("department")
+    ),
+    customName: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User must be authenticated");
+    }
+
+    // Get template configuration
+    const template = getSpaceTemplate(args.templateType);
+    const spaceName = args.customName || template.defaultName;
+
+    // Create the space
+    const spaceId = await ctx.db.insert("spaces", {
+      name: spaceName,
+      ownerId: userId,
+      description: template.description,
+    });
+
+    // Add the creator as an accepted member
+    await ctx.db.insert("spaceMembers", {
+      spaceId,
+      userId,
+      invitationStatus: "accepted",
+      invitedBy: userId,
+      invitedEmail: "",
+    });
+
+    return { spaceId, template };
+  },
+});
+
+// Get available space templates
+export const getSpaceTemplates = query({
+  args: {},
+  handler: async (ctx) => {
+    return [
+      {
+        type: "district",
+        name: "District Office",
+        description: "Complete district management with policies, procedures, and community engagement",
+        icon: "🏛️",
+        features: ["Policy Management", "Community Portal", "Staff Directory", "News & Updates"],
+        color: "#3B82F6"
+      },
+      {
+        type: "school",
+        name: "School Campus",
+        description: "Individual school with academic programs, events, and parent communication",
+        icon: "🏫",
+        features: ["Academic Calendar", "Parent Portal", "Student Resources", "Event Management"],
+        color: "#10B981"
+      },
+      {
+        type: "sports",
+        name: "Athletics Program",
+        description: "Sports teams, schedules, rosters, and athletic department management",
+        icon: "⚽",
+        features: ["Team Rosters", "Game Schedules", "Athletic Policies", "Parent Communication"],
+        color: "#F59E0B"
+      },
+      {
+        type: "club",
+        name: "Student Organization",
+        description: "Clubs, activities, and student-led organizations",
+        icon: "🎭",
+        features: ["Activity Calendar", "Member Management", "Event Planning", "Resource Sharing"],
+        color: "#8B5CF6"
+      },
+      {
+        type: "department",
+        name: "Academic Department",
+        description: "Subject-specific department with curriculum and resources",
+        icon: "📚",
+        features: ["Curriculum Resources", "Professional Development", "Assessment Tools", "Collaboration"],
+        color: "#EF4444"
+      }
+    ];
+  },
+});
+
+// Helper function to get space template configuration
+function getSpaceTemplate(templateType: string) {
+  const templates = {
+    district: {
+      defaultName: "District Office",
+      description: "Complete district management with policies, procedures, and community engagement",
+      icon: "🏛️",
+      features: ["Policy Management", "Community Portal", "Staff Directory", "News & Updates"],
+      color: "#3B82F6"
+    },
+    school: {
+      defaultName: "School Campus",
+      description: "Individual school with academic programs, events, and parent communication",
+      icon: "🏫",
+      features: ["Academic Calendar", "Parent Portal", "Student Resources", "Event Management"],
+      color: "#10B981"
+    },
+    sports: {
+      defaultName: "Athletics Program",
+      description: "Sports teams, schedules, rosters, and athletic department management",
+      icon: "⚽",
+      features: ["Team Rosters", "Game Schedules", "Athletic Policies", "Parent Communication"],
+      color: "#F59E0B"
+    },
+    club: {
+      defaultName: "Student Organization",
+      description: "Clubs, activities, and student-led organizations",
+      icon: "🎭",
+      features: ["Activity Calendar", "Member Management", "Event Planning", "Resource Sharing"],
+      color: "#8B5CF6"
+    },
+    department: {
+      defaultName: "Academic Department",
+      description: "Subject-specific department with curriculum and resources",
+      icon: "📚",
+      features: ["Curriculum Resources", "Professional Development", "Assessment Tools", "Collaboration"],
+      color: "#EF4444"
+    }
+  };
+
+  return templates[templateType as keyof typeof templates] || templates.district;
+}
+
 export const getUserSpaces = query({
   args: {},
   handler: async (ctx) => {

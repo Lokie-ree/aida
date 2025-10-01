@@ -6,7 +6,7 @@ import OpenAI from "openai";
 
 const openai = new OpenAI({
   baseURL: process.env.CONVEX_OPENAI_BASE_URL,
-  apiKey: process.env.CONVEX_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export const webhook = httpAction(async (ctx, request) => {
@@ -107,9 +107,9 @@ export const processVoiceMessage = internalAction({
   handler: async (ctx, args): Promise<string> => {
     try {
       // Check if this is a district policy query
-      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(args.message);
+      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus|attendance|discipline|safety|emergency|grading|homework|field trip|professional development|communication|technology|accommodation|IEP|504|bullying|harassment|FERPA|privacy|SIS|testing|intervention|support|behavior|management|equity|diversity|cultural|bias|inclusive/i.test(args.message);
       
-      let prompt = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. You provide constructive, actionable feedback to enhance teaching and learning.
+      let prompt = `You are A.I.D.A., the Intelligent Experience Platform for Education. You are the voice of this district's digital ecosystem, providing instant access to official policies, procedures, and information. You speak with authority and clarity, always citing official sources when available.
 
 Keep your response concise and conversational for voice interaction (under 200 words).
 
@@ -175,7 +175,7 @@ export const processAuthenticatedVoiceQuery = action({
 
     try {
       // Check if this is a district policy query
-      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(args.message);
+      const isPolicyQuery = /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus|attendance|discipline|safety|emergency|grading|homework|field trip|professional development|communication|technology|accommodation|IEP|504|bullying|harassment|FERPA|privacy|SIS|testing|intervention|support|behavior|management|equity|diversity|cultural|bias|inclusive/i.test(args.message);
       
       let response = "";
       let sources: string[] = [];

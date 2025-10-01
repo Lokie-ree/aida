@@ -13,8 +13,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Mic, MicOff, X, Loader2 } from "lucide-react";
+import { Mic, MicOff, X, Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
+import { handleError, showErrorToast, showSuccessToast, ErrorCodes, withRetry } from "@/lib/error-handling";
 
 interface VoiceInterfaceProps {
   onTranscription?: (text: string) => void;
@@ -47,27 +48,34 @@ export function VoiceInterface({
   // Handle authenticated voice queries with RAG
   const handleAuthenticatedQuery = async (message: string) => {
     try {
-      const result = await processAuthenticatedVoiceQuery({
-        message,
-        spaceId: currentSpaceId || undefined,
-      });
+      const result = await withRetry(
+        () => processAuthenticatedVoiceQuery({
+          message,
+          spaceId: currentSpaceId || undefined,
+        }),
+        3,
+        1000
+      );
 
       setLastResponse(result);
       onResponse?.(result.response);
 
       // Show sources if available
       if (result.sources.length > 0) {
-        toast.success(`Found ${result.sources.length} relevant source(s)`, {
-          description:
-            result.sources.slice(0, 3).join(", ") +
-            (result.sources.length > 3 ? "..." : ""),
-        });
+        showSuccessToast(`Found ${result.sources.length} relevant source(s)`, 
+          result.sources.slice(0, 3).join(", ") + (result.sources.length > 3 ? "..." : "")
+        );
       }
 
       return result.response;
     } catch (error) {
-      console.error("Error processing authenticated voice query:", error);
-      toast.error("Failed to process voice query");
+      const aidaError = handleError(error, {
+        component: "VoiceInterface",
+        action: "handleAuthenticatedQuery",
+        spaceId: currentSpaceId || undefined,
+      });
+      
+      showErrorToast(aidaError);
       return "I'm sorry, I encountered an error processing your request. Please try again.";
     }
   };
@@ -77,10 +85,11 @@ export function VoiceInterface({
     const vapiKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
 
     if (!vapiKey) {
-      console.error("VITE_VAPI_PUBLIC_KEY is not configured");
-      toast.error(
-        "Voice chat is not configured. Please set up your Vapi API key."
-      );
+      const error = handleError(new Error("Vapi API key not configured"), {
+        component: "VoiceInterface",
+        action: "initialize",
+      });
+      showErrorToast(error);
       return;
     }
 
@@ -116,7 +125,7 @@ export function VoiceInterface({
 
         // Process the transcript with RAG if it's a policy query
         const isPolicyQuery =
-          /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus/i.test(
+          /district|policy|procedure|guideline|requirement|standard|curriculum|assessment|evaluation|rubric|syllabus|attendance|discipline|safety|emergency|grading|homework|field trip|professional development|communication|technology|accommodation|IEP|504|bullying|harassment|FERPA|privacy|SIS|testing|intervention|support|behavior|management|equity|diversity|cultural|bias|inclusive/i.test(
             message.transcript
           );
 
@@ -136,16 +145,12 @@ export function VoiceInterface({
     });
 
     vapi.on("error", (error: any) => {
-      console.error("Vapi error:", error);
-
-      let errorMessage = "Voice connection error. Please try again.";
-      if (error?.message) {
-        errorMessage = `Voice error: ${error.message}`;
-      } else if (error?.code) {
-        errorMessage = `Voice error (${error.code}): Please check your API key and try again.`;
-      }
-
-      toast.error(errorMessage);
+      const aidaError = handleError(error, {
+        component: "VoiceInterface",
+        action: "vapi_error",
+      });
+      
+      showErrorToast(aidaError);
       setIsConnected(false);
       setIsListening(false);
       setIsSpeaking(false);
@@ -161,9 +166,11 @@ export function VoiceInterface({
 
   const startCall = async () => {
     if (!vapiRef.current) {
-      toast.error(
-        "Voice chat is not configured. Please set up your Vapi API key."
-      );
+      const error = handleError(new Error("Vapi not initialized"), {
+        component: "VoiceInterface",
+        action: "startCall",
+      });
+      showErrorToast(error);
       return;
     }
 
@@ -182,44 +189,40 @@ export function VoiceInterface({
         webhookUrl = webhookUrl.replace("http://", "https://");
       }
 
-      await vapiRef.current.start({
-        name: "A.I.D.A.",
-        model: {
-          provider: "openai",
-          model: "gpt-4o-mini",
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are A.I.D.A. (AI Instructional Design Assistant), a supportive and knowledgeable colleague who helps K-12 educators succeed. You provide district-specific policy guidance, lesson plan feedback, and teaching strategies with empathy and expertise. Keep responses conversational and encouraging, focusing on practical solutions that reduce teacher workload and improve student outcomes.",
-            },
-          ],
-        },
-        voice: {
-          provider: "playht",
-          voiceId: "jennifer",
-        },
-        firstMessage:
-          "Hi there! I'm A.I.D.A., your supportive teaching assistant. I'm here to help you with district policies, lesson planning, and teaching strategies. What can I help you with today?",
-        server: {
-          url: webhookUrl,
-        },
+      await withRetry(
+        () => vapiRef.current!.start({
+          name: "A.I.D.A.",
+          model: {
+            provider: "openai",
+            model: "gpt-4o-mini",
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are A.I.D.A., the Intelligent Experience Platform for Education. You are the voice of this district's digital ecosystem, providing instant access to official policies, procedures, and information. You speak with authority and clarity, always citing official sources. You help parents, students, staff, and community members find accurate information quickly. Keep responses professional, concise, and always reference specific documents when available.",
+              },
+            ],
+          },
+          voice: {
+            provider: "playht",
+            voiceId: "jennifer",
+          },
+          firstMessage:
+            "Hello! I'm A.I.D.A., your district's intelligent assistant. I can help you find information about policies, procedures, schedules, and any official district information. What would you like to know?",
+          server: {
+            url: webhookUrl,
+          },
+        }),
+        2,
+        1000
+      );
+    } catch (error) {
+      const aidaError = handleError(error, {
+        component: "VoiceInterface",
+        action: "startCall",
       });
-    } catch (error: any) {
-      console.error("Failed to start call:", error);
-
-      let errorMessage =
-        "Failed to start voice session. Please check your microphone permissions.";
-      if (error?.message?.includes("API key")) {
-        errorMessage = "Invalid API key. Please check your Vapi configuration.";
-      } else if (error?.message?.includes("microphone")) {
-        errorMessage =
-          "Microphone access denied. Please allow microphone permissions and try again.";
-      } else if (error?.message) {
-        errorMessage = `Voice error: ${error.message}`;
-      }
-
-      toast.error(errorMessage);
+      
+      showErrorToast(aidaError);
       setIsLoading(false);
     }
   };
