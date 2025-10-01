@@ -11,7 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Mail, Users, LogOut, Bell } from "lucide-react";
+import { Plus, Mail, Users, LogOut, Bell, Sparkles } from "lucide-react";
+import { SpaceTemplateSelector } from "./SpaceTemplateSelector";
 
 interface SpaceSelectorProps {
   currentSpaceId: Id<"spaces"> | null;
@@ -20,6 +21,7 @@ interface SpaceSelectorProps {
 
 export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorProps) {
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showInvitationsModal, setShowInvitationsModal] = useState(false);
   const [newSpaceName, setNewSpaceName] = useState("");
@@ -148,14 +150,25 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                 </Badge>
               </Button>
             )}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowCreateModal(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Create
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowTemplateModal(true)}
+                className="bg-gradient-to-r from-aida-primary-500 to-aida-secondary-500 text-white hover:from-aida-primary-600 hover:to-aida-secondary-600"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Quick Start
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCreateModal(true)}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Custom
+              </Button>
+            </div>
           </div>
         </div>
       </CardHeader>
@@ -225,6 +238,24 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
           </Card>
         )}
       </CardContent>
+
+      {/* Template Selector Modal */}
+      <Dialog open={showTemplateModal} onOpenChange={setShowTemplateModal}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Quick Start with Templates</DialogTitle>
+            <DialogDescription>
+              Choose a pre-configured template to get started quickly
+            </DialogDescription>
+          </DialogHeader>
+          <SpaceTemplateSelector
+            onSpaceCreated={(spaceId) => {
+              setShowTemplateModal(false);
+              onSpaceChange(spaceId as Id<"spaces">);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Create Space Modal */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
