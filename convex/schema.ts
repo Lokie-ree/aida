@@ -3,8 +3,8 @@ import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
-  // Note: feedbackSessions table deprecated for MVP - focus on voice-first district information queries
-  // Keeping for backward compatibility but can be removed in future cleanup
+  // Legacy table: Lesson plan feedback feature (not currently active in IXP platform)
+  // TODO: Evaluate for removal or repurposing as Space-specific coaching feature
   feedbackSessions: defineTable({
     userId: v.id("users"),
     lessonPlan: v.string(),

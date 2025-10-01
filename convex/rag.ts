@@ -47,7 +47,7 @@ export const addDocumentToRAG = action({
   },
 });
 
-// Web scraping functionality removed - focusing exclusively on document-based district information
+// Document-based RAG pipeline - foundation of A.I.D.A.'s intelligent Space architecture
 
 // Semantic search across all content
 export const semanticSearch = action({
@@ -197,7 +197,7 @@ export const migrateExistingDocuments = action({
   },
 });
 
-// Website migration removed - web scraping functionality deprecated
+// Document-only migration - Spaces use uploaded documents as single source of truth
 
 // Add demo data to RAG for realistic district policy responses
 export const addDemoDataToRAG = action({
