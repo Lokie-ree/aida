@@ -162,14 +162,14 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
   const completedSpaces = spaces.filter(s => s.status === "complete").length;
 
   return (
-    <Card className="border-2 border-aida-primary-300 shadow-xl bg-gradient-to-br from-white to-aida-primary-50">
-      <CardHeader className="border-b border-aida-primary-200 bg-white">
+    <Card className="border-2 shadow-xl bg-gradient-to-br from-background to-accent/10">
+      <CardHeader className="border-b bg-card/50">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-aida-primary-500 to-aida-secondary-500 flex items-center justify-center shadow-lg">
-            <Sparkles className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+            <Sparkles className="w-6 h-6 text-primary-foreground" />
           </div>
           <div className="flex-1">
-            <CardTitle className="text-2xl text-aida-primary-700">
+            <CardTitle className="text-2xl">
               PD Day Demo Setup
             </CardTitle>
             <CardDescription className="text-base mt-1">
@@ -189,7 +189,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
             <Button
               onClick={handleSetupDemo}
               size="lg"
-              className="w-full bg-gradient-to-r from-aida-primary-500 to-aida-secondary-500 hover:from-aida-primary-600 hover:to-aida-secondary-600 text-white shadow-lg text-lg py-6"
+              className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg text-lg py-6"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Set Up Demo in One Click
@@ -201,7 +201,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
             {isSettingUp && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-medium text-aida-primary-700">
+                  <span className="font-medium">
                     Setting up demo Spaces...
                   </span>
                   <span className="text-muted-foreground">

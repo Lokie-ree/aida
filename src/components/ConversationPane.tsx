@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Trash2, MessageCircle, FileText } from "lucide-react";
-import { designTokens } from "@/lib/design-tokens";
 
 interface ConversationPaneProps {
   currentSpaceId: Id<"spaces"> | null;
@@ -76,34 +75,18 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
   };
 
   return (
-    <Card 
-      className="flex flex-col h-full min-h-0 border-2"
-      style={{
-        borderColor: `${designTokens.colors.primary.blue}20`
-      }}
-    >
+    <Card className="flex flex-col h-full min-h-0 shadow-md">
       <CardHeader className="flex-shrink-0 border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div 
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-              }}
-            >
-              <span className="text-white font-bold text-sm">AI</span>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-primary to-accent">
+              <span className="text-primary-foreground font-bold text-sm">AI</span>
             </div>
             <div>
-              <CardTitle 
-                className="text-xl"
-                style={{ color: designTokens.colors.primary.blue }}
-              >
+              <CardTitle className="text-xl">
                 A.I.D.A. Conversation
               </CardTitle>
-              <p 
-                className="text-sm"
-                style={{ color: designTokens.colors.neutral[600] }}
-              >
+              <p className="text-sm text-muted-foreground">
                 {currentSpace ? `Connected to ${currentSpace.name}` : "Personal Assistant"}
               </p>
             </div>
@@ -127,36 +110,19 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
             {!chatHistory || chatHistory.length === 0 ? (
               <div className="flex items-center justify-center h-full text-center">
                 <div className="max-w-md">
-                  <div 
-                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                    style={{
-                      background: `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-                    }}
-                  >
-                    <MessageCircle className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-gradient-to-br from-primary to-accent">
+                    <MessageCircle className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <h3 
-                    className="text-lg font-semibold mb-2"
-                    style={{ color: designTokens.colors.primary.blue }}
-                  >
+                  <h3 className="text-lg font-semibold mb-2">
                     Ask me anything about the district
                   </h3>
-                  <p 
-                    className="text-sm mb-4"
-                    style={{ color: designTokens.colors.neutral[600] }}
-                  >
+                  <p className="text-sm mb-4 text-muted-foreground">
                     Use voice chat for hands-free conversations or type your questions below.
                   </p>
                   <div className="grid grid-cols-1 gap-2 text-left">
-                    <div 
-                      className="p-3 rounded-lg border text-sm"
-                      style={{
-                        borderColor: `${designTokens.colors.primary.blue}20`,
-                        backgroundColor: `${designTokens.colors.primary.blue}05`
-                      }}
-                    >
+                    <div className="p-3 rounded-lg border bg-accent/5 text-sm">
                       <strong>Example questions:</strong>
-                      <ul className="mt-1 space-y-1 text-xs">
+                      <ul className="mt-1 space-y-1 text-xs text-muted-foreground">
                         <li>• "What's our district's policy for reporting bullying?"</li>
                         <li>• "What time does the bus arrive at Maple Street?"</li>
                         <li>• "Summarize our student wellness goals"</li>
@@ -175,14 +141,9 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-3 ${
                         msg.role === "user"
-                          ? "text-white"
+                          ? "bg-gradient-to-br from-primary to-accent text-primary-foreground"
                           : "bg-muted text-foreground"
                       }`}
-                      style={{
-                        backgroundColor: msg.role === "user" 
-                          ? `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-                          : undefined
-                      }}
                     >
                       <div className="whitespace-pre-wrap text-sm leading-relaxed">
                         {msg.content}
@@ -191,11 +152,11 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                       {/* Source Citations - Critical for Demo */}
                       {msg.contextDocuments && msg.contextDocuments.length > 0 && (
                         <div 
-                          className="mt-2 pt-2 border-t text-xs"
-                          style={{
-                            borderColor: msg.role === "user" ? "rgba(255,255,255,0.2)" : designTokens.colors.neutral[200],
-                            color: msg.role === "user" ? "rgba(255,255,255,0.8)" : designTokens.colors.neutral[600]
-                          }}
+                          className={`mt-2 pt-2 border-t text-xs ${
+                            msg.role === "user" 
+                              ? "border-primary-foreground/20 text-primary-foreground/80"
+                              : "border-border text-muted-foreground"
+                          }`}
                         >
                           <div className="flex items-center gap-1 mb-1">
                             <FileText className="w-3 h-3" />
@@ -211,12 +172,9 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                         </div>
                       )}
                       
-                      <div 
-                        className="text-xs mt-1 opacity-75"
-                        style={{
-                          color: msg.role === "user" ? "rgba(255,255,255,0.7)" : designTokens.colors.neutral[500]
-                        }}
-                      >
+                      <div className={`text-xs mt-1 opacity-75 ${
+                        msg.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"
+                      }`}>
                         {new Date(msg._creationTime).toLocaleTimeString()}
                       </div>
                     </div>
@@ -225,19 +183,10 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div 
-                      className="bg-muted rounded-lg px-4 py-3 max-w-[80%]"
-                      style={{ backgroundColor: designTokens.colors.neutral[100] }}
-                    >
+                    <div className="bg-muted rounded-lg px-4 py-3 max-w-[80%]">
                       <div className="flex items-center gap-2">
-                        <div 
-                          className="animate-spin rounded-full h-4 w-4 border-2 border-t-transparent"
-                          style={{ borderColor: designTokens.colors.primary.blue }}
-                        ></div>
-                        <span 
-                          className="text-sm"
-                          style={{ color: designTokens.colors.neutral[600] }}
-                        >
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent"></div>
+                        <span className="text-sm text-muted-foreground">
                           A.I.D.A. is thinking...
                         </span>
                       </div>
@@ -252,12 +201,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
       </CardContent>
 
       {/* Input */}
-      <div 
-        className="p-4 border-t bg-muted/50"
-        style={{
-          backgroundColor: `${designTokens.colors.neutral[100]}50`
-        }}
-      >
+      <div className="p-4 border-t bg-muted/30">
         <form onSubmit={handleSubmit} className="flex gap-3">
           <Input
             type="text"
@@ -271,10 +215,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
             type="submit"
             disabled={!message.trim() || isLoading}
             size="default"
-            className="text-white"
-            style={{
-              background: `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-            }}
+            className="bg-gradient-to-br from-primary to-accent hover:opacity-90 text-primary-foreground"
           >
             <Send className="w-4 h-4 mr-2" />
             Send

@@ -6,8 +6,8 @@ import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -135,7 +135,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
             value={currentSpaceId || "personal"}
             onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
           >
-            <SelectTrigger className="flex-1 bg-white/80 border-aida-primary-300 hover:border-aida-primary-500 transition-all focus:ring-2 focus:ring-aida-primary-500/20">
+            <SelectTrigger className="flex-1 bg-card/80 hover:border-primary transition-all focus:ring-2 focus:ring-primary/20">
               <SelectValue placeholder="Select a workspace" />
             </SelectTrigger>
             <SelectContent>
@@ -155,7 +155,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                 variant="outline"
                 size="sm"
                 onClick={() => setShowInvitationsModal(true)}
-                className="relative h-10 w-10 p-0 border-aida-primary-300"
+                className="relative h-10 w-10 p-0"
               >
                 <Bell className="w-4 h-4" />
                 <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
@@ -167,7 +167,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
               variant="outline"
               size="sm"
               onClick={() => setShowTemplateModal(true)}
-              className="h-10 w-10 p-0 bg-gradient-to-br from-aida-primary-500 to-aida-secondary-500 text-white border-0 hover:from-aida-primary-600 hover:to-aida-secondary-600"
+              className="h-10 w-10 p-0 bg-gradient-to-br from-primary to-accent text-primary-foreground border-0 hover:opacity-90"
             >
               <Sparkles className="w-4 h-4" />
             </Button>
@@ -175,7 +175,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
               variant="outline"
               size="sm"
               onClick={() => setShowCreateModal(true)}
-              className="h-10 w-10 p-0 border-aida-primary-300 hover:bg-aida-primary-50"
+              className="h-10 w-10 p-0 hover:bg-accent"
             >
               <Plus className="w-4 h-4" />
             </Button>
@@ -184,10 +184,10 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
 
         {/* Current Space Info - Compact */}
         {currentSpace && (
-          <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-aida-primary-50/50 to-aida-secondary-50/50 rounded-lg border border-aida-primary-200/50">
+          <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg border">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <Users className="w-3.5 h-3.5 text-aida-primary-600 flex-shrink-0" />
-              <span className="text-xs font-medium text-aida-primary-700 truncate">
+              <Users className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+              <span className="text-xs font-medium truncate">
                 {spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0} member{(spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0) !== 1 ? 's' : ''}
               </span>
               <span className="text-xs text-muted-foreground truncate">
@@ -200,7 +200,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowInviteModal(true)}
-                  className="h-7 w-7 p-0 hover:bg-aida-primary-100 text-aida-primary-600"
+                  className="h-7 w-7 p-0 hover:bg-accent text-primary"
                   title="Invite members"
                 >
                   <Mail className="w-3.5 h-3.5" />
@@ -211,7 +211,7 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                   variant="ghost"
                   size="sm"
                   onClick={handleLeaveSpace}
-                  className="h-7 w-7 p-0 text-red-600 hover:bg-red-50"
+                  className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
                   title="Leave space"
                 >
                   <LogOut className="w-3.5 h-3.5" />
