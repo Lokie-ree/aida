@@ -7,6 +7,7 @@ import { SpaceSelector } from "./components/SpaceSelector";
 import { OnboardingGuide } from "./components/OnboardingGuide";
 import { CommandCenter } from "./components/CommandCenter";
 import { ConversationPane } from "./components/ConversationPane";
+import { PDDemoSetup } from "./components/PDDemoSetup";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { Id } from "../convex/_generated/dataModel";
@@ -64,7 +65,9 @@ export default function App() {
 }
 
 function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"spaces"> | null; setCurrentSpaceId: (id: Id<"spaces"> | null) => void }) {
+  const [showPDSetup, setShowPDSetup] = useState(true);
   const loggedInUser = useQuery(api.auth.loggedInUser);
+  const userSpaces = useQuery(api.spaces.getUserSpaces);
 
   if (loggedInUser === undefined) {
     return (
@@ -77,6 +80,9 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
     );
   }
 
+  // Auto-hide PD Setup if user already has 5+ spaces
+  const shouldShowPDSetup = showPDSetup && (!userSpaces || userSpaces.length < 5);
+
   return (
     <>
       <OnboardingGuide
@@ -84,11 +90,37 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
         onComplete={() => console.log("Onboarding completed")}
       />
 
-      {/* Demo-Ready Dashboard Layout */}
-      <div className="h-full flex flex-col">
-        {/* Workspace Selector - Top of Dashboard */}
-        <div className="flex justify-center mb-6">
-          <div className="w-full max-w-md">
+      {/* Unified Dashboard Experience */}
+      <div className="h-full flex flex-col gap-5">
+        
+        {/* PD Demo Setup Banner (Collapsible) */}
+        {shouldShowPDSetup && (
+          <div className="animate-slide-in-from-top">
+            <PDDemoSetup
+              onSpaceCreated={(spaceId) => setCurrentSpaceId(spaceId)}
+              onComplete={() => setShowPDSetup(false)}
+            />
+          </div>
+        )}
+
+        {/* Workspace Control Panel - Refined */}
+        <div className="bg-card rounded-2xl border shadow-md">
+          <div className="p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
+                <svg className="w-5 h-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold">
+                  Active Workspace
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Switch Spaces to access role-specific knowledge
+                </p>
+              </div>
+            </div>
             <SpaceSelector
               currentSpaceId={currentSpaceId}
               onSpaceChange={setCurrentSpaceId}
@@ -96,14 +128,14 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
           </div>
         </div>
 
-        {/* Main Dashboard - Two Column Layout */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-0">
-          {/* Column 1: Command Center (Left Side - Fixed Width) */}
-          <div className="lg:col-span-1 flex flex-col space-y-6">
+        {/* Main Dashboard - Unified Layout with Visual Hierarchy */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-5 min-h-0">
+          {/* Left Column: Command Center */}
+          <div className="lg:col-span-1 flex flex-col min-h-0">
             <CommandCenter currentSpaceId={currentSpaceId} />
           </div>
 
-          {/* Column 2: Conversation Pane (Right Side - Flexible Width) */}
+          {/* Right Column: Conversation */}
           <div className="lg:col-span-2 flex flex-col min-h-0">
             <ConversationPane currentSpaceId={currentSpaceId} />
           </div>

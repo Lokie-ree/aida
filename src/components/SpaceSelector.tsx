@@ -6,8 +6,8 @@ import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -127,115 +127,97 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
   };
 
   return (
-    <Card className="shadow-lg border border-aida-primary-200">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="text-lg font-semibold text-aida-primary-600">
-              Workspace
-            </CardTitle>
-            <CardDescription className="text-sm mt-1">Select or create a shared workspace</CardDescription>
-          </div>
-          <div className="flex items-center gap-2">
+    <Card className="border-0 shadow-none bg-transparent">
+      <CardContent className="p-0 space-y-3">
+        {/* Space Selector with Actions */}
+        <div className="flex gap-2">
+          <Select
+            value={currentSpaceId || "personal"}
+            onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
+          >
+            <SelectTrigger className="flex-1 bg-card/80 hover:border-primary transition-all focus:ring-2 focus:ring-primary/20">
+              <SelectValue placeholder="Select a workspace" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="personal">Personal Space</SelectItem>
+              {spaces?.map((space) => (
+                <SelectItem key={space._id} value={space._id}>
+                  {space.name} {space.isOwner ? "👑" : ""}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Quick Actions */}
+          <div className="flex gap-1.5">
             {pendingInvitations && pendingInvitations.length > 0 && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowInvitationsModal(true)}
-                className="relative"
+                className="relative h-10 w-10 p-0"
               >
-                <Bell className="w-4 h-4 mr-2" />
-                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                <Bell className="w-4 h-4" />
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
                   {pendingInvitations.length}
                 </Badge>
               </Button>
             )}
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowTemplateModal(true)}
-                className="bg-gradient-to-r from-aida-primary-500 to-aida-secondary-500 text-white hover:from-aida-primary-600 hover:to-aida-secondary-600"
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Quick Start
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowCreateModal(true)}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Custom
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              onClick={() => setShowTemplateModal(true)}
+              className="h-10 w-10 p-0 bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              <Sparkles className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowCreateModal(true)}
+              className="h-10 w-10 p-0 hover:bg-accent"
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
           </div>
         </div>
-      </CardHeader>
 
-      <CardContent className="pt-0">
-        {/* Space Selector */}
-        <Select
-          value={currentSpaceId || "personal"}
-          onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
-        >
-          <SelectTrigger className="bg-muted/30 border-aida-primary-200 hover:border-aida-primary-400 transition-colors">
-            <SelectValue placeholder="Select a workspace" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="personal">Personal Space</SelectItem>
-            {spaces?.map((space) => (
-              <SelectItem key={space._id} value={space._id}>
-                {space.name} {space.isOwner ? "(Owner)" : "(Member)"}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Current Space Info */}
+        {/* Current Space Info - Compact */}
         {currentSpace && (
-          <Card className="mt-3 bg-gradient-to-br from-aida-primary-50 to-aida-secondary-50 border-aida-primary-200 shadow-sm">
-            <CardContent className="p-3">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h4 className="text-sm font-semibold">{currentSpace.name}</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">Owner: {currentSpace.ownerName}</p>
-                  {spaceMembers && (
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="flex items-center gap-1.5 px-2 py-1 bg-aida-primary-100 rounded-full">
-                        <Users className="w-3 h-3 text-aida-primary-600" />
-                        <span className="text-xs font-medium text-aida-primary-700">
-                          {spaceMembers.filter(m => m.invitationStatus === "accepted").length} members
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center gap-1">
-                  {currentSpace.isOwner && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowInviteModal(true)}
-                      className="h-8 w-8 p-0 hover:bg-primary/10 hover:text-primary"
-                    >
-                      <Mail className="w-4 h-4" />
-                    </Button>
-                  )}
-                  {!currentSpace.isOwner && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleLeaveSpace}
-                      className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <LogOut className="w-4 h-4" />
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg border">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <Users className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+              <span className="text-xs font-medium truncate">
+                {spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0} member{(spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0) !== 1 ? 's' : ''}
+              </span>
+              <span className="text-xs text-muted-foreground truncate">
+                • {currentSpace.isOwner ? 'Owner' : 'Member'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              {currentSpace.isOwner && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowInviteModal(true)}
+                  className="h-7 w-7 p-0 hover:bg-accent text-primary"
+                  title="Invite members"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                </Button>
+              )}
+              {!currentSpace.isOwner && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLeaveSpace}
+                  className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                  title="Leave space"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </Button>
+              )}
+            </div>
+          </div>
         )}
       </CardContent>
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
@@ -7,7 +6,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { FileText, BookOpen, Shield, Users } from "lucide-react";
 import { VoiceInterface } from "./VoiceInterface";
-import { designTokens } from "@/lib/design-tokens";
 
 interface CommandCenterProps {
   currentSpaceId: Id<"spaces"> | null;
@@ -41,66 +39,29 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
   };
 
   return (
-    <div className="space-y-6 h-full flex flex-col">
-      {/* District Context Header */}
-      <Card 
-        className="border-2"
-        style={{
-          borderColor: `${designTokens.colors.primary.blue}20`
-        }}
-      >
-        <CardHeader className="pb-3">
-          <div className="flex items-center gap-3">
+    <div className="space-y-5 h-full flex flex-col">
+      {/* The Voice of Your District */}
+      <Card className="flex-1 flex flex-col shadow-md">
+        <CardHeader className="pb-4 border-b">
+          <div className="flex items-center gap-3 mb-4">
             <Avatar className="w-12 h-12">
-              <AvatarFallback 
-                className="font-bold text-white"
-                style={{
-                  backgroundColor: designTokens.colors.primary.blue,
-                  fontSize: designTokens.typography.fontSize.lg[0]
-                }}
-              >
+              <AvatarFallback className="font-bold text-primary-foreground bg-primary text-lg">
                 {getDistrictInitials()}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <h2 
-                className="font-bold truncate"
-                style={{ 
-                  fontSize: designTokens.typography.fontSize.xl[0],
-                  color: designTokens.colors.primary.blue
-                }}
-              >
+              <h2 className="text-xl font-bold truncate">
                 {getDistrictName()}
               </h2>
               <div className="flex items-center gap-2 mt-1">
-                <div 
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: designTokens.colors.primary.green }}
-                ></div>
-                <span 
-                  className="text-sm font-medium"
-                  style={{ color: designTokens.colors.neutral[600] }}
-                >
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="text-sm font-medium text-muted-foreground">
                   Knowledge Base: Active
                 </span>
               </div>
             </div>
           </div>
-        </CardHeader>
-      </Card>
-
-      {/* The Voice Orb (The Main Event) */}
-      <Card 
-        className="border-2 flex-1 flex flex-col"
-        style={{
-          borderColor: `${designTokens.colors.secondary.purple}20`
-        }}
-      >
-        <CardHeader className="text-center pb-2">
-          <CardTitle 
-            className="text-xl font-bold"
-            style={{ color: designTokens.colors.primary.blue }}
-          >
+          <CardTitle className="text-center text-lg font-semibold">
             The Voice of Your District
           </CardTitle>
         </CardHeader>
@@ -113,18 +74,10 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
       </Card>
 
       {/* Source Documents List */}
-      <Card 
-        className="border-2 flex-1 min-h-0"
-        style={{
-          borderColor: `${designTokens.colors.primary.green}20`
-        }}
-      >
+      <Card className="flex-1 min-h-0 shadow-md">
         <CardHeader className="pb-3">
-          <CardTitle 
-            className="text-lg font-bold flex items-center gap-2"
-            style={{ color: designTokens.colors.primary.green }}
-          >
-            <BookOpen className="w-5 h-5" />
+          <CardTitle className="text-lg font-bold flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-primary" />
             Official Knowledge Base
           </CardTitle>
         </CardHeader>
@@ -134,72 +87,33 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
               documents.map((doc) => (
                 <div
                   key={doc._id}
-                  className="flex items-center gap-3 p-3 rounded-lg border transition-colors hover:bg-muted/50"
-                  style={{
-                    borderColor: designTokens.colors.neutral[200]
-                  }}
+                  className="flex items-center gap-3 p-3 rounded-lg border transition-colors hover:bg-accent/5"
                 >
-                  <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{
-                      backgroundColor: `${designTokens.colors.primary.blue}10`
-                    }}
-                  >
-                    <FileText 
-                      className="w-4 h-4" 
-                      style={{ color: designTokens.colors.primary.blue }}
-                    />
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary/10">
+                    <FileText className="w-4 h-4 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p 
-                      className="font-medium truncate text-sm"
-                      style={{ color: designTokens.colors.neutral[800] }}
-                    >
+                    <p className="font-medium truncate text-sm">
                       {doc.fileName}
                     </p>
-                    <p 
-                      className="text-xs truncate"
-                      style={{ color: designTokens.colors.neutral[500] }}
-                    >
+                    <p className="text-xs truncate text-muted-foreground">
                       {doc.contentType} • {(doc.fileSize / 1024).toFixed(1)} KB
                     </p>
                   </div>
-                  <Badge 
-                    variant="secondary"
-                    className="text-xs"
-                    style={{
-                      backgroundColor: `${designTokens.colors.primary.green}10`,
-                      color: designTokens.colors.primary.green,
-                      border: `1px solid ${designTokens.colors.primary.green}20`
-                    }}
-                  >
+                  <Badge variant="secondary" className="text-xs bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400">
                     Indexed
                   </Badge>
                 </div>
               ))
             ) : (
               <div className="text-center py-8">
-                <div 
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3"
-                  style={{
-                    backgroundColor: `${designTokens.colors.neutral[200]}50`
-                  }}
-                >
-                  <FileText 
-                    className="w-6 h-6" 
-                    style={{ color: designTokens.colors.neutral[400] }}
-                  />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 bg-muted">
+                  <FileText className="w-6 h-6 text-muted-foreground" />
                 </div>
-                <p 
-                  className="text-sm font-medium mb-1"
-                  style={{ color: designTokens.colors.neutral[600] }}
-                >
+                <p className="text-sm font-medium mb-1">
                   No documents uploaded
                 </p>
-                <p 
-                  className="text-xs"
-                  style={{ color: designTokens.colors.neutral[500] }}
-                >
+                <p className="text-xs text-muted-foreground">
                   Upload district documents to build your knowledge base
                 </p>
               </div>
@@ -209,47 +123,24 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
       </Card>
 
       {/* Trust Signals */}
-      <Card 
-        className="border-2"
-        style={{
-          borderColor: `${designTokens.colors.secondary.purple}20`
-        }}
-      >
+      <Card className="shadow-md">
         <CardContent className="p-4">
           <div className="grid grid-cols-3 gap-3 text-center">
             <div className="flex flex-col items-center gap-1">
-              <Shield 
-                className="w-4 h-4" 
-                style={{ color: designTokens.colors.primary.green }}
-              />
-              <span 
-                className="text-xs font-medium"
-                style={{ color: designTokens.colors.neutral[600] }}
-              >
+              <Shield className="w-4 h-4 text-green-600 dark:text-green-400" />
+              <span className="text-xs font-medium text-muted-foreground">
                 FERPA
               </span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <FileText 
-                className="w-4 h-4" 
-                style={{ color: designTokens.colors.primary.blue }}
-              />
-              <span 
-                className="text-xs font-medium"
-                style={{ color: designTokens.colors.neutral[600] }}
-              >
+              <FileText className="w-4 h-4 text-primary" />
+              <span className="text-xs font-medium text-muted-foreground">
                 Sources
               </span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <Users 
-                className="w-4 h-4" 
-                style={{ color: designTokens.colors.secondary.purple }}
-              />
-              <span 
-                className="text-xs font-medium"
-                style={{ color: designTokens.colors.neutral[600] }}
-              >
+              <Users className="w-4 h-4 text-accent" />
+              <span className="text-xs font-medium text-muted-foreground">
                 &lt;2s
               </span>
             </div>
