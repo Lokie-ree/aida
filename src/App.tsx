@@ -104,16 +104,16 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
         )}
 
         {/* Workspace Control Panel - Refined */}
-        <div className="bg-gradient-to-br from-accent/10 via-background to-secondary/10 rounded-2xl border shadow-lg backdrop-blur-sm">
+        <div className="bg-card rounded-2xl border shadow-md">
           <div className="p-5">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
                 <svg className="w-5 h-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
                 </svg>
               </div>
               <div className="flex-1">
-                <h2 className="text-lg font-semibold text-foreground">
+                <h2 className="text-lg font-semibold">
                   Active Workspace
                 </h2>
                 <p className="text-xs text-muted-foreground">

@@ -164,10 +164,9 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
               </Button>
             )}
             <Button
-              variant="outline"
               size="sm"
               onClick={() => setShowTemplateModal(true)}
-              className="h-10 w-10 p-0 bg-gradient-to-br from-primary to-accent text-primary-foreground border-0 hover:opacity-90"
+              className="h-10 w-10 p-0 bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <Sparkles className="w-4 h-4" />
             </Button>

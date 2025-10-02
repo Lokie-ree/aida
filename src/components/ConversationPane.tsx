@@ -79,7 +79,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
       <CardHeader className="flex-shrink-0 border-b">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-primary to-accent">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
               <span className="text-primary-foreground font-bold text-sm">AI</span>
             </div>
             <div>
@@ -110,7 +110,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
             {!chatHistory || chatHistory.length === 0 ? (
               <div className="flex items-center justify-center h-full text-center">
                 <div className="max-w-md">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-gradient-to-br from-primary to-accent">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-primary">
                     <MessageCircle className="w-8 h-8 text-primary-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
@@ -141,7 +141,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                     <div
                       className={`max-w-[80%] rounded-lg px-4 py-3 ${
                         msg.role === "user"
-                          ? "bg-gradient-to-br from-primary to-accent text-primary-foreground"
+                          ? "bg-primary text-primary-foreground"
                           : "bg-muted text-foreground"
                       }`}
                     >
@@ -215,7 +215,6 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
             type="submit"
             disabled={!message.trim() || isLoading}
             size="default"
-            className="bg-gradient-to-br from-primary to-accent hover:opacity-90 text-primary-foreground"
           >
             <Send className="w-4 h-4 mr-2" />
             Send

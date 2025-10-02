@@ -162,10 +162,10 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
   const completedSpaces = spaces.filter(s => s.status === "complete").length;
 
   return (
-    <Card className="border-2 shadow-xl bg-gradient-to-br from-background to-accent/10">
-      <CardHeader className="border-b bg-card/50">
+    <Card className="border-2 shadow-xl">
+      <CardHeader className="border-b">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-md">
             <Sparkles className="w-6 h-6 text-primary-foreground" />
           </div>
           <div className="flex-1">
@@ -189,7 +189,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
             <Button
               onClick={handleSetupDemo}
               size="lg"
-              className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground shadow-lg text-lg py-6"
+              className="w-full shadow-lg text-lg py-6"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Set Up Demo in One Click

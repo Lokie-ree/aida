@@ -40,10 +40,10 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
 
   return (
     <div className="space-y-5 h-full flex flex-col">
-      {/* District Context Header */}
-      <Card className="shadow-md">
-        <CardHeader className="pb-3">
-          <div className="flex items-center gap-3">
+      {/* The Voice of Your District */}
+      <Card className="flex-1 flex flex-col shadow-md">
+        <CardHeader className="pb-4 border-b">
+          <div className="flex items-center gap-3 mb-4">
             <Avatar className="w-12 h-12">
               <AvatarFallback className="font-bold text-primary-foreground bg-primary text-lg">
                 {getDistrictInitials()}
@@ -61,13 +61,7 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
               </div>
             </div>
           </div>
-        </CardHeader>
-      </Card>
-
-      {/* The Voice Orb (The Main Event) */}
-      <Card className="flex-1 flex flex-col shadow-md">
-        <CardHeader className="text-center pb-2">
-          <CardTitle className="text-xl font-bold">
+          <CardTitle className="text-center text-lg font-semibold">
             The Voice of Your District
           </CardTitle>
         </CardHeader>
