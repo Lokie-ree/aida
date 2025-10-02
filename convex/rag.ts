@@ -503,3 +503,319 @@ export const testRAGIntegration = action({
     };
   },
 });
+
+// Add Louisiana-specific district content to RAG for PD demo
+export const addLouisianaDistrictContent = action({
+  args: { spaceId: v.optional(v.id("spaces")) },
+  returns: v.object({
+    success: v.boolean(),
+    addedCount: v.number(),
+    categories: v.object({
+      leads: v.number(),
+      sped: v.number(),
+      counselor: v.number(),
+      niet: v.number(),
+      ckh: v.number(),
+    }),
+    errors: v.array(v.string()),
+  }),
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User must be authenticated");
+    }
+
+    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    let totalAdded = 0;
+    const categoryCount = { leads: 0, sped: 0, counselor: 0, niet: 0, ckh: 0 };
+    const errors: string[] = [];
+
+    // LDOE LEADS Framework Content
+    const leadsContent = [
+      {
+        title: "LEADS Framework Overview",
+        category: "leads" as const,
+        content: `Louisiana Educator Advancement and Development System (LEADS) is the state's reimagined teacher evaluation framework, launching statewide in 2025-2026. Based on feedback from over 8,000 Louisiana educators, LEADS focuses on:
+
+- More responsive and impactful evaluation processes
+- Professional growth and development
+- Supporting both educators and students
+- Multiple evaluation components and conferences
+
+The system replaces the previous Compass evaluation system and introduces new rubrics, observation protocols, and professional growth planning tools.`,
+        keywords: ["LEADS", "evaluation", "teacher evaluation", "Louisiana", "LDOE", "professional development", "2025-2026"]
+      },
+      {
+        title: "Louisiana Educator Rubric - Planning and Preparation",
+        category: "leads" as const,
+        content: `Component 1: Planning and Preparation includes demonstrating knowledge of content and students, setting instructional outcomes, demonstrating knowledge of resources, designing coherent instruction, and designing student assessment. Teachers must show they understand their subject matter, know their students' needs, set clear learning goals, use appropriate resources, create well-structured lessons, and plan effective assessments.`,
+        keywords: ["planning", "preparation", "lesson planning", "instructional design", "student assessment", "learning objectives"]
+      },
+      {
+        title: "Louisiana Educator Rubric - Classroom Environment",
+        category: "leads" as const,
+        content: `Component 2: Classroom Environment focuses on creating an environment of respect and rapport, establishing a culture for learning, managing classroom procedures, managing student behavior, and organizing physical space. Effective teachers build positive relationships, set high expectations, establish efficient routines, maintain appropriate behavior standards, and optimize classroom layout for learning.`,
+        keywords: ["classroom management", "classroom environment", "student behavior", "classroom culture", "physical space", "procedures"]
+      },
+      {
+        title: "Louisiana Educator Rubric - Instruction",
+        category: "leads" as const,
+        content: `Component 3: Instruction emphasizes communicating with students, using questioning and discussion techniques, engaging students in learning, using assessment in instruction, and demonstrating flexibility and responsiveness. Strong instructional practice includes clear communication, higher-order thinking questions, student engagement strategies, formative assessment, and adapting to student needs in real-time.`,
+        keywords: ["instruction", "teaching strategies", "student engagement", "questioning", "formative assessment", "differentiation", "flexibility"]
+      },
+      {
+        title: "Louisiana Educator Rubric - Professional Responsibilities",
+        category: "leads" as const,
+        content: `Component 4: Professional Responsibilities covers reflecting on teaching, maintaining accurate records, communicating with families, participating in a professional community, growing and developing professionally, and showing professionalism. Teachers must be reflective practitioners, keep organized documentation, partner with families, collaborate with colleagues, pursue continuous learning, and maintain ethical standards.`,
+        keywords: ["professional responsibilities", "reflection", "parent communication", "collaboration", "professional growth", "ethics", "record keeping"]
+      },
+      {
+        title: "LEADS Evaluation Ratings and Performance Levels",
+        category: "leads" as const,
+        content: `LEADS uses four performance levels for educator evaluation:
+- Ineffective: Does not meet expectations; requires significant improvement
+- Effective: Emerging: Developing skills; showing progress toward proficiency
+- Effective: Proficient: Consistently meets expectations; solid professional practice
+- Highly Effective: Exceeds expectations; exemplary professional practice
+
+Teachers receive ratings based on multiple measures including classroom observations, professional growth plans, and student learning targets. The evaluation process includes pre-conferences, observations, post-conferences, and mid-year reviews.`,
+        keywords: ["evaluation ratings", "performance levels", "highly effective", "proficient", "emerging", "ineffective", "observation"]
+      },
+    ];
+
+    // SPED and Accommodations Content
+    const spedContent = [
+      {
+        title: "IEP Implementation Requirements for Teachers",
+        category: "sped" as const,
+        content: `Individualized Education Programs (IEPs) are legal documents that must be followed precisely. Teacher responsibilities include:
+- Review all IEPs at the beginning of the semester
+- Implement all specified accommodations and modifications consistently
+- Document accommodation implementation
+- Communicate concerns to the special education coordinator immediately
+- Participate in IEP meetings as requested
+- Update progress on IEP goals regularly
+
+Common accommodations: extended time on tests, preferential seating, use of assistive technology, modified assignments, small group instruction, frequent breaks, visual aids, and read-aloud support.`,
+        keywords: ["IEP", "individualized education program", "accommodations", "special education", "disabilities", "modifications", "implementation"]
+      },
+      {
+        title: "Section 504 Accommodation Plans",
+        category: "sped" as const,
+        content: `Section 504 plans provide accommodations for students with disabilities who don't qualify for special education services but need support to access the general education curriculum. Unlike IEPs, 504 plans don't require specialized instruction - they focus on removing barriers to learning.
+
+Common 504 accommodations include preferential seating, extended time, use of technology, modified testing conditions, and breaks as needed. Teachers must implement all 504 accommodations exactly as specified in the student's plan. These plans are legally binding under federal law.`,
+        keywords: ["504", "Section 504", "accommodations", "disabilities", "general education", "testing accommodations", "accessibility"]
+      },
+      {
+        title: "FERPA and Student Privacy Requirements",
+        category: "sped" as const,
+        content: `Student information is protected under FERPA (Family Educational Rights and Privacy Act). Teachers must:
+- Never share student information via email or unsecured platforms
+- Only discuss student information with authorized personnel
+- Keep IEPs and 504 plans confidential and secure
+- Be aware that all system access is logged and monitored
+- Obtain proper consent before sharing educational records
+- Protect students' personally identifiable information
+
+Violations of FERPA can result in serious consequences for both the teacher and the district. When in doubt about sharing information, consult with administration or the special education coordinator.`,
+        keywords: ["FERPA", "privacy", "confidentiality", "student records", "educational records", "data protection", "authorized personnel"]
+      },
+      {
+        title: "Dyslexia Screening and Support in Louisiana",
+        category: "sped" as const,
+        content: `Louisiana requires dyslexia screening and specialized support through Bulletin 1903. Key requirements:
+- Universal screening for dyslexia and related disorders
+- Evidence-based intervention programs for identified students
+- Specialized instruction by trained teachers
+- Progress monitoring and data collection
+- Parent notification and involvement
+
+Teachers should watch for signs of dyslexia including difficulty with phonological awareness, decoding, spelling, and reading fluency. Early identification and intervention are critical for student success. Refer students showing signs of dyslexia to the school's screening team.`,
+        keywords: ["dyslexia", "Bulletin 1903", "screening", "reading disorders", "intervention", "phonological awareness", "decoding"]
+      },
+    ];
+
+    // Counselor Tools and Resources
+    const counselorContent = [
+      {
+        title: "ACT Test Preparation and Registration",
+        category: "counselor" as const,
+        content: `ACT Test Information for School Counselors:
+- Registration deadlines: 5 weeks before test date
+- Test dates: September, October, December, February, April, June
+- Fee waivers available for eligible students through the counseling office
+- Students should register online at act.org
+- ACT prep resources available in the school library and online
+- Practice tests should be administered at least twice before the actual test
+- Students should take the ACT at least once during junior year
+
+Counselors should help students understand score ranges, college admission requirements, and scholarship opportunities based on ACT scores.`,
+        keywords: ["ACT", "college readiness", "testing", "registration", "test prep", "college admission", "scholarships"]
+      },
+      {
+        title: "WorkKeys Assessment for Career Readiness",
+        category: "counselor" as const,
+        content: `WorkKeys is Louisiana's career readiness assessment required for Jump Start students. Key information:
+- Three components: Applied Math, Graphic Literacy, Workplace Documents
+- Administered during junior year to Career and Technical Education students
+- Results used for workforce certification and college readiness measurement
+- National Career Readiness Certificate (NCRC) awarded based on scores
+- Practice tests available online through ACT WorkKeys website
+- Students need Bronze, Silver, Gold, or Platinum level certificates
+
+Counselors should ensure all CTE students are registered and prepare students using available practice materials. WorkKeys scores are valuable for employment and postsecondary education.`,
+        keywords: ["WorkKeys", "career readiness", "Jump Start", "CTE", "workforce certification", "NCRC", "career technical education"]
+      },
+      {
+        title: "Ripple Effects Social-Emotional Learning Program",
+        category: "counselor" as const,
+        content: `Ripple Effects is a computer-based social-emotional learning and behavior intervention program. Program features:
+- Self-paced interactive lessons on social-emotional skills
+- Addresses: anger management, peer relationships, study skills, decision-making, self-control
+- Students can access individually or in small counselor-led groups
+- Progress monitored through program dashboard
+- Appropriate for grades 4-12
+- Referrals made through school counselor or administration
+
+Counselors should use Ripple Effects for tier 2 and tier 3 interventions, especially for students struggling with behavior, social skills, or emotional regulation. The program provides data on student engagement and skill development.`,
+        keywords: ["Ripple Effects", "social-emotional learning", "behavior intervention", "SEL", "anger management", "counseling tools", "student support"]
+      },
+      {
+        title: "College and Career Counseling Timeline",
+        category: "counselor" as const,
+        content: `Key Counseling Tasks and Deadlines:
+- Course scheduling: January-February for next school year
+- Transcript requests: Allow 2-week processing time
+- College application support: Begin fall of senior year
+- FAFSA completion assistance: Opens October 1st annually (priority deadline varies by college)
+- Career interest inventories: Administer in 8th, 10th, and 11th grades
+- College visits: Coordinate during junior and senior years
+- Scholarship applications: Begin searching in junior year, apply senior year
+
+Counselors should maintain a yearly calendar of deadlines and proactively remind students and families of upcoming important dates. Early planning is critical for college and career success.`,
+        keywords: ["college counseling", "career planning", "FAFSA", "college applications", "transcripts", "scholarships", "deadlines", "student planning"]
+      },
+    ];
+
+    // NIET Best Practices
+    const nietContent = [
+      {
+        title: "NIET Observation and Feedback Cycle",
+        category: "niet" as const,
+        content: `National Institute for Excellence in Teaching (NIET) provides professional development focused on effective teaching practices. NIET observation cycle includes:
+- Pre-observation conferences to discuss lesson plans and objectives
+- Classroom observations (announced and unannounced)
+- Post-observation feedback sessions with specific, actionable feedback
+- Action planning for continuous improvement
+
+Key Focus Areas:
+- Standards-aligned instruction with clear learning objectives
+- Multiple student engagement strategies throughout the lesson
+- Frequent checks for understanding using varied methods
+- Specific, timely feedback to students on their learning
+- Differentiated instruction meeting diverse learner needs
+- Positive classroom culture and effective behavior management
+- Use of assessment data to inform instruction
+
+NIET emphasizes the importance of specific, evidence-based feedback that teachers can immediately apply to improve their practice.`,
+        keywords: ["NIET", "observation", "feedback", "professional development", "teaching effectiveness", "student engagement", "instructional strategies"]
+      },
+      {
+        title: "NIET Best Practices for Classroom Observations",
+        category: "niet" as const,
+        content: `NIET Observation Best Practices for Teachers:
+- Have clear, visible learning objectives posted
+- Use multiple engagement strategies (think-pair-share, questioning, hands-on activities)
+- Check for understanding frequently throughout the lesson
+- Provide specific, actionable feedback to students
+- Maintain positive, respectful relationships with all students
+- Use effective classroom management strategies
+- Show evidence of using data to plan and adjust instruction
+- Differentiate for various learner needs
+- Connect content to real-world applications
+- Demonstrate strong content knowledge
+
+Prepare by reviewing your lesson plan, ensuring materials are ready, and thinking about how you'll engage all learners. Remember that NIET focuses on continuous growth - observations are opportunities to learn and improve, not just evaluate.`,
+        keywords: ["NIET observation", "teaching strategies", "best practices", "classroom management", "student engagement", "differentiation", "assessment"]
+      },
+    ];
+
+    // Core Knowledge/Hillsdale (CKH) Content
+    const ckhContent = [
+      {
+        title: "Core Knowledge History and Geography (CKH) Overview",
+        category: "ckh" as const,
+        content: `Core Knowledge History and Geography is our district's adopted social studies curriculum emphasizing content-rich, systematic instruction. Key principles:
+- Build knowledge systematically across grade levels
+- Focus on world geography and history with cultural literacy
+- Integration of primary source documents and artifacts
+- Development of critical thinking and analytical skills
+- Coherent, cumulative learning sequence
+
+Implementation Requirements:
+- Follow the scope and sequence for your grade level
+- Use provided text resources and supplementary materials
+- Incorporate required vocabulary and key concepts
+- Assess student knowledge using provided assessments
+- Supplement with additional primary sources when possible
+
+CKH builds a strong foundation of cultural literacy and historical knowledge that students will use throughout their education.`,
+        keywords: ["Core Knowledge", "CKH", "Hillsdale", "social studies", "history", "geography", "curriculum", "cultural literacy"]
+      },
+      {
+        title: "CKH Grade-Level Focus Areas",
+        category: "ckh" as const,
+        content: `Core Knowledge History and Geography by Grade Level:
+
+Kindergarten: Exploring People and Places - basic geography, community helpers, seasons
+1st Grade: Early American Civilizations and Communities - Native Americans, colonial America, community roles
+2nd Grade: Early Asian Civilizations and American Westward Expansion - ancient China and India, pioneers, westward movement
+3rd Grade: Ancient Rome and California Missions - Roman civilization, Spanish missions, California history
+4th Grade: The Middle Ages and Age of Exploration - medieval Europe, Vikings, European explorers, discovery of Americas
+5th Grade: Early American History and Indigenous Peoples - American Revolution, Constitution, Native American nations, early republic
+
+Teachers should follow the grade-level scope and sequence, use primary sources, and help students make connections between past events and present-day life. CKH emphasizes building knowledge systematically from year to year.`,
+        keywords: ["CKH curriculum", "grade level", "social studies standards", "history curriculum", "scope and sequence", "ancient civilizations"]
+      },
+    ];
+
+    // Add all content to RAG
+    const allContent = [
+      ...leadsContent,
+      ...spedContent,
+      ...counselorContent,
+      ...nietContent,
+      ...ckhContent,
+    ];
+
+    for (const item of allContent) {
+      try {
+        const textChunk = `${item.title}\n\nSource: Louisiana District Professional Resources\nCategory: ${item.category.toUpperCase()}\n\n${item.content}\n\nRelated Keywords: ${item.keywords.join(", ")}`;
+        
+        await rag.add(ctx, {
+          namespace,
+          key: `louisiana_${item.category}_${item.title.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
+          text: textChunk,
+          filterValues: [
+            { name: "spaceId", value: args.spaceId || "personal" },
+            { name: "contentType", value: `louisiana_${item.category}` },
+            { name: "userId", value: userId },
+          ],
+        });
+        
+        totalAdded++;
+        categoryCount[item.category]++;
+      } catch (error) {
+        errors.push(`Failed to add ${item.title}: ${error}`);
+      }
+    }
+
+    return {
+      success: true,
+      addedCount: totalAdded,
+      categories: categoryCount,
+      errors,
+    };
+  },
+});

@@ -9,7 +9,7 @@ import { Resend } from "@convex-dev/resend";
 
 // Initialize Resend component
 export const resend: Resend = new Resend(components.resend, {
-  testMode: false, // Set to true for development, false for production
+  testMode: true, // Set to true for development, false for production
 });
 
 export const sendWelcomeEmail = action({
