@@ -315,7 +315,7 @@ export function VoiceInterface({
   return (
     <Card className={`${className || ""} overflow-hidden`}>
       <CardHeader className="text-center pb-4">
-        <CardTitle className="text-2xl font-bold text-aida-primary-600 text-center">
+        <CardTitle className="text-2xl font-bold text-foreground text-center">
           The Voice of Your District
         </CardTitle>
         <CardDescription
@@ -464,10 +464,7 @@ export function VoiceInterface({
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: designTokens.colors.primary.blue }}
               ></div>
-              <span 
-                className="text-sm font-medium"
-                style={{ color: designTokens.colors.primary.blue }}
-              >
+              <span className="text-sm font-medium text-foreground">
                 Sources
               </span>
             </div>
@@ -478,10 +475,7 @@ export function VoiceInterface({
                   className="text-xs truncate flex items-start gap-2"
                   style={{ color: designTokens.colors.neutral[700] }}
                 >
-                  <span 
-                    className="font-semibold"
-                    style={{ color: designTokens.colors.primary.blue }}
-                  >
+                  <span className="font-semibold text-foreground">
                     {index + 1}.
                   </span>
                   <span className="flex-1">{source}</span>

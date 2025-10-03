@@ -4,7 +4,7 @@ import { Id } from "../../convex/_generated/dataModel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { FileText, BookOpen, Shield, Users } from "lucide-react";
+import { FileText, BookOpen } from "lucide-react";
 import { VoiceInterface } from "./VoiceInterface";
 
 interface CommandCenterProps {
@@ -61,9 +61,6 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
               </div>
             </div>
           </div>
-          <CardTitle className="text-center text-lg font-semibold">
-            The Voice of Your District
-          </CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col items-center justify-center p-6">
           <VoiceInterface
@@ -122,31 +119,6 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
         </CardContent>
       </Card>
 
-      {/* Trust Signals */}
-      <Card className="shadow-md">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="flex flex-col items-center gap-1">
-              <Shield className="w-4 h-4 text-green-600 dark:text-green-400" />
-              <span className="text-xs font-medium text-muted-foreground">
-                FERPA
-              </span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <FileText className="w-4 h-4 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground">
-                Sources
-              </span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Users className="w-4 h-4 text-accent" />
-              <span className="text-xs font-medium text-muted-foreground">
-                &lt;2s
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

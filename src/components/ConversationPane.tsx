@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Trash2, MessageCircle, FileText } from "lucide-react";
+import { Send, Trash2, MessageCircle, FileText, ChevronDown, ChevronUp } from "lucide-react";
 
 interface ConversationPaneProps {
   currentSpaceId: Id<"spaces"> | null;
@@ -16,6 +16,7 @@ interface ConversationPaneProps {
 export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const chatHistory = useQuery(api.chat.getChatHistory, {
@@ -68,11 +69,19 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
       try {
         await clearHistory({ spaceId: currentSpaceId ?? undefined });
         toast.success("Chat history cleared");
+        setIsCollapsed(true); // Collapse after clearing
       } catch (error) {
         toast.error("Failed to clear chat history");
       }
     }
   };
+
+  // Auto-expand when there are messages
+  useEffect(() => {
+    if (chatHistory && chatHistory.length > 0) {
+      setIsCollapsed(false);
+    }
+  }, [chatHistory]);
 
   return (
     <Card className="flex flex-col h-full min-h-0 shadow-md">
@@ -91,20 +100,34 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
               </p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleClearHistory}
-            className="text-xs"
-          >
-            <Trash2 className="w-3 h-3 mr-1" />
-            Clear
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleClearHistory}
+              className="text-xs"
+            >
+              <Trash2 className="w-3 h-3 mr-1" />
+              Clear
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="h-8 w-8 p-0"
+              aria-label={isCollapsed ? "Expand conversation" : "Collapse conversation"}
+            >
+              {isCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+            </Button>
+          </div>
         </div>
       </CardHeader>
 
-      {/* Messages */}
-      <CardContent className="flex-1 p-0 min-h-0 overflow-hidden">
+      {/* Collapsible Content */}
+      {!isCollapsed && (
+        <>
+          {/* Messages */}
+          <CardContent className="flex-1 p-0 min-h-0 overflow-hidden">
         <ScrollArea className="h-full p-6">
           <div className="space-y-4">
             {!chatHistory || chatHistory.length === 0 ? (
@@ -221,6 +244,8 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
           </Button>
         </form>
       </div>
+        </>
+      )}
     </Card>
   );
 }
