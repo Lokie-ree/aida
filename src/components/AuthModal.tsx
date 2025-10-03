@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
 
@@ -27,23 +27,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent 
-        className="sm:max-w-md"
-        style={{
-          backdropFilter: "blur(8px)",
-          backgroundColor: "rgba(255, 255, 255, 0.95)"
-        }}
-      >
+      <DialogContent className="sm:max-w-md">
         <DialogHeader className="relative">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute -top-2 -right-2 h-8 w-8 p-0"
-            onClick={handleClose}
-            disabled={submitting}
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
               <div 
@@ -54,10 +40,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               >
                 <span className="text-white font-bold text-sm">AI</span>
               </div>
-              <span 
-                className="text-xl font-bold"
-                style={{ color: designTokens.colors.primary.blue }}
-              >
+              <span className="text-xl font-bold text-foreground">
                 A.I.D.A.
               </span>
             </div>
@@ -66,10 +49,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         <Card className="border-0 shadow-none">
           <CardHeader className="text-center pb-4">
-            <CardTitle 
-              className="text-lg"
-              style={{ color: designTokens.colors.primary.blue }}
-            >
+            <CardTitle className="text-lg text-foreground">
               Welcome to A.I.D.A.
             </CardTitle>
             <CardDescription>
@@ -167,18 +147,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             >
               Try Demo Anonymously
             </Button>
-
-            <div 
-              className="text-center text-xs p-3 rounded-lg"
-              style={{
-                backgroundColor: `${designTokens.colors.primary.blue}05`,
-                border: `1px solid ${designTokens.colors.primary.blue}20`
-              }}
-            >
-              <p style={{ color: designTokens.colors.neutral[600] }}>
-                <strong>Quick Access:</strong> Sign in anonymously to try A.I.D.A. immediately, or create an account to save your conversations.
-              </p>
-            </div>
           </CardContent>
         </Card>
       </DialogContent>

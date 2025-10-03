@@ -50,7 +50,7 @@ export function SpaceTemplateSelector({ onSpaceCreated, className }: SpaceTempla
   return (
     <div className={`space-y-6 ${className || ""}`}>
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-aida-primary-600 mb-2">
+        <h2 className="text-2xl font-bold text-foreground mb-2">
           Choose Your Space Template
         </h2>
         <p className="text-muted-foreground">
@@ -125,13 +125,13 @@ export function SpaceTemplateSelector({ onSpaceCreated, className }: SpaceTempla
 
       {selectedTemplate && (
         <div className="mt-6 p-4 rounded-lg bg-aida-primary-50 border border-aida-primary-200">
-          <div className="flex items-center gap-2 text-aida-primary-700">
+          <div className="flex items-center gap-2 text-foreground">
             <Check className="w-5 h-5" />
             <span className="font-medium">
               {templates.find(t => t.type === selectedTemplate)?.name} selected
             </span>
           </div>
-          <p className="text-sm text-aida-primary-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Click "Create Space" to set up your space with this template.
           </p>
         </div>

@@ -14,7 +14,8 @@ import {
   Heart, 
   Megaphone, 
   BookOpen,
-  AlertCircle
+  AlertCircle,
+  X
 } from "lucide-react";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
@@ -22,6 +23,7 @@ import { Id } from "../../convex/_generated/dataModel";
 interface PDDemoSetupProps {
   onSpaceCreated?: (spaceId: Id<"spaces">) => void;
   onComplete?: () => void;
+  onDismiss?: () => void;
 }
 
 interface DemoSpace {
@@ -34,7 +36,7 @@ interface DemoSpace {
   spaceId?: Id<"spaces">;
 }
 
-export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
+export function PDDemoSetup({ onSpaceCreated, onComplete, onDismiss }: PDDemoSetupProps) {
   const [isSettingUp, setIsSettingUp] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [spaces, setSpaces] = useState<DemoSpace[]>([
@@ -43,7 +45,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
       name: "District-wide Instructional Coach",
       description: "LDOE LEADS, NIET, Core Knowledge, instructional strategies",
       icon: <GraduationCap className="w-5 h-5" />,
-      color: "#3B82F6",
+      color: "#3B82F6", // aida-primary-500
       status: "pending"
     },
     {
@@ -51,7 +53,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
       name: "District Policy Expert",
       description: "LDOE policies, SPED requirements, compliance, procedures",
       icon: <Scale className="w-5 h-5" />,
-      color: "#8B5CF6",
+      color: "#8B5CF6", // aida-secondary-500
       status: "pending"
     },
     {
@@ -59,7 +61,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
       name: "Counselor Tools & Resources",
       description: "ACT, WorkKeys, Ripple Effects, college/career planning",
       icon: <Heart className="w-5 h-5" />,
-      color: "#EC4899",
+      color: "#EC4899", // aida-community-parents-500
       status: "pending"
     },
     {
@@ -67,7 +69,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
       name: "Stakeholder Communication",
       description: "Parent communication, announcements, events, athletics",
       icon: <Megaphone className="w-5 h-5" />,
-      color: "#F59E0B",
+      color: "#D97706", // aida-community-teachers-500
       status: "pending"
     },
     {
@@ -75,7 +77,7 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
       name: "Personal Teaching Coach",
       description: "Personalized professional development and growth",
       icon: <BookOpen className="w-5 h-5" />,
-      color: "#10B981",
+      color: "#10B981", // aida-success-500
       status: "pending"
     }
   ]);
@@ -176,6 +178,17 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
               One-click setup: 5 role-based Spaces with authentic Louisiana content
             </CardDescription>
           </div>
+          {onDismiss && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onDismiss}
+              className="h-8 w-8 rounded-full hover:bg-muted"
+              aria-label="Dismiss demo setup"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </CardHeader>
 
@@ -219,12 +232,12 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
                   key={index}
                   className={`transition-all duration-300 ${
                     space.status === "complete"
-                      ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-300"
+                      ? "bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-green-300 dark:border-green-700"
                       : space.status === "error"
-                      ? "bg-red-50 border-red-300"
+                      ? "bg-red-50 dark:bg-red-950 border-red-300 dark:border-red-700"
                       : space.status === "creating" || space.status === "loading-content"
-                      ? "bg-gradient-to-r from-blue-50 to-purple-50 border-aida-primary-300 shadow-md"
-                      : "bg-white border-aida-primary-200"
+                      ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-aida-primary-300 dark:border-aida-primary-700 shadow-md"
+                      : "bg-card border-border"
                   }`}
                 >
                   <CardContent className="p-4">
@@ -256,8 +269,8 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
                         )}
                         {space.status === "creating" && (
                           <div className="flex items-center gap-2">
-                            <Loader2 className="w-4 h-4 animate-spin text-aida-primary-500" />
-                            <span className="text-xs font-medium text-aida-primary-700">
+                            <Loader2 className="w-4 h-4 animate-spin text-foreground" />
+                            <span className="text-xs font-medium text-foreground">
                               Creating...
                             </span>
                           </div>
@@ -295,14 +308,14 @@ export function PDDemoSetup({ onSpaceCreated, onComplete }: PDDemoSetupProps) {
 
             {/* Completion Message */}
             {completedSpaces === totalSteps && !isSettingUp && (
-              <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300">
+              <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-2 border-green-300 dark:border-green-700">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-8 h-8 text-green-600 flex-shrink-0" />
+                  <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-green-900">
+                    <h4 className="font-semibold text-green-900 dark:text-green-100">
                       Demo Ready! 🎉
                     </h4>
-                    <p className="text-sm text-green-700 mt-1">
+                    <p className="text-sm text-green-700 dark:text-green-300 mt-1">
                       All 5 Spaces are loaded with Louisiana district content. Switch between Spaces to see role-specific knowledge.
                     </p>
                   </div>

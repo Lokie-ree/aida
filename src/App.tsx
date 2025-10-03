@@ -4,7 +4,6 @@ import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { SpaceSelector } from "./components/SpaceSelector";
-import { OnboardingGuide } from "./components/OnboardingGuide";
 import { CommandCenter } from "./components/CommandCenter";
 import { ConversationPane } from "./components/ConversationPane";
 import { PDDemoSetup } from "./components/PDDemoSetup";
@@ -36,7 +35,7 @@ export default function App() {
                     AI
                   </span>
                 </div>
-                <h1 className="text-xl font-bold text-aida-primary-600">
+                <h1 className="text-xl font-bold text-foreground">
                   A.I.D.A.
                 </h1>
               </div>
@@ -85,11 +84,6 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
 
   return (
     <>
-      <OnboardingGuide
-        currentSpaceId={currentSpaceId}
-        onComplete={() => console.log("Onboarding completed")}
-      />
-
       {/* Unified Dashboard Experience */}
       <div className="h-full flex flex-col gap-5">
         
@@ -99,6 +93,7 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
             <PDDemoSetup
               onSpaceCreated={(spaceId) => setCurrentSpaceId(spaceId)}
               onComplete={() => setShowPDSetup(false)}
+              onDismiss={() => setShowPDSetup(false)}
             />
           </div>
         )}

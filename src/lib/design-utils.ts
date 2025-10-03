@@ -10,14 +10,14 @@ import { designTokens } from "./design-tokens";
 export const getAidaBrandColors = () => ({
   // Primary brand colors
   primary: {
-    50: designTokens.colors.brand.primary[50],
-    500: designTokens.colors.brand.primary[500],
-    600: designTokens.colors.brand.primary[600],
+    50: designTokens.colors.primary.blue,
+    500: designTokens.colors.primary.blue,
+    600: designTokens.colors.primary.blue,
   },
   secondary: {
-    50: designTokens.colors.brand.secondary[50],
-    500: designTokens.colors.brand.secondary[500],
-    600: designTokens.colors.brand.secondary[600],
+    50: designTokens.colors.secondary.purple,
+    500: designTokens.colors.secondary.purple,
+    600: designTokens.colors.secondary.purple,
   },
 });
 
@@ -25,18 +25,39 @@ export const getAidaBrandColors = () => ({
 export const getAidaCommunityColors = () => ({
   teachers: {
     50: designTokens.colors.community.teachers[50],
+    100: designTokens.colors.community.teachers[100],
+    200: designTokens.colors.community.teachers[200],
+    300: designTokens.colors.community.teachers[300],
+    400: designTokens.colors.community.teachers[400],
     500: designTokens.colors.community.teachers[500],
     600: designTokens.colors.community.teachers[600],
+    700: designTokens.colors.community.teachers[700],
+    800: designTokens.colors.community.teachers[800],
+    900: designTokens.colors.community.teachers[900],
   },
   parents: {
     50: designTokens.colors.community.parents[50],
+    100: designTokens.colors.community.parents[100],
+    200: designTokens.colors.community.parents[200],
+    300: designTokens.colors.community.parents[300],
+    400: designTokens.colors.community.parents[400],
     500: designTokens.colors.community.parents[500],
     600: designTokens.colors.community.parents[600],
+    700: designTokens.colors.community.parents[700],
+    800: designTokens.colors.community.parents[800],
+    900: designTokens.colors.community.parents[900],
   },
   administrators: {
     50: designTokens.colors.community.administrators[50],
+    100: designTokens.colors.community.administrators[100],
+    200: designTokens.colors.community.administrators[200],
+    300: designTokens.colors.community.administrators[300],
+    400: designTokens.colors.community.administrators[400],
     500: designTokens.colors.community.administrators[500],
     600: designTokens.colors.community.administrators[600],
+    700: designTokens.colors.community.administrators[700],
+    800: designTokens.colors.community.administrators[800],
+    900: designTokens.colors.community.administrators[900],
   },
 });
 
@@ -44,23 +65,51 @@ export const getAidaCommunityColors = () => ({
 export const getAidaVoiceColors = () => ({
   idle: {
     50: designTokens.colors.voice.idle[50],
+    100: designTokens.colors.voice.idle[100],
+    200: designTokens.colors.voice.idle[200],
+    300: designTokens.colors.voice.idle[300],
+    400: designTokens.colors.voice.idle[400],
     500: designTokens.colors.voice.idle[500],
     600: designTokens.colors.voice.idle[600],
+    700: designTokens.colors.voice.idle[700],
+    800: designTokens.colors.voice.idle[800],
+    900: designTokens.colors.voice.idle[900],
   },
   listening: {
     50: designTokens.colors.voice.listening[50],
+    100: designTokens.colors.voice.listening[100],
+    200: designTokens.colors.voice.listening[200],
+    300: designTokens.colors.voice.listening[300],
+    400: designTokens.colors.voice.listening[400],
     500: designTokens.colors.voice.listening[500],
     600: designTokens.colors.voice.listening[600],
+    700: designTokens.colors.voice.listening[700],
+    800: designTokens.colors.voice.listening[800],
+    900: designTokens.colors.voice.listening[900],
   },
   speaking: {
     50: designTokens.colors.voice.speaking[50],
+    100: designTokens.colors.voice.speaking[100],
+    200: designTokens.colors.voice.speaking[200],
+    300: designTokens.colors.voice.speaking[300],
+    400: designTokens.colors.voice.speaking[400],
     500: designTokens.colors.voice.speaking[500],
     600: designTokens.colors.voice.speaking[600],
+    700: designTokens.colors.voice.speaking[700],
+    800: designTokens.colors.voice.speaking[800],
+    900: designTokens.colors.voice.speaking[900],
   },
   error: {
     50: designTokens.colors.voice.error[50],
+    100: designTokens.colors.voice.error[100],
+    200: designTokens.colors.voice.error[200],
+    300: designTokens.colors.voice.error[300],
+    400: designTokens.colors.voice.error[400],
     500: designTokens.colors.voice.error[500],
     600: designTokens.colors.voice.error[600],
+    700: designTokens.colors.voice.error[700],
+    800: designTokens.colors.voice.error[800],
+    900: designTokens.colors.voice.error[900],
   },
 });
 
@@ -68,19 +117,19 @@ export const getAidaVoiceColors = () => ({
 export const getAidaVoiceInterface = () => ({
   button: {
     size: {
-      sm: designTokens.voiceInterface.button.size.sm,
-      md: designTokens.voiceInterface.button.size.md,
-      lg: designTokens.voiceInterface.button.size.lg,
-      xl: designTokens.voiceInterface.button.size.xl,
+      sm: "w-16 h-16",
+      md: "w-20 h-20", 
+      lg: "w-24 h-24",
+      xl: "w-28 h-28",
     },
-    animation: designTokens.voiceInterface.button.animation,
-    ring: designTokens.voiceInterface.button.ring,
+    animation: "animate-pulse",
+    ring: "ring-2 ring-offset-2",
   },
   status: {
-    indicators: designTokens.voiceInterface.status.indicators,
+    indicators: "w-2 h-2 rounded-full",
   },
   examples: {
-    grid: designTokens.voiceInterface.examples.grid,
+    grid: "grid grid-cols-1 md:grid-cols-2 gap-4",
   },
 });
 
@@ -178,41 +227,96 @@ export const getAidaTailwindClasses = () => ({
     },
   },
   
-  // Community Stakeholder Colors
-  community: {
-    teachers: {
-      50: "bg-aida-teachers-50 text-aida-teachers-50",
-      500: "bg-aida-teachers-500 text-aida-teachers-500",
-      600: "bg-aida-teachers-600 text-aida-teachers-600",
-    },
-    parents: {
-      50: "bg-aida-parents-50 text-aida-parents-50",
-      500: "bg-aida-parents-500 text-aida-parents-500",
-      600: "bg-aida-parents-600 text-aida-parents-600",
-    },
-    administrators: {
-      50: "bg-aida-administrators-50 text-aida-administrators-50",
-      500: "bg-aida-administrators-500 text-aida-administrators-500",
-      600: "bg-aida-administrators-600 text-aida-administrators-600",
-    },
-  },
   
   // Voice Interface States
   voice: {
     idle: {
       50: "bg-aida-voice-idle-50 text-aida-voice-idle-50",
+      100: "bg-aida-voice-idle-100 text-aida-voice-idle-100",
+      200: "bg-aida-voice-idle-200 text-aida-voice-idle-200",
+      300: "bg-aida-voice-idle-300 text-aida-voice-idle-300",
+      400: "bg-aida-voice-idle-400 text-aida-voice-idle-400",
       500: "bg-aida-voice-idle-500 text-aida-voice-idle-500",
       600: "bg-aida-voice-idle-600 text-aida-voice-idle-600",
+      700: "bg-aida-voice-idle-700 text-aida-voice-idle-700",
+      800: "bg-aida-voice-idle-800 text-aida-voice-idle-800",
+      900: "bg-aida-voice-idle-900 text-aida-voice-idle-900",
     },
     listening: {
       50: "bg-aida-voice-listening-50 text-aida-voice-listening-50",
+      100: "bg-aida-voice-listening-100 text-aida-voice-listening-100",
+      200: "bg-aida-voice-listening-200 text-aida-voice-listening-200",
+      300: "bg-aida-voice-listening-300 text-aida-voice-listening-300",
+      400: "bg-aida-voice-listening-400 text-aida-voice-listening-400",
       500: "bg-aida-voice-listening-500 text-aida-voice-listening-500",
       600: "bg-aida-voice-listening-600 text-aida-voice-listening-600",
+      700: "bg-aida-voice-listening-700 text-aida-voice-listening-700",
+      800: "bg-aida-voice-listening-800 text-aida-voice-listening-800",
+      900: "bg-aida-voice-listening-900 text-aida-voice-listening-900",
     },
     speaking: {
       50: "bg-aida-voice-speaking-50 text-aida-voice-speaking-50",
+      100: "bg-aida-voice-speaking-100 text-aida-voice-speaking-100",
+      200: "bg-aida-voice-speaking-200 text-aida-voice-speaking-200",
+      300: "bg-aida-voice-speaking-300 text-aida-voice-speaking-300",
+      400: "bg-aida-voice-speaking-400 text-aida-voice-speaking-400",
       500: "bg-aida-voice-speaking-500 text-aida-voice-speaking-500",
       600: "bg-aida-voice-speaking-600 text-aida-voice-speaking-600",
+      700: "bg-aida-voice-speaking-700 text-aida-voice-speaking-700",
+      800: "bg-aida-voice-speaking-800 text-aida-voice-speaking-800",
+      900: "bg-aida-voice-speaking-900 text-aida-voice-speaking-900",
+    },
+    error: {
+      50: "bg-aida-voice-error-50 text-aida-voice-error-50",
+      100: "bg-aida-voice-error-100 text-aida-voice-error-100",
+      200: "bg-aida-voice-error-200 text-aida-voice-error-200",
+      300: "bg-aida-voice-error-300 text-aida-voice-error-300",
+      400: "bg-aida-voice-error-400 text-aida-voice-error-400",
+      500: "bg-aida-voice-error-500 text-aida-voice-error-500",
+      600: "bg-aida-voice-error-600 text-aida-voice-error-600",
+      700: "bg-aida-voice-error-700 text-aida-voice-error-700",
+      800: "bg-aida-voice-error-800 text-aida-voice-error-800",
+      900: "bg-aida-voice-error-900 text-aida-voice-error-900",
+    },
+  },
+  
+  // Community Stakeholder Colors
+  community: {
+    teachers: {
+      50: "bg-aida-community-teachers-50 text-aida-community-teachers-50",
+      100: "bg-aida-community-teachers-100 text-aida-community-teachers-100",
+      200: "bg-aida-community-teachers-200 text-aida-community-teachers-200",
+      300: "bg-aida-community-teachers-300 text-aida-community-teachers-300",
+      400: "bg-aida-community-teachers-400 text-aida-community-teachers-400",
+      500: "bg-aida-community-teachers-500 text-aida-community-teachers-500",
+      600: "bg-aida-community-teachers-600 text-aida-community-teachers-600",
+      700: "bg-aida-community-teachers-700 text-aida-community-teachers-700",
+      800: "bg-aida-community-teachers-800 text-aida-community-teachers-800",
+      900: "bg-aida-community-teachers-900 text-aida-community-teachers-900",
+    },
+    parents: {
+      50: "bg-aida-community-parents-50 text-aida-community-parents-50",
+      100: "bg-aida-community-parents-100 text-aida-community-parents-100",
+      200: "bg-aida-community-parents-200 text-aida-community-parents-200",
+      300: "bg-aida-community-parents-300 text-aida-community-parents-300",
+      400: "bg-aida-community-parents-400 text-aida-community-parents-400",
+      500: "bg-aida-community-parents-500 text-aida-community-parents-500",
+      600: "bg-aida-community-parents-600 text-aida-community-parents-600",
+      700: "bg-aida-community-parents-700 text-aida-community-parents-700",
+      800: "bg-aida-community-parents-800 text-aida-community-parents-800",
+      900: "bg-aida-community-parents-900 text-aida-community-parents-900",
+    },
+    administrators: {
+      50: "bg-aida-community-administrators-50 text-aida-community-administrators-50",
+      100: "bg-aida-community-administrators-100 text-aida-community-administrators-100",
+      200: "bg-aida-community-administrators-200 text-aida-community-administrators-200",
+      300: "bg-aida-community-administrators-300 text-aida-community-administrators-300",
+      400: "bg-aida-community-administrators-400 text-aida-community-administrators-400",
+      500: "bg-aida-community-administrators-500 text-aida-community-administrators-500",
+      600: "bg-aida-community-administrators-600 text-aida-community-administrators-600",
+      700: "bg-aida-community-administrators-700 text-aida-community-administrators-700",
+      800: "bg-aida-community-administrators-800 text-aida-community-administrators-800",
+      900: "bg-aida-community-administrators-900 text-aida-community-administrators-900",
     },
   },
   

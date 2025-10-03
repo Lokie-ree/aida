@@ -6,7 +6,7 @@ This document outlines the design system for A.I.D.A., including design tokens, 
 
 ### Colors
 
-The color system is built around a primary blue theme with semantic color variants:
+The color system is built around a primary blue theme for UI elements and backgrounds, with semantic color variants for text and content:
 
 #### Primary Colors
 - `primary.50` - Lightest blue (backgrounds)
@@ -186,6 +186,8 @@ const styles = {
 - Use Lora for headings and emphasis
 - Maintain proper hierarchy with font sizes
 - Ensure sufficient contrast ratios
+- **Text Colors**: Use `text-foreground` for primary text, `text-muted-foreground` for secondary text
+- **Avoid Blue Text**: Never use blue for text content - blue is reserved for UI elements and backgrounds only
 
 ### Responsive Design
 

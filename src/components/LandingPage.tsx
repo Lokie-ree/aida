@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Heart, BarChart3, FileText, MessageCircle, Shield } from "lucide-react";
 import { designTokens } from "@/lib/design-tokens";
 import { AuthModal } from "./AuthModal";
+import { ModeToggle } from "./ModeToggle";
 
 export default function LandingPage() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -31,11 +32,13 @@ export default function LandingPage() {
             >
               <span className="text-white font-bold text-sm">AI</span>
             </div>
-            <h1 className="text-xl font-bold" style={{ color: designTokens.colors.primary.blue }}>A.I.D.A.</h1>
+            <h1 className="text-xl font-bold text-foreground">A.I.D.A.</h1>
           </div>
 
           {/* Right Side - Demo Button */}
-          <Button 
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+            <Button 
             size="lg" 
             className="text-white shadow-lg hover:shadow-xl transition-all duration-300"
             style={{
@@ -46,6 +49,8 @@ export default function LandingPage() {
           >
             Try the Live Demo
           </Button>
+          </div>
+          
         </div>
       </header>
 
@@ -295,16 +300,12 @@ export default function LandingPage() {
                       backgroundColor: `${designTokens.colors.primary.blue}10`
                     }}
                   >
-                    <Users 
-                      className="w-6 h-6" 
-                      style={{ color: designTokens.colors.primary.blue }}
-                    />
+                    <Users className="w-6 h-6 text-foreground" />
                   </div>
                   <CardTitle 
-                    className="text-xl"
+                    className="text-xl text-foreground"
                     style={{ 
-                      fontSize: designTokens.typography.fontSize.xl[0],
-                      color: designTokens.colors.primary.blue
+                      fontSize: designTokens.typography.fontSize.xl[0]
                     }}
                   >
                     Clarity for Your Family
@@ -322,12 +323,11 @@ export default function LandingPage() {
                 </CardContent>
                 <CardFooter className="justify-center">
                   <blockquote 
-                    className="text-sm italic pl-4 py-2"
+                    className="text-sm italic pl-4 py-2 text-foreground"
                     style={{
                       fontSize: designTokens.typography.fontSize.sm[0],
                       backgroundColor: `${designTokens.colors.primary.blue}05`,
                       borderLeft: `4px solid ${designTokens.colors.primary.blue}`,
-                      color: designTokens.colors.primary.blue,
                       paddingLeft: designTokens.spacing[4],
                       paddingTop: designTokens.spacing[2],
                       paddingBottom: designTokens.spacing[2]
@@ -526,10 +526,7 @@ export default function LandingPage() {
                       gap: designTokens.spacing[3]
                     }}
                   >
-                    <FileText 
-                      className="w-6 h-6" 
-                      style={{ color: designTokens.colors.primary.blue }}
-                    />
+                    <FileText className="w-6 h-6 text-foreground" />
                     We Securely Index Your District's Documents
                   </h3>
                   <p 
