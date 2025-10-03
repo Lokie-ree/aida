@@ -135,27 +135,35 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
             value={currentSpaceId || "personal"}
             onValueChange={(value) => onSpaceChange(value === "personal" ? null : value as Id<"spaces">)}
           >
-            <SelectTrigger className="flex-1 bg-card/80 hover:border-primary transition-all focus:ring-2 focus:ring-primary/20">
-              <SelectValue placeholder="Select a workspace" />
+            <SelectTrigger className="flex-1 h-9 bg-card/80 hover:border-primary transition-all focus:ring-2 focus:ring-primary/20">
+              <SelectValue placeholder="Select workspace" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="personal">Personal Space</SelectItem>
+              <SelectItem value="personal">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  Personal Space
+                </div>
+              </SelectItem>
               {spaces?.map((space) => (
                 <SelectItem key={space._id} value={space._id}>
-                  {space.name} {space.isOwner ? "👑" : ""}
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                    {space.name} {space.isOwner ? "👑" : ""}
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           {/* Quick Actions */}
-          <div className="flex gap-1.5">
+          <div className="flex gap-1">
             {pendingInvitations && pendingInvitations.length > 0 && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowInvitationsModal(true)}
-                className="relative h-10 w-10 p-0"
+                className="relative h-9 w-9 p-0"
               >
                 <Bell className="w-4 h-4" />
                 <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px]">
@@ -166,7 +174,8 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
             <Button
               size="sm"
               onClick={() => setShowTemplateModal(true)}
-              className="h-10 w-10 p-0 bg-primary text-primary-foreground hover:bg-primary/90"
+              className="h-9 w-9 p-0 bg-primary text-primary-foreground hover:bg-primary/90"
+              title="Quick start with templates"
             >
               <Sparkles className="w-4 h-4" />
             </Button>
@@ -174,7 +183,8 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
               variant="outline"
               size="sm"
               onClick={() => setShowCreateModal(true)}
-              className="h-10 w-10 p-0 hover:bg-accent"
+              className="h-9 w-9 p-0 hover:bg-accent"
+              title="Create new space"
             >
               <Plus className="w-4 h-4" />
             </Button>
@@ -183,10 +193,10 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
 
         {/* Current Space Info - Compact */}
         {currentSpace && (
-          <div className="flex items-center justify-between px-3 py-2 bg-gradient-to-r from-accent/5 to-secondary/5 rounded-lg border">
+          <div className="flex items-center justify-between px-3 py-2 bg-muted/30 rounded-lg border">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <Users className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-              <span className="text-xs font-medium truncate">
+              <div className="w-2 h-2 rounded-full bg-secondary flex-shrink-0"></div>
+              <span className="text-xs font-medium text-foreground truncate">
                 {spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0} member{(spaceMembers?.filter(m => m.invitationStatus === "accepted").length || 0) !== 1 ? 's' : ''}
               </span>
               <span className="text-xs text-muted-foreground truncate">
@@ -199,10 +209,10 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowInviteModal(true)}
-                  className="h-7 w-7 p-0 hover:bg-accent text-primary"
+                  className="h-6 w-6 p-0 hover:bg-accent text-primary"
                   title="Invite members"
                 >
-                  <Mail className="w-3.5 h-3.5" />
+                  <Mail className="w-3 h-3" />
                 </Button>
               )}
               {!currentSpace.isOwner && (
@@ -210,10 +220,10 @@ export function SpaceSelector({ currentSpaceId, onSpaceChange }: SpaceSelectorPr
                   variant="ghost"
                   size="sm"
                   onClick={handleLeaveSpace}
-                  className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                  className="h-6 w-6 p-0 text-destructive hover:bg-destructive/10"
                   title="Leave space"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-3 h-3" />
                 </Button>
               )}
             </div>

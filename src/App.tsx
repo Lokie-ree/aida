@@ -4,8 +4,9 @@ import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { SpaceSelector } from "./components/SpaceSelector";
-import { CommandCenter } from "./components/CommandCenter";
+import { VoiceHub } from "./components/VoiceHub";
 import { ConversationPane } from "./components/ConversationPane";
+import { ContextTray } from "./components/ContextTray";
 import { PDDemoSetup } from "./components/PDDemoSetup";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
@@ -27,11 +28,11 @@ export default function App() {
             Skip to main content
           </a>
 
-          <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-aida-primary-200 shadow-lg">
+          <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
             <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-aida-primary-500 rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-white font-bold text-sm">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-md">
+                  <span className="text-primary-foreground font-bold text-sm">
                     AI
                   </span>
                 </div>
@@ -39,14 +40,20 @@ export default function App() {
                   A.I.D.A.
                 </h1>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 lg:gap-4">
+                <div className="hidden sm:block w-48 lg:w-64">
+                  <SpaceSelector
+                    currentSpaceId={currentSpaceId}
+                    onSpaceChange={setCurrentSpaceId}
+                  />
+                </div>
                 <ModeToggle />
                 <SignOutButton />
               </div>
             </div>
           </header>
 
-          <main id="main-content" className="flex-1 p-6" role="main">
+          <main id="main-content" className="flex-1 p-4 sm:p-6" role="main">
             <div className="max-w-7xl mx-auto h-full">
               <Content currentSpaceId={currentSpaceId} setCurrentSpaceId={setCurrentSpaceId} />
             </div>
@@ -84,56 +91,59 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
 
   return (
     <>
-      {/* Unified Dashboard Experience */}
-      <div className="h-full flex flex-col gap-5">
-        
-        {/* PD Demo Setup Banner (Collapsible) */}
-        {shouldShowPDSetup && (
-          <div className="animate-slide-in-from-top">
-            <PDDemoSetup
-              onSpaceCreated={(spaceId) => setCurrentSpaceId(spaceId)}
-              onComplete={() => setShowPDSetup(false)}
-              onDismiss={() => setShowPDSetup(false)}
-            />
-          </div>
-        )}
-
-        {/* Workspace Control Panel - Refined */}
-        <div className="bg-card rounded-2xl border shadow-md">
-          <div className="p-5">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
-                <svg className="w-5 h-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">
-                  Active Workspace
-                </h2>
-                <p className="text-xs text-muted-foreground">
-                  Switch Spaces to access role-specific knowledge
-                </p>
-              </div>
-            </div>
-            <SpaceSelector
-              currentSpaceId={currentSpaceId}
-              onSpaceChange={setCurrentSpaceId}
-            />
-          </div>
+      {/* PD Demo Setup Banner (Collapsible) */}
+      {shouldShowPDSetup && (
+        <div className="mb-6 animate-slide-in-from-top">
+          <PDDemoSetup
+            onSpaceCreated={(spaceId) => setCurrentSpaceId(spaceId)}
+            onComplete={() => setShowPDSetup(false)}
+            onDismiss={() => setShowPDSetup(false)}
+          />
         </div>
+      )}
 
-        {/* Main Dashboard - Unified Layout with Visual Hierarchy */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-5 min-h-0">
-          {/* Left Column: Command Center */}
+      {/* Mobile Space Selector */}
+      <div className="sm:hidden mb-4">
+        <SpaceSelector
+          currentSpaceId={currentSpaceId}
+          onSpaceChange={setCurrentSpaceId}
+        />
+      </div>
+
+      {/* Main Dashboard - New Layout */}
+      <div className="h-full flex flex-col gap-4 sm:gap-6">
+        {/* Row 1: Voice Hub + Conversation */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 min-h-0">
+          {/* Voice Hub (1/3) */}
           <div className="lg:col-span-1 flex flex-col min-h-0">
-            <CommandCenter currentSpaceId={currentSpaceId} />
+            <VoiceHub
+              currentSpaceId={currentSpaceId}
+              onTranscription={(text) => console.log('Transcription:', text)}
+              onResponse={(text) => console.log('Response:', text)}
+              onDocumentAction={(action) => console.log('Document action:', action)}
+              onSpaceAction={(action) => console.log('Space action:', action)}
+              onInviteAction={() => console.log('Invite action')}
+              sourceCount={0}
+              documentCount={0}
+            />
           </div>
 
-          {/* Right Column: Conversation */}
+          {/* Conversation (2/3) */}
           <div className="lg:col-span-2 flex flex-col min-h-0">
             <ConversationPane currentSpaceId={currentSpaceId} />
           </div>
+        </div>
+
+        {/* Row 2: Context Tray (full width) */}
+        <div className="flex-shrink-0">
+          <ContextTray
+            documents={[]}
+            sources={[]}
+            activity={[]}
+            onDocumentAction={(action, docId) => console.log('Document action:', action, docId)}
+            onSourceClick={(sourceId) => console.log('Source clicked:', sourceId)}
+            onActivityClick={(activityId) => console.log('Activity clicked:', activityId)}
+          />
         </div>
       </div>
     </>

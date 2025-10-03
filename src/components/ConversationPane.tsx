@@ -84,37 +84,39 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
   }, [chatHistory]);
 
   return (
-    <Card className="flex flex-col h-full min-h-0 shadow-md">
-      <CardHeader className="flex-shrink-0 border-b">
+    <Card className="flex flex-col h-96 min-h-0 shadow-lg">
+      <CardHeader className="flex-shrink-0 border-b pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-primary">
-              <span className="text-primary-foreground font-bold text-sm">AI</span>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-md flex items-center justify-center bg-primary">
+              <span className="text-primary-foreground font-bold text-xs">AI</span>
             </div>
             <div>
-              <CardTitle className="text-xl">
-                A.I.D.A. Conversation
+              <CardTitle className="text-lg font-semibold text-foreground">
+                Ask A.I.D.A.
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
-                {currentSpace ? `Connected to ${currentSpace.name}` : "Personal Assistant"}
+              <p className="text-xs text-muted-foreground">
+                {currentSpace ? currentSpace.name : "Personal Assistant"}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleClearHistory}
-              className="text-xs"
-            >
-              <Trash2 className="w-3 h-3 mr-1" />
-              Clear
-            </Button>
+          <div className="flex items-center gap-1">
+            {chatHistory && chatHistory.length > 0 && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleClearHistory}
+                className="h-7 px-2 text-xs"
+              >
+                <Trash2 className="w-3 h-3 mr-1" />
+                Clear
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 p-0"
               aria-label={isCollapsed ? "Expand conversation" : "Collapse conversation"}
             >
               {isCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
@@ -131,24 +133,24 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
         <ScrollArea className="h-full p-6">
           <div className="space-y-4">
             {!chatHistory || chatHistory.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-center">
-                <div className="max-w-md">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-primary">
-                    <MessageCircle className="w-8 h-8 text-primary-foreground" />
+              <div className="flex items-center justify-center h-full text-center p-6">
+                <div className="max-w-sm">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-primary/10">
+                    <MessageCircle className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">
-                    Ask me anything about the district
+                  <h3 className="text-base font-semibold mb-2 text-foreground">
+                    Welcome to A.I.D.A.
                   </h3>
                   <p className="text-sm mb-4 text-muted-foreground">
-                    Use voice chat for hands-free conversations or type your questions below.
+                    Ask me anything about your district policies and procedures.
                   </p>
-                  <div className="grid grid-cols-1 gap-2 text-left">
-                    <div className="p-3 rounded-lg border bg-accent/5 text-sm">
-                      <strong>Example questions:</strong>
-                      <ul className="mt-1 space-y-1 text-xs text-muted-foreground">
-                        <li>• "What's our district's policy for reporting bullying?"</li>
-                        <li>• "What time does the bus arrive at Maple Street?"</li>
-                        <li>• "Summarize our student wellness goals"</li>
+                  <div className="text-left">
+                    <div className="p-3 rounded-lg border bg-muted/30 text-sm">
+                      <strong className="text-foreground">Try asking:</strong>
+                      <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+                        <li>• "What's our bullying policy?"</li>
+                        <li>• "Bus schedule for Maple Street"</li>
+                        <li>• "Student wellness goals"</li>
                       </ul>
                     </div>
                   </div>
@@ -224,23 +226,24 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
       </CardContent>
 
       {/* Input */}
-      <div className="p-4 border-t bg-muted/30">
-        <form onSubmit={handleSubmit} className="flex gap-3">
+      <div className="p-4 border-t bg-muted/20">
+        <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={`Ask A.I.D.A. about district policies${currentSpace ? ` in ${currentSpace.name}` : ""}...`}
-            className="flex-1"
+            placeholder={`Ask A.I.D.A. anything...`}
+            className="flex-1 h-9"
             disabled={isLoading}
+            autoFocus
           />
           <Button
             type="submit"
             disabled={!message.trim() || isLoading}
-            size="default"
+            size="sm"
+            className="h-9 px-4"
           >
-            <Send className="w-4 h-4 mr-2" />
-            Send
+            <Send className="w-4 h-4" />
           </Button>
         </form>
       </div>
