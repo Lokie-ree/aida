@@ -314,21 +314,21 @@ export function VoiceInterface({
 
   return (
     <Card className={`${className || ""} overflow-hidden`}>
-      <CardHeader className="text-center pb-4">
-        <CardTitle className="text-2xl font-bold text-foreground text-center">
-          The Voice of Your District
+      <CardHeader className="text-center pb-2">
+        <CardTitle className="text-lg font-semibold text-foreground text-center">
+          Voice Assistant
         </CardTitle>
         <CardDescription
           id="voice-status"
           role="status"
           aria-live="polite"
-          className="text-sm mt-2 font-medium"
+          className="text-xs mt-1 font-medium"
         >
           {getStatusText()}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center gap-4 p-6">
+      <CardContent className="flex flex-col items-center gap-3 p-4">
         {/* Main Voice Button - The Voice Orb with Exact Brand Colors */}
         <div className="relative">
           <Button
@@ -341,7 +341,7 @@ export function VoiceInterface({
             }
             aria-describedby="voice-status"
             size="lg"
-            className="w-24 h-24 rounded-full transition-all duration-300 shadow-xl hover:scale-105 transform"
+            className="w-16 h-16 rounded-full transition-all duration-300 shadow-lg hover:scale-105 transform"
             style={{
               backgroundColor: getVoiceOrbColor(),
               opacity: isLoading ? 0.5 : 1,
@@ -351,11 +351,11 @@ export function VoiceInterface({
             }}
           >
             {isLoading ? (
-              <Loader2 className="w-8 h-8 animate-spin" />
+              <Loader2 className="w-6 h-6 animate-spin" />
             ) : isConnected ? (
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6" />
             ) : (
-              <Mic className="w-8 h-8" />
+              <Mic className="w-6 h-6" />
             )}
           </Button>
 
@@ -375,8 +375,8 @@ export function VoiceInterface({
         </div>
 
         {/* Compact Status */}
-        <div className="text-center space-y-3">
-          <div className="text-sm text-muted-foreground">
+        <div className="text-center space-y-2">
+          <div className="text-xs text-muted-foreground">
             {!import.meta.env.VITE_VAPI_PUBLIC_KEY
               ? "Setup required"
               : !isConnected

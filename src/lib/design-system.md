@@ -226,6 +226,166 @@ The design tokens are integrated with Tailwind CSS through the `tailwind.config.
 
 Full TypeScript support is provided through the `design-tokens.ts` file, ensuring type safety when using design tokens in your code.
 
+## Information Architecture (IA)
+
+### Layout Structure
+
+The A.I.D.A. dashboard follows a hierarchical layout structure optimized for voice-first interactions and space-scoped knowledge access:
+
+#### Desktop Layout (1440px+)
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ HEADER                                                                          │
+│ ┌─────────────┐ ┌─────────────────────────────┐ ┌─────────────────────────────┐ │
+│ │ A.I.D.A.    │ │ [District-wide Coach ▼]     │ │ [User Menu ▼]              │ │
+│ │ (brand)     │ │ (active space)              │ │ (profile/settings)         │ │
+│ └─────────────┘ └─────────────────────────────┘ └─────────────────────────────┘ │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│ MAIN CONTENT AREA                                                               │
+│ ┌─────────────────────────────┐ ┌─────────────────────────────────────────────┐ │
+│ │ VOICE HUB (1/3)             │ │ CONVERSATION (2/3)                          │ │
+│ │ ┌─────────────────────────┐ │ │ ┌─────────────────────────────────────────┐ │ │
+│ │ │ 🎤 Voice Interface      │ │ │ │ 💬 Ask A.I.D.A. anything...             │ │ │
+│ │ │ [Large Voice Button]    │ │ │ │                                         │ │ │
+│ │ │                         │ │ │ │ [Message History]                       │ │ │
+│ │ │ Status: Ready           │ │ │ │                                         │ │ │
+│ │ │ Sources: 3 docs         │ │ │ │ [Input Field] [Send]                    │ │ │
+│ │ └─────────────────────────┘ │ │ └─────────────────────────────────────────┘ │ │
+│ │ ┌─────────────────────────┐ │ │                                             │ │
+│ │ │ Quick Actions           │ │ │                                             │ │
+│ │ │ [Upload Doc] [Invite]   │ │ │                                             │ │
+│ │ │ [Create Space]          │ │ │                                             │ │
+│ │ └─────────────────────────┘ │ │                                             │ │
+│ └─────────────────────────────┘ └─────────────────────────────────────────────┘ │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│ CONTEXT TRAY (full width, collapsible)                                         │
+│ ┌─────────────────────────────────────────────────────────────────────────────┐ │
+│ │ [Documents] [Sources] [Activity] │ [▼ Collapse]                            │ │
+│ │ ┌─────────────────────────────────────────────────────────────────────────┐ │ │
+│ │ │ Document List | Source Citations | Recent Activity                     │ │ │
+│ │ │ • Policy.pdf  | 1. District Policy | • Asked about attendance          │ │ │
+│ │ │ • Handbook.md | 2. Student Handbook| • Uploaded new doc                 │ │ │
+│ │ │ • Guide.pdf   | 3. LDOE Guidelines | • Created new space               │ │ │
+│ │ └─────────────────────────────────────────────────────────────────────────┘ │ │
+│ └─────────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Mobile Layout (768px and below)
+```
+┌─────────────────────────────────┐
+│ HEADER                          │
+│ ┌─────────────┐ ┌─────────────┐ │
+│ │ A.I.D.A.    │ │ [Menu ☰]    │ │
+│ └─────────────┘ └─────────────┘ │
+├─────────────────────────────────┤
+│ VOICE HUB (full width)          │
+│ ┌─────────────────────────────┐ │
+│ │ 🎤 Voice Interface          │ │
+│ │ [Large Voice Button]        │ │
+│ │ Status: Ready | Sources: 3  │ │
+│ └─────────────────────────────┘ │
+├─────────────────────────────────┤
+│ CONVERSATION (full width)       │
+│ ┌─────────────────────────────┐ │
+│ │ 💬 Ask A.I.D.A. anything... │ │
+│ │ [Message History]           │ │
+│ │ [Input Field] [Send]        │ │
+│ └─────────────────────────────┘ │
+├─────────────────────────────────┤
+│ CONTEXT TRAY (collapsed)        │
+│ [Documents] [Sources] [Activity]│
+│ [▼ Expand]                      │
+└─────────────────────────────────┘
+```
+
+### Component Hierarchy
+
+#### VoiceHub (Primary Interface)
+- **Purpose**: Central voice interaction point with district knowledge
+- **Components**: VoiceInterface, Quick Actions, Status Summary
+- **Layout**: Left column (1/3 on desktop), full width on mobile
+- **Priority**: Always visible, primary interaction method
+
+#### Conversation (Secondary Interface)
+- **Purpose**: Text-based chat with message history and input
+- **Components**: MessageHistory, InputField, SourceCitations
+- **Layout**: Right column (2/3 on desktop), full width on mobile
+- **Priority**: Secondary to voice, collapsible when empty
+
+#### ContextTray (Supporting Interface)
+- **Purpose**: Document management, source citations, activity tracking
+- **Components**: DocumentList, SourceCitations, ActivityFeed
+- **Layout**: Full width, collapsible panel
+- **Priority**: Supporting information, progressive disclosure
+
+#### Header (Global Navigation)
+- **Purpose**: Brand identity, space switching, user controls
+- **Components**: BrandLogo, SpaceSelector, UserMenu
+- **Layout**: Fixed top, full width
+- **Priority**: Always visible, global context
+
+### Layout Guidelines
+
+#### Grid System
+- **Desktop**: 3-column grid (1/3 + 2/3 + full width)
+- **Mobile**: Single column stack
+- **Breakpoints**: `lg:1024px` for desktop layout
+- **Gaps**: Consistent 6-unit spacing between components
+
+#### Spacing Hierarchy
+- **Header**: Fixed height (64px), sticky positioning
+- **Main Content**: Flexible height with min-height constraints
+- **Voice Hub**: Fixed aspect ratio, responsive sizing
+- **Conversation**: Flexible height, scrollable content
+- **Context Tray**: Collapsible height (64px collapsed, 256px expanded)
+
+#### Responsive Behavior
+- **Mobile First**: Single column layout by default
+- **Progressive Enhancement**: Desktop layout at `lg` breakpoint
+- **Touch Friendly**: Minimum 44px touch targets
+- **Content Priority**: Voice Hub → Conversation → Context Tray
+
+### Content Strategy
+
+#### Primary Actions (Always Visible)
+- Voice interaction button
+- Space switching
+- Message input
+- Quick document upload
+
+#### Secondary Actions (Discoverable)
+- Document management
+- Team invitations
+- Space creation
+- Activity monitoring
+
+#### Progressive Disclosure
+- Context Tray starts collapsed
+- Conversation starts collapsed when empty
+- Advanced features in dropdown menus
+- Help and onboarding in modals
+
+### Accessibility Guidelines
+
+#### Focus Management
+- Logical tab order: Header → Voice Hub → Conversation → Context Tray
+- Skip links for main content areas
+- Focus indicators on all interactive elements
+- Voice button as primary focus target
+
+#### Screen Reader Support
+- Semantic HTML structure
+- ARIA labels for complex interactions
+- Live regions for dynamic content updates
+- Descriptive alt text for visual elements
+
+#### Keyboard Navigation
+- Space/Enter for voice activation
+- Tab navigation between components
+- Escape to close modals and collapse panels
+- Arrow keys for dropdown navigation
+
 ## Best Practices
 
 1. **Consistency**: Always use design tokens instead of hardcoded values
@@ -234,3 +394,7 @@ Full TypeScript support is provided through the `design-tokens.ts` file, ensurin
 4. **Accessibility**: Ensure proper contrast and keyboard navigation
 5. **Performance**: Use CSS custom properties for efficient theme switching
 6. **Maintainability**: Keep design tokens centralized and well-documented
+7. **Voice-First**: Prioritize voice interactions over text input
+8. **Space-Centric**: Design around space-scoped knowledge access
+9. **Progressive Disclosure**: Hide secondary information until needed
+10. **Cognitive Load**: Minimize information density to reduce overwhelm
