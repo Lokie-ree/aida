@@ -9,11 +9,44 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Next: Phase 5 - Software Engineering
-- Cleanup A.I.D.A. codebase (remove unused features)
 - Implement new database schema (6 tables)
 - Build backend APIs (frameworks, testimonials, innovations, beta program)
 - Create frontend components and pages
 - Beta launch preparation
+
+---
+
+## [0.5.0] - 2025-01-27 - Spaces Cleanup Complete
+
+### Removed
+- **Spaces Concept**: Complete removal of collaborative workspace functionality
+- **Space Management**: All space creation, membership, and invitation features
+- **Complex Design System**: Simplified from custom tokens to standard Tailwind CSS
+- **Unused Components**: PDDemoSetup, SpaceSelector, SpaceTemplateSelector
+- **Database Tables**: `spaces` and `spaceMembers` tables
+- **Database Fields**: All `spaceId` references from documents, messages, feedback, and audit logs
+
+### Changed
+- **App Direction**: Transitioned from collaborative to individual educator focus
+- **Branding**: Updated from "A.I.D.A." to "EdCoachAI" throughout
+- **Authentication**: Migrated to Better Auth with simplified user management
+- **Database Schema**: Removed 8 space-related indexes, simplified queries
+- **Frontend Components**: 15+ components updated to remove space dependencies
+- **Design System**: Simplified to use shadcn/ui defaults and standard Tailwind classes
+
+### Fixed
+- **Build Issues**: Resolved all TypeScript compilation errors
+- **Lint Issues**: Fixed all ESLint and type checking errors
+- **Tailwind v4 Compatibility**: Updated CSS and configuration for Tailwind CSS v4
+- **Component Props**: Simplified component interfaces by removing space-related props
+
+### Technical Details
+- **Files Deleted**: 6 files (spaces.ts, 3 components, 2 design system files)
+- **Files Modified**: 25+ files across backend and frontend
+- **Database Indexes Removed**: 8 space-related indexes
+- **Build Status**: ✅ Successful (728.04 kB bundle)
+- **Type Check**: ✅ No errors
+- **Convex Functions**: ✅ All 42 functions deployed successfully
 
 ---
 

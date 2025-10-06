@@ -1,11 +1,20 @@
-import { auth } from "./auth";
-import router from "./router";
+import { httpRouter } from "convex/server";
+import { authComponent, createAuth } from "./auth";
 import { httpAction } from "./_generated/server";
 import { resend } from "./email";
+import { webhook as vapiWebhook } from "./vapi";
 
-const http = router;
+const http = httpRouter();
 
-auth.addHttpRoutes(http);
+// Register Better Auth route handlers with CORS for client-side frameworks
+authComponent.registerRoutes(http, createAuth, { cors: true });
+
+// Vapi webhook endpoint
+http.route({
+  path: "/api/vapi/webhook",
+  method: "POST",
+  handler: vapiWebhook,
+});
 
 // Add Resend webhook route
 http.route({

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useAction, useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
-import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,26 +13,19 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Trash2 } from "lucide-react";
-import { designTokens } from "@/lib/design-tokens";
 
 interface ChatInterfaceProps {
-  currentSpaceId: Id<"spaces"> | null;
+  // No props needed - individual user chat
 }
 
-export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
+export function ChatInterface({}: ChatInterfaceProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const chatHistory = useQuery(api.chat.getChatHistory, {
-    spaceId: currentSpaceId ?? undefined,
-  });
+  const chatHistory = useQuery(api.chat.getChatHistory, {});
   const sendMessage = useAction(api.chat.sendMessage);
   const clearHistory = useMutation(api.chat.clearChatHistory);
-  const currentSpace = useQuery(
-    api.spaces.getSpaceById,
-    currentSpaceId ? { spaceId: currentSpaceId } : "skip"
-  );
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -55,7 +47,6 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
     try {
       await sendMessage({
         message: userMessage,
-        spaceId: currentSpaceId ?? undefined,
       });
     } catch (error) {
       console.error("Error sending message:", error);
@@ -66,14 +57,13 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
   };
 
   const handleClearHistory = async () => {
-    const spaceContext = currentSpace ? ` for "${currentSpace.name}"` : "";
     if (
       window.confirm(
-        `Are you sure you want to clear all chat history${spaceContext}?`
+        `Are you sure you want to clear all chat history?`
       )
     ) {
       try {
-        await clearHistory({ spaceId: currentSpaceId ?? undefined });
+        await clearHistory({});
         toast.success("Chat history cleared");
       } catch (error) {
         toast.error("Failed to clear chat history");
@@ -82,16 +72,10 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
   };
 
   const getHeaderTitle = () => {
-    if (currentSpace) {
-      return `A.I.D.A. Chat - ${currentSpace.name}`;
-    }
-    return "A.I.D.A. Chat - Personal";
+    return "A.I.D.A. Chat";
   };
 
   const getWelcomeMessage = () => {
-    if (currentSpace) {
-      return `Welcome to the ${currentSpace.name} space! Ask me anything about instructional design and pedagogy. I can access shared documents and websites in this space.`;
-    }
     return "Ask me anything about instructional design and pedagogy.";
   };
 
@@ -101,11 +85,9 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>{getHeaderTitle()}</CardTitle>
-            {currentSpace && (
-              <CardDescription>
-                Shared workspace with team knowledge base
-              </CardDescription>
-            )}
+            <CardDescription>
+              Your personal AI assistant for instructional design
+            </CardDescription>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleClearHistory}>
@@ -150,25 +132,14 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
                         {msg.content}
                       </div>
                       {/* Context indicators */}
-                      {(msg.contextDocuments &&
-                        msg.contextDocuments.length > 0) ||
-                      (msg.contextWebsites &&
-                        msg.contextWebsites.length > 0) ? (
+                      {msg.contextDocuments &&
+                        msg.contextDocuments.length > 0 && (
                         <div className="mt-2 pt-2 border-t border-current/20 text-xs opacity-75">
-                          {msg.contextDocuments &&
-                            msg.contextDocuments.length > 0 && (
-                              <div>
-                                📄 Documents: {msg.contextDocuments.join(", ")}
-                              </div>
-                            )}
-                          {msg.contextWebsites &&
-                            msg.contextWebsites.length > 0 && (
-                              <div>
-                                🌐 Websites: {msg.contextWebsites.join(", ")}
-                              </div>
-                            )}
+                          <div>
+                            📄 Documents: {msg.contextDocuments.join(", ")}
+                          </div>
                         </div>
-                      ) : null}
+                      )}
                       <div className="text-xs opacity-75 mt-1">
                         {new Date(msg._creationTime).toLocaleTimeString()}
                       </div>
@@ -199,7 +170,7 @@ export function ChatInterface({ currentSpaceId }: ChatInterfaceProps) {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={`Ask A.I.D.A. about instructional design${currentSpace ? ` in ${currentSpace.name}` : ""}...`}
+            placeholder="Ask A.I.D.A. about instructional design..."
             className="flex-1"
             disabled={isLoading}
           />

@@ -1,40 +1,70 @@
+import { createClient, type GenericCtx } from "@convex-dev/better-auth";
+import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
+import { components } from "./_generated/api";
+import { DataModel } from "./_generated/dataModel";
+import { query } from "./_generated/server";
+import { betterAuth } from "better-auth";
+
+const siteUrl = process.env.SITE_URL!;
+
 /**
- * Better Auth Configuration
+ * Better Auth Configuration for EdCoachAI
  * 
- * This file will be configured with Better Auth once the migration is complete.
- * For now, it serves as a placeholder to maintain the auth module structure.
+ * This configures Better Auth with Convex following the official integration guide.
+ * Uses email/password authentication without email verification for beta testing.
  * 
- * Better Auth is already configured in convex.config.ts via @convex-dev/better-auth
- * 
- * Next steps:
- * 1. Configure Better Auth providers (email/password, OAuth, etc.)
- * 2. Set up auth endpoints
- * 3. Configure session management
- * 4. Update frontend to use Better Auth hooks
+ * @see https://convex-better-auth.netlify.app/framework-guides/react
  */
 
-import { query } from "./_generated/server";
-import { v } from "convex/values";
+// The component client has methods needed for integrating Convex with Better Auth,
+// as well as helper methods for general use.
+export const authComponent = createClient<DataModel>(components.betterAuth);
 
-// Placeholder query for logged in user
-// This will be replaced with Better Auth implementation
-export const loggedInUser = query({
+export const createAuth = (
+  ctx: GenericCtx<DataModel>,
+  { optionsOnly } = { optionsOnly: false },
+) => {
+  return betterAuth({
+    // disable logging when createAuth is called just to generate options.
+    // this is not required, but there's a lot of noise in logs without it.
+    logger: {
+      disabled: optionsOnly,
+    },
+    trustedOrigins: [siteUrl],
+    database: authComponent.adapter(ctx),
+    // Configure simple, non-verified email/password for beta program
+    emailAndPassword: {
+      enabled: true,
+      requireEmailVerification: false,
+    },
+    plugins: [
+      // The cross domain plugin is required for client side frameworks
+      crossDomain({ siteUrl }),
+      // The Convex plugin is required for Convex compatibility
+      convex(),
+    ],
+  });
+};
+
+/**
+ * Get the currently authenticated user
+ * Returns the user object if authenticated, null otherwise
+ */
+export const getCurrentUser = query({
   args: {},
-  returns: v.null(),
   handler: async (ctx) => {
-    // TODO: Implement with Better Auth
-    // const session = await ctx.auth.getSession();
-    // if (!session) return null;
-    // return await ctx.db.get(session.userId);
-    return null;
+    return authComponent.getAuthUser(ctx);
   },
 });
 
-// Placeholder auth object for Better Auth migration
-// This will be replaced with actual Better Auth implementation
-export const auth = {
-  addHttpRoutes: (router: any) => {
-    // TODO: Add Better Auth HTTP routes
-    console.log("Better Auth HTTP routes not yet implemented");
-  },
-};
+/**
+ * Legacy compatibility alias
+ * @deprecated Use getCurrentUser instead
+ */
+export const currentUser = getCurrentUser;
+
+/**
+ * Legacy compatibility alias
+ * @deprecated Use getCurrentUser instead
+ */
+export const loggedInUser = getCurrentUser;

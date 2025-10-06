@@ -1,7 +1,16 @@
 import { v } from "convex/values";
 import { query, mutation, action } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { authComponent } from "./auth";
 import { api } from "./_generated/api";
+
+/**
+ * Helper function to get the authenticated user ID
+ * Returns the user's _id if authenticated, null otherwise
+ */
+async function getAuthUserId(ctx: any): Promise<string | null> {
+  const user = await authComponent.getAuthUser(ctx);
+  return user?._id ?? null;
+}
 
 // Security audit log table for FERPA compliance
 export const createAuditLog = mutation({
@@ -9,7 +18,6 @@ export const createAuditLog = mutation({
     action: v.string(),
     resource: v.string(),
     details: v.optional(v.string()),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.id("auditLogs"),
   handler: async (ctx, args) => {
@@ -23,7 +31,6 @@ export const createAuditLog = mutation({
       action: args.action,
       resource: args.resource,
       details: args.details,
-      spaceId: args.spaceId,
       timestamp: Date.now(),
       ipAddress: "unknown", // Would be populated from request context in production
     });
@@ -33,7 +40,6 @@ export const createAuditLog = mutation({
 // Get audit logs for a user (FERPA compliance)
 export const getUserAuditLogs = query({
   args: {
-    spaceId: v.optional(v.id("spaces")),
     limit: v.optional(v.number()),
   },
   returns: v.array(v.object({
@@ -43,7 +49,6 @@ export const getUserAuditLogs = query({
     action: v.string(),
     resource: v.string(),
     details: v.optional(v.string()),
-    spaceId: v.optional(v.id("spaces")),
     timestamp: v.number(),
     ipAddress: v.string(),
   })),
@@ -55,19 +60,11 @@ export const getUserAuditLogs = query({
 
     const limit = args.limit || 50;
     
-    if (args.spaceId) {
-      return await ctx.db
-        .query("auditLogs")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId))
-        .order("desc")
-        .take(limit);
-    } else {
-      return await ctx.db
-        .query("auditLogs")
-        .withIndex("by_user", (q) => q.eq("userId", userId))
-        .order("desc")
-        .take(limit);
-    }
+    return await ctx.db
+      .query("auditLogs")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .order("desc")
+      .take(limit);
   },
 });
 
@@ -76,7 +73,6 @@ export const validateDataAccess = action({
   args: {
     resource: v.string(),
     action: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.object({
     allowed: v.boolean(),
@@ -95,19 +91,7 @@ export const validateDataAccess = action({
       return { allowed: true };
     }
 
-    // Check space access permissions
-    if (args.spaceId) {
-      const spaceMembers = await ctx.runQuery(api.spaces.getSpaceMembers, {
-        spaceId: args.spaceId,
-      });
-      
-      // TODO: Implement proper space membership check with Better Auth
-      // For now, allow access to prevent errors since spaces aren't fully implemented
-      const isMember = true;
-      if (!isMember) {
-        return { allowed: false, reason: "User not authorized for this space" };
-      }
-    }
+    // No space validation needed - individual user access only
 
     return { allowed: true };
   },
@@ -115,9 +99,7 @@ export const validateDataAccess = action({
 
 // Data retention policy enforcement
 export const enforceDataRetention = action({
-  args: {
-    spaceId: v.optional(v.id("spaces")),
-  },
+  args: {},
   returns: v.object({
     deletedCount: v.number(),
     errors: v.array(v.string()),
@@ -137,7 +119,6 @@ export const enforceDataRetention = action({
       
       const oldAuditLogs = await ctx.runQuery(api.security.getOldAuditLogs, {
         beforeTimestamp: sevenYearsAgo,
-        spaceId: args.spaceId,
       });
 
       for (const log of oldAuditLogs) {
@@ -154,7 +135,6 @@ export const enforceDataRetention = action({
       
       const oldFeedbackSessions = await ctx.runQuery(api.security.getOldFeedbackSessions, {
         beforeTimestamp: threeYearsAgo,
-        spaceId: args.spaceId,
       });
 
       for (const session of oldFeedbackSessions) {
@@ -178,7 +158,6 @@ export const enforceDataRetention = action({
 export const getOldAuditLogs = query({
   args: {
     beforeTimestamp: v.number(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.array(v.object({
     _id: v.id("auditLogs"),
@@ -190,26 +169,17 @@ export const getOldAuditLogs = query({
       return [];
     }
 
-    if (args.spaceId) {
-      return await ctx.db
-        .query("auditLogs")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId))
-        .filter((q) => q.lt(q.field("timestamp"), args.beforeTimestamp))
-        .collect();
-    } else {
-      return await ctx.db
-        .query("auditLogs")
-        .withIndex("by_user", (q) => q.eq("userId", userId))
-        .filter((q) => q.lt(q.field("timestamp"), args.beforeTimestamp))
-        .collect();
-    }
+    return await ctx.db
+      .query("auditLogs")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.lt(q.field("timestamp"), args.beforeTimestamp))
+      .collect();
   },
 });
 
 export const getOldFeedbackSessions = query({
   args: {
     beforeTimestamp: v.number(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.array(v.object({
     _id: v.id("feedbackSessions"),
@@ -221,19 +191,11 @@ export const getOldFeedbackSessions = query({
       return [];
     }
 
-    if (args.spaceId) {
-      return await ctx.db
-        .query("feedbackSessions")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId))
-        .filter((q) => q.lt(q.field("_creationTime"), args.beforeTimestamp))
-        .collect();
-    } else {
-      return await ctx.db
-        .query("feedbackSessions")
-        .withIndex("by_user", (q) => q.eq("userId", userId))
-        .filter((q) => q.lt(q.field("_creationTime"), args.beforeTimestamp))
-        .collect();
-    }
+    return await ctx.db
+      .query("feedbackSessions")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .filter((q) => q.lt(q.field("_creationTime"), args.beforeTimestamp))
+      .collect();
   },
 });
 

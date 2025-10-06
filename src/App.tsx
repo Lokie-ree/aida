@@ -3,18 +3,14 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
-import { SpaceSelector } from "./components/SpaceSelector";
 import { VoiceHub } from "./components/VoiceHub";
 import { ConversationPane } from "./components/ConversationPane";
 import { ContextTray } from "./components/ContextTray";
-import { PDDemoSetup } from "./components/PDDemoSetup";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
-import { Id } from "../convex/_generated/dataModel";
 import { LandingPage } from "./components/LandingPage";
 
 export default function App() {
-  const [currentSpaceId, setCurrentSpaceId] = useState<Id<"spaces"> | null>(null);
 
   return (
     <ThemeProvider>
@@ -37,16 +33,10 @@ export default function App() {
                   </span>
                 </div>
                 <h1 className="text-xl font-bold text-foreground">
-                  A.I.D.A.
+                  EdCoachAI
                 </h1>
               </div>
               <div className="flex items-center gap-2 lg:gap-4">
-                <div className="hidden sm:block w-48 lg:w-64">
-                  <SpaceSelector
-                    currentSpaceId={currentSpaceId}
-                    onSpaceChange={setCurrentSpaceId}
-                  />
-                </div>
                 <ModeToggle />
                 <SignOutButton />
               </div>
@@ -55,7 +45,7 @@ export default function App() {
 
           <main id="main-content" className="flex-1 p-4 sm:p-6" role="main">
             <div className="max-w-7xl mx-auto h-full">
-              <Content currentSpaceId={currentSpaceId} setCurrentSpaceId={setCurrentSpaceId} />
+              <Content />
             </div>
           </main>
         </Authenticated>
@@ -70,10 +60,8 @@ export default function App() {
   );
 }
 
-function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"spaces"> | null; setCurrentSpaceId: (id: Id<"spaces"> | null) => void }) {
-  const [showPDSetup, setShowPDSetup] = useState(true);
+function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
-  const userSpaces = useQuery(api.spaces.getUserSpaces);
 
   if (loggedInUser === undefined) {
     return (
@@ -86,29 +74,8 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
     );
   }
 
-  // Auto-hide PD Setup if user already has 5+ spaces
-  const shouldShowPDSetup = showPDSetup && (!userSpaces || userSpaces.length < 5);
-
   return (
     <>
-      {/* PD Demo Setup Banner (Collapsible) */}
-      {shouldShowPDSetup && (
-        <div className="mb-6 animate-slide-in-from-top">
-          <PDDemoSetup
-            onSpaceCreated={(spaceId) => setCurrentSpaceId(spaceId)}
-            onComplete={() => setShowPDSetup(false)}
-            onDismiss={() => setShowPDSetup(false)}
-          />
-        </div>
-      )}
-
-      {/* Mobile Space Selector */}
-      <div className="sm:hidden mb-4">
-        <SpaceSelector
-          currentSpaceId={currentSpaceId}
-          onSpaceChange={setCurrentSpaceId}
-        />
-      </div>
 
       {/* Main Dashboard - New Layout */}
       <div className="h-full flex flex-col gap-4 sm:gap-6">
@@ -117,12 +84,9 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
           {/* Voice Hub (1/3) */}
           <div className="lg:col-span-1 flex flex-col min-h-0">
             <VoiceHub
-              currentSpaceId={currentSpaceId}
               onTranscription={(text) => console.log('Transcription:', text)}
               onResponse={(text) => console.log('Response:', text)}
               onDocumentAction={(action) => console.log('Document action:', action)}
-              onSpaceAction={(action) => console.log('Space action:', action)}
-              onInviteAction={() => console.log('Invite action')}
               sourceCount={0}
               documentCount={0}
             />
@@ -130,7 +94,7 @@ function Content({ currentSpaceId, setCurrentSpaceId }: { currentSpaceId: Id<"sp
 
           {/* Conversation (2/3) */}
           <div className="lg:col-span-2 flex flex-col min-h-0">
-            <ConversationPane currentSpaceId={currentSpaceId} />
+            <ConversationPane />
           </div>
         </div>
 

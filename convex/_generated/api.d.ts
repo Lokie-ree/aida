@@ -18,7 +18,6 @@ import type * as http from "../http.js";
 import type * as rag from "../rag.js";
 import type * as router from "../router.js";
 import type * as security from "../security.js";
-import type * as spaces from "../spaces.js";
 import type * as vapi from "../vapi.js";
 
 import type {
@@ -46,7 +45,6 @@ declare const fullApi: ApiFromModules<{
   rag: typeof rag;
   router: typeof router;
   security: typeof security;
-  spaces: typeof spaces;
   vapi: typeof vapi;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

@@ -1,13 +1,11 @@
-import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { X } from "lucide-react";
-import { designTokens } from "@/lib/design-tokens";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { authClient } from "@/lib/auth-client";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -15,7 +13,6 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [submitting, setSubmitting] = useState(false);
 
@@ -25,23 +22,63 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const name = formData.get("name") as string;
+
+    try {
+      if (flow === "signIn") {
+        await authClient.signIn.email({
+          email,
+          password,
+        });
+        toast.success("Welcome back!");
+        onClose();
+      } else {
+        await authClient.signUp.email({
+          email,
+          password,
+          name: name || email.split("@")[0],
+        });
+        toast.success("Account created successfully!");
+        onClose();
+      }
+    } catch (error: any) {
+      console.error("Auth error:", error);
+      
+      let toastTitle = "";
+      if (error.message?.includes("Invalid") || error.message?.includes("password")) {
+        toastTitle = "Invalid email or password. Please try again.";
+      } else if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
+        toastTitle = "An account with this email already exists. Try signing in instead.";
+        setFlow("signIn");
+      } else {
+        toastTitle = flow === "signIn"
+          ? "Could not sign in. Please check your credentials."
+          : "Could not create account. Please try again.";
+      }
+      toast.error(toastTitle);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="relative">
-          
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-              <div 
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-                }}
-              >
+                     <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-primary to-secondary">
                 <span className="text-white font-bold text-sm">AI</span>
               </div>
               <span className="text-xl font-bold text-foreground">
-                A.I.D.A.
+                EdCoachAI
               </span>
             </div>
           </DialogTitle>
@@ -50,36 +87,30 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <Card className="border-0 shadow-none">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-lg text-foreground">
-              Welcome to A.I.D.A.
+              {flow === "signIn" ? "Welcome Back" : "Create Your Account"}
             </CardTitle>
             <CardDescription>
-              Sign in to your account or create a new one to experience the voice of your school district.
+              {flow === "signIn" 
+                ? "Sign in to access your AI coaching tools" 
+                : "Join Louisiana educators using AI to save time"}
             </CardDescription>
           </CardHeader>
           
           <CardContent className="space-y-4">
-            <form
-              className="space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitting(true);
-                const formData = new FormData(e.target as HTMLFormElement);
-                formData.set("flow", flow);
-                void signIn("password", formData).catch((error) => {
-                  let toastTitle = "";
-                  if (error.message.includes("Invalid password")) {
-                    toastTitle = "Invalid password. Please try again.";
-                  } else {
-                    toastTitle =
-                      flow === "signIn"
-                        ? "Could not sign in, did you mean to sign up?"
-                        : "Could not sign up, did you mean to sign in?";
-                  }
-                  toast.error(toastTitle);
-                  setSubmitting(false);
-                });
-              }}
-            >
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              {flow === "signUp" && (
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                    disabled={submitting}
+                  />
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -99,17 +130,20 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   name="password"
                   placeholder="Enter your password"
                   required
+                  minLength={8}
                   disabled={submitting}
                 />
+                {flow === "signUp" && (
+                  <p className="text-xs text-muted-foreground">
+                    Password must be at least 8 characters
+                  </p>
+                )}
               </div>
-              <Button 
-                type="submit" 
-                className="w-full text-white"
-                disabled={submitting}
-                style={{
-                  background: `linear-gradient(135deg, ${designTokens.colors.primary.blue}, ${designTokens.colors.secondary.purple})`
-                }}
-              >
+                     <Button
+                       type="submit"
+                       className="w-full text-white bg-gradient-to-r from-primary to-secondary"
+                       disabled={submitting}
+                     >
                 {submitting ? "Please wait..." : flow === "signIn" ? "Sign in" : "Sign up"}
               </Button>
               <div className="text-center text-sm text-muted-foreground">
@@ -129,24 +163,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 </Button>
               </div>
             </form>
-            
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">or</span>
-              </div>
-            </div>
-            
-            <Button 
-              variant="outline" 
-              className="w-full" 
-              onClick={() => void signIn("anonymous")}
-              disabled={submitting}
-            >
-              Try Demo Anonymously
-            </Button>
           </CardContent>
         </Card>
       </DialogContent>

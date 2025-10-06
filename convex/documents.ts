@@ -1,7 +1,16 @@
 import { v } from "convex/values";
 import { query, mutation, action } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { authComponent } from "./auth";
 import { api } from "./_generated/api";
+
+/**
+ * Helper function to get the authenticated user ID
+ * Returns the user's _id if authenticated, null otherwise
+ */
+async function getAuthUserId(ctx: any): Promise<string | null> {
+  const user = await authComponent.getAuthUser(ctx);
+  return user?._id ?? null;
+}
 
 export const generateUploadUrl = mutation({
   args: {},
@@ -20,7 +29,6 @@ export const processUploadedDocument = action({
     fileName: v.string(),
     fileSize: v.number(),
     contentType: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.object({
     success: v.boolean(),
@@ -30,14 +38,6 @@ export const processUploadedDocument = action({
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       throw new Error("User must be authenticated");
-    }
-
-    // If spaceId is provided, verify user has access to the space
-    if (args.spaceId) {
-      const membership = await ctx.runQuery(api.spaces.getSpaceById, { spaceId: args.spaceId });
-      if (!membership) {
-        throw new Error("You don't have access to this space");
-      }
     }
 
     try {
@@ -50,14 +50,13 @@ export const processUploadedDocument = action({
       // Extract text content (for now, assume text files)
       const textContent = await file.text();
       
-      // Save document with space association
+      // Save document
       const documentId: any = await ctx.runMutation(api.documents.saveDocument, {
         fileName: args.fileName,
         fileSize: args.fileSize,
         storageId: args.storageId,
         contentType: args.contentType,
         textContent,
-        spaceId: args.spaceId,
       });
 
       // Add document to RAG for semantic search
@@ -65,7 +64,6 @@ export const processUploadedDocument = action({
         documentId,
         textContent,
         fileName: args.fileName,
-        spaceId: args.spaceId,
       });
 
       return { success: true, documentId };
@@ -83,7 +81,6 @@ export const saveDocument = mutation({
     storageId: v.id("_storage"),
     contentType: v.string(),
     textContent: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.id("documents"),
   handler: async (ctx, args) => {
@@ -99,45 +96,22 @@ export const saveDocument = mutation({
       storageId: args.storageId,
       contentType: args.contentType,
       textContent: args.textContent,
-      spaceId: args.spaceId,
     });
   },
 });
 
 export const getUserDocuments = query({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       return [];
     }
 
-    // If spaceId is provided, verify user has access to the space
-    if (args.spaceId) {
-      const membership = await ctx.db
-        .query("spaceMembers")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId!))
-        .filter((q) => q.eq(q.field("userId"), userId))
-        .filter((q) => q.eq(q.field("invitationStatus"), "accepted"))
-        .first();
-
-      if (!membership) {
-        return [];
-      }
-
-      // Return documents for the specific space
-      return await ctx.db
-        .query("documents")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId!))
-        .order("desc")
-        .collect();
-    }
-
-    // Return personal documents (no spaceId)
+    // Return personal documents
     return await ctx.db
       .query("documents")
       .withIndex("by_user", (q) => q.eq("userId", userId))
-      .filter((q) => q.eq(q.field("spaceId"), undefined))
       .order("desc")
       .collect();
   },
@@ -163,24 +137,9 @@ export const deleteDocument = mutation({
       throw new Error("Document not found");
     }
 
-    // Check if user has permission to delete
-    if (document.spaceId) {
-      // For space documents, check if user is a member
-      const membership = await ctx.db
-        .query("spaceMembers")
-        .withIndex("by_space", (q) => q.eq("spaceId", document.spaceId!))
-        .filter((q) => q.eq(q.field("userId"), userId))
-        .filter((q) => q.eq(q.field("invitationStatus"), "accepted"))
-        .first();
-
-      if (!membership) {
-        throw new Error("You don't have access to this space");
-      }
-    } else {
-      // For personal documents, check ownership
-      if (document.userId !== userId) {
-        throw new Error("Access denied");
-      }
+    // Check ownership for personal documents
+    if (document.userId !== userId) {
+      throw new Error("Access denied");
     }
 
     // Delete from storage
@@ -194,7 +153,6 @@ export const deleteDocument = mutation({
 export const searchDocuments = query({
   args: { 
     query: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args): Promise<Array<{
     documentId: string;
@@ -208,34 +166,11 @@ export const searchDocuments = query({
     }
 
     try {
-      let documents;
-
-      if (args.spaceId) {
-        // Verify user has access to the space
-        const membership = await ctx.db
-          .query("spaceMembers")
-          .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId!))
-          .filter((q) => q.eq(q.field("userId"), userId))
-          .filter((q) => q.eq(q.field("invitationStatus"), "accepted"))
-          .first();
-
-        if (!membership) {
-          return [];
-        }
-
-        // Get documents for the specific space
-        documents = await ctx.db
-          .query("documents")
-          .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId!))
-          .collect();
-      } else {
-        // Get personal documents
-        documents = await ctx.db
-          .query("documents")
-          .withIndex("by_user", (q) => q.eq("userId", userId))
-          .filter((q) => q.eq(q.field("spaceId"), undefined))
-          .collect();
-      }
+      // Get personal documents
+      const documents = await ctx.db
+        .query("documents")
+        .withIndex("by_user", (q) => q.eq("userId", userId))
+        .collect();
 
       // Simple text-based search
       const searchTerms = args.query.toLowerCase().split(' ').filter(term => term.length > 2);

@@ -58,13 +58,13 @@ export function LandingPage() {
       icon: Brain,
       title: "AI Insights",
       description: "Get personalized recommendations and analysis",
-      gradient: "from-success-500 to-success-600"
+      gradient: "from-green-500 to-green-600"
     },
     {
       icon: Database,
       title: "Knowledge Base",
       description: "Access curated Louisiana education resources",
-      gradient: "from-accent to-warning-500"
+      gradient: "from-accent to-yellow-500"
     },
     {
       icon: Workflow,
@@ -114,7 +114,7 @@ export function LandingPage() {
             <Button 
               size="lg" 
               className="text-white shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-r from-primary to-accent px-6 py-3"
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setShowAuthModal(true)}
             >
               Join Beta Program
             </Button>
@@ -159,7 +159,7 @@ export function LandingPage() {
             <Button
               size="lg"
               className="text-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-primary to-accent px-8 py-4"
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setShowAuthModal(true)}
             >
               <span className="text-lg font-medium">
                 Start Free Trial - No Credit Card
@@ -231,9 +231,9 @@ export function LandingPage() {
                   </p>
                 </form>
               ) : (
-                <div className="text-center py-8 bg-success-500/10 rounded-lg">
-                  <CheckCircle className="w-12 h-12 text-success-500 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-success-500 mb-2">
+                <div className="text-center py-8 bg-green-500/10 rounded-lg">
+                  <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-green-500 mb-2">
                     Welcome to the Beta Program!
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -280,7 +280,7 @@ export function LandingPage() {
             <Button
               size="lg"
               className="bg-gradient-to-r from-primary to-accent px-8 py-4"
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => setShowAuthModal(true)}
             >
               Get Started Today
             </Button>
@@ -336,7 +336,7 @@ export function LandingPage() {
           <Button
             size="lg"
             className="bg-gradient-to-r from-primary to-accent px-8 py-4 text-lg"
-            onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => setShowAuthModal(true)}
           >
             Join Beta Program
             <ArrowRight className="ml-2 h-5 w-5" />
@@ -360,6 +360,7 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
+
 
       {/* Auth Modal */}
       {showAuthModal && (

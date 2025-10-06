@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation, action } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { authComponent } from "./auth";
 import { api } from "./_generated/api";
 import OpenAI from "openai";
 
@@ -9,11 +9,19 @@ const openai = new OpenAI({
   apiKey: process.env.CONVEX_OPENAI_API_KEY,
 });
 
+/**
+ * Helper function to get the authenticated user ID
+ * Returns the user's _id if authenticated, null otherwise
+ */
+async function getAuthUserId(ctx: any): Promise<string | null> {
+  const user = await authComponent.getAuthUser(ctx);
+  return user?._id ?? null;
+}
+
 export const generateFeedback = action({
   args: {
     lessonPlan: v.string(),
     title: v.optional(v.string()),
-    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -22,7 +30,7 @@ export const generateFeedback = action({
     }
 
     // Enhanced prompt for better feedback quality
-    const prompt = `You are A.I.D.A. (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. Review the following lesson plan and provide constructive, actionable feedback to enhance engagement and rigor.
+    const prompt = `You are EdCoachAI (AI Instructional Design Assistant), an expert instructional coach with years of experience in curriculum design and pedagogy. Review the following lesson plan and provide constructive, actionable feedback to enhance engagement and rigor.
 
 Focus on these key areas:
 1. Learning objectives clarity and alignment with standards
@@ -32,8 +40,6 @@ Focus on these key areas:
 5. Real-world connections and relevance
 6. Specific areas for improvement with concrete suggestions
 7. Pedagogical soundness and best practices
-
-${args.spaceId ? "Note: This feedback is being generated in a shared team space where multiple educators collaborate." : ""}
 
 Lesson Plan:
 ${args.lessonPlan}
@@ -55,7 +61,6 @@ Please provide specific, actionable feedback that will help improve this lesson.
         lessonPlan: args.lessonPlan,
         feedback,
         title: args.title,
-        spaceId: args.spaceId,
       });
 
       // Log the feedback generation for audit purposes
@@ -63,7 +68,6 @@ Please provide specific, actionable feedback that will help improve this lesson.
         action: "generate_feedback",
         resource: "lesson_plan",
         details: `Generated feedback for lesson: ${args.title || "Untitled"}`,
-        spaceId: args.spaceId,
       });
 
       return feedback;
@@ -79,7 +83,6 @@ export const saveFeedbackSession = mutation({
     lessonPlan: v.string(),
     feedback: v.string(),
     title: v.optional(v.string()),
-    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -92,32 +95,22 @@ export const saveFeedbackSession = mutation({
       lessonPlan: args.lessonPlan,
       feedback: args.feedback,
       title: args.title,
-      spaceId: args.spaceId,
     });
   },
 });
 
 export const getFeedbackHistory = query({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       return [];
     }
 
-    if (args.spaceId) {
-      return await ctx.db
-        .query("feedbackSessions")
-        .withIndex("by_space", (q) => q.eq("spaceId", args.spaceId))
-        .order("desc")
-        .take(10);
-    } else {
-      return await ctx.db
-        .query("feedbackSessions")
-        .withIndex("by_user", (q) => q.eq("userId", userId))
-        .filter((q) => q.eq(q.field("spaceId"), undefined))
-        .order("desc")
-        .take(10);
-    }
+    return await ctx.db
+      .query("feedbackSessions")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .order("desc")
+      .take(10);
   },
 });

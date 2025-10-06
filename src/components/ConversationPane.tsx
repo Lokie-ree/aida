@@ -10,24 +10,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Trash2, MessageCircle, FileText, ChevronDown, ChevronUp } from "lucide-react";
 
 interface ConversationPaneProps {
-  currentSpaceId: Id<"spaces"> | null;
+  // No props needed - individual user conversation
 }
 
-export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
+export function ConversationPane({}: ConversationPaneProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const chatHistory = useQuery(api.chat.getChatHistory, {
-    spaceId: currentSpaceId ?? undefined,
-  });
+  const chatHistory = useQuery(api.chat.getChatHistory, {});
   const sendMessage = useAction(api.chat.sendMessage);
   const clearHistory = useMutation(api.chat.clearChatHistory);
-  const currentSpace = useQuery(
-    api.spaces.getSpaceById,
-    currentSpaceId ? { spaceId: currentSpaceId } : "skip"
-  );
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +43,6 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
     try {
       await sendMessage({
         message: userMessage,
-        spaceId: currentSpaceId ?? undefined,
       });
     } catch (error) {
       console.error("Error sending message:", error);
@@ -60,14 +53,13 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
   };
 
   const handleClearHistory = async () => {
-    const spaceContext = currentSpace ? ` for "${currentSpace.name}"` : "";
     if (
       window.confirm(
-        `Are you sure you want to clear all chat history${spaceContext}?`
+        `Are you sure you want to clear all chat history?`
       )
     ) {
       try {
-        await clearHistory({ spaceId: currentSpaceId ?? undefined });
+        await clearHistory({});
         toast.success("Chat history cleared");
         setIsCollapsed(true); // Collapse after clearing
       } catch (error) {
@@ -96,7 +88,7 @@ export function ConversationPane({ currentSpaceId }: ConversationPaneProps) {
                 Ask A.I.D.A.
               </CardTitle>
               <p className="text-xs text-muted-foreground">
-                {currentSpace ? currentSpace.name : "Personal Assistant"}
+                Personal AI Assistant
               </p>
             </div>
           </div>
