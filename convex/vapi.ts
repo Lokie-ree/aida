@@ -101,7 +101,7 @@ async function handleFunctionCall(ctx: any, body: any) {
 export const processVoiceMessage = internalAction({
   args: { 
     message: v.string(),
-    userId: v.optional(v.id("users")),
+    userId: v.optional(v.string()), // Changed to string for Better Auth compatibility
     spaceId: v.optional(v.id("spaces"))
   },
   handler: async (ctx, args): Promise<string> => {

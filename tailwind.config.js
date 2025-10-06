@@ -49,134 +49,18 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
 
-        // A.I.D.A Specific Brand Colors
-        "aida-primary": {
-          50: "#EFF6FF",
-          100: "#DBEAFE",
-          200: "#BFDBFE",
-          300: "#93C5FD",
-          400: "#60A5FA",
-          500: "#3B82F6", // Main blue
-          600: "#2563EB",
-          700: "#1D4ED8",
-          800: "#1E40AF",
-          900: "#1E3A8A",
-        },
-        "aida-secondary": {
-          50: "#FAF5FF",
-          100: "#F3E8FF",
-          200: "#E9D5FF",
-          300: "#D8B4FE",
-          400: "#C084FC",
-          500: "#8B5CF6", // Purple
-          600: "#7C3AED",
-          700: "#6D28D9",
-          800: "#5B21B6",
-          900: "#4C1D95",
-        },
-        "aida-success": {
+        // Success colors for semantic usage
+        success: {
           50: "#ECFDF5",
           100: "#D1FAE5",
           200: "#A7F3D0",
           300: "#6EE7B7",
           400: "#34D399",
-          500: "#10B981", // Green
+          500: "#10B981",
           600: "#059669",
           700: "#047857",
           800: "#065F46",
           900: "#064E3B",
-        },
-        
-        // Voice Interface Colors
-        "aida-voice": {
-          idle: {
-            50: "#EFF6FF",
-            100: "#DBEAFE", 
-            200: "#BFDBFE",
-            300: "#93C5FD",
-            400: "#60A5FA",
-            500: "#3B82F6", // Idle blue
-            600: "#2563EB",
-            700: "#1D4ED8",
-            800: "#1E40AF",
-            900: "#1E3A8A",
-          },
-          listening: {
-            50: "#FAF5FF",
-            100: "#F3E8FF",
-            200: "#E9D5FF", 
-            300: "#D8B4FE",
-            400: "#C084FC",
-            500: "#8B5CF6", // Listening purple
-            600: "#7C3AED",
-            700: "#6D28D9",
-            800: "#5B21B6",
-            900: "#4C1D95",
-          },
-          speaking: {
-            50: "#ECFDF5",
-            100: "#D1FAE5",
-            200: "#A7F3D0",
-            300: "#6EE7B7", 
-            400: "#34D399",
-            500: "#10B981", // Speaking green
-            600: "#059669",
-            700: "#047857",
-            800: "#065F46",
-            900: "#064E3B",
-          },
-          error: {
-            50: "#FEF2F2",
-            100: "#FEE2E2",
-            200: "#FECACA",
-            300: "#FCA5A5",
-            400: "#F87171",
-            500: "#EF4444", // Error red
-            600: "#DC2626",
-            700: "#B91C1C",
-            800: "#991B1B",
-            900: "#7F1D1D",
-          },
-        },
-        
-        // Community Stakeholder Colors
-        "aida-community": {
-          teachers: {
-            50: "#FEF3C7",
-            100: "#FDE68A",
-            200: "#FCD34D",
-            300: "#FBBF24",
-            400: "#F59E0B",
-            500: "#D97706", // Teachers orange
-            600: "#B45309",
-            700: "#92400E",
-            800: "#78350F",
-            900: "#451A03",
-          },
-          parents: {
-            50: "#FDF2F8",
-            100: "#FCE7F3",
-            200: "#FBCFE8",
-            300: "#F9A8D4",
-            400: "#F472B6",
-            500: "#EC4899", // Parents pink
-            600: "#DB2777",
-            700: "#BE185D",
-            800: "#9D174D",
-            900: "#831843",
-          },
-          administrators: {
-            50: "#F0F9FF",
-            100: "#E0F2FE",
-            200: "#BAE6FD",
-            300: "#7DD3FC",
-            400: "#38BDF8",
-            500: "#0EA5E9", // Administrators sky blue
-            600: "#0284C7",
-            700: "#0369A1",
-            800: "#075985",
-            900: "#0C4A6E",
-          },
         },
       },
 
@@ -202,6 +86,13 @@ module.exports = {
         "fade-in": "fadeIn 300ms ease-in",
         "slide-in-from-top": "slideInFromTop 300ms ease-out",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        "blob": "blob 7s infinite",
+        "animation-delay-2000": "blob 7s infinite 2s",
+        "animation-delay-4000": "blob 7s infinite 4s",
+        "shimmer-slide": "shimmer-slide var(--speed) ease-in-out infinite alternate",
+        "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
 
       keyframes: {
@@ -216,6 +107,47 @@ module.exports = {
         pulseGlow: {
           "0%, 100%": { opacity: "1", transform: "scale(1)" },
           "50%": { opacity: "0.8", transform: "scale(1.02)" },
+        },
+        blob: {
+          "0%": {
+            transform: "translate(0px, 0px) scale(1)",
+          },
+          "33%": {
+            transform: "translate(30px, -50px) scale(1.1)",
+          },
+          "66%": {
+            transform: "translate(-20px, 20px) scale(0.9)",
+          },
+          "100%": {
+            transform: "translate(0px, 0px) scale(1)",
+          },
+        },
+        "shimmer-slide": {
+          to: {
+            transform: "translate(calc(100cqw - 100%), calc(100cqh - 100%))",
+          },
+        },
+        "spin-around": {
+          "0%": {
+            transform: "translateZ(0) rotate(0)",
+          },
+          "15%, 35%": {
+            transform: "translateZ(0) rotate(90deg)",
+          },
+          "65%, 85%": {
+            transform: "translateZ(0) rotate(270deg)",
+          },
+          "100%": {
+            transform: "translateZ(0) rotate(360deg)",
+          },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
         },
       },
     },

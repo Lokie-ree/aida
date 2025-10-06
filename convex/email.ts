@@ -1,6 +1,5 @@
 import { action } from "./_generated/server";
 import { v } from "convex/values";
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { WelcomeEmail } from "../src/emails/WelcomeEmail";
 import { VoiceSessionSummaryEmail } from "../src/emails/VoiceSessionSummaryEmail";
 import { render } from "@react-email/render";
@@ -8,8 +7,10 @@ import { components } from "./_generated/api";
 import { Resend } from "@convex-dev/resend";
 
 // Initialize Resend component
+// testMode: true = only send to @resend.dev test addresses (for development)
+// testMode: false = send to real addresses (requires verified domain in Resend)
 export const resend: Resend = new Resend(components.resend, {
-  testMode: true, // Set to true for development, false for production
+  testMode: false, // Set to false once you have a verified domain in Resend
 });
 
 export const sendWelcomeEmail = action({
@@ -34,10 +35,10 @@ export const sendWelcomeEmail = action({
 
       // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
-        from: "A.I.D.A. <welcome@aida-app.com>",
+        from: "EdCoachAI <welcome@edcoachai.org>",
         to: args.userEmail,
         subject:
-          "Welcome to A.I.D.A. - Your Voice-Powered Educational Command Center",
+          "Welcome to EdCoachAI - AI for Louisiana Educators",
         html: emailHtml,
       });
 
@@ -75,9 +76,9 @@ export const sendVoiceInteractionSummary = action({
       );
 
       const emailId = await resend.sendEmail(ctx, {
-        from: "A.I.D.A. <sessions@aida-app.com>",
+        from: "EdCoachAI <sessions@edcoachai.org>",
         to: args.userEmail,
-        subject: `Your A.I.D.A. Voice Session Summary - ${args.interactionCount} interactions`,
+        subject: `Your EdCoachAI Session Summary - ${args.interactionCount} interactions`,
         html: emailHtml,
       });
 

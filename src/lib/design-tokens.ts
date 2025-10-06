@@ -1,181 +1,32 @@
 /**
- * A.I.D.A. Design Tokens
- * Centralized design system tokens for consistent styling across the application
+ * Simplified Design Tokens
+ * Using CSS custom properties for better maintainability
  */
 
-// Color Tokens
+// Color Tokens - Now using CSS variables
 export const colors = {
-  // A.I.D.A. Primary Colors (from AIDA_CONFIG.yaml)
-  primary: {
-    blue: "#3B82F6", // Primary actions, voice interface, trust and reliability
-    green: "#10B981", // Success states, positive feedback, completion
-    red: "#EF4444", // Error states, warnings, critical actions
-  },
-
-  // A.I.D.A. Secondary Colors
-  secondary: {
-    purple: "#8B5CF6", // AI features, voice responses, innovation
-    orange: "#F59E0B", // Warnings, attention, important information
-  },
-
-  // Neutral Colors
-  neutral: {
-    50: "hsl(0 0% 100%)",
-    100: "hsl(210 40% 98%)",
-    200: "hsl(210 40% 96%)",
-    300: "hsl(214.3 31.8% 91.4%)",
-    400: "hsl(215.4 16.3% 46.9%)",
-    500: "hsl(215 20.2% 65.1%)",
-    600: "hsl(222.2 84% 4.9%)",
-    700: "hsl(222.2 84% 4.9%)",
-    800: "hsl(222.2 84% 4.9%)",
-    900: "hsl(222.2 84% 4.9%)",
-    950: "hsl(222.2 84% 4.9%)",
-  },
-
+  // Brand Colors (mapped to CSS variables)
+  primary: "hsl(var(--primary))",
+  secondary: "hsl(var(--secondary))",
+  accent: "hsl(var(--accent))",
+  
   // Semantic Colors
-  success: {
-    50: "hsl(138 76% 97%)",
-    100: "hsl(141 84% 93%)",
-    200: "hsl(141 79% 85%)",
-    300: "hsl(142 76% 73%)",
-    400: "hsl(142 71% 45%)",
-    500: "hsl(142 76% 36%)",
-    600: "hsl(142 64% 24%)",
-    700: "hsl(143 61% 20%)",
-    800: "hsl(143 61% 16%)",
-    900: "hsl(144 61% 14%)",
-    950: "hsl(145 80% 7%)",
-  },
-
-  warning: {
-    50: "hsl(48 96% 89%)",
-    100: "hsl(48 96% 77%)",
-    200: "hsl(48 96% 61%)",
-    300: "hsl(46 91% 45%)",
-    400: "hsl(43 74% 66%)",
-    500: "hsl(38 92% 50%)",
-    600: "hsl(32 95% 44%)",
-    700: "hsl(26 90% 37%)",
-    800: "hsl(23 83% 31%)",
-    900: "hsl(22 78% 26%)",
-    950: "hsl(21 92% 14%)",
-  },
-
-  error: {
-    50: "hsl(0 86% 97%)",
-    100: "hsl(0 93% 94%)",
-    200: "hsl(0 96% 89%)",
-    300: "hsl(0 94% 82%)",
-    400: "hsl(0 91% 71%)",
-    500: "hsl(0 84.2% 60.2%)",
-    600: "hsl(0 62.8% 30.6%)",
-    700: "hsl(0 74.3% 41.8%)",
-    800: "hsl(0 70.7% 33.3%)",
-    900: "hsl(0 63.3% 31.4%)",
-    950: "hsl(0 46.5% 15.3%)",
-  },
-
-  // Chart Colors
-  chart: {
-    1: "hsl(12 76% 61%)",
-    2: "hsl(173 58% 39%)",
-    3: "hsl(197 37% 24%)",
-    4: "hsl(43 74% 66%)",
-    5: "hsl(27 87% 67%)",
-  },
-
-  // Voice Interface Colors
-  voice: {
-    idle: {
-      50: "#EFF6FF",
-      100: "#DBEAFE",
-      200: "#BFDBFE",
-      300: "#93C5FD",
-      400: "#60A5FA",
-      500: "#3B82F6", // Idle blue
-      600: "#2563EB",
-      700: "#1D4ED8",
-      800: "#1E40AF",
-      900: "#1E3A8A",
-    },
-    listening: {
-      50: "#FAF5FF",
-      100: "#F3E8FF",
-      200: "#E9D5FF",
-      300: "#D8B4FE",
-      400: "#C084FC",
-      500: "#8B5CF6", // Listening purple
-      600: "#7C3AED",
-      700: "#6D28D9",
-      800: "#5B21B6",
-      900: "#4C1D95",
-    },
-    speaking: {
-      50: "#ECFDF5",
-      100: "#D1FAE5",
-      200: "#A7F3D0",
-      300: "#6EE7B7",
-      400: "#34D399",
-      500: "#10B981", // Speaking green
-      600: "#059669",
-      700: "#047857",
-      800: "#065F46",
-      900: "#064E3B",
-    },
-    error: {
-      50: "#FEF2F2",
-      100: "#FEE2E2",
-      200: "#FECACA",
-      300: "#FCA5A5",
-      400: "#F87171",
-      500: "#EF4444", // Error red
-      600: "#DC2626",
-      700: "#B91C1C",
-      800: "#991B1B",
-      900: "#7F1D1D",
-    },
-  },
-
-  // Community Stakeholder Colors
-  community: {
-    teachers: {
-      50: "#FEF3C7",
-      100: "#FDE68A",
-      200: "#FCD34D",
-      300: "#FBBF24",
-      400: "#F59E0B",
-      500: "#D97706", // Teachers orange
-      600: "#B45309",
-      700: "#92400E",
-      800: "#78350F",
-      900: "#451A03",
-    },
-    parents: {
-      50: "#FDF2F8",
-      100: "#FCE7F3",
-      200: "#FBCFE8",
-      300: "#F9A8D4",
-      400: "#F472B6",
-      500: "#EC4899", // Parents pink
-      600: "#DB2777",
-      700: "#BE185D",
-      800: "#9D174D",
-      900: "#831843",
-    },
-    administrators: {
-      50: "#F0F9FF",
-      100: "#E0F2FE",
-      200: "#BAE6FD",
-      300: "#7DD3FC",
-      400: "#38BDF8",
-      500: "#0EA5E9", // Administrators sky blue
-      600: "#0284C7",
-      700: "#0369A1",
-      800: "#075985",
-      900: "#0C4A6E",
-    },
-  },
+  success: "hsl(var(--success))",
+  warning: "hsl(var(--warning))",
+  error: "hsl(var(--destructive))",
+  
+  // UI Colors
+  background: "hsl(var(--background))",
+  foreground: "hsl(var(--foreground))",
+  card: "hsl(var(--card))",
+  cardForeground: "hsl(var(--card-foreground))",
+  popover: "hsl(var(--popover))",
+  popoverForeground: "hsl(var(--popover-foreground))",
+  muted: "hsl(var(--muted))",
+  mutedForeground: "hsl(var(--muted-foreground))",
+  border: "hsl(var(--border))",
+  input: "hsl(var(--input))",
+  ring: "hsl(var(--ring))",
 } as const;
 
 // Spacing Tokens
@@ -220,9 +71,9 @@ export const spacing = {
 // Typography Tokens
 export const typography = {
   fontFamily: {
-    sans: ["Inter", "system-ui", "sans-serif"],
-    serif: ["Lora", "Georgia", "serif"],
-    mono: ["Fira Code", "Monaco", "monospace"],
+    sans: "var(--font-sans)",
+    serif: "var(--font-serif)",
+    mono: "var(--font-mono)",
   },
 
   fontSize: {
@@ -288,12 +139,12 @@ export const borderRadius = {
 // Shadow Tokens
 export const shadows = {
   none: "none",
-  sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-  base: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-  md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-  lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
-  "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+  sm: "var(--shadow-sm)",
+  base: "var(--shadow)",
+  md: "var(--shadow-md)",
+  lg: "var(--shadow-lg)",
+  xl: "var(--shadow-xl)",
+  "2xl": "var(--shadow-2xl)",
   inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
 } as const;
 

@@ -11,7 +11,7 @@ import { PDDemoSetup } from "./components/PDDemoSetup";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { Id } from "../convex/_generated/dataModel";
-import LandingPage from "./components/LandingPage";
+import { LandingPage } from "./components/LandingPage";
 
 export default function App() {
   const [currentSpaceId, setCurrentSpaceId] = useState<Id<"spaces"> | null>(null);
