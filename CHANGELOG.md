@@ -16,7 +16,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [2.0.0] - 2025-10-07 - AI for LA Educators Landing Page Complete
+## [2.0.0] - 2025-10-06 - Pelican AI Landing Page Complete
 
 ### Added
 - **Complete Landing Page**: Production-ready marketing page aligned with brand guidelines

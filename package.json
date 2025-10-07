@@ -1,6 +1,6 @@
 {
-  "name": "edcoachai",
-  "description": "EdCoachAi - AI-Powered Instructional Coaching Platform. Transform classroom walkthroughs from episodic events into ongoing, supportive professional development with the continuous growth loop methodology.",
+  "name": "pelican-ai",
+  "description": "Pelican AI - Navigate AI with Confidence. Platform-agnostic guidance that works with ANY AI tool you already use, designed specifically for Louisiana educators.",
   "private": true,
   "version": "2.0.0",
   "type": "module",
