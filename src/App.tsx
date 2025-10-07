@@ -9,6 +9,7 @@ import { ContextTray } from "./components/ContextTray";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { LandingPage } from "./components/LandingPage";
+import { Logo } from "./components/logo";
 
 export default function App() {
 
@@ -27,14 +28,7 @@ export default function App() {
           <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
             <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-primary-foreground font-bold text-sm">
-                    AI
-                  </span>
-                </div>
-                <h1 className="text-xl font-bold text-foreground">
-                  EdCoachAI
-                </h1>
+                <Logo className="h-8" />
               </div>
               <div className="flex items-center gap-2 lg:gap-4">
                 <ModeToggle />
