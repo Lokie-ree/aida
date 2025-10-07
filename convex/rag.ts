@@ -1,9 +1,18 @@
 import { v } from "convex/values";
 import { query, mutation, action } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { authComponent } from "./auth";
 import { components, api } from "./_generated/api";
 import { RAG } from "@convex-dev/rag";
 import { openai } from "@ai-sdk/openai";
+
+/**
+ * Helper function to get the authenticated user ID
+ * Returns the user's _id if authenticated, null otherwise
+ */
+async function getAuthUserId(ctx: any): Promise<string | null> {
+  const user = await authComponent.getAuthUser(ctx);
+  return user?._id ?? null;
+}
 
 // Initialize RAG with OpenAI embeddings
 const rag = new RAG(components.rag, {
@@ -18,7 +27,6 @@ export const addDocumentToRAG = action({
     documentId: v.id("documents"),
     textContent: v.string(),
     fileName: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.object({
     success: v.boolean(),
@@ -29,15 +37,15 @@ export const addDocumentToRAG = action({
       throw new Error("User must be authenticated");
     }
 
-    // Create namespace based on space or user
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    // Create namespace based on user
+    const namespace = `user_${userId}`;
 
     await rag.add(ctx, {
       namespace,
       key: `doc_${args.documentId}`,
       text: args.textContent,
       filterValues: [
-        { name: "spaceId", value: args.spaceId || "personal" },
+        { name: "spaceId", value: "personal" },
         { name: "contentType", value: "document" },
         { name: "userId", value: userId },
       ],
@@ -53,7 +61,6 @@ export const addDocumentToRAG = action({
 export const semanticSearch = action({
   args: {
     query: v.string(),
-    spaceId: v.optional(v.id("spaces")),
     limit: v.optional(v.number()),
   },
   returns: v.object({
@@ -68,8 +75,8 @@ export const semanticSearch = action({
       throw new Error("User must be authenticated");
     }
 
-    // Create namespace based on space or user
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    // Create namespace based on user
+    const namespace = `user_${userId}`;
 
     const { results, text, entries, usage } = await rag.search(ctx, {
       namespace,
@@ -86,7 +93,6 @@ export const semanticSearch = action({
 export const generateResponseWithRAG = action({
   args: {
     message: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   returns: v.object({
     response: v.string(),
@@ -98,8 +104,8 @@ export const generateResponseWithRAG = action({
       throw new Error("User must be authenticated");
     }
 
-    // Create namespace based on space or user
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    // Create namespace based on user
+    const namespace = `user_${userId}`;
 
     const { text, context } = await rag.generateText(ctx, {
       search: { 
@@ -111,7 +117,7 @@ export const generateResponseWithRAG = action({
 
 Your role is to provide accurate, authoritative answers to questions about district policies, procedures, handbooks, and official documents. Always cite the specific source document when providing information.
 
-${args.spaceId ? "You are responding in a shared district space where multiple stakeholders can access information." : "You are responding in a personal workspace."}
+You are responding in a personal workspace.
 
 User question: ${args.message}
 
@@ -125,14 +131,14 @@ Please provide a clear, accurate answer based on the district documents in your 
 
 // Get RAG statistics for a namespace
 export const getRAGStats = query({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       return null;
     }
 
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    const namespace = `user_${userId}`;
     
     // Get all entries for this namespace
     const entries = await rag.list(ctx, {
@@ -155,7 +161,7 @@ export const getRAGStats = query({
 
 // Migration function to add existing documents to RAG
 export const migrateExistingDocuments = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     migratedCount: v.number(),
@@ -168,8 +174,8 @@ export const migrateExistingDocuments = action({
       throw new Error("User must be authenticated");
     }
 
-    // Get all documents for the user/space
-    const documents: any = await ctx.runQuery(api.documents.getUserDocuments, { spaceId: args.spaceId });
+    // Get all documents for the user
+    const documents: any = await ctx.runQuery(api.documents.getUserDocuments, {});
     
     let migratedCount = 0;
     const errors: string[] = [];
@@ -180,7 +186,6 @@ export const migrateExistingDocuments = action({
           documentId: doc._id,
           textContent: doc.textContent,
           fileName: doc.fileName,
-          spaceId: args.spaceId,
         });
         migratedCount++;
       } catch (error) {
@@ -201,7 +206,7 @@ export const migrateExistingDocuments = action({
 
 // Add demo data to RAG for realistic district policy responses
 export const addDemoDataToRAG = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     addedPolicies: v.number(),
@@ -322,8 +327,8 @@ export const addDemoDataToRAG = action({
       }
     ];
 
-    // Create namespace based on space or user
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    // Create namespace based on user
+    const namespace = `user_${userId}`;
 
     let addedPolicies = 0;
     const errors: string[] = [];
@@ -338,7 +343,7 @@ export const addDemoDataToRAG = action({
           key: `demo_policy_${policy.title.toLowerCase().replace(/\s+/g, "_")}`,
           text: textChunk,
           filterValues: [
-            { name: "spaceId", value: args.spaceId || "personal" },
+            { name: "spaceId", value: "personal" },
             { name: "contentType", value: "demo_policy" },
             { name: "userId", value: userId },
           ],
@@ -359,7 +364,7 @@ export const addDemoDataToRAG = action({
 
 // Migration for documents only - web scraping removed
 export const migrateAllExistingContent = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     documents: v.object({
@@ -377,7 +382,7 @@ export const migrateAllExistingContent = action({
     }
 
     // Migrate documents only
-    const documentResult: any = await ctx.runAction(api.rag.migrateExistingDocuments, { spaceId: args.spaceId });
+    const documentResult: any = await ctx.runAction(api.rag.migrateExistingDocuments, {});
 
     return {
       success: true,
@@ -389,7 +394,7 @@ export const migrateAllExistingContent = action({
 
 // Process uploaded files from storage and add to RAG
 export const processUploadedFiles = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     processedCount: v.number(),
@@ -403,7 +408,7 @@ export const processUploadedFiles = action({
 
     // For now, let's add some demo content to get the RAG system working
     // In a real implementation, you'd process the actual uploaded files
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    const namespace = `user_${userId}`;
     
     let processedCount = 0;
     const errors: string[] = [];
@@ -433,7 +438,7 @@ export const processUploadedFiles = action({
           key: `sample_policy_${policy.title.toLowerCase().replace(/\s+/g, "_")}`,
           text: textContent,
           filterValues: [
-            { name: "spaceId", value: args.spaceId || "personal" },
+            { name: "spaceId", value: "personal" },
             { name: "contentType", value: "district_policy" },
             { name: "userId", value: userId },
           ],
@@ -455,7 +460,7 @@ export const processUploadedFiles = action({
 
 // Test function to verify RAG integration
 export const testRAGIntegration = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     testEntry: v.any(),
@@ -471,7 +476,7 @@ export const testRAGIntegration = action({
       throw new Error("User must be authenticated");
     }
 
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    const namespace = `user_${userId}`;
     
     // Test adding content
     const testEntry = await rag.add(ctx, {
@@ -479,7 +484,7 @@ export const testRAGIntegration = action({
       key: "test_entry",
       text: "This is a test entry to verify RAG integration is working correctly.",
       filterValues: [
-        { name: "spaceId", value: args.spaceId || "personal" },
+        { name: "spaceId", value: "personal" },
         { name: "contentType", value: "test" },
         { name: "userId", value: userId },
       ],
@@ -506,7 +511,7 @@ export const testRAGIntegration = action({
 
 // Add Louisiana-specific district content to RAG for PD demo
 export const addLouisianaDistrictContent = action({
-  args: { spaceId: v.optional(v.id("spaces")) },
+  args: {},
   returns: v.object({
     success: v.boolean(),
     addedCount: v.number(),
@@ -525,7 +530,7 @@ export const addLouisianaDistrictContent = action({
       throw new Error("User must be authenticated");
     }
 
-    const namespace = args.spaceId ? `space_${args.spaceId}` : `user_${userId}`;
+    const namespace = `user_${userId}`;
     let totalAdded = 0;
     const categoryCount = { leads: 0, sped: 0, counselor: 0, niet: 0, ckh: 0 };
     const errors: string[] = [];
@@ -798,7 +803,7 @@ Teachers should follow the grade-level scope and sequence, use primary sources, 
           key: `louisiana_${item.category}_${item.title.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`,
           text: textChunk,
           filterValues: [
-            { name: "spaceId", value: args.spaceId || "personal" },
+            { name: "spaceId", value: "personal" },
             { name: "contentType", value: `louisiana_${item.category}` },
             { name: "userId", value: userId },
           ],

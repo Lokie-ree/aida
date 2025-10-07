@@ -14,7 +14,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Upload, FileText, Trash2, Loader2, BookOpen } from "lucide-react";
-import { designTokens } from "@/lib/design-tokens";
 
 interface DocumentManagerProps {
   currentSpaceId: Id<"spaces"> | null;

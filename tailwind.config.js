@@ -5,16 +5,8 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // A.I.D.A Design System Integration
-      fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        serif: ["Lora", "Georgia", "serif"],
-        mono: ["Fira Code", "Monaco", "monospace"],
-      },
-      
-      // A.I.D.A Brand Colors
+      // shadcn/ui theme colors (CSS variables)
       colors: {
-        // shadcn/ui theme colors (CSS variables)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -48,175 +40,14 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-
-        // A.I.D.A Specific Brand Colors
-        "aida-primary": {
-          50: "#EFF6FF",
-          100: "#DBEAFE",
-          200: "#BFDBFE",
-          300: "#93C5FD",
-          400: "#60A5FA",
-          500: "#3B82F6", // Main blue
-          600: "#2563EB",
-          700: "#1D4ED8",
-          800: "#1E40AF",
-          900: "#1E3A8A",
-        },
-        "aida-secondary": {
-          50: "#FAF5FF",
-          100: "#F3E8FF",
-          200: "#E9D5FF",
-          300: "#D8B4FE",
-          400: "#C084FC",
-          500: "#8B5CF6", // Purple
-          600: "#7C3AED",
-          700: "#6D28D9",
-          800: "#5B21B6",
-          900: "#4C1D95",
-        },
-        "aida-success": {
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          200: "#A7F3D0",
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981", // Green
-          600: "#059669",
-          700: "#047857",
-          800: "#065F46",
-          900: "#064E3B",
-        },
-        
-        // Voice Interface Colors
-        "aida-voice": {
-          idle: {
-            50: "#EFF6FF",
-            100: "#DBEAFE", 
-            200: "#BFDBFE",
-            300: "#93C5FD",
-            400: "#60A5FA",
-            500: "#3B82F6", // Idle blue
-            600: "#2563EB",
-            700: "#1D4ED8",
-            800: "#1E40AF",
-            900: "#1E3A8A",
-          },
-          listening: {
-            50: "#FAF5FF",
-            100: "#F3E8FF",
-            200: "#E9D5FF", 
-            300: "#D8B4FE",
-            400: "#C084FC",
-            500: "#8B5CF6", // Listening purple
-            600: "#7C3AED",
-            700: "#6D28D9",
-            800: "#5B21B6",
-            900: "#4C1D95",
-          },
-          speaking: {
-            50: "#ECFDF5",
-            100: "#D1FAE5",
-            200: "#A7F3D0",
-            300: "#6EE7B7", 
-            400: "#34D399",
-            500: "#10B981", // Speaking green
-            600: "#059669",
-            700: "#047857",
-            800: "#065F46",
-            900: "#064E3B",
-          },
-          error: {
-            50: "#FEF2F2",
-            100: "#FEE2E2",
-            200: "#FECACA",
-            300: "#FCA5A5",
-            400: "#F87171",
-            500: "#EF4444", // Error red
-            600: "#DC2626",
-            700: "#B91C1C",
-            800: "#991B1B",
-            900: "#7F1D1D",
-          },
-        },
-        
-        // Community Stakeholder Colors
-        "aida-community": {
-          teachers: {
-            50: "#FEF3C7",
-            100: "#FDE68A",
-            200: "#FCD34D",
-            300: "#FBBF24",
-            400: "#F59E0B",
-            500: "#D97706", // Teachers orange
-            600: "#B45309",
-            700: "#92400E",
-            800: "#78350F",
-            900: "#451A03",
-          },
-          parents: {
-            50: "#FDF2F8",
-            100: "#FCE7F3",
-            200: "#FBCFE8",
-            300: "#F9A8D4",
-            400: "#F472B6",
-            500: "#EC4899", // Parents pink
-            600: "#DB2777",
-            700: "#BE185D",
-            800: "#9D174D",
-            900: "#831843",
-          },
-          administrators: {
-            50: "#F0F9FF",
-            100: "#E0F2FE",
-            200: "#BAE6FD",
-            300: "#7DD3FC",
-            400: "#38BDF8",
-            500: "#0EA5E9", // Administrators sky blue
-            600: "#0284C7",
-            700: "#0369A1",
-            800: "#075985",
-            900: "#0C4A6E",
-          },
-        },
       },
-
       borderRadius: {
-        lg: "0.5rem",
-        md: "0.375rem",
-        sm: "0.25rem",
-        xl: "0.75rem",
-        "2xl": "1rem",
-        "3xl": "1.5rem",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
-
-      boxShadow: {
-        sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-        md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-        lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-        xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
-        "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
-      },
-
-      animation: {
-        "fade-in": "fadeIn 300ms ease-in",
-        "slide-in-from-top": "slideInFromTop 300ms ease-out",
-        "pulse-glow": "pulseGlow 2s ease-in-out infinite",
-      },
-
-      keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        slideInFromTop: {
-          "0%": { transform: "translateY(-16px)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" },
-        },
-        pulseGlow: {
-          "0%, 100%": { opacity: "1", transform: "scale(1)" },
-          "50%": { opacity: "0.8", transform: "scale(1.02)" },
-        },
+      fontFamily: {
+        sans: ["var(--font-sans)", ...fontFamily.sans],
       },
     },
   },

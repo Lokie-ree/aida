@@ -1,13 +1,22 @@
 import { httpAction, internalAction, action } from "./_generated/server";
 import { internal, api } from "./_generated/api";
 import { v } from "convex/values";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { authComponent } from "./auth";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
   baseURL: process.env.CONVEX_OPENAI_BASE_URL,
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+/**
+ * Helper function to get the authenticated user ID
+ * Returns the user's _id if authenticated, null otherwise
+ */
+async function getAuthUserId(ctx: any): Promise<string | null> {
+  const user = await authComponent.getAuthUser(ctx);
+  return user?._id ?? null;
+}
 
 export const webhook = httpAction(async (ctx, request) => {
   const body = await request.json();
@@ -101,8 +110,7 @@ async function handleFunctionCall(ctx: any, body: any) {
 export const processVoiceMessage = internalAction({
   args: { 
     message: v.string(),
-    userId: v.optional(v.id("users")),
-    spaceId: v.optional(v.id("spaces"))
+    userId: v.optional(v.string()), // Changed to string for Better Auth compatibility
   },
   handler: async (ctx, args): Promise<string> => {
     try {
@@ -121,7 +129,6 @@ User question: ${args.message}`;
           // Use RAG to search for relevant district policies
           const ragResult = await ctx.runAction(api.rag.semanticSearch, {
             query: args.message,
-            spaceId: args.spaceId,
             limit: 5
           });
 
@@ -161,7 +168,6 @@ User question: ${args.message}`;
 export const processAuthenticatedVoiceQuery = action({
   args: {
     message: v.string(),
-    spaceId: v.optional(v.id("spaces")),
   },
   handler: async (ctx, args): Promise<{
     response: string;
@@ -185,15 +191,13 @@ export const processAuthenticatedVoiceQuery = action({
           // Use RAG to search for relevant district policies
           const ragResult = await ctx.runAction(api.rag.semanticSearch, {
             query: args.message,
-            spaceId: args.spaceId,
             limit: 5
           });
 
           if (ragResult.results.length > 0) {
             // Generate response with RAG context
             const ragResponse = await ctx.runAction(api.rag.generateResponseWithRAG, {
-              message: args.message,
-              spaceId: args.spaceId
+              message: args.message
             });
 
             response = ragResponse.response;
@@ -204,8 +208,7 @@ export const processAuthenticatedVoiceQuery = action({
             // No RAG results, provide general guidance
             response = await ctx.runAction(internal.vapi.processVoiceMessage, {
               message: args.message,
-              userId,
-              spaceId: args.spaceId
+              userId
             });
             sources = [];
           }
@@ -213,8 +216,7 @@ export const processAuthenticatedVoiceQuery = action({
           console.log("RAG search failed, falling back to general response:", ragError);
           response = await ctx.runAction(internal.vapi.processVoiceMessage, {
             message: args.message,
-            userId,
-            spaceId: args.spaceId
+            userId
           });
           sources = [];
         }
@@ -222,8 +224,7 @@ export const processAuthenticatedVoiceQuery = action({
         // Not a policy query, use general processing
         response = await ctx.runAction(internal.vapi.processVoiceMessage, {
           message: args.message,
-          userId,
-          spaceId: args.spaceId
+          userId
         });
         sources = [];
       }
@@ -233,7 +234,6 @@ export const processAuthenticatedVoiceQuery = action({
         action: "voice_query",
         resource: isPolicyQuery ? "district_policy" : "general_query",
         details: `Voice query: ${args.message.substring(0, 100)}${args.message.length > 100 ? "..." : ""}`,
-        spaceId: args.spaceId,
       });
 
       return {

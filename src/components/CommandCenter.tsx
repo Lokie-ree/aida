@@ -8,23 +8,13 @@ import { FileText, BookOpen } from "lucide-react";
 import { VoiceInterface } from "./VoiceInterface";
 
 interface CommandCenterProps {
-  currentSpaceId: Id<"spaces"> | null;
+  // No props needed - individual user interface
 }
 
-export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
-  const currentSpace = useQuery(
-    api.spaces.getSpaceById,
-    currentSpaceId ? { spaceId: currentSpaceId } : "skip"
-  );
-
-  const documents = useQuery(api.documents.getUserDocuments, {
-    spaceId: currentSpaceId ?? undefined,
-  });
+export function CommandCenter({}: CommandCenterProps) {
+  const documents = useQuery(api.documents.getUserDocuments, {});
 
   const getDistrictName = () => {
-    if (currentSpace) {
-      return currentSpace.name;
-    }
     return "Plaquemine Parish Schools"; // Default demo district
   };
 
@@ -64,7 +54,6 @@ export function CommandCenter({ currentSpaceId }: CommandCenterProps) {
         </CardHeader>
         <CardContent className="flex-1 flex flex-col items-center justify-center p-6">
           <VoiceInterface
-            currentSpaceId={currentSpaceId}
             className="w-full"
           />
         </CardContent>
