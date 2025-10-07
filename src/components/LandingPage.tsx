@@ -23,6 +23,7 @@ import {
 import { ModeToggle } from "./ModeToggle";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { Logo } from "./logo";
 
 export function LandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -188,13 +189,7 @@ export function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary shadow-md">
-              <span className="text-white font-bold text-lg">AI</span>
-            </div>
-            <div>
-            <h1 className="text-xl font-bold text-foreground">Pelican AI</h1>
-              <p className="text-xs text-muted-foreground">Your AI Guidance Partner</p>
-            </div>
+            <Logo className="h-10" />
           </div>
 
           <div className="flex items-center gap-4">
@@ -588,13 +583,7 @@ export function LandingPage() {
             {/* Brand Column */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary shadow-md">
-                  <span className="text-white font-bold text-lg">AI</span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">Pelican AI</h3>
-                  <p className="text-xs text-muted-foreground">Your AI Guidance Partner</p>
-                </div>
+                <Logo className="h-10" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Made with love by an educator for educators
