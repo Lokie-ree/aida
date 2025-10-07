@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Marquee } from "@/components/ui/marquee";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import RotatingText from "@/components/RotatingText";
+import GradientText from "@/components/GradientText";
 import { 
   Sparkles, 
   Users, 
@@ -13,14 +18,10 @@ import {
   CheckCircle,
   Quote,
   Target,
-  FileText,
-  Mail,
-  Clock,
   Shield,
+  Clock,
   Lightbulb,
-  TrendingUp
 } from "lucide-react";
-import { ModeToggle } from "./ModeToggle";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Logo } from "./logo";
@@ -63,6 +64,12 @@ export function LandingPage() {
       }
     }
   };
+
+  // Consistent color scheme - Blues and Golds
+  const blueGradient = ['#0ea5e9', '#1e40af', '#0ea5e9'];
+  const blueGoldGradient = ['#0ea5e9', '#f59e0b', '#0ea5e9'];
+  const goldGradient = ['#f59e0b', '#fbbf24', '#f59e0b'];
+
 
   // Features based on brand guidelines
   const features = [
@@ -148,6 +155,16 @@ export function LandingPage() {
       quote: "Finally, AI guidance that understands Louisiana standards! The frameworks are specific, practical, and actually help me teach better.",
       author: "Dr. Lisa Rodriguez",
       title: "Middle School Science Teacher, Baton Rouge"
+    },
+    {
+      quote: "Platform-agnostic means I can use whatever my district provides. No subscription fatigue, just better teaching strategies.",
+      author: "James Williams",
+      title: "Elementary Principal, New Orleans"
+    },
+    {
+      quote: "The community aspect is incredible. I'm learning from other Louisiana educators who face the same challenges I do every day.",
+      author: "Maria Garcia",
+      title: "Special Education Teacher, Shreveport"
     }
   ];
 
@@ -189,19 +206,25 @@ export function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Logo className="h-10" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center">
+                <img src="/icon.svg" alt="Pelican" className="h-6 w-6" />
+              </div>
+              <span className="text-xl font-bold text-foreground">Pelican AI</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <ModeToggle />
-            <Button 
-              size="lg" 
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-primary hover:bg-primary/90 transition-colors"
-            >
-              Join Beta Program
-            </Button>
-          </div>
+           <div className="flex items-center gap-2 sm:gap-4">
+             <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
+             <Button 
+               size="lg" 
+               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+               className="bg-primary hover:bg-primary/90 transition-colors"
+             >
+               <span className="hidden sm:inline">Join Beta Program</span>
+               <span className="sm:hidden">Join Beta</span>
+             </Button>
+           </div>
         </div>
       </motion.header>
 
@@ -210,9 +233,9 @@ export function LandingPage() {
         {/* Background */}
         <div className="absolute inset-0 bg-background" />
         
-        {/* Decorative Elements */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-accent/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        {/* Decorative Elements - Pelican Blue */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#0ea5e9]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#1e40af]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
         <div className="relative z-10 max-w-6xl mx-auto text-center">
           {/* Badge */}
@@ -220,33 +243,51 @@ export function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-8"
+            className="inline-block mb-8"
           >
-            <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-sm font-medium">Louisiana Educator Rubric Native</span>
-            <Badge className="bg-accent/20 text-accent-foreground">Beta Program</Badge>
+            <div className="relative px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
+              <BorderBeam 
+                colorFrom="#0ea5e9"
+                colorTo="#1e40af"
+                size={60}
+                duration={6}
+              />
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium">Curated AI Guidance for LA Educators</span>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Main Headline with RotatingText */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
           >
-            Reclaim Your Time.
-            <br />
-            Deepen Your Practice.
+             <RotatingText 
+               texts={[
+                 "Reclaim Time.",
+                 "Navigate AI.",
+                 "Transform Practice.",
+                 "Empower Teaching."
+               ]}
+               className="inline-block"
+               elementLevelClassName="text-primary"
+               rotationInterval={3000}
+               staggerDuration={0.03}
+             />
           </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed"
-          >
-            Navigate AI with confidence. Learn to use <span className="text-accent font-semibold">any AI platform</span> effectively with practical, ethical guidance designed specifically for Louisiana educators. Turn 5-minute prompts into game-changing classroom efficiency.
-          </motion.p>
+           <motion.p
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.5, delay: 0.2 }}
+             className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
+           >
+             Platform-agnostic guidance that works with <span className="text-primary font-semibold">any AI tool</span> you already use. Designed specifically for Louisiana educators.
+           </motion.p>
 
           {/* Social Proof */}
           <motion.div
@@ -256,7 +297,7 @@ export function LandingPage() {
             className="mb-8"
           >
             <p className="text-sm text-muted-foreground">
-              Beta testers save <span className="text-accent font-semibold">3-5 hours per week</span> with platform-agnostic AI guidance
+              Louisiana educators save <span className="text-primary font-semibold">3-5 hours per week</span> with ethical AI guidance
             </p>
           </motion.div>
 
@@ -297,7 +338,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section with GlassIcons */}
       <section className="py-20 px-6 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -307,27 +348,41 @@ export function LandingPage() {
             variants={staggerChildren}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Practical, Ethical AI Guidance for Louisiana Educators
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <GradientText 
+                as="h2"
+                colors={blueGradient}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
+                Practical, Ethical AI Guidance
+              </GradientText>
+            </motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
               We're not a software company. We're an educator-led support system helping you navigate AI with confidence.
             </motion.p>
           </motion.div>
 
+           {/* Detailed Feature Cards with BorderBeam */}
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16"
           >
             {features.map((feature, index) => (
               <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-2 hover:border-primary/50">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-2 relative overflow-hidden group">
+                  <BorderBeam 
+                    size={80} 
+                    duration={8} 
+                    delay={index * 2}
+                    colorFrom="#0ea5e9"
+                    colorTo="#1e40af"
+                  />
                   <CardHeader>
-                    <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center mb-4">
-                      <feature.icon className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                      <feature.icon className="w-6 h-6 text-primary" />
                     </div>
                     <CardTitle className="text-xl">{feature.title}</CardTitle>
                   </CardHeader>
@@ -353,9 +408,15 @@ export function LandingPage() {
             variants={staggerChildren}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Louisiana-Aligned AI Solutions
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <GradientText 
+                as="h2"
+                colors={blueGoldGradient}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
+                Louisiana-Aligned AI Solutions
+              </GradientText>
+            </motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Every framework addresses real Louisiana educator pain points with platform-agnostic AI solutions
             </motion.p>
@@ -370,18 +431,26 @@ export function LandingPage() {
           >
             {louisianaExamples.map((example, index) => (
               <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
+                  <BorderBeam 
+                    size={60} 
+                    duration={10} 
+                    delay={index * 1.5}
+                    colorFrom="#0ea5e9"
+                    colorTo="#f59e0b"
+                    borderWidth={2}
+                  />
                   <CardHeader>
-                    <Badge className="w-fit mb-2">{example.component}</Badge>
+                    <Badge className="w-fit mb-2 bg-primary">{example.component}</Badge>
                     <CardTitle className="text-lg text-muted-foreground italic">
                       "{example.pain}"
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-start gap-2">
-                      <Sparkles className="w-5 h-5 text-accent shrink-0 mt-1" />
+                      <Sparkles className="w-5 h-5 text-primary shrink-0 mt-1" />
                       <p className="text-sm">{example.solution}</p>
-          </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -400,20 +469,33 @@ export function LandingPage() {
             variants={staggerChildren}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Join the Beta Program
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <GradientText 
+                as="h2"
+                colors={blueGradient}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
+                Join the Beta Program
+              </GradientText>
+            </motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Be among the first 50 Louisiana educators to access curated AI guidance frameworks, save time, and shape the future of AI in education.
             </motion.p>
           </motion.div>
 
-          <Card className="border-accent/20 bg-accent/5">
+          <Card className="border-primary/20 bg-primary/5 relative overflow-hidden">
+            <BorderBeam 
+              size={100} 
+              duration={6}
+              colorFrom="#0ea5e9"
+              colorTo="#f59e0b"
+              borderWidth={2}
+            />
             <CardHeader className="text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-primary" />
               </div>
-              <CardTitle className="text-2xl text-accent">Early Access Program</CardTitle>
+              <CardTitle className="text-2xl text-primary">Early Access Program</CardTitle>
               <CardDescription className="text-lg">
                 Get exclusive access to AI frameworks designed specifically for Louisiana educators
               </CardDescription>
@@ -443,9 +525,9 @@ export function LandingPage() {
                   </p>
                 </form>
               ) : (
-                <div className="text-center py-8 bg-accent/10 rounded-lg">
-                  <CheckCircle className="w-12 h-12 text-accent mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-accent mb-2">
+                <div className="text-center py-8 bg-primary/10 rounded-lg">
+                  <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-primary mb-2">
                     Welcome to the Beta Program!
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -458,9 +540,9 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-background">
-        <div className="max-w-7xl mx-auto">
+      {/* Testimonials Section with Marquee */}
+      <section className="py-20 px-6 bg-background overflow-hidden">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -468,33 +550,31 @@ export function LandingPage() {
             variants={staggerChildren}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              What Louisiana Educators Are Saying
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <GradientText 
+                as="h2"
+                colors={blueGradient}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
+                What Louisiana Educators Are Saying
+              </GradientText>
+            </motion.div>
           </motion.div>
 
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
+          <Marquee pauseOnHover className="[--duration:40s]">
             {testimonials.map((testimonial, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+              <Card key={index} className="w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
                 <CardContent className="p-6">
                   <Quote className="w-8 h-8 text-primary/60 mb-4" />
-                    <p className="text-base italic mb-6">"{testimonial.quote}"</p>
+                  <p className="text-base italic mb-6">"{testimonial.quote}"</p>
                   <div>
-                      <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                    <p className="font-semibold">{testimonial.author}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.title}</p>
                   </div>
                 </CardContent>
               </Card>
-              </motion.div>
             ))}
-          </motion.div>
+          </Marquee>
         </div>
       </section>
 
@@ -508,9 +588,15 @@ export function LandingPage() {
             variants={staggerChildren}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Common Questions
-            </motion.h2>
+            <motion.div variants={fadeInUp}>
+              <GradientText 
+                as="h2"
+                colors={blueGradient}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
+                Common Questions
+              </GradientText>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -523,16 +609,24 @@ export function LandingPage() {
             {faqs.map((faq, index) => (
               <motion.div key={index} variants={fadeInUp}>
                 <Card 
-                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  className="cursor-pointer hover:shadow-md transition-shadow relative overflow-hidden"
                   onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
                 >
+                  {expandedFaq === index && (
+                    <BorderBeam 
+                      size={50} 
+                      duration={4}
+                      colorFrom="#0ea5e9"
+                      colorTo="#1e40af"
+                    />
+                  )}
                   <CardHeader>
                     <div className="flex justify-between items-start gap-4">
                       <CardTitle className="text-lg text-left">{faq.question}</CardTitle>
                       <ChevronDown 
-                        className={`w-5 h-5 shrink-0 transition-transform ${expandedFaq === index ? 'rotate-180' : ''}`}
+                        className={`w-5 h-5 shrink-0 transition-transform text-primary ${expandedFaq === index ? 'rotate-180' : ''}`}
                       />
-          </div>
+                    </div>
                   </CardHeader>
                   {expandedFaq === index && (
                     <CardContent>
@@ -547,30 +641,50 @@ export function LandingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-6 bg-primary text-white">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-20 px-6 bg-muted/30">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerChildren}
           >
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Transform Your Teaching?
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl mb-8 opacity-90">
-              Join Louisiana educators who are reclaiming their time and deepening their practice with ethical, platform-agnostic AI guidance.
-            </motion.p>
             <motion.div variants={fadeInUp}>
-          <Button
-            size="lg"
-                variant="secondary"
-                onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-lg px-8 py-6 bg-white text-primary hover:bg-white/90 shadow-xl"
-          >
-                Join Beta Program - Free
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+              <Card className="text-center relative overflow-hidden bg-background/80 backdrop-blur-sm border-2">
+                <BorderBeam 
+                  size={100} 
+                  duration={6}
+                  colorFrom="#0ea5e9"
+                  colorTo="#1e40af"
+                  borderWidth={3}
+                />
+                <CardContent className="p-12">
+                  <motion.div variants={fadeInUp} className="mb-6">
+                    <GradientText 
+                      as="h2"
+                      colors={['#0ea5e9', '#f59e0b', '#1e40af', '#f59e0b', '#0ea5e9']}
+                      className="text-4xl md:text-5xl font-bold"
+                      animationSpeed={3}
+                      showBorder={false}
+                    >
+                      Ready to Transform Your Teaching?
+                    </GradientText>
+                  </motion.div>
+                  <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground">
+                    Join Louisiana educators who are reclaiming their time and deepening their practice with ethical, platform-agnostic AI guidance.
+                  </motion.p>
+                  <motion.div variants={fadeInUp}>
+                    <Button
+                      size="lg"
+                      onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl"
+                    >
+                      Join Beta Program - Free
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </motion.div>
+                </CardContent>
+              </Card>
             </motion.div>
           </motion.div>
         </div>
@@ -583,10 +697,13 @@ export function LandingPage() {
             {/* Brand Column */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <Logo className="h-10" />
+                <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center">
+                  <img src="/icon.svg" alt="Pelican" className="h-6 w-6" />
+                </div>
+                <span className="text-xl font-bold text-foreground">Pelican AI</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Made with love by an educator for educators
+                Created and supported by educators for educators
               </p>
             </div>
 
@@ -659,7 +776,7 @@ export function LandingPage() {
 
           <div className="border-t border-border pt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} AI for LA Educators. All rights reserved.
+              © {new Date().getFullYear()} Pelican AI. All rights reserved.
             </p>
           </div>
         </div>
