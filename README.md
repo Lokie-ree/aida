@@ -1,6 +1,6 @@
-# AI for LA Educators
+# Pelican AI
 
-**Empowering Louisiana Educators with Trustworthy AI Guidance**
+**Navigate AI with Confidence**
 
 [![Status](https://img.shields.io/badge/Status-Phase%204%20Complete-success)]()
 [![Documentation](https://img.shields.io/badge/Docs-Comprehensive-blue)]()
@@ -10,7 +10,7 @@
 
 ## 🎯 Project Overview
 
-**AI for LA Educators** is a platform designed to help Louisiana educators confidently integrate AI into their teaching practice. Rather than offering another AI tool, we provide **curated, vetted guidance** that respects educators' professional judgment and aligns with Louisiana's educational standards.
+**Pelican AI** is a platform designed to help Louisiana educators navigate AI with confidence. Rather than offering another AI tool, we provide **curated, vetted guidance** that respects educators' professional judgment and aligns with Louisiana's educational standards.
 
 ### **Core Value Proposition**
 - 📚 **Guided Frameworks**: Copy-paste ready prompts with ethical guardrails

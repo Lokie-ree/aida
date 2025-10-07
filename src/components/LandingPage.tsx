@@ -20,13 +20,11 @@ import {
   Lightbulb,
   TrendingUp
 } from "lucide-react";
-import { AuthModal } from "./AuthModal";
 import { ModeToggle } from "./ModeToggle";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export function LandingPage() {
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -194,8 +192,8 @@ export function LandingPage() {
               <span className="text-white font-bold text-lg">AI</span>
             </div>
             <div>
-            <h1 className="text-xl font-bold text-foreground">AI for LA Educators</h1>
-              <p className="text-xs text-muted-foreground">Your Trusted Partner for Ethical AI</p>
+            <h1 className="text-xl font-bold text-foreground">Pelican AI</h1>
+              <p className="text-xs text-muted-foreground">Your AI Guidance Partner</p>
             </div>
           </div>
 
@@ -203,7 +201,7 @@ export function LandingPage() {
             <ModeToggle />
             <Button 
               size="lg" 
-              onClick={() => setShowAuthModal(true)}
+              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
               className="bg-primary hover:bg-primary/90 transition-colors"
             >
               Join Beta Program
@@ -252,7 +250,7 @@ export function LandingPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed"
           >
-            Stop spending more time on AI setup than actual teaching. Learn to use <span className="text-accent font-semibold">any AI platform</span> effectively with practical, ethical guidance designed specifically for Louisiana educators. Turn 5-minute prompts into game-changing classroom efficiency.
+            Navigate AI with confidence. Learn to use <span className="text-accent font-semibold">any AI platform</span> effectively with practical, ethical guidance designed specifically for Louisiana educators. Turn 5-minute prompts into game-changing classroom efficiency.
           </motion.p>
 
           {/* Social Proof */}
@@ -594,8 +592,8 @@ export function LandingPage() {
                   <span className="text-white font-bold text-lg">AI</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold">AI for LA Educators</h3>
-                  <p className="text-xs text-muted-foreground">Ethical AI Guidance</p>
+                  <h3 className="text-lg font-bold">Pelican AI</h3>
+                  <p className="text-xs text-muted-foreground">Your AI Guidance Partner</p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -678,13 +676,6 @@ export function LandingPage() {
         </div>
       </footer>
 
-      {/* Auth Modal */}
-      {showAuthModal && (
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
-      )}
     </div>
   );
 }

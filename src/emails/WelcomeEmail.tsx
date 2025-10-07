@@ -24,14 +24,14 @@ export function WelcomeEmail({
     <Html>
       <Head />
       <Preview>
-        Welcome to A.I.D.A. - Your Voice-Powered Educational Command Center
+        Welcome to Pelican AI - Your AI Guidance Partner
       </Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Heading style={h1}>Welcome to A.I.D.A.!</Heading>
+            <Heading style={h1}>Welcome to Pelican AI!</Heading>
             <Text style={subtitle}>
-              Your Voice-Powered Educational Command Center
+              Your AI Guidance Partner
             </Text>
           </Section>
 
@@ -39,50 +39,44 @@ export function WelcomeEmail({
             <Text style={paragraph}>Hi {userName},</Text>
 
             <Text style={paragraph}>
-              Welcome to A.I.D.A., your AI-powered instructional district
-              assistant! We're excited to help you transform how you access
-              district information and receive instructional support.
+              Welcome to Pelican AI! We're excited to help you navigate AI with confidence. 
+              Our platform-agnostic guidance works with ANY AI tool you already use, 
+              designed specifically for Louisiana educators.
             </Text>
 
             <Section style={highlightBox}>
-              <Heading style={h2}>🎤 Voice-First Experience</Heading>
+              <Heading style={h2}>📚 Platform-Agnostic Guidance</Heading>
               <Text style={paragraph}>
-                Simply tap the microphone and ask me anything about{" "}
-                {districtName}
-                's policies, curriculum standards, or teaching strategies. I
-                have access to your district's documents and can provide
-                instant, accurate answers with sources.
+                Learn to use ANY AI tool effectively—MagicSchool AI, Brisk, SchoolAI, 
+                Gemini, or others. We teach principles, not platforms. Every framework 
+                is designed specifically for Louisiana's educational standards.
               </Text>
             </Section>
 
             <Section style={featureBox}>
-              <Heading style={h2}>✨ What Makes A.I.D.A. Different</Heading>
+              <Heading style={h2}>✨ What Makes Pelican AI Different</Heading>
               <Text style={paragraph}>
-                • <strong>District-Specific Knowledge:</strong> I understand
-                your unique context
+                • <strong>Guided Frameworks:</strong> Copy-paste ready prompts with ethical guardrails
               </Text>
               <Text style={paragraph}>
-                • <strong>Voice Interface:</strong> Hands-free interaction while
-                teaching
+                • <strong>Louisiana-Aligned:</strong> Built for Louisiana standards and educator rubric
               </Text>
               <Text style={paragraph}>
-                • <strong>Instant Answers:</strong> Get policy information in
-                under 2 seconds
+                • <strong>Community-Driven:</strong> Educators sharing innovations with educators
               </Text>
               <Text style={paragraph}>
-                • <strong>Source Citations:</strong> Always know where
-                information comes from
+                • <strong>Time-Saving:</strong> Practical solutions that reclaim valuable teaching time
               </Text>
             </Section>
 
             <Section style={ctaBox}>
               <Heading style={h2}>🚀 Get Started</Heading>
               <Text style={paragraph}>
-                Ready to experience the future of educational assistance? Click
-                below to start your first voice conversation with A.I.D.A.
+                Ready to reclaim your time and deepen your practice? Join our beta program 
+                to access curated AI guidance designed specifically for Louisiana educators.
               </Text>
               <Link href="https://aida-app.vercel.app" style={button}>
-                Start Your First Voice Chat
+                Join Beta Program
               </Link>
             </Section>
 
@@ -94,20 +88,20 @@ export function WelcomeEmail({
             <Text style={paragraph}>
               Best regards,
               <br />
-              The A.I.D.A. Team
+              The Pelican AI Team
             </Text>
           </Section>
 
           <Section style={footer}>
             <Text style={footerText}>
-              A.I.D.A. - AI-powered Instructional District Assistant
+              Pelican AI - Navigate AI with Confidence
             </Text>
             <Text style={footerText}>
-              <Link href="https://aida-app.vercel.app" style={link}>
-                Visit A.I.D.A.
+              <Link href="https://pelicanai.org" style={link}>
+                Visit Pelican AI
               </Link>
               {" • "}
-              <Link href="mailto:support@aida-app.com" style={link}>
+              <Link href="mailto:hello@pelicanai.org" style={link}>
                 Contact Support
               </Link>
             </Text>
