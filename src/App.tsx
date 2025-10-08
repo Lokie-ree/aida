@@ -6,10 +6,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { LandingPage } from "./components/LandingPage";
-import { Dashboard } from "./components/Dashboard";
 import { Logo } from "./components/logo";
-import { Button } from "./components/ui/button";
-import { BookOpen, Users, Settings } from "lucide-react";
 
 export default function App() {
   const [currentView, setCurrentView] = useState<"dashboard" | "frameworks" | "profile">("dashboard");
@@ -28,39 +25,9 @@ export default function App() {
 
           <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
             <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
-              <Logo className="h-8" />
-              
-              {/* Navigation */}
-              <nav className="hidden md:flex items-center gap-1">
-                <Button
-                  variant={currentView === "dashboard" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setCurrentView("dashboard")}
-                  className="gap-2"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  Dashboard
-                </Button>
-                <Button
-                  variant={currentView === "frameworks" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setCurrentView("frameworks")}
-                  className="gap-2"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  Frameworks
-                </Button>
-                <Button
-                  variant={currentView === "profile" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setCurrentView("profile")}
-                  className="gap-2"
-                >
-                  <Settings className="h-4 w-4" />
-                  Profile
-                </Button>
-              </nav>
-
+              <div className="flex items-center gap-3">
+                <Logo className="h-8" />
+              </div>
               <div className="flex items-center gap-2 lg:gap-4">
                 <ModeToggle />
                 <SignOutButton />
