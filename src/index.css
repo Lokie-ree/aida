@@ -157,10 +157,10 @@
   --animate-pulse: pulse var(--duration) ease-out infinite;
   @keyframes pulse {
   0%, 100% {
-    boxShadow: 0 0 0 0 var(--pulse-color);
+    box-shadow: 0 0 0 0 var(--pulse-color);
     }
   50% {
-    boxShadow: 0 0 0 8px var(--pulse-color);
+    box-shadow: 0 0 0 8px var(--pulse-color);
     }
   }
   --animate-gradient: gradient 20s linear infinite;
