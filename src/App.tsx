@@ -3,14 +3,16 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
-import { VoiceHub } from "./components/VoiceHub";
-import { ConversationPane } from "./components/ConversationPane";
-import { ContextTray } from "./components/ContextTray";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/ModeToggle";
 import { LandingPage } from "./components/LandingPage";
+import { Dashboard } from "./components/Dashboard";
+import { Logo } from "./components/logo";
+import { Button } from "./components/ui/button";
+import { BookOpen, Users, Settings } from "lucide-react";
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<"dashboard" | "frameworks" | "profile">("dashboard");
 
   return (
     <ThemeProvider>
@@ -26,16 +28,39 @@ export default function App() {
 
           <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
             <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-md">
-                  <span className="text-primary-foreground font-bold text-sm">
-                    AI
-                  </span>
-                </div>
-                <h1 className="text-xl font-bold text-foreground">
-                  EdCoachAI
-                </h1>
-              </div>
+              <Logo className="h-8" />
+              
+              {/* Navigation */}
+              <nav className="hidden md:flex items-center gap-1">
+                <Button
+                  variant={currentView === "dashboard" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCurrentView("dashboard")}
+                  className="gap-2"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  Dashboard
+                </Button>
+                <Button
+                  variant={currentView === "frameworks" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCurrentView("frameworks")}
+                  className="gap-2"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  Frameworks
+                </Button>
+                <Button
+                  variant={currentView === "profile" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCurrentView("profile")}
+                  className="gap-2"
+                >
+                  <Settings className="h-4 w-4" />
+                  Profile
+                </Button>
+              </nav>
+
               <div className="flex items-center gap-2 lg:gap-4">
                 <ModeToggle />
                 <SignOutButton />
@@ -43,10 +68,8 @@ export default function App() {
             </div>
           </header>
 
-          <main id="main-content" className="flex-1 p-4 sm:p-6" role="main">
-            <div className="max-w-7xl mx-auto h-full">
-              <Content />
-            </div>
+          <main id="main-content" className="flex-1" role="main">
+            <Content currentView={currentView} />
           </main>
         </Authenticated>
 
@@ -60,10 +83,13 @@ export default function App() {
   );
 }
 
-function Content() {
+function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "profile" }) {
   const loggedInUser = useQuery(api.auth.loggedInUser);
+  const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
+  const testimonials = useQuery(api.testimonials.getFeaturedTestimonials, {});
+  const betaStats = useQuery(api.betaProgram.getBetaStats, {});
 
-  if (loggedInUser === undefined) {
+  if (loggedInUser === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="flex items-center gap-3 text-muted-foreground">
@@ -74,42 +100,53 @@ function Content() {
     );
   }
 
-  return (
-    <>
+  // Initialize beta program for new users
+  const initializeBeta = useQuery(api.betaProgram.initializeBetaProgram, {});
 
-      {/* Main Dashboard - New Layout */}
-      <div className="h-full flex flex-col gap-4 sm:gap-6">
-        {/* Row 1: Voice Hub + Conversation */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 min-h-0">
-          {/* Voice Hub (1/3) */}
-          <div className="lg:col-span-1 flex flex-col min-h-0">
-            <VoiceHub
-              onTranscription={(text) => console.log('Transcription:', text)}
-              onResponse={(text) => console.log('Response:', text)}
-              onDocumentAction={(action) => console.log('Document action:', action)}
-              sourceCount={0}
-              documentCount={0}
-            />
-          </div>
+  // Mock data for now - in real implementation, this would come from user profile
+  const user = {
+    name: loggedInUser.name || "Educator",
+    school: "Louisiana School District",
+    subject: "Education"
+  };
 
-          {/* Conversation (2/3) */}
-          <div className="lg:col-span-2 flex flex-col min-h-0">
-            <ConversationPane />
-          </div>
+  const stats = {
+    frameworksTried: betaStats?.frameworksTried || 0,
+    timeSaved: betaStats?.totalTimeSaved || 0,
+    innovationsShared: betaStats?.innovationsShared || 0,
+    weeklyStreak: betaStats?.weeklyEngagementCount || 0,
+  };
+
+  switch (currentView) {
+    case "dashboard":
+      return (
+        <Dashboard 
+          user={user}
+          stats={stats}
+          recentFrameworks={frameworks.slice(0, 4)}
+          featuredTestimonials={testimonials}
+        />
+      );
+    case "frameworks":
+      return (
+        <div className="p-6">
+          <h1 className="text-2xl font-bold mb-4">Framework Library</h1>
+          <p className="text-muted-foreground">Framework library coming soon...</p>
         </div>
-
-        {/* Row 2: Context Tray (full width) */}
-        <div className="flex-shrink-0">
-          <ContextTray
-            documents={[]}
-            sources={[]}
-            activity={[]}
-            onDocumentAction={(action, docId) => console.log('Document action:', action, docId)}
-            onSourceClick={(sourceId) => console.log('Source clicked:', sourceId)}
-            onActivityClick={(activityId) => console.log('Activity clicked:', activityId)}
-          />
+      );
+    case "profile":
+      return (
+        <div className="p-6">
+          <h1 className="text-2xl font-bold mb-4">Profile Settings</h1>
+          <p className="text-muted-foreground">Profile settings coming soon...</p>
         </div>
-      </div>
-    </>
-  );
+      );
+    default:
+      return <Dashboard 
+        user={user}
+        stats={stats}
+        recentFrameworks={frameworks.slice(0, 4)}
+        featuredTestimonials={testimonials}
+      />;
+  }
 }

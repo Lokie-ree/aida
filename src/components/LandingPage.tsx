@@ -9,6 +9,7 @@ import { Marquee } from "@/components/ui/marquee";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import RotatingText from "@/components/RotatingText";
 import GradientText from "@/components/GradientText";
+import { Logo } from "@/components/logo";
 import { 
   Sparkles, 
   Users, 
@@ -204,14 +205,7 @@ export function LandingPage() {
         className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center">
-                <img src="/icon.svg" alt="Pelican" className="h-6 w-6" />
-              </div>
-              <span className="text-xl font-bold text-foreground">Pelican AI</span>
-            </div>
-          </div>
+          <Logo className="h-8" />
 
            <div className="flex items-center gap-2 sm:gap-4">
              <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
@@ -267,10 +261,9 @@ export function LandingPage() {
           >
              <RotatingText 
                texts={[
-                 "Reclaim Time.",
-                 "Navigate AI.",
-                 "Transform Practice.",
-                 "Empower Teaching."
+                 "Reclaim Your Time",
+                 "Teach with Confidence", 
+                 "Master Any AI Tool"
                ]}
                className="inline-block"
                elementLevelClassName="text-primary"
@@ -285,7 +278,7 @@ export function LandingPage() {
              transition={{ duration: 0.5, delay: 0.2 }}
              className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
            >
-             Platform-agnostic guidance that works with <span className="text-primary font-semibold">any AI tool</span> you already use. Designed specifically for Louisiana educators.
+             Works with <span className="text-primary font-semibold">ANY AI tool</span> you already use. Designed specifically for Louisiana educators.
            </motion.p>
 
           {/* Social Proof */}
@@ -305,12 +298,12 @@ export function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto"
           >
             <Button
               size="lg"
               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
+              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl w-full sm:w-auto"
             >
               Join Beta Program - Free
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -318,7 +311,7 @@ export function LandingPage() {
             <Button
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-6"
+              className="text-lg px-8 py-6 w-full sm:w-auto"
               onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
             >
               See How It Works
@@ -339,7 +332,7 @@ export function LandingPage() {
 
       {/* Features Section with GlassIcons */}
       <section className="py-20 px-6 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -399,7 +392,7 @@ export function LandingPage() {
 
       {/* How It Works - Louisiana Framework Section */}
       <section id="how-it-works" className="py-20 px-6 bg-background">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -460,7 +453,7 @@ export function LandingPage() {
 
       {/* Beta Signup Section */}
       <section id="beta-signup" className="py-20 px-6 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -541,7 +534,7 @@ export function LandingPage() {
 
       {/* Testimonials Section with Marquee */}
       <section className="py-20 px-6 bg-background overflow-hidden">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -579,7 +572,7 @@ export function LandingPage() {
 
       {/* FAQ Section */}
       <section id="faq" className="py-20 px-6 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -641,7 +634,7 @@ export function LandingPage() {
 
       {/* Final CTA Section */}
       <section className="py-20 px-6 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial="initial"
             whileInView="animate"
@@ -691,15 +684,12 @@ export function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-background border-t border-border py-12 px-6">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand Column */}
             <div className="md:col-span-1">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center">
-                  <img src="/icon.svg" alt="Pelican" className="h-6 w-6" />
-                </div>
-                <span className="text-xl font-bold text-foreground">Pelican AI</span>
+              <div className="mb-4">
+                <Logo className="h-8" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Created and supported by educators for educators

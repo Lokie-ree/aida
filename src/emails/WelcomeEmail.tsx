@@ -12,13 +12,13 @@ import {
 } from "@react-email/components";
 
 interface WelcomeEmailProps {
-  userName: string;
-  districtName?: string;
+  name: string;
+  school: string;
 }
 
 export function WelcomeEmail({
-  userName = "Educator",
-  districtName = "your district",
+  name = "there",
+  school = "your school",
 }: WelcomeEmailProps) {
   return (
     <Html>
@@ -36,16 +36,15 @@ export function WelcomeEmail({
           </Section>
 
           <Section style={content}>
-            <Text style={paragraph}>Hi {userName},</Text>
+            <Text style={paragraph}>Hi {name},</Text>
 
             <Text style={paragraph}>
-              Welcome to Pelican AI! We're excited to help you navigate AI with confidence. 
-              Our platform-agnostic guidance works with ANY AI tool you already use, 
-              designed specifically for Louisiana educators.
+              Welcome to Pelican AI! We're excited to help you reclaim your time with confidence. 
+              Our guidance works with ANY AI tool you already use, designed specifically for Louisiana educators.
             </Text>
 
             <Section style={highlightBox}>
-              <Heading style={h2}>📚 Platform-Agnostic Guidance</Heading>
+              <Heading style={h2}>🐦 Reclaim Your Time</Heading>
               <Text style={paragraph}>
                 Learn to use ANY AI tool effectively—MagicSchool AI, Brisk, SchoolAI, 
                 Gemini, or others. We teach principles, not platforms. Every framework 
@@ -70,19 +69,30 @@ export function WelcomeEmail({
             </Section>
 
             <Section style={ctaBox}>
-              <Heading style={h2}>🚀 Get Started</Heading>
+              <Heading style={h2}>🚀 What's Next?</Heading>
               <Text style={paragraph}>
-                Ready to reclaim your time and deepen your practice? Join our beta program 
-                to access curated AI guidance designed specifically for Louisiana educators.
+                We'll review your application and get back to you within 48 hours. 
+                You'll receive access to our beta platform and exclusive resources.
               </Text>
-              <Link href="https://aida-app.vercel.app" style={button}>
-                Join Beta Program
-              </Link>
+              <Text style={paragraph}>
+                <strong>Your Information:</strong><br />
+                Name: {name}<br />
+                School: {school}<br />
+                Status: Pending Review
+              </Text>
             </Section>
 
             <Text style={paragraph}>
-              If you have any questions or need support, don't hesitate to reach
-              out. I'm here to help you succeed!
+              While you wait, here are some ways to prepare for your Pelican AI journey:
+            </Text>
+            <Text style={paragraph}>
+              • Explore the AI tools you already use (MagicSchool AI, SchoolAI, etc.)<br />
+              • Think about your biggest time-saving challenges in the classroom<br />
+              • Consider what ethical AI guidance would be most valuable to you
+            </Text>
+
+            <Text style={paragraph}>
+              Questions? Reply to this email or visit our website.
             </Text>
 
             <Text style={paragraph}>

@@ -9,15 +9,20 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as betaProgram from "../betaProgram.js";
 import type * as betaSignup from "../betaSignup.js";
 import type * as chat from "../chat.js";
 import type * as documents from "../documents.js";
 import type * as email from "../email.js";
 import type * as feedback from "../feedback.js";
+import type * as frameworks from "../frameworks.js";
 import type * as http from "../http.js";
+import type * as innovations from "../innovations.js";
 import type * as rag from "../rag.js";
 import type * as router from "../router.js";
 import type * as security from "../security.js";
+import type * as seedFrameworks from "../seedFrameworks.js";
+import type * as testimonials from "../testimonials.js";
 import type * as vapi from "../vapi.js";
 
 import type {
@@ -36,15 +41,20 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  betaProgram: typeof betaProgram;
   betaSignup: typeof betaSignup;
   chat: typeof chat;
   documents: typeof documents;
   email: typeof email;
   feedback: typeof feedback;
+  frameworks: typeof frameworks;
   http: typeof http;
+  innovations: typeof innovations;
   rag: typeof rag;
   router: typeof router;
   security: typeof security;
+  seedFrameworks: typeof seedFrameworks;
+  testimonials: typeof testimonials;
   vapi: typeof vapi;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

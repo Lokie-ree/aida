@@ -1,0 +1,187 @@
+import { v } from "convex/values";
+import { query, mutation } from "./_generated/server";
+import { authComponent } from "./auth";
+
+// Query: Get beta program status
+export const getBetaStatus = query({
+  args: {},
+  returns: v.union(v.object({
+    _id: v.id("betaProgram"),
+    status: v.union(v.literal("invited"), v.literal("active"), v.literal("completed")),
+    onboardingStep: v.number(),
+    onboardingCompleted: v.boolean(),
+    frameworksTried: v.number(),
+    totalTimeSaved: v.number(),
+    innovationsShared: v.number(),
+    weeklyEngagementCount: v.number(),
+  }), v.null()),
+  handler: async (ctx) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      return null;
+    }
+    const userId = user._id;
+
+    const betaStatus = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!betaStatus) {
+      return null;
+    }
+
+    return {
+      _id: betaStatus._id,
+      status: betaStatus.status,
+      onboardingStep: betaStatus.onboardingStep,
+      onboardingCompleted: betaStatus.onboardingCompleted,
+      frameworksTried: betaStatus.frameworksTried,
+      totalTimeSaved: betaStatus.totalTimeSaved,
+      innovationsShared: betaStatus.innovationsShared,
+      weeklyEngagementCount: betaStatus.weeklyEngagementCount,
+    };
+  },
+});
+
+// Mutation: Initialize beta program for user
+export const initializeBetaProgram = mutation({
+  args: {},
+  returns: v.id("betaProgram"),
+  handler: async (ctx) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    // Check if already exists
+    const existing = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (existing) {
+      return existing._id;
+    }
+
+    // Create beta program record
+    const betaProgramId = await ctx.db.insert("betaProgram", {
+      userId,
+      status: "active",
+      invitedAt: Date.now(),
+      joinedAt: Date.now(),
+      onboardingStep: 0,
+      onboardingCompleted: false,
+      frameworksTried: 0,
+      totalTimeSaved: 0,
+      innovationsShared: 0,
+      officeHoursAttended: 0,
+      weeklyEngagementCount: 0,
+    });
+
+    return betaProgramId;
+  },
+});
+
+// Mutation: Update onboarding progress
+export const updateOnboardingProgress = mutation({
+  args: { step: v.number() },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    const betaStatus = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!betaStatus) {
+      throw new Error("Beta program not initialized");
+    }
+
+    await ctx.db.patch(betaStatus._id, {
+      onboardingStep: args.step,
+      onboardingCompleted: args.step >= 4,
+    });
+
+    return null;
+  },
+});
+
+// Mutation: Record weekly engagement
+export const recordWeeklyEngagement = mutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    const betaStatus = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!betaStatus) {
+      return null;
+    }
+
+    await ctx.db.patch(betaStatus._id, {
+      lastWeeklyPromptOpened: Date.now(),
+      weeklyEngagementCount: betaStatus.weeklyEngagementCount + 1,
+    });
+
+    return null;
+  },
+});
+
+// Query: Get beta stats
+export const getBetaStats = query({
+  args: {},
+  returns: v.object({
+    frameworksTried: v.number(),
+    totalTimeSaved: v.number(),
+    innovationsShared: v.number(),
+    weeklyEngagementStreak: v.number(),
+  }),
+  handler: async (ctx) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      return {
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        weeklyEngagementStreak: 0,
+      };
+    }
+    const userId = user._id;
+
+    const betaStatus = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    if (!betaStatus) {
+      return {
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        weeklyEngagementStreak: 0,
+      };
+    }
+
+    return {
+      frameworksTried: betaStatus.frameworksTried,
+      totalTimeSaved: betaStatus.totalTimeSaved,
+      innovationsShared: betaStatus.innovationsShared,
+      weeklyEngagementStreak: betaStatus.weeklyEngagementCount,
+    };
+  },
+});

@@ -28,17 +28,17 @@ export const sendWelcomeEmail = action({
       // Render the React email component to HTML
       const emailHtml = await render(
         WelcomeEmail({
-          userName: args.userName,
-          districtName: args.districtName || "your district",
+          name: args.userName,
+          school: "your school",
         })
       );
 
       // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
-        from: "EdCoachAI <welcome@edcoachai.org>",
+        from: "Pelican AI <welcome@pelicanai.org>",
         to: args.userEmail,
         subject:
-          "Welcome to EdCoachAI - AI for Louisiana Educators",
+          "Welcome to Pelican AI - Reclaim Your Time with Confidence",
         html: emailHtml,
       });
 
@@ -76,9 +76,9 @@ export const sendVoiceInteractionSummary = action({
       );
 
       const emailId = await resend.sendEmail(ctx, {
-        from: "EdCoachAI <sessions@edcoachai.org>",
+        from: "Pelican AI <sessions@pelicanai.org>",
         to: args.userEmail,
-        subject: `Your EdCoachAI Session Summary - ${args.interactionCount} interactions`,
+        subject: `Your Pelican AI Session Summary - ${args.interactionCount} interactions`,
         html: emailHtml,
       });
 
