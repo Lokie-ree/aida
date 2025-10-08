@@ -30,7 +30,7 @@ export function VoiceSessionSummaryEmail({
     <Html>
       <Head />
       <Preview>
-        Your A.I.D.A. Voice Session Summary - {interactionCount.toString()}{" "}
+        Your Pelican AI Voice Session Summary - {interactionCount.toString()}{" "}
         interactions
       </Preview>
       <Body style={main}>
@@ -38,14 +38,14 @@ export function VoiceSessionSummaryEmail({
           {/* Header with gradient */}
           <Section style={header}>
             <Heading style={h1}>🎤 Voice Session Summary</Heading>
-            <Text style={subtitle}>Your A.I.D.A. conversation recap</Text>
+            <Text style={subtitle}>Your Pelican AI conversation recap</Text>
           </Section>
 
           <Section style={content}>
             <Text style={paragraph}>Hi {userName}!</Text>
 
             <Text style={paragraph}>
-              Great session with A.I.D.A.! Here's a summary of your voice
+              Great session with Pelican AI! Here's a summary of your voice
               interactions:
             </Text>
 
@@ -67,17 +67,17 @@ export function VoiceSessionSummaryEmail({
             <Section style={ctaBox}>
               <Heading style={h2}>💡 Keep the Conversation Going</Heading>
               <Text style={paragraph}>
-                A.I.D.A. is always ready to help with district policies,
+                Pelican AI is always ready to help with district policies,
                 curriculum questions, and teaching strategies.
               </Text>
-              <Button href="https://aida-app.vercel.app" style={button}>
+              <Button href="https://pelicanai.org" style={button}>
                 Continue Your Voice Chat
               </Button>
             </Section>
 
             {/* Key Benefits Reminder */}
             <Section style={benefitsBox}>
-              <Text style={benefitsTitle}>Why Teachers Love A.I.D.A.</Text>
+              <Text style={benefitsTitle}>Why Teachers Love Pelican AI</Text>
               <Text style={benefitItem}>
                 🎯 District-specific answers in under 2 seconds
               </Text>
@@ -89,14 +89,14 @@ export function VoiceSessionSummaryEmail({
             </Section>
 
             <Text style={paragraph}>
-              Thanks for using A.I.D.A.! We're here to help reduce your
+              Thanks for using Pelican AI! We're here to help reduce your
               information overload and make your teaching more efficient.
             </Text>
 
             <Text style={paragraph}>
               Best regards,
               <br />
-              The A.I.D.A. Team
+              The Pelican AI Team
             </Text>
           </Section>
 
@@ -104,14 +104,14 @@ export function VoiceSessionSummaryEmail({
 
           <Section style={footer}>
             <Text style={footerText}>
-              A.I.D.A. - Your Voice-Powered Educational Command Center
+              Pelican AI - Your AI Guidance Partner
             </Text>
             <Text style={footerText}>
-              <Link href="https://aida-app.vercel.app" style={link}>
-                Visit A.I.D.A.
+              <Link href="https://pelicanai.org" style={link}>
+                Visit Pelican AI
               </Link>
               {" • "}
-              <Link href="mailto:support@aida-app.com" style={link}>
+              <Link href="mailto:hello@pelicanai.org" style={link}>
                 Contact Support
               </Link>
             </Text>

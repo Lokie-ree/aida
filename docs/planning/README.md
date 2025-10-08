@@ -2,6 +2,30 @@
 
 This directory contains archived planning documentation from completed phases.
 
+## ⚠️ IMPORTANT: Branding & Architecture Updates
+
+**These planning documents were created before final branding decisions.** The following changes have been made since planning:
+
+### Branding Changes
+- **Project Name:** "AI for LA Educators" → **"Pelican AI"**
+- **Tagline:** Various → **"Navigate AI with Confidence"** / **"Your AI Guidance Partner"**
+- **Logo Concept:** Compass/Lighthouse → **Pelican** (Louisiana's state bird)
+- **Primary Color:** Generic Blue (#3B82F6) → **Pelican Blue** (#0ea5e9)
+- **Secondary Color:** Generic Gold (#FBBF24) → **Louisiana Gold** (#f59e0b)
+- **Domain:** TBD → **pelicanai.org**
+
+### Technical Changes
+- **Authentication:** Convex Auth → **Better Auth** (via @convex-dev/better-auth)
+- **Design System:** Theoretical → **Implemented** (see src/lib/design-system.ts)
+- **Component Structure:** Flat → **Organized** (auth/, community/, dashboard/, framework/, shared/, legacy/)
+
+### Where to Find Current Information
+- **🎯 Branding Alignment Guide:** [v0.4.0/BRANDING_ALIGNMENT_NOTE.md](v0.4.0/BRANDING_ALIGNMENT_NOTE.md) ⭐ **Start here!**
+- **Brand Guidelines:** [docs/PELICAN_AI_BRAND_GUIDELINES.md](../PELICAN_AI_BRAND_GUIDELINES.md)
+- **Architecture:** [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- **Design System:** [src/lib/design-system.ts](../../src/lib/design-system.ts)
+- **Decisions:** [docs/decisions/](../decisions/)
+
 ## Structure
 
 - **`v0.4.0/`** - Phase 4 (Implementation Planning) documentation

@@ -13,7 +13,7 @@
 **"Your AI Guidance Partner"** - Emphasizes partnership, guidance, and support rather than just tools.
 
 ### **Mission Statement**
-Navigate AI with confidence. Platform-agnostic guidance that works with ANY AI tool you already use, designed specifically for Louisiana educators.
+Curated AI guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with platform-agnostic guidance aligned to Louisiana standards.
 
 ---
 
@@ -25,8 +25,8 @@ Navigate AI with confidence. Platform-agnostic guidance that works with ANY AI t
 - **Deep Blue**: `#1e40af` - Secondary color for emphasis and depth
 
 ### **Typography**
-- **Primary Font**: Inter (clean, modern, accessible)
-- **Secondary Font**: Source Serif 4 (elegant, readable)
+- **Primary Font**: Lexend (clean, modern, accessible)
+- **Heading Font**: Poppins (bold, professional)
 - **Monospace**: JetBrains Mono (code and technical content)
 
 ### **Logo Concept**
@@ -91,9 +91,9 @@ Navigate AI with confidence. Platform-agnostic guidance that works with ANY AI t
 - **Social**: @pelicanai (when available)
 
 ### **Website Messaging**
-- **Hero**: "Navigate AI with Confidence"
-- **Subtitle**: "Platform-agnostic guidance for Louisiana educators"
-- **CTA**: "Join Beta Program" (no login required)
+- **Hero**: "Reclaim Your Time", "Teach with Confidence", "Master Any AI Tool"
+- **Subtitle**: "Works with ANY AI tool you already use. Designed specifically for Louisiana educators."
+- **CTA**: "Join Beta Program - Free"
 
 ---
 

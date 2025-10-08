@@ -1,16 +1,22 @@
 # User Flows
-## AI for LA Educators Platform
+## ~~AI for LA Educators Platform~~ → Pelican AI
 
 **Version:** 1.0  
 **Date:** October 4, 2025  
-**Status:** Phase 2 - Design Documentation  
+**Status:** Phase 2 - Design Documentation (ARCHIVED)  
 **Owner:** UX/UI Designer  
+
+---
+
+## ⚠️ BRANDING UPDATE
+
+**Platform is now "Pelican AI"** - See [docs/PELICAN_AI_BRAND_GUIDELINES.md](../../PELICAN_AI_BRAND_GUIDELINES.md)
 
 ---
 
 ## 1. Overview
 
-This document details the user flows for the AI for LA Educators platform, mapping out each step users take to accomplish key tasks. These flows inform the wireframes and final UI design.
+This document details the user flows for the platform, mapping out each step users take to accomplish key tasks. These flows inform the wireframes and final UI design.
 
 ### 1.1 Flow Notation
 

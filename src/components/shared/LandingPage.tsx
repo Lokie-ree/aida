@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Marquee } from "@/components/ui/marquee";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import RotatingText from "@/components/RotatingText";
-import GradientText from "@/components/GradientText";
-import { Logo } from "@/components/logo";
+import RotatingText from "@/components/shared/RotatingText";
+import GradientText from "@/components/shared/GradientText";
+import { Logo } from "@/components/shared/Logo";
 import { 
   Sparkles, 
   Users, 
@@ -22,30 +22,60 @@ import {
   Shield,
   Clock,
   Lightbulb,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Logo } from "./logo";
+import { api } from "../../../convex/_generated/api";
 
 export function LandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<{email?: string}>({});
   
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleBetaSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    
+    // Clear previous errors
+    setError(null);
+    setValidationErrors({});
+    
+    // Validate email
+    if (!email) {
+      setValidationErrors({ email: "Email is required" });
+      return;
+    }
+    
+    if (!validateEmail(email)) {
+      setValidationErrors({ email: "Please enter a valid email address" });
+      return;
+    }
     
     setIsSubmitting(true);
     try {
-      await signupForBeta({ email });
-      setIsSubmitted(true);
-      setEmail("");
+      const result = await signupForBeta({ email });
+      
+      if (result.success) {
+        setIsSubmitted(true);
+        setEmail("");
+        setError(null);
+        setValidationErrors({});
+      } else {
+        setError(result.message || "Signup failed. Please try again.");
+      }
     } catch (error) {
       console.error("Signup failed:", error);
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -69,8 +99,7 @@ export function LandingPage() {
   // Consistent color scheme - Blues and Golds
   const blueGradient = ['#0ea5e9', '#1e40af', '#0ea5e9'];
   const blueGoldGradient = ['#0ea5e9', '#f59e0b', '#0ea5e9'];
-  const goldGradient = ['#f59e0b', '#fbbf24', '#f59e0b'];
-
+  
 
   // Features based on brand guidelines
   const features = [
@@ -205,15 +234,15 @@ export function LandingPage() {
         animate={{ y: 0 }}
         className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
       >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-          <Logo className="h-8" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4">
+          <Logo className="h-8 sm:h-10" />
 
-           <div className="flex items-center gap-2 sm:gap-4">
+           <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
              <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
              <Button 
                size="lg" 
                onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-               className="bg-primary hover:bg-primary/90 transition-colors"
+               className="bg-primary hover:bg-primary/90 transition-colors flex-1 sm:flex-none h-[45px]"
              >
                <span className="hidden sm:inline">Join Beta Program</span>
                <span className="sm:hidden">Join Beta</span>
@@ -258,7 +287,7 @@ export function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
           >
              <RotatingText 
                texts={[
@@ -277,7 +306,7 @@ export function LandingPage() {
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.5, delay: 0.2 }}
-             className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
+             className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed px-4"
            >
              Works with <span className="text-primary font-semibold">ANY AI tool</span> you already use. Designed specifically for Louisiana educators.
            </motion.p>
@@ -326,7 +355,10 @@ export function LandingPage() {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="mt-16"
           >
-            <ChevronDown className="w-6 h-6 mx-auto text-muted-foreground animate-bounce" />
+            <ChevronDown 
+              className="w-6 h-6 mx-auto text-muted-foreground animate-bounce" 
+              aria-label="Scroll down for more information"
+            />
           </motion.div>
         </div>
       </section>
@@ -495,24 +527,62 @@ export function LandingPage() {
             </CardHeader>
             <CardContent>
               {!isSubmitted ? (
-                <form onSubmit={handleBetaSignup} className="space-y-6">
+                <form onSubmit={handleBetaSignup} className="space-y-6" aria-live="polite">
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="flex-1 text-base py-3"
-                      required
-                    />
+                    <div className="flex-1">
+                      <label htmlFor="beta-email" className="sr-only">
+                        Email address for beta program signup
+                      </label>
+                      <Input
+                        id="beta-email"
+                        type="email"
+                        placeholder="Enter your email address"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          // Clear validation error when user starts typing
+                          if (validationErrors.email) {
+                            setValidationErrors({});
+                          }
+                        }}
+                        className={`w-full text-base py-4 h-[45px] ${validationErrors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                        required
+                        aria-invalid={!!validationErrors.email}
+                        aria-describedby={validationErrors.email ? 'email-error' : undefined}
+                      />
+                      {validationErrors.email && (
+                        <p id="email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {validationErrors.email}
+                        </p>
+                      )}
+                    </div>
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-primary hover:bg-primary/90 px-6 py-3 text-base"
+                      className="w-full sm:w-auto bg-primary hover:bg-primary/90 px-6 py-4 text-base h-[45px]"
+                      aria-busy={isSubmitting}
                     >
-                      {isSubmitting ? "Joining..." : "Join Beta"}
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                          Joining...
+                        </>
+                      ) : (
+                        "Join Beta"
+                      )}
                     </Button>
                   </div>
+                  
+                  {error && (
+                    <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                      <div className="flex items-center gap-2 text-destructive">
+                        <AlertCircle className="w-5 h-5" />
+                        <p className="text-sm font-medium">{error}</p>
+                      </div>
+                    </div>
+                  )}
+                  
                   <p className="text-sm text-muted-foreground text-center">
                     No spam, ever. Unsubscribe at any time.
                   </p>
@@ -604,6 +674,16 @@ export function LandingPage() {
                 <Card 
                   className="cursor-pointer hover:shadow-md transition-shadow relative overflow-hidden"
                   onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={expandedFaq === index}
+                  aria-label={`${expandedFaq === index ? 'Collapse' : 'Expand'} FAQ: ${faq.question}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setExpandedFaq(expandedFaq === index ? null : index);
+                    }
+                  }}
                 >
                   {expandedFaq === index && (
                     <BorderBeam 
@@ -670,10 +750,10 @@ export function LandingPage() {
                     <Button
                       size="lg"
                       onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-                      className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl"
+                      className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl w-full"
                     >
-                      Join Beta Program - Free
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                      Join Beta Program
+                      <ArrowRight className="h-5 w-5" />
                     </Button>
                   </motion.div>
                 </CardContent>
@@ -706,7 +786,8 @@ export function LandingPage() {
                 <li>
                   <button 
                     onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
+                    aria-label="Navigate to How It Works section"
                   >
                     How It Works
                   </button>
@@ -714,7 +795,8 @@ export function LandingPage() {
                 <li>
                   <button 
                     onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
+                    aria-label="Navigate to Beta Program signup section"
                   >
                     Beta Program
                   </button>
@@ -731,13 +813,14 @@ export function LandingPage() {
                 <li>
                   <button 
                     onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
+                    aria-label="Navigate to FAQ section"
                   >
                     FAQ
                   </button>
                 </li>
                 <li>
-                  <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
                     Contact Us
                   </a>
                 </li>
@@ -751,12 +834,12 @@ export function LandingPage() {
               </h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
                     Privacy Policy
                   </a>
                 </li>
                 <li>
-                  <a href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <a href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
                     Terms of Service
                   </a>
                 </li>

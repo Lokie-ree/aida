@@ -1,16 +1,37 @@
 # System Architecture Document
-## AI for LA Educators Platform
+## ~~AI for LA Educators Platform~~ → Pelican AI
 
 **Version:** 1.0  
 **Date:** October 4, 2025  
-**Status:** Phase 3 - System Architecture  
+**Status:** Phase 3 - System Architecture (ARCHIVED - See note below)  
 **Owner:** System Architect  
+
+---
+
+## ⚠️ BRANDING & TECHNICAL UPDATE NOTICE
+
+**This architecture document was created before final branding and technical decisions.** Key updates since planning:
+
+### Branding
+- **Platform Name:** Now **"Pelican AI"** (not "AI for LA Educators")
+- **Colors:** Pelican Blue `#0ea5e9`, Louisiana Gold `#f59e0b`
+- **Logo:** Pelican (Louisiana state bird), not compass
+
+### Technical
+- **Authentication:** Migrated to **Better Auth** (not Convex Auth) - See [ADR 004](../../decisions/004-migrate-to-better-auth.md)
+- **Component Structure:** Organized into auth/, community/, dashboard/, framework/, shared/, legacy/
+- **Design System:** Fully implemented at [src/lib/design-system.ts](../../../src/lib/design-system.ts)
+
+### Current Documentation
+- **Architecture:** [ARCHITECTURE.md](../../../ARCHITECTURE.md)
+- **Brand Guidelines:** [docs/PELICAN_AI_BRAND_GUIDELINES.md](../../PELICAN_AI_BRAND_GUIDELINES.md)
+- **Decisions:** [docs/decisions/](../../decisions/)
 
 ---
 
 ## 1. Executive Summary
 
-This document defines the technical architecture for the AI for LA Educators platform, building upon the existing A.I.D.A. codebase. The architecture leverages the current Convex backend, React frontend, and design system while introducing new features specific to the educator empowerment initiative.
+This document defines the technical architecture for the platform, building upon the existing A.I.D.A. codebase. The architecture leverages the current Convex backend, React frontend, and design system while introducing new features specific to the educator empowerment initiative.
 
 ### 1.1 Architectural Approach
 

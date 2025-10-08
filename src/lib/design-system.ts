@@ -1,5 +1,5 @@
 /**
- * EdCoachAi Design System
+ * Pelican AI Design System
  * Simple, consistent design tokens for the platform
  */
 

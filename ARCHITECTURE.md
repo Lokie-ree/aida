@@ -1,16 +1,17 @@
 # Architecture
 
-**AI for LA Educators - Technical Architecture**
+**Pelican AI - Technical Architecture**
 
-*Last Updated: October 5, 2025*
+*Last Updated: October 8, 2025*  
+*Status: Phase 5 - Software Engineering (In Progress)*
 
 ---
 
 ## Overview
 
-AI for LA Educators extends the existing A.I.D.A. codebase to provide Louisiana educators with curated AI guidance through a framework-based approach.
+Pelican AI provides Louisiana educators with curated AI guidance frameworks through a platform-agnostic approach. Built on proven infrastructure, we focus on guidance rather than tools.
 
-**Core Philosophy:** Evolution, not revolution. We build upon proven infrastructure while adding new features aligned with our educator empowerment mission.
+**Core Philosophy:** Navigate AI with confidence. We provide framework-based guidance that works with ANY AI tool educators already use, designed specifically for Louisiana standards.
 
 ---
 
@@ -25,13 +26,13 @@ AI for LA Educators extends the existing A.I.D.A. codebase to provide Louisiana 
 
 ### Backend
 - **Convex** - Real-time database + serverless functions
-- **Convex Auth** - Authentication (Better Auth)
+- **Better Auth** - Authentication (via @convex-dev/better-auth)
 - **OpenAI API** - AI capabilities
 - **Resend** - Email service
 
 ### Design System
 - **Fonts:** Lexend (primary), Poppins (headings), JetBrains Mono (code)
-- **Colors:** Louisiana Gold (#FBBF24), Primary Blue, Accent Green
+- **Colors:** Pelican Blue (#0ea5e9), Louisiana Gold (#f59e0b), Deep Blue (#1e40af)
 - **Standards:** WCAG 2.1 Level AA
 
 ---
@@ -66,14 +67,14 @@ Self-contained guidance units with:
 
 ### Core Tables
 
-**Existing (from A.I.D.A.):**
+**Existing (from legacy codebase):**
 - `users` - User accounts and profiles
 - `authSessions` - Authentication sessions
-- `documents` - Uploaded documents
-- `chatMessages` - Chat history
-- `spaces` - Collaborative spaces (will be refactored)
+- `documents` - Uploaded documents (legacy feature)
+- `chatMessages` - Chat history (legacy feature)
+- `spaces` - Collaborative spaces (legacy feature)
 
-**New (for AI for LA Educators):**
+**New (for Pelican AI):**
 - `frameworks` - Framework content and metadata
 - `frameworkUsage` - Usage tracking and analytics
 - `testimonials` - Educator testimonials
@@ -100,7 +101,7 @@ frameworks
 ## API Structure
 
 ### Existing Modules (Reused)
-- `convex/auth.ts` - Authentication
+- `convex/auth.ts` - Authentication (Better Auth - migrated Oct 6, 2025)
 - `convex/documents.ts` - Document management
 - `convex/chat.ts` - Chat functionality (may refactor)
 
@@ -117,23 +118,24 @@ frameworks
 ### Component Hierarchy
 ```
 App.tsx
-├── LandingPage (unauthenticated)
+├── shared/LandingPage (unauthenticated)
 └── Authenticated
-    ├── Dashboard
+    ├── dashboard/Dashboard
     │   ├── StatsGrid
-    │   ├── QuickStart (FrameworkCard[])
+    │   ├── QuickStart (framework/FrameworkCard[])
     │   ├── CommunityPreview
-    │   └── TimeSavingsTracker
-    ├── FrameworkLibrary
+    │   └── shared/TimeSavingsTracker
+    ├── framework/FrameworkLibrary
     │   ├── SearchFilters
-    │   └── FrameworkCard[]
-    ├── FrameworkDetail
+    │   └── framework/FrameworkCard[]
+    ├── framework/FrameworkDetail
     │   ├── FrameworkContent
     │   ├── CopyPromptButton
     │   └── FeedbackModal
-    └── CommunityHub
-        ├── InnovationsList
-        └── TestimonialsList
+    ├── community/CommunityHub
+    │   ├── InnovationsList
+    │   └── community/TestimonialCard[]
+    └── auth/AuthModal
 ```
 
 ### State Management
@@ -146,9 +148,10 @@ App.tsx
 ## Security & Privacy
 
 ### Authentication
-- Email/password via Convex Auth
+- Email/password via Better Auth
 - Session management with Better Auth
 - Role-based access (user, admin)
+- Migrated from Convex Auth (Oct 6, 2025 - see ADR 004)
 
 ### Data Protection
 - **FERPA Compliant:** No student PII stored
@@ -200,11 +203,12 @@ App.tsx
 
 For detailed rationale, see Architecture Decision Records in `docs/decisions/`:
 
-1. **Use Convex for Backend** - Real-time, serverless, simplified architecture
-2. **Extend A.I.D.A. Codebase** - Faster time to market, proven infrastructure
-3. **Framework-Based Content** - Scalable, modular, Louisiana-aligned
-4. **Beta-First Launch** - Validate with educators before scale
-5. **Community-Driven** - Educators sharing with educators
+1. **Use Convex for Backend** - Real-time, serverless, simplified architecture (ADR 001)
+2. **Extend A.I.D.A. Codebase** - Faster time to market, proven infrastructure (ADR 002)
+3. **Framework-Based Content** - Scalable, modular, Louisiana-aligned (ADR 003)
+4. **Migrate to Better Auth** - Modern auth solution with better DX (ADR 004 - Completed Oct 6, 2025)
+5. **Beta-First Launch** - Validate with educators before scale
+6. **Community-Driven** - Educators sharing with educators
 
 ---
 
@@ -218,23 +222,25 @@ For detailed rationale, see Architecture Decision Records in `docs/decisions/`:
 - ✅ Document management (if needed)
 
 ### Refactor
-- 🔄 "Spaces" concept → Framework categories
-- 🔄 Chat interface → Framework-focused (future)
-- 🔄 Landing page → New brand and messaging
+- ✅ "Spaces" concept → Framework categories (completed - Oct 2025)
+- ✅ Chat interface → Framework-focused (completed - Oct 2025)
+- ✅ Landing page → New brand and messaging (completed - Oct 2025)
+- ✅ Component organization → Feature-based folders (completed - Oct 2025)
+- ✅ Authentication → Better Auth migration (completed - Oct 6, 2025)
 
 ### Remove
-- ❌ Voice interface (Vapi) - Future Phase 2 feature
-- ❌ Complex space collaboration - Not needed for beta
-- ❌ Unused features and dependencies
+- ✅ Voice interface (Vapi) - Moved to legacy folder
+- ✅ Complex space collaboration - Moved to legacy folder
+- ✅ Unused features and dependencies - Cleaned up
 
 ---
 
 ## Future Enhancements (Post-Beta)
 
 ### Phase 2 Features
-- AI-powered chat assistant
-- Voice interface (Vapi integration)
-- Advanced RAG with document upload
+- AI-powered chat assistant (legacy components available)
+- Voice interface (Vapi integration - legacy components available)
+- Advanced RAG with document upload (legacy components available)
 - PD session booking
 
 ### Scalability
