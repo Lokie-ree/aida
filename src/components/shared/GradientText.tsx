@@ -13,7 +13,7 @@ export default function GradientText({
   children,
   className = '',
   colors = ['#ffaa40', '#9c40ff', '#ffaa40'],
-  animationSpeed = 8,
+  animationSpeed = 20,
   showBorder = false,
   as: Component = 'div'
 }: GradientTextProps) {
@@ -24,7 +24,7 @@ export default function GradientText({
 
   return (
     <Component
-      className={`relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-[1.25rem] font-medium backdrop-blur transition-shadow duration-500 overflow-hidden cursor-pointer px-2 py-1 ${className}`}
+      className={`relative mx-auto flex flex-row items-center justify-center rounded-[1.25rem] font-medium backdrop-blur transition-shadow duration-500 overflow-hidden cursor-pointer px-2 py-1 break-words ${className}`}
     >
       {showBorder && (
         <div

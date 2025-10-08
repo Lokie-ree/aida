@@ -1,7 +1,7 @@
 /* Mobile Responsiveness Optimizations */
 @media (max-width: 640px) {
   /* Ensure all touch targets meet minimum size */
-  button, [role="button"], a {
+  button:not(.compact), [role="button"]:not(.compact), a:not(.compact) {
     min-height: 44px;
     min-width: 44px;
     padding: 12px 16px;
@@ -47,7 +47,7 @@
   }
   
   /* Reduce animations on mobile for better performance */
-  * {
+  .mobile-optimize {
     animation-duration: 0.3s !important;
     transition-duration: 0.3s !important;
   }

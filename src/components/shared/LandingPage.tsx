@@ -234,20 +234,18 @@ export function LandingPage() {
         animate={{ y: 0 }}
         className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Logo className="h-8 sm:h-10" />
-
-           <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
-             <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
-             <Button 
-               size="lg" 
-               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-               className="bg-primary hover:bg-primary/90 transition-colors flex-1 sm:flex-none h-[45px]"
-             >
-               <span className="hidden sm:inline">Join Beta Program</span>
-               <span className="sm:hidden">Join Beta</span>
-             </Button>
-           </div>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
+            <Button 
+              size="sm"
+              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+            >
+              Join Beta
+            </Button>
+          </div>
         </div>
       </motion.header>
 
@@ -297,8 +295,8 @@ export function LandingPage() {
                ]}
                className="inline-block"
                elementLevelClassName="text-primary"
-               rotationInterval={3000}
-               staggerDuration={0.03}
+               rotationInterval={8000}
+               staggerDuration={0.05}
              />
           </motion.h1>
 
@@ -624,15 +622,15 @@ export function LandingPage() {
             </motion.div>
           </motion.div>
 
-          <Marquee pauseOnHover className="[--duration:40s]">
+          <Marquee pauseOnHover className="[--duration:90s] [--gap:0.5rem]" repeat={2}>
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
-                <CardContent className="p-6">
-                  <Quote className="w-8 h-8 text-primary/60 mb-4" />
-                  <p className="text-base italic mb-6">"{testimonial.quote}"</p>
+              <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
+                <CardContent className="p-4 sm:p-6">
+                  <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-primary/60 mb-3 sm:mb-4" />
+                  <p className="text-sm sm:text-base italic mb-4 sm:mb-6">"{testimonial.quote}"</p>
                   <div>
-                    <p className="font-semibold">{testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                    <p className="text-sm sm:text-base font-semibold">{testimonial.author}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.title}</p>
                   </div>
                 </CardContent>
               </Card>

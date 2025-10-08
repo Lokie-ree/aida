@@ -163,7 +163,7 @@
     boxShadow: 0 0 0 8px var(--pulse-color);
     }
   }
-  --animate-gradient: gradient 8s linear infinite;
+  --animate-gradient: gradient 20s linear infinite;
   @keyframes gradient {
   0% {
     background-position: 0% 50%;
