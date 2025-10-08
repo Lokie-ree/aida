@@ -8,7 +8,7 @@ export interface ErrorContext {
   additionalData?: Record<string, any>;
 }
 
-export class AidaError extends Error {
+export class PelicanError extends Error {
   public readonly code: string;
   public readonly context: ErrorContext;
   public readonly userMessage: string;
@@ -22,7 +22,7 @@ export class AidaError extends Error {
     isRetryable: boolean = false
   ) {
     super(message);
-    this.name = "AidaError";
+    this.name = "PelicanError";
     this.code = code;
     this.context = context;
     this.userMessage = userMessage;
@@ -93,11 +93,11 @@ export const ErrorMessages = {
   [ErrorCodes.VALIDATION_ERROR]: "Please check your input and try again",
 } as const;
 
-export function handleError(error: unknown, context: ErrorContext = {}): AidaError {
+export function handleError(error: unknown, context: ErrorContext = {}): PelicanError {
   console.error("Error in", context.component, ":", error);
 
-  // If it's already an AidaError, return it
-  if (error instanceof AidaError) {
+  // If it's already a PelicanError, return it
+  if (error instanceof PelicanError) {
     return error;
   }
 
@@ -105,7 +105,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
   if (error instanceof Error) {
     // Network errors
     if (error.message.includes("fetch") || error.message.includes("network")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.NETWORK_ERROR,
         ErrorMessages[ErrorCodes.NETWORK_ERROR],
@@ -116,7 +116,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
 
     // Timeout errors
     if (error.message.includes("timeout") || error.message.includes("timed out")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.TIMEOUT_ERROR,
         ErrorMessages[ErrorCodes.TIMEOUT_ERROR],
@@ -127,7 +127,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
 
     // Authentication errors
     if (error.message.includes("authentication") || error.message.includes("unauthorized")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.AUTH_REQUIRED,
         ErrorMessages[ErrorCodes.AUTH_REQUIRED],
@@ -138,7 +138,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
     // Space errors
     if (error.message.includes("space") || error.message.includes("workspace")) {
       if (error.message.includes("not found")) {
-        return new AidaError(
+        return new PelicanError(
           error.message,
           ErrorCodes.SPACE_NOT_FOUND,
           ErrorMessages[ErrorCodes.SPACE_NOT_FOUND],
@@ -146,7 +146,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
         );
       }
       if (error.message.includes("permission") || error.message.includes("access")) {
-        return new AidaError(
+        return new PelicanError(
           error.message,
           ErrorCodes.SPACE_ACCESS_DENIED,
           ErrorMessages[ErrorCodes.SPACE_ACCESS_DENIED],
@@ -157,7 +157,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
 
     // Document errors
     if (error.message.includes("document") || error.message.includes("upload")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.DOCUMENT_UPLOAD_FAILED,
         ErrorMessages[ErrorCodes.DOCUMENT_UPLOAD_FAILED],
@@ -168,7 +168,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
 
     // Voice errors
     if (error.message.includes("voice") || error.message.includes("microphone")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.VOICE_CONNECTION_FAILED,
         ErrorMessages[ErrorCodes.VOICE_CONNECTION_FAILED],
@@ -179,7 +179,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
 
     // RAG errors
     if (error.message.includes("RAG") || error.message.includes("search")) {
-      return new AidaError(
+      return new PelicanError(
         error.message,
         ErrorCodes.RAG_SEARCH_FAILED,
         ErrorMessages[ErrorCodes.RAG_SEARCH_FAILED],
@@ -189,7 +189,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
     }
 
     // Generic error
-    return new AidaError(
+    return new PelicanError(
       error.message,
       ErrorCodes.UNKNOWN_ERROR,
       ErrorMessages[ErrorCodes.UNKNOWN_ERROR],
@@ -199,7 +199,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
   }
 
   // Unknown error type
-  return new AidaError(
+  return new PelicanError(
     "Unknown error occurred",
     ErrorCodes.UNKNOWN_ERROR,
     ErrorMessages[ErrorCodes.UNKNOWN_ERROR],
@@ -208,7 +208,7 @@ export function handleError(error: unknown, context: ErrorContext = {}): AidaErr
   );
 }
 
-export function showErrorToast(error: AidaError, options?: { duration?: number }) {
+export function showErrorToast(error: PelicanError, options?: { duration?: number }) {
   const { duration = 5000 } = options || {};
   
   toast.error(error.userMessage, {
@@ -246,7 +246,7 @@ export function showWarningToast(message: string, description?: string) {
 }
 
 // Error boundary helper
-export function getErrorBoundaryFallback(error: AidaError) {
+export function getErrorBoundaryFallback(error: PelicanError) {
   return {
     title: "Something went wrong",
     message: error.userMessage,

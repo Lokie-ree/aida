@@ -1,16 +1,31 @@
 # Design Documentation
-## AI for LA Educators Platform
+## ~~AI for LA Educators Platform~~ → Pelican AI
 
 **Version:** 1.0  
 **Date:** October 4, 2025  
-**Status:** Phase 2 - Complete  
+**Status:** Phase 2 - Complete (ARCHIVED - See note below)  
 **Owner:** UX/UI Designer  
+
+---
+
+## ⚠️ BRANDING UPDATE NOTICE
+
+**This documentation was created before final branding decisions.** The platform is now branded as **"Pelican AI"** with updated visual identity:
+
+- **Name:** Pelican AI (not "AI for LA Educators")
+- **Logo:** Pelican silhouette (not compass/lighthouse)
+- **Primary Color:** Pelican Blue `#0ea5e9` (not `#3B82F6`)
+- **Secondary Color:** Louisiana Gold `#f59e0b` (matches planning)
+- **Fonts:** Lexend, Poppins, JetBrains Mono (matches planning ✓)
+
+**For current branding:** See [docs/PELICAN_AI_BRAND_GUIDELINES.md](../../PELICAN_AI_BRAND_GUIDELINES.md)  
+**For implemented design system:** See [src/lib/design-system.ts](../../../src/lib/design-system.ts)
 
 ---
 
 ## Overview
 
-This directory contains the complete design documentation for the AI for LA Educators platform. The design phase translates the Product Requirements Document (PRD) into a comprehensive visual and interaction design system ready for technical implementation.
+This directory contains the complete design documentation for the platform. The design phase translates the Product Requirements Document (PRD) into a comprehensive visual and interaction design system ready for technical implementation.
 
 ---
 

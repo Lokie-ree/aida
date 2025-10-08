@@ -1,17 +1,30 @@
 # Design System
-## AI for LA Educators Platform
+## ~~AI for LA Educators Platform~~ → Pelican AI
 
 **Version:** 1.0  
 **Date:** October 4, 2025  
-**Status:** Phase 2 - Design Documentation  
+**Status:** Phase 2 - Design Documentation (ARCHIVED)  
 **Owner:** UX/UI Designer  
+
+---
+
+## ⚠️ BRANDING UPDATE
+
+**This design system was created before final branding.** The platform is now **"Pelican AI"** with these changes:
+
+- **Logo:** Pelican (not compass/lighthouse)
+- **Primary Color:** Pelican Blue `#0ea5e9` (not `#3B82F6`)
+- **Fonts:** Lexend, Poppins, JetBrains Mono ✓ (matches)
+
+**Current design system:** [src/lib/design-system.ts](../../../src/lib/design-system.ts)  
+**Current brand guidelines:** [docs/PELICAN_AI_BRAND_GUIDELINES.md](../../PELICAN_AI_BRAND_GUIDELINES.md)
 
 ---
 
 ## 1. Introduction
 
 ### 1.1 Purpose
-This design system establishes the visual language, interaction patterns, and component library for the AI for LA Educators platform. It ensures consistency, accessibility, and a cohesive user experience across all touchpoints.
+This design system establishes the visual language, interaction patterns, and component library for the platform. It ensures consistency, accessibility, and a cohesive user experience across all touchpoints.
 
 ### 1.2 Design Philosophy
 - **Educator-First:** Every design decision prioritizes educator needs and workflows

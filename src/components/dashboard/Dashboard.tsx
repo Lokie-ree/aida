@@ -13,10 +13,10 @@ import {
   Star,
   Calendar
 } from "lucide-react";
-import { FrameworkCard } from "./FrameworkCard";
-import { TestimonialCard } from "./TestimonialCard";
-import { TimeSavingsTracker } from "./TimeSavingsTracker";
-import { BetaTesterBadge } from "./BetaTesterBadge";
+import { FrameworkCard } from "../framework/FrameworkCard";
+import { TestimonialCard } from "../community/TestimonialCard";
+import { TimeSavingsTracker } from "../shared/TimeSavingsTracker";
+import { BetaTesterBadge } from "../shared/BetaTesterBadge";
 import { cn } from "@/lib/utils";
 
 interface DashboardProps {

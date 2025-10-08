@@ -8,11 +8,23 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Next: Phase 5 - Software Engineering
-- Implement new database schema (6 tables)
-- Build backend APIs (frameworks, testimonials, innovations, beta program)
-- Create frontend components and pages
-- Beta launch preparation
+### In Progress: Phase 5 - Software Engineering
+- ✅ Component reorganization (feature-based folders)
+- ✅ Better Auth migration complete
+- 🔄 Implement new database schema (6 tables)
+- 🔄 Build backend APIs (frameworks, testimonials, innovations, beta program)
+- 🔄 Create frontend components and pages
+- 🔄 Beta launch preparation
+
+### Completed
+- **Component Organization**: Reorganized components into feature-based folders
+  - `src/components/auth/` - Authentication components
+  - `src/components/community/` - Community features
+  - `src/components/dashboard/` - Dashboard components
+  - `src/components/framework/` - Framework-related components
+  - `src/components/legacy/` - Legacy components (Voice, Spaces)
+  - `src/components/shared/` - Shared components
+- **Better Auth Migration**: Successfully migrated from Convex Auth to Better Auth (see ADR 004)
 
 ---
 

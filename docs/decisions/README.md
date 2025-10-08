@@ -20,7 +20,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [001](001-use-convex-backend.md) | Use Convex for Backend | ✅ Accepted | Oct 5, 2025 |
 | [002](002-extend-aida-codebase.md) | Extend A.I.D.A. Codebase | ✅ Accepted | Oct 5, 2025 |
 | [003](003-framework-based-content.md) | Framework-Based Content | ✅ Accepted | Oct 5, 2025 |
-| [004](004-migrate-to-better-auth.md) | Migrate to Better Auth | 🔄 In Progress | Oct 5, 2025 |
+| [004](004-migrate-to-better-auth.md) | Migrate to Better Auth | ✅ Completed | Oct 6, 2025 |
 
 ## ADR Lifecycle
 

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Authenticated, Unauthenticated, useQuery } from "convex/react";
+import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import { ModeToggle } from "./components/ModeToggle";
-import { LandingPage } from "./components/LandingPage";
-import { Logo } from "./components/logo";
+import { ModeToggle } from "./components/shared/ModeToggle";
+import { LandingPage } from "./components/shared/LandingPage";
+import { Logo } from "./components/shared/Logo";
+import { Dashboard } from "./components/dashboard/Dashboard";
 
 export default function App() {
   const [currentView, setCurrentView] = useState<"dashboard" | "frameworks" | "profile">("dashboard");
@@ -68,7 +69,7 @@ function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "p
   }
 
   // Initialize beta program for new users
-  const initializeBeta = useQuery(api.betaProgram.initializeBetaProgram, {});
+  const initializeBeta = useMutation(api.betaProgram.initializeBetaProgram);
 
   // Mock data for now - in real implementation, this would come from user profile
   const user = {
@@ -81,7 +82,7 @@ function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "p
     frameworksTried: betaStats?.frameworksTried || 0,
     timeSaved: betaStats?.totalTimeSaved || 0,
     innovationsShared: betaStats?.innovationsShared || 0,
-    weeklyStreak: betaStats?.weeklyEngagementCount || 0,
+    weeklyStreak: betaStats?.weeklyEngagementStreak || 0,
   };
 
   switch (currentView) {
