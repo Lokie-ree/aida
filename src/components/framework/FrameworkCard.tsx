@@ -3,12 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck } from "lucide-react";
-import { Id } from "../../convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 
 interface FrameworkCardProps {
   framework: {
-    _id: Id<"frameworks">;
+    _id: string;
     frameworkId: string;
     title: string;
     module: "ai-basics-hub" | "instructional-expert-hub";
@@ -20,9 +19,12 @@ interface FrameworkCardProps {
     usageCount: number;
     averageRating?: number;
   };
-  variant?: "compact" | "expanded";
+  variant?: "compact" | "expanded" | "grid" | "list";
   onView: () => void;
   onSave?: () => void;
+  onUnsave?: () => void;
+  onCopy?: () => void;
+  onTried?: () => void;
   isSaved?: boolean;
 }
 
@@ -30,7 +32,10 @@ export function FrameworkCard({
   framework, 
   variant = "compact", 
   onView, 
-  onSave, 
+  onSave,
+  onUnsave,
+  onCopy,
+  onTried,
   isSaved = false 
 }: FrameworkCardProps) {
   const difficultyColors = {
@@ -44,11 +49,128 @@ export function FrameworkCard({
     "instructional-expert-hub": "bg-purple-100 text-purple-800 border-purple-200",
   };
 
-  const copyPrompt = () => {
-    // This would copy the sample prompt to clipboard
-    // Implementation depends on how prompts are stored/accessed
-    console.log("Copy prompt functionality");
+  const handleCopy = () => {
+    if (onCopy) {
+      onCopy();
+    }
   };
+
+  const handleSave = () => {
+    if (isSaved && onUnsave) {
+      onUnsave();
+    } else if (!isSaved && onSave) {
+      onSave();
+    }
+  };
+
+  // List variant layout
+  if (variant === "list") {
+    return (
+      <Card className="group hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <Badge 
+                    variant="outline" 
+                    className={cn("text-xs font-medium", moduleColors[framework.module])}
+                  >
+                    {framework.module === "ai-basics-hub" ? "AI Basics" : "Instructional Expert"}
+                  </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className={cn("text-xs font-medium", difficultyColors[framework.difficultyLevel])}
+                  >
+                    {framework.difficultyLevel}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Users className="h-3 w-3" />
+                  <span>{framework.usageCount}</span>
+                  {framework.averageRating && (
+                    <>
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 ml-2" />
+                      <span>{framework.averageRating.toFixed(1)}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+                {framework.title}
+              </h3>
+              
+              <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                {framework.challenge}
+              </p>
+              
+              <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  <span>{framework.timeEstimate} min</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="capitalize">{framework.category.replace("-", " ")}</span>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-1 mb-3">
+                {framework.tags.slice(0, 4).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+                {framework.tags.length > 4 && (
+                  <Badge variant="secondary" className="text-xs">
+                    +{framework.tags.length - 4} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <Button onClick={onView} size="sm">
+                View Details
+              </Button>
+              <div className="flex gap-1">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleCopy}
+                  className="px-3"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleSave}
+                  className="px-3"
+                >
+                  {isSaved ? (
+                    <BookmarkCheck className="h-4 w-4 text-primary" />
+                  ) : (
+                    <Bookmark className="h-4 w-4" />
+                  )}
+                </Button>
+                {onTried && (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={onTried}
+                    className="px-3"
+                  >
+                    <Star className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className={cn(
@@ -132,17 +254,17 @@ export function FrameworkCard({
           <Button 
             variant="outline" 
             size="sm"
-            onClick={copyPrompt}
+            onClick={handleCopy}
             className="px-3"
           >
             <Copy className="h-4 w-4" />
           </Button>
           
-          {onSave && (
+          {(onSave || onUnsave) && (
             <Button 
               variant="outline" 
               size="sm"
-              onClick={onSave}
+              onClick={handleSave}
               className="px-3"
             >
               {isSaved ? (
@@ -150,6 +272,17 @@ export function FrameworkCard({
               ) : (
                 <Bookmark className="h-4 w-4" />
               )}
+            </Button>
+          )}
+          
+          {onTried && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={onTried}
+              className="px-3"
+            >
+              <Star className="h-4 w-4" />
             </Button>
           )}
         </div>

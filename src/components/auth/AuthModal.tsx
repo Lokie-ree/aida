@@ -22,7 +22,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
 
@@ -31,41 +31,45 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const password = formData.get("password") as string;
     const name = formData.get("name") as string;
 
-    try {
-      if (flow === "signIn") {
-        await authClient.signIn.email({
-          email,
-          password,
-        });
-        toast.success("Welcome back!");
-        onClose();
-      } else {
-        await authClient.signUp.email({
-          email,
-          password,
-          name: name || email.split("@")[0],
-        });
-        toast.success("Account created successfully!");
-        onClose();
+    const performAuth = async () => {
+      try {
+        if (flow === "signIn") {
+          await authClient.signIn.email({
+            email,
+            password,
+          });
+          toast.success("Welcome back!");
+          onClose();
+        } else {
+          await authClient.signUp.email({
+            email,
+            password,
+            name: name || email.split("@")[0],
+          });
+          toast.success("Account created successfully!");
+          onClose();
+        }
+      } catch (error: any) {
+        console.error("Auth error:", error);
+        
+        let toastTitle = "";
+        if (error.message?.includes("Invalid") || error.message?.includes("password")) {
+          toastTitle = "Invalid email or password. Please try again.";
+        } else if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
+          toastTitle = "An account with this email already exists. Try signing in instead.";
+          setFlow("signIn");
+        } else {
+          toastTitle = flow === "signIn"
+            ? "Could not sign in. Please check your credentials."
+            : "Could not create account. Please try again.";
+        }
+        toast.error(toastTitle);
+      } finally {
+        setSubmitting(false);
       }
-    } catch (error: any) {
-      console.error("Auth error:", error);
-      
-      let toastTitle = "";
-      if (error.message?.includes("Invalid") || error.message?.includes("password")) {
-        toastTitle = "Invalid email or password. Please try again.";
-      } else if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
-        toastTitle = "An account with this email already exists. Try signing in instead.";
-        setFlow("signIn");
-      } else {
-        toastTitle = flow === "signIn"
-          ? "Could not sign in. Please check your credentials."
-          : "Could not create account. Please try again.";
-      }
-      toast.error(toastTitle);
-    } finally {
-      setSubmitting(false);
-    }
+    };
+
+    void performAuth();
   };
 
   return (

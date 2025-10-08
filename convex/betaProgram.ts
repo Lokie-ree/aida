@@ -185,3 +185,40 @@ export const getBetaStats = query({
     };
   },
 });
+
+// Query: Get all beta users (for email distribution)
+export const getAllBetaUsers = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("users"),
+    email: v.string(),
+    name: v.optional(v.string()),
+  })),
+  handler: async (ctx) => {
+    // Get all active beta users
+    const betaUsers = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_status", (q) => q.eq("status", "active"))
+      .collect();
+
+    // Get user details for each beta user
+    const users: Array<{
+      _id: any;
+      email: string;
+      name?: string;
+    }> = [];
+    
+    for (const betaUser of betaUsers) {
+      const user = await ctx.db.get(betaUser.userId as any);
+      if (user && 'email' in user) {
+        users.push({
+          _id: user._id,
+          email: (user as any).email,
+          name: (user as any).name,
+        });
+      }
+    }
+
+    return users;
+  },
+});

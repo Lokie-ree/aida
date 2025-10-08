@@ -1,4 +1,109 @@
 {
+  "project_metadata": {
+    "name": "Pelican AI",
+    "tagline": "Navigate AI with Confidence",
+    "mission": "Curated AI guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with platform-agnostic guidance aligned to Louisiana standards.",
+    "version": "1.1",
+    "status": "Phase 5 - Software Engineering (In Progress)",
+    "last_updated": "October 8, 2025",
+    "domain": "pelicanai.org",
+    "email": "hello@pelicanai.org",
+    "target_audience": "Louisiana K-12 educators",
+    "core_value_proposition": [
+      "Guided Frameworks: Copy-paste ready prompts with ethical guardrails",
+      "Louisiana-Aligned: Built for Louisiana standards and educator rubric", 
+      "Community-Driven: Educators sharing innovations with educators",
+      "Time-Saving: Practical solutions that reclaim valuable teaching time",
+      "Trust-First: Transparent, ethical, and educator-controlled"
+    ],
+    "brand_identity": {
+      "primary_colors": {
+        "pelican_blue": "#0ea5e9",
+        "louisiana_gold": "#f59e0b", 
+        "deep_blue": "#1e40af"
+      },
+      "typography": {
+        "primary_font": "Lexend",
+        "heading_font": "Poppins",
+        "monospace_font": "JetBrains Mono"
+      },
+      "voice_tone": {
+        "personality": "Professional yet Approachable",
+        "focus": "Louisiana-Proud, Educator-First, Confident but Humble"
+      }
+    },
+    "technical_stack": {
+      "frontend": {
+        "framework": "React 19",
+        "language": "TypeScript",
+        "build_tool": "Vite",
+        "styling": "Tailwind CSS",
+        "components": "shadcn/ui"
+      },
+      "backend": {
+        "database": "Convex",
+        "authentication": "Better Auth",
+        "ai_provider": "OpenAI API",
+        "email_service": "Resend"
+      },
+      "design_system": {
+        "accessibility": "WCAG 2.1 Level AA",
+        "responsive": "Mobile-first approach",
+        "spacing": "8px base unit scale"
+      }
+    },
+    "current_phase": {
+      "number": 5,
+      "name": "Software Engineering",
+      "status": "In Progress",
+      "objectives": [
+        "Build Core Platform Features based on Phase 4 specifications",
+        "Implement Database Schema for frameworks, testimonials, innovations",
+        "Create User Dashboard with AI guidance tools",
+        "Develop Framework Library with Louisiana standards alignment",
+        "Build Community Features for educator collaboration",
+        "Implement Beta Program management system"
+      ]
+    },
+    "success_metrics": {
+      "beta_program_goals": {
+        "active_beta_testers": 50,
+        "frameworks_per_week": 3,
+        "minutes_saved_per_week": 120,
+        "innovations_shared": 20,
+        "satisfaction_score": "80%+"
+      },
+      "platform_metrics": {
+        "frameworks_at_launch": 10,
+        "page_load_time": "<3s",
+        "accessibility_compliance": "WCAG 2.1 AA",
+        "uptime_reliability": "95%+"
+      }
+    },
+    "documentation_structure": {
+      "foundation": [
+        "PELICAN_AI_BRAND_GUIDELINES.md",
+        "ARCHITECTURE.md", 
+        "PHILOSOPHY.md",
+        "README.md",
+        "PHASE_5_OPENING.md",
+        "UI_HEALING_SYSTEM.md",
+        "AGENTS.md",
+        "orchestrator.json"
+      ],
+      "completed": [
+        "AUTHENTICATION_SYSTEM_COMPLETE.md",
+        "EMAIL_SYSTEM_COMPLETE.md", 
+        "MOBILE_RESPONSIVENESS_COMPLETE.md",
+        "PHASES_1-4_CONSOLIDATION_REPORT.md",
+        "BETTER_AUTH_SETUP.md",
+        "RESEND_SETUP.md"
+      ],
+      "archived": [
+        "planning/archived/strategic-positioning.md"
+      ]
+    }
+  },
   "orchestrator": {
     "name": "The Orchestrator: Master Facilitator",
     "description": "Master facilitator designed to ensure seamless execution, maintain project integrity, and guarantee that the final output perfectly aligns with the initial vision through agent-driven development cycles.",
@@ -32,38 +137,39 @@
       "phases": [
         {
           "phase": "Project Ignition",
-          "description": "Before Phase 1",
+          "description": "Before Phase 1 - Pelican AI Context",
           "actions": [
             {
               "action": "Define the Spark",
-              "description": "Articulate the initial project idea in a clear, concise statement"
+              "description": "Articulate the initial project idea in a clear, concise statement. For Pelican AI: Platform-agnostic AI guidance for Louisiana educators."
             },
             {
               "action": "Initiate the Chain",
-              "description": "Provide statement to Product Manager agent and give command to generate product-requirements.md"
+              "description": "Provide statement to Product Manager agent and give command to generate product-requirements.md. Ensure Louisiana educator focus and framework-based approach."
             }
           ]
         },
         {
           "phase": "Phase 1 → 2 Handoff",
-          "description": "Product to Design",
+          "description": "Product to Design - Pelican AI Brand Integration",
           "actions": [
             {
               "action": "Receive & Review PRD",
-              "description": "Receive product-requirements.md from PM agent"
+              "description": "Receive product-requirements.md from PM agent. Verify Louisiana educator focus and framework-based approach."
             },
             {
               "action": "Audit for Clarity",
-              "description": "Review focusing on completeness, clarity, and actionability",
+              "description": "Review focusing on completeness, clarity, and actionability. Ensure alignment with Pelican AI brand guidelines.",
               "criteria": [
                 "Completeness: Does it contain all required sections?",
                 "Clarity: Is it unambiguous and easy to understand?",
-                "Actionability: Does it provide enough detail for a designer to start work?"
+                "Actionability: Does it provide enough detail for a designer to start work?",
+                "Brand Alignment: Does it align with Pelican AI's Louisiana-focused, platform-agnostic approach?"
               ]
             },
             {
               "action": "Approve & Deliver",
-              "description": "Formally approve document and provide to UX/UI Designer agent with instruction to begin Phase 2"
+              "description": "Formally approve document and provide to UX/UI Designer agent with instruction to begin Phase 2. Include Pelican AI brand guidelines reference."
             }
           ]
         },
@@ -236,6 +342,14 @@
       "quality_gates": true,
       "iteration_support": true,
       "error_handling": "Remediation loops with targeted plans",
+      "pelican_ai_specific_requirements": {
+        "brand_consistency": "All deliverables must align with Pelican AI brand guidelines",
+        "louisiana_focus": "All content must be relevant to Louisiana educators and standards",
+        "platform_agnostic": "Solutions must work with any AI tool, not just specific platforms",
+        "accessibility": "All interfaces must meet WCAG 2.1 Level AA standards",
+        "mobile_first": "All designs must be mobile-responsive with 44px touch targets",
+        "framework_based": "Content must be structured as copy-paste ready frameworks"
+      },
       "documentation_requirements": [
         "product-requirements.md",
         "design-documentation directory",
@@ -258,7 +372,24 @@
         "Polisher"
       ],
       "handoff_pattern": "Sequential with quality gates",
-      "communication_protocol": "Document-based with formal approval process"
+      "communication_protocol": "Document-based with formal approval process",
+      "pelican_ai_context": {
+        "project_phase": "Phase 5 - Software Engineering",
+        "current_focus": "Building core platform features for Louisiana educators",
+        "key_constraints": [
+          "Must align with Louisiana educational standards",
+          "Platform-agnostic approach (works with any AI tool)",
+          "Mobile-first responsive design",
+          "WCAG 2.1 Level AA accessibility compliance",
+          "Pelican AI brand consistency throughout"
+        ],
+        "success_criteria": [
+          "50+ active beta testers",
+          "3+ frameworks used per educator per week",
+          "120+ minutes saved per educator per week",
+          "80%+ satisfaction score"
+        ]
+      }
     }
   }
 }

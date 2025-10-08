@@ -8,14 +8,24 @@ import { ModeToggle } from "./components/shared/ModeToggle";
 import { LandingPage } from "./components/shared/LandingPage";
 import { Logo } from "./components/shared/Logo";
 import { Dashboard } from "./components/dashboard/Dashboard";
+import { ProfileSettings } from "./components/dashboard/ProfileSettings";
+import { Navigation } from "./components/shared/Navigation";
+import { FrameworkLibrary } from "./components/framework/FrameworkLibrary";
+import { BetaOnboarding } from "./components/dashboard/BetaOnboarding";
+import { InnovationList } from "./components/community/InnovationList";
+import { AdminDashboard } from "./components/admin/AdminDashboard";
+import { TimeTracking } from "./components/dashboard/TimeTracking";
+import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<"dashboard" | "frameworks" | "profile">("dashboard");
+  const [currentView, setCurrentView] = useState<"dashboard" | "frameworks" | "community" | "profile" | "admin" | "time-tracking">("dashboard");
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen flex flex-col bg-background">
-        <Authenticated>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <div className="min-h-screen flex flex-col bg-background">
+          <Authenticated>
           {/* Skip link for accessibility */}
           <a
             href="#main-content"
@@ -29,30 +39,57 @@ export default function App() {
               <div className="flex items-center gap-3">
                 <Logo className="h-8" />
               </div>
-              <div className="flex items-center gap-2 lg:gap-4">
-                <ModeToggle />
-                <SignOutButton />
+              <div className="flex items-center gap-4">
+                <Navigation 
+                  currentView={currentView} 
+                  onViewChange={setCurrentView}
+                />
+                <div className="flex items-center gap-2">
+                  <ModeToggle />
+                  <SignOutButton />
+                </div>
               </div>
             </div>
           </header>
 
           <main id="main-content" className="flex-1" role="main">
-            <Content currentView={currentView} />
+            <Content 
+              currentView={currentView} 
+              onShowOnboarding={() => setShowOnboarding(true)}
+            />
           </main>
+
+          {/* Beta Onboarding Modal */}
+          <BetaOnboarding
+            isOpen={showOnboarding}
+            onClose={() => setShowOnboarding(false)}
+            onComplete={() => {
+              setShowOnboarding(false);
+              // Optionally redirect to a specific view
+            }}
+          />
         </Authenticated>
 
         <Unauthenticated>
           <LandingPage />
         </Unauthenticated>
 
-        <Toaster position="top-right" />
-      </div>
-    </ThemeProvider>
-  );
-}
+            <Toaster position="top-right" />
+          </div>
+        </ThemeProvider>
+      </ErrorBoundary>
+    );
+  }
 
-function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "profile" }) {
+function Content({
+  currentView,
+  onShowOnboarding
+}: {
+  currentView: "dashboard" | "frameworks" | "community" | "profile" | "admin" | "time-tracking";
+  onShowOnboarding: () => void;
+}) {
   const loggedInUser = useQuery(api.auth.loggedInUser);
+  const userProfile = useQuery(api.userProfiles.getUserProfile);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
   const testimonials = useQuery(api.testimonials.getFeaturedTestimonials, {});
   const betaStats = useQuery(api.betaProgram.getBetaStats, {});
@@ -68,14 +105,14 @@ function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "p
     );
   }
 
-  // Initialize beta program for new users
-  const initializeBeta = useMutation(api.betaProgram.initializeBetaProgram);
+  // Check if user needs onboarding (no profile or incomplete onboarding)
+  const needsOnboarding = !userProfile || (betaStats && betaStats.weeklyEngagementStreak === 0);
 
-  // Mock data for now - in real implementation, this would come from user profile
+  // Use real user profile data
   const user = {
     name: loggedInUser.name || "Educator",
-    school: "Louisiana School District",
-    subject: "Education"
+    school: userProfile?.school || "Not specified",
+    subject: userProfile?.subject || "Not specified"
   };
 
   const stats = {
@@ -85,6 +122,11 @@ function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "p
     weeklyStreak: betaStats?.weeklyEngagementStreak || 0,
   };
 
+  // Show onboarding for new users
+  if (needsOnboarding && currentView === "dashboard") {
+    onShowOnboarding();
+  }
+
   switch (currentView) {
     case "dashboard":
       return (
@@ -93,28 +135,26 @@ function Content({ currentView }: { currentView: "dashboard" | "frameworks" | "p
           stats={stats}
           recentFrameworks={frameworks.slice(0, 4)}
           featuredTestimonials={testimonials}
+          onShowOnboarding={onShowOnboarding}
         />
       );
     case "frameworks":
-      return (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">Framework Library</h1>
-          <p className="text-muted-foreground">Framework library coming soon...</p>
-        </div>
-      );
+      return <FrameworkLibrary />;
+    case "community":
+      return <InnovationList />;
     case "profile":
-      return (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">Profile Settings</h1>
-          <p className="text-muted-foreground">Profile settings coming soon...</p>
-        </div>
-      );
+      return <ProfileSettings />;
+    case "admin":
+      return <AdminDashboard />;
+    case "time-tracking":
+      return <TimeTracking />;
     default:
       return <Dashboard 
         user={user}
         stats={stats}
         recentFrameworks={frameworks.slice(0, 4)}
         featuredTestimonials={testimonials}
+        onShowOnboarding={onShowOnboarding}
       />;
   }
 }

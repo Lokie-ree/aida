@@ -51,7 +51,7 @@ export function LandingPage() {
     setValidationErrors({});
     
     // Validate email
-    if (!email) {
+    if (!email.trim()) {
       setValidationErrors({ email: "Email is required" });
       return;
     }
@@ -63,13 +63,17 @@ export function LandingPage() {
     
     setIsSubmitting(true);
     try {
-      const result = await signupForBeta({ email });
+      const result = await signupForBeta({ email: email.trim() });
       
       if (result.success) {
         setIsSubmitted(true);
         setEmail("");
         setError(null);
         setValidationErrors({});
+        // Reset success state after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+        }, 5000);
       } else {
         setError(result.message || "Signup failed. Please try again.");
       }

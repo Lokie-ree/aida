@@ -10,8 +10,8 @@ export function SignOutButton() {
     return null;
   }
 
-  const handleSignOut = async () => {
-    await authClient.signOut();
+  const handleSignOut = () => {
+    void authClient.signOut();
   };
 
   return (

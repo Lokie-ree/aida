@@ -55,6 +55,7 @@ interface DashboardProps {
     featured?: boolean;
   }>;
   weeklyGoal?: number; // in minutes
+  onShowOnboarding?: () => void;
 }
 
 export function Dashboard({ 
@@ -62,7 +63,8 @@ export function Dashboard({
   stats, 
   recentFrameworks, 
   featuredTestimonials,
-  weeklyGoal = 180 // 3 hours default
+  weeklyGoal = 180, // 3 hours default
+  onShowOnboarding
 }: DashboardProps) {
   const weeklyMinutes = stats.timeSaved; // This would be calculated from actual usage
   const monthlyMinutes = stats.timeSaved * 4; // Rough estimate
@@ -166,10 +168,18 @@ export function Dashboard({
                       Recommended frameworks to get you started
                     </CardDescription>
                   </div>
-                  <Button variant="outline" size="sm">
-                    View All
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  <div className="flex gap-2">
+                    {onShowOnboarding && (
+                      <Button variant="outline" size="sm" onClick={onShowOnboarding}>
+                        <Target className="h-4 w-4 mr-2" />
+                        Get Started
+                      </Button>
+                    )}
+                    <Button variant="outline" size="sm">
+                      View All
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>

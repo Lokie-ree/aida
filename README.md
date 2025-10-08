@@ -52,9 +52,9 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 ## 📚 Documentation
 
 ### **Core Documents** (Living)
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - High-level technical architecture
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and progress
 - **[docs/decisions/](docs/decisions/)** - Architecture Decision Records (ADRs)
+- **[orchestrator.json](orchestrator.json)** - Project configuration and workflow
 
 ### **Planning Documents** (Archived Reference)
 - **[docs/planning/v0.4.0/](docs/planning/)** - Complete planning phase documentation
@@ -64,9 +64,9 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
   - Strategic Foundation
 
 ### **Quick Start by Role**
-- **Engineers**: [ARCHITECTURE.md](ARCHITECTURE.md) → [Implementation Plan](docs/planning/v0.4.0/implementation-plan.md)
-- **Product**: [Strategic Positioning](specs/strategic-positioning.md) → [Product Requirements](docs/planning/v0.4.0/product-requirements.md)
-- **Design**: [Brand Guidelines](specs/brand-guidelines.md) → [Design System](docs/planning/v0.4.0/design-documentation/)
+- **Engineers**: [orchestrator.json](orchestrator.json) → [Implementation Plan](docs/planning/v0.4.0/implementation-plan.md)
+- **Product**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Product Requirements](docs/planning/v0.4.0/product-requirements.md)
+- **Design**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Design System](docs/planning/v0.4.0/design-documentation/)
 - **Stakeholders**: This README → [CHANGELOG.md](CHANGELOG.md)
 
 ---
@@ -85,13 +85,24 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 - **Better Auth** - Authentication (via @convex-dev/better-auth)
 - **OpenAI API** - AI response generation
 - **Resend** - Email service
+- **Vapi** - Voice interface integration
+- **Firecrawl** - Document scraping and processing
+
+### **Integrations & MCPs**
+- **Convex MCP** - Direct deployment monitoring and debugging
+- **Vapi MCP** - Voice interface logs and debugging
+- **Firecrawl MCP** - Document scraping validation
+- **Playwright MCP** - Automated E2E testing (available)
 
 ### **Design System**
 - **Lexend** - Primary font (accessibility-focused)
 - **Poppins** - Heading font (Louisiana brand)
 - **JetBrains Mono** - Monospace font
-- **Louisiana Gold** (#FBBF24) - Secondary brand color
+- **Pelican Blue** (#0ea5e9) - Primary brand color
+- **Louisiana Gold** (#f59e0b) - Secondary brand color
+- **Deep Blue** (#1e40af) - Accent color
 - **WCAG 2.1 Level AA** - Accessibility standard
+- **8px Base Unit Scale** - Consistent spacing system
 
 ---
 
@@ -101,31 +112,35 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 aida/
 ├── convex/                    # Backend (Convex)
 │   ├── schema.ts             # Database schema
-│   ├── frameworks.ts         # Framework API (to be built)
-│   ├── testimonials.ts       # Testimonials API (to be built)
-│   ├── innovations.ts        # Innovations API (to be built)
-│   ├── betaProgram.ts        # Beta program API (to be built)
-│   ├── auth.ts               # Authentication (existing)
-│   └── documents.ts          # Document management (existing)
+│   ├── frameworks.ts         # Framework API
+│   ├── testimonials.ts       # Testimonials API
+│   ├── innovations.ts        # Innovations API
+│   ├── betaProgram.ts        # Beta program API
+│   ├── auth.ts               # Authentication
+│   ├── documents.ts          # Document management
+│   ├── vapi.ts               # Voice interface integration
+│   └── rag.ts                # RAG system
 ├── src/                       # Frontend (React)
 │   ├── components/           # React components
-│   │   ├── Dashboard.tsx     # Main dashboard (to be built)
-│   │   ├── FrameworkLibrary.tsx  # Framework browser (to be built)
-│   │   ├── FrameworkDetail.tsx   # Framework detail (to be built)
-│   │   ├── CommunityHub.tsx      # Community features (to be built)
-│   │   └── ui/               # shadcn/ui components (existing)
+│   │   ├── dashboard/        # Dashboard components
+│   │   ├── framework/        # Framework components
+│   │   ├── community/        # Community features
+│   │   ├── auth/             # Authentication components
+│   │   ├── shared/           # Shared components
+│   │   └── ui/               # shadcn/ui components
 │   ├── lib/                  # Utilities
-│   │   ├── design-tokens.ts  # Design system tokens
+│   │   ├── auth-client.ts    # Auth client configuration
+│   │   ├── design-system.ts  # Design system tokens
 │   │   └── utils.ts          # Helper functions
 │   └── main.tsx              # App entry point
 ├── docs/                      # Documentation
 │   ├── decisions/            # Architecture Decision Records
-│   └── planning/v0.4.0/      # Planning phase docs (archived)
-├── specs/                     # Strategic foundation
-├── ARCHITECTURE.md            # Technical architecture (living)
+│   ├── planning/v0.4.0/      # Planning phase docs (archived)
+│   └── *.md                  # Living documentation
+├── public/                    # Static assets
 ├── CHANGELOG.md               # Version history (living)
 ├── README.md                  # This file
-└── orchestrator.json          # Workflow configuration
+└── orchestrator.json          # Project configuration
 ```
 
 ---
@@ -171,6 +186,8 @@ For experienced educators, focusing on:
 ✅ Implementation Planning  
 ✅ Component Reorganization  
 ✅ Better Auth Migration  
+✅ Email System Integration  
+✅ Mobile Responsiveness  
 🔄 **Active: Core Feature Implementation**
 
 ### **Documentation Metrics**
@@ -195,6 +212,8 @@ For experienced educators, focusing on:
 - **<3s Page Load**: Performance target
 - **WCAG 2.1 AA**: Accessibility compliance
 - **95%+ Uptime**: Reliability target
+- **Mobile-First**: 44px touch targets
+- **Platform-Agnostic**: Works with any AI tool
 
 ---
 
@@ -203,15 +222,15 @@ For experienced educators, focusing on:
 This project follows an orchestrated workflow defined in [`orchestrator.json`](orchestrator.json). 
 
 ### **Development Workflow**
-1. Review the [Implementation Plan](implementation-plan.md)
-2. Follow sequential steps (Week 1 → Week 7)
+1. Review the [orchestrator.json](orchestrator.json) for project configuration
+2. Follow the [Implementation Plan](docs/planning/v0.4.0/implementation-plan.md)
 3. Validate at each checkpoint
 4. Submit PRs with clear descriptions
 
 ### **Documentation Updates**
 1. Update relevant document(s)
 2. Increment version number
-3. Update [Project Documentation Index](PROJECT_DOCUMENTATION.md)
+3. Update [CHANGELOG.md](CHANGELOG.md)
 4. Submit PR with context
 
 ---
@@ -233,7 +252,8 @@ This project follows an orchestrated workflow defined in [`orchestrator.json`](o
 - **Design Lead**: [Contact Info]
 
 ### **Resources**
-- **Documentation**: [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md)
+- **Documentation**: [docs/](docs/) directory
+- **Project Config**: [orchestrator.json](orchestrator.json)
 - **Issues**: [GitHub Issues]
 - **Discussions**: [GitHub Discussions]
 
