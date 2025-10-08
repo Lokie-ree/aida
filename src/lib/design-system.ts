@@ -4,46 +4,46 @@
  */
 
 export const colors = {
-  // Primary Brand Colors
+  // Primary Brand Colors - Pelican Blue
   primary: {
     50: '#f0f9ff',   // Lightest blue
     100: '#e0f2fe',  // Very light blue
     200: '#bae6fd',  // Light blue
     300: '#7dd3fc',  // Medium light blue
     400: '#38bdf8',  // Medium blue
-    500: '#0ea5e9',  // Primary blue (main brand color)
+    500: '#0ea5e9',  // Primary blue (Pelican blue - main brand color)
     600: '#0284c7',  // Dark blue
     700: '#0369a1',  // Darker blue
     800: '#075985',  // Very dark blue
     900: '#0c4a6e',  // Darkest blue
   },
   
-  // Secondary Colors
+  // Secondary Colors - Louisiana Gold
   secondary: {
-    50: '#f8fafc',   // Lightest gray
-    100: '#f1f5f9',  // Very light gray
-    200: '#e2e8f0',  // Light gray
-    300: '#cbd5e1',  // Medium light gray
-    400: '#94a3b8',  // Medium gray
-    500: '#64748b',  // Base gray
-    600: '#475569',  // Dark gray
-    700: '#334155',  // Darker gray
-    800: '#1e293b',  // Very dark gray
-    900: '#0f172a',  // Darkest gray
+    50: '#FFFBEB',   // Lightest gold
+    100: '#FEF3C7',  // Very light gold
+    200: '#FDE68A',  // Light gold
+    300: '#FCD34D',  // Medium light gold
+    400: '#FBBF24',  // Louisiana gold
+    500: '#F59E0B',  // Primary gold
+    600: '#D97706',  // Dark gold
+    700: '#B45309',  // Darker gold
+    800: '#92400E',  // Very dark gold
+    900: '#78350F',  // Darkest gold
   },
   
-  // Accent Colors
+  // Accent Colors - Success Green
   accent: {
-    50: '#fefce8',   // Lightest yellow
-    100: '#fef3c7',  // Very light yellow
-    200: '#fde68a',  // Light yellow
-    300: '#fcd34d',  // Medium light yellow
-    400: '#fbbf24',  // Medium yellow
-    500: '#f59e0b',  // Primary yellow
-    600: '#d97706',  // Dark yellow
-    700: '#b45309',  // Darker yellow
-    800: '#92400e',  // Very dark yellow
-    900: '#78350f',  // Darkest yellow
+    50: '#ECFDF5',   // Lightest green
+    100: '#D1FAE5',  // Very light green
+    200: '#A7F3D0',  // Light green
+    300: '#6EE7B7',  // Medium light green
+    400: '#34D399',  // Medium green
+    500: '#10B981',  // Success green
+    600: '#059669',  // Dark green
+    700: '#047857',  // Darker green
+    800: '#065F46',  // Very dark green
+    900: '#064E3B',  // Darkest green
   },
   
   // Semantic Colors
@@ -55,9 +55,11 @@ export const colors = {
 
 export const typography = {
   fontFamily: {
-    sans: ['Inter', 'system-ui', 'sans-serif'],
+    primary: ['Lexend', 'system-ui', 'sans-serif'],
+    heading: ['Poppins', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+    sans: ['Lexend', 'system-ui', 'sans-serif'], // Keep for compatibility
     serif: ['Source Serif 4', 'serif'],
-    mono: ['JetBrains Mono', 'monospace'],
   },
   
   fontSize: {
@@ -131,8 +133,8 @@ export const shadows = {
 
 export const brand = {
   name: 'Pelican AI',
-  tagline: 'Your AI Guidance Partner',
-  description: 'Navigate AI with confidence. Platform-agnostic guidance that works with ANY AI tool you already use, designed specifically for Louisiana educators.',
+  tagline: 'Reclaim Your Time with Confidence',
+  description: 'Works with ANY AI tool you already use. Designed specifically for Louisiana educators.',
   url: 'https://pelicanai.org',
   email: 'hello@pelicanai.org',
 } as const;

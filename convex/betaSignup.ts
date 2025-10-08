@@ -86,13 +86,13 @@ export const sendBetaWelcomeEmail = action({
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to EdCoachAI Beta</title>
+          <title>Welcome to Pelican AI Beta</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <div style="background: linear-gradient(135deg, #3B82F6, #FBBF24); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-              <h1 style="margin: 0; font-size: 28px;">EdCoachAI</h1>
-              <p style="margin: 10px 0 0 0; font-size: 16px;">AI for Louisiana Educators</p>
+            <div style="background: linear-gradient(135deg, #0ea5e9, #f59e0b); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+              <h1 style="margin: 0; font-size: 28px;">Pelican AI</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Reclaim Your Time with Confidence</p>
             </div>
           </div>
           
@@ -100,7 +100,7 @@ export const sendBetaWelcomeEmail = action({
           
           <p>Hi${args.name ? ` ${args.name}` : ''},</p>
           
-          <p>Thank you for joining the EdCoachAI beta program! We're excited to have you as part of our community of Louisiana educators who are shaping the future of AI in education.</p>
+          <p>Thank you for joining the Pelican AI beta program! We're excited to have you as part of our community of Louisiana educators who are reclaiming their time and teaching with confidence.</p>
           
           <div style="background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #1F2937;">What's Next?</h3>
@@ -112,7 +112,7 @@ export const sendBetaWelcomeEmail = action({
             </ul>
           </div>
           
-          <div style="background: #EFF6FF; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3B82F6;">
+          <div style="background: #EFF6FF; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0ea5e9;">
             <h3 style="margin-top: 0; color: #1F2937;">What You'll Get</h3>
             <ul style="margin: 0; padding-left: 20px;">
               <li><strong>10+ AI Guidance Frameworks</strong> - Copy-paste prompts for common tasks</li>
@@ -127,9 +127,9 @@ export const sendBetaWelcomeEmail = action({
           <p>Thank you for helping us build AI tools that truly serve Louisiana educators!</p>
           
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E5E7EB; text-align: center; color: #6B7280; font-size: 14px;">
-            <p><strong>EdCoachAI</strong> - AI for Louisiana Educators<br>
+            <p><strong>Pelican AI</strong> - Reclaim Your Time with Confidence<br>
             Built with Louisiana educators, for Louisiana educators<br>
-            <a href="https://edcoachai.org" style="color: #3B82F6; text-decoration: none;">edcoachai.org</a></p>
+            <a href="https://pelicanai.org" style="color: #0ea5e9; text-decoration: none;">pelicanai.org</a></p>
           </div>
         </body>
         </html>
@@ -137,9 +137,9 @@ export const sendBetaWelcomeEmail = action({
 
       // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
-        from: "EdCoachAI <beta@edcoachai.org>",
+        from: "Pelican AI <beta@pelicanai.org>",
         to: args.email,
-        subject: "Welcome to AI for Louisiana Educators Beta Program!",
+        subject: "Welcome to Pelican AI Beta Program - Reclaim Your Time!",
         html: emailHtml,
       });
 
