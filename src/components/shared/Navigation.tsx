@@ -1,6 +1,7 @@
 import React from "react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -8,7 +9,6 @@ import {
   User, 
   Menu,
   X,
-  Settings,
   Clock,
   Shield
 } from "lucide-react";
@@ -22,6 +22,8 @@ interface NavigationProps {
 
 export function Navigation({ currentView, onViewChange, className }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const isAdmin = useQuery(api.admin.checkIsAdmin);
+  const loggedInUser = useQuery(api.auth.loggedInUser);
 
   const navigationItems = [
     {
@@ -69,6 +71,14 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
 
   return (
     <>
+      {/* Debug Info - Remove in production */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-20 right-4 bg-yellow-100 border border-yellow-300 rounded p-2 text-xs z-50">
+          <div>Email: {loggedInUser?.email || 'Not logged in'}</div>
+          <div>Admin: {isAdmin ? 'Yes' : 'No'}</div>
+        </div>
+      )}
+      
       {/* Desktop Navigation */}
       <nav className={cn("hidden md:flex items-center gap-1", className)}>
         {navigationItems.map((item) => {
@@ -93,7 +103,7 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
         })}
         
         {/* Admin Navigation - Only show for admin users */}
-        {adminItems.map((item) => {
+        {isAdmin && adminItems.map((item) => {
           const Icon = item.icon;
           const isActive = currentView === item.id;
           
@@ -166,7 +176,7 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
                 })}
                 
                 {/* Admin Mobile Navigation */}
-                {adminItems.map((item) => {
+                {isAdmin && adminItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = currentView === item.id;
                   

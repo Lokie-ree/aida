@@ -208,3 +208,77 @@ export const initializeProfileForBeta = mutation({
     return profileId;
   },
 });
+
+export const initializeNewUser = mutation({
+  args: {},
+  returns: v.union(
+    v.object({ 
+      success: v.boolean(),
+      profileId: v.id("userProfiles"),
+      betaProgramId: v.id("betaProgram"),
+      message: v.string()
+    }),
+    v.object({
+      success: v.boolean(),
+      message: v.string()
+    })
+  ),
+  handler: async (ctx) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      return { success: false, message: "User must be authenticated" };
+    }
+
+    // Check if already initialized
+    const existingProfile = await ctx.db
+      .query("userProfiles")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .first();
+
+    if (existingProfile) {
+      return { success: false, message: "User already initialized" };
+    }
+
+    // Get beta signup data
+    const betaSignup = await ctx.db
+      .query("betaSignups")
+      .withIndex("by_email", (q) => q.eq("email", user.email))
+      .first();
+
+    if (!betaSignup || betaSignup.status !== "approved") {
+      return { success: false, message: "No approved beta signup found" };
+    }
+
+    // Create user profile
+    const profileId = await ctx.db.insert("userProfiles", {
+      userId: user._id,
+      school: betaSignup.school,
+      subject: betaSignup.subject,
+      gradeLevel: undefined,
+      district: undefined,
+      role: "teacher",
+    });
+
+    // Initialize beta program
+    const betaProgramId = await ctx.db.insert("betaProgram", {
+      userId: user._id,
+      status: "active",
+      invitedAt: betaSignup.signupDate,
+      joinedAt: Date.now(),
+      onboardingStep: 0,
+      onboardingCompleted: false,
+      frameworksTried: 0,
+      totalTimeSaved: 0,
+      innovationsShared: 0,
+      officeHoursAttended: 0,
+      weeklyEngagementCount: 0,
+    });
+
+    return { 
+      success: true,
+      profileId, 
+      betaProgramId, 
+      message: "User initialized successfully" 
+    };
+  },
+});

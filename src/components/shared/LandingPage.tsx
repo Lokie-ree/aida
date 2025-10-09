@@ -6,10 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Marquee } from "@/components/ui/marquee";
-import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import RotatingText from "@/components/shared/RotatingText";
 import GradientText from "@/components/shared/GradientText";
-import { Logo } from "@/components/shared/Logo";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { AuthModal } from "@/components/auth/AuthModal";
 import { 
   Sparkles, 
   Users, 
@@ -24,6 +24,9 @@ import {
   Lightbulb,
   Loader2,
   AlertCircle,
+  Menu,
+  X,
+  LogIn,
 } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -35,6 +38,10 @@ export function LandingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<{email?: string}>({});
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [temporaryPassword, setTemporaryPassword] = useState<string | null>(null);
+  const [signupEmail, setSignupEmail] = useState<string>("");
   
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
 
@@ -67,13 +74,17 @@ export function LandingPage() {
       
       if (result.success) {
         setIsSubmitted(true);
+        setSignupEmail(email.trim());
+        setTemporaryPassword(result.temporaryPassword || null);
         setEmail("");
         setError(null);
         setValidationErrors({});
-        // Reset success state after 5 seconds
+        // Reset success state after 10 seconds
         setTimeout(() => {
           setIsSubmitted(false);
-        }, 5000);
+          setTemporaryPassword(null);
+          setSignupEmail("");
+        }, 10000);
       } else {
         setError(result.message || "Signup failed. Please try again.");
       }
@@ -83,6 +94,16 @@ export function LandingPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSignIn = () => {
+    setIsAuthModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
+
+  const scrollToBetaSignup = () => {
+    document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' });
+    setIsMobileMenuOpen(false);
   };
 
   // Animation variants
@@ -239,16 +260,97 @@ export function LandingPage() {
         className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Logo className="h-8 sm:h-10" />
-          <div className="flex items-center gap-2 sm:gap-4">
-            <AnimatedThemeToggler className="p-2 rounded-lg hover:bg-accent/10 transition-colors" />
-            <Button 
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
+              <span className="text-white font-bold text-sm">P</span>
+            </div>
+            <span className="text-xl font-bold text-foreground">
+              Pelican AI
+            </span>
+          </div>
+          
+           {/* Desktop Navigation */}
+           <div className="hidden md:flex items-center gap-2 sm:gap-4">
+             <AnimatedThemeToggler />
+             <Button 
+               size="sm"
+               variant="outline"
+               onClick={handleSignIn}
+               className="transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+             >
+               <LogIn className="w-4 h-4 mr-2" />
+               Sign In
+             </Button>
+             <Button 
+               size="sm"
+               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+               className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+             >
+               Join Beta
+             </Button>
+           </div>
+
+          {/* Mobile Hamburger Menu */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
               size="sm"
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex items-center gap-2"
             >
-              Join Beta
+              {isMobileMenuOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Menu className="h-4 w-4" />
+              )}
+              <span className="sr-only">Toggle menu</span>
             </Button>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+              <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
+                <div className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg">
+                  <div className="p-4 space-y-2">
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={handleSignIn}
+                      className="w-full justify-start gap-3 h-12"
+                    >
+                      <LogIn className="h-5 w-5" />
+                      <div className="text-left">
+                        <div className="font-medium">Sign In</div>
+                        <div className="text-xs text-muted-foreground">
+                          Access your account
+                        </div>
+                      </div>
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={scrollToBetaSignup}
+                      className="w-full justify-start gap-3 h-12"
+                    >
+                      <Users className="h-5 w-5" />
+                      <div className="text-left">
+                        <div className="font-medium">Join Beta</div>
+                        <div className="text-xs text-muted-foreground">
+                          Get early access
+                        </div>
+                      </div>
+                    </Button>
+                    
+                    <div className="border-t pt-4 mt-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Theme</span>
+                        <AnimatedThemeToggler />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </motion.header>
@@ -595,9 +697,36 @@ export function LandingPage() {
                   <h3 className="text-lg font-semibold text-primary mb-2">
                     Welcome to the Beta Program!
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Check your email for next steps and exclusive updates.
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Your platform access is ready! Use these credentials to sign in:
                   </p>
+                  
+                  {temporaryPassword && (
+                    <div className="bg-background border rounded-lg p-4 mb-4 text-left">
+                      <div className="space-y-2">
+                        <div>
+                          <span className="text-sm font-medium text-muted-foreground">Email:</span>
+                          <p className="font-mono text-sm">{signupEmail}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-muted-foreground">Temporary Password:</span>
+                          <p className="font-mono text-sm break-all">{temporaryPassword}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => setIsAuthModalOpen(true)}
+                      className="w-full"
+                    >
+                      Sign In Now
+                    </Button>
+                    <p className="text-xs text-muted-foreground">
+                      You'll also receive these credentials via email
+                    </p>
+                  </div>
                 </div>
               )}
             </CardContent>
@@ -769,15 +898,25 @@ export function LandingPage() {
       <footer className="bg-background border-t border-border py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand Column */}
-            <div className="md:col-span-1">
-              <div className="mb-4">
-                <Logo className="h-8" />
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Created and supported by educators for educators
-              </p>
-            </div>
+             {/* Brand Column */}
+             <div className="md:col-span-1">
+               <div className="mb-4">
+                 <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
+                     <span className="text-white font-bold text-sm">P</span>
+                   </div>
+                   <span className="text-xl font-bold text-foreground">
+                     Pelican AI
+                   </span>
+                 </div>
+               </div>
+               <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                 Navigate AI with Confidence
+               </p>
+               <p className="text-sm text-muted-foreground leading-relaxed">
+                 Platform-agnostic guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with ethical guardrails aligned to Louisiana standards.
+               </p>
+             </div>
 
             {/* Product Links */}
             <div>
@@ -849,13 +988,22 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="border-t border-border pt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Pelican AI. All rights reserved.
-            </p>
-          </div>
+           <div className="border-t border-border pt-8 text-center">
+             <p className="text-sm text-muted-foreground mb-2">
+               Created with 💙 by an educator for educators
+             </p>
+             <p className="text-sm text-muted-foreground">
+               © {new Date().getFullYear()} Pelican AI. All rights reserved.
+             </p>
+           </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
 
     </div>
   );

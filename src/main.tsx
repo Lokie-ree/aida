@@ -9,6 +9,7 @@ const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, 
   // Optionally pause queries until the user is authenticated
   // Set to false for now since we have public landing page
   expectAuth: false,
+  verbose: true,
 });
 
 createRoot(document.getElementById("root")!).render(

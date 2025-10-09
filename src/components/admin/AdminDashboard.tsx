@@ -1,9 +1,12 @@
-import React from "react";
-import { useQuery } from "convex/react";
+import React, { useState } from "react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { 
   Users, 
   CheckCircle, 
@@ -12,14 +15,54 @@ import {
   Lightbulb, 
   Target, 
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  Mail,
+  UserPlus
 } from "lucide-react";
 
 export function AdminDashboard() {
+  const [selectedSignup, setSelectedSignup] = useState<string | null>(null);
+  const [temporaryPassword, setTemporaryPassword] = useState("");
+  const [notes, setNotes] = useState("");
+  
   const stats = useQuery(api.admin.getAdminStats, {});
   const betaUsers = useQuery(api.admin.getAllBetaUsersAdmin, {});
   const testimonials = useQuery(api.admin.getAllTestimonialsAdmin, {});
   const innovations = useQuery(api.admin.getAllInnovationsAdmin, {});
+  const pendingSignups = useQuery(api.betaSignup.getPendingSignups, {});
+  
+  const approveBetaSignup = useMutation(api.betaSignup.approveBetaSignup);
+
+  const generateSecurePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  };
+
+  const handleApprove = async (signupId: string) => {
+    if (!temporaryPassword) {
+      toast.error("Please generate a temporary password");
+      return;
+    }
+    
+    try {
+      await approveBetaSignup({ 
+        signupId: signupId as any, 
+        temporaryPassword,
+        notes: notes || undefined
+      });
+      toast.success("Beta signup approved!");
+      setSelectedSignup(null);
+      setTemporaryPassword("");
+      setNotes("");
+    } catch (error) {
+      console.error("Error approving signup:", error);
+      toast.error("Failed to approve signup");
+    }
+  };
 
   if (stats === undefined || betaUsers === undefined || testimonials === undefined || innovations === undefined) {
     return (
@@ -180,6 +223,120 @@ export function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Beta Signup Management */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5 text-blue-500" />
+              Beta Signup Management
+            </CardTitle>
+            <CardDescription>
+              Review and approve pending beta signups
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {pendingSignups && pendingSignups.length > 0 ? (
+                <div className="space-y-3">
+                  {pendingSignups.map((signup: any) => (
+                    <div key={signup._id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Mail className="h-4 w-4 text-muted-foreground" />
+                          <span className="font-medium">{signup.email}</span>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {signup.name && <span>Name: {signup.name}</span>}
+                          {signup.school && <span> • School: {signup.school}</span>}
+                          {signup.subject && <span> • Subject: {signup.subject}</span>}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          Signed up: {new Date(signup.signupDate).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedSignup(signup._id)}
+                        >
+                          Review
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <UserPlus className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No pending beta signups</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Approval Modal */}
+        {selectedSignup && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <Card className="w-full max-w-md mx-4">
+              <CardHeader>
+                <CardTitle>Approve Beta Signup</CardTitle>
+                <CardDescription>
+                  Generate credentials and approve this beta signup
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="temp-password">Temporary Password</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="temp-password"
+                      value={temporaryPassword}
+                      onChange={(e) => setTemporaryPassword(e.target.value)}
+                      placeholder="Generate secure password"
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => setTemporaryPassword(generateSecurePassword())}
+                    >
+                      Generate
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="notes">Notes (Optional)</Label>
+                  <Input
+                    id="notes"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Add any notes about this approval"
+                  />
+                </div>
+                <div className="flex gap-2 pt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedSignup(null);
+                      setTemporaryPassword("");
+                      setNotes("");
+                    }}
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => handleApprove(selectedSignup)}
+                    className="flex-1"
+                  >
+                    Approve & Send Email
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
