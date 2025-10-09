@@ -15,7 +15,8 @@ import {
   ArrowRight,
   ArrowLeft,
   ExternalLink,
-  Mail
+  Mail,
+  Clock
 } from "lucide-react";
 import { ProfileSettings } from "./ProfileSettings";
 import { toast } from "sonner";
@@ -40,6 +41,18 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
   const updateProfile = useMutation(api.userProfiles.updateUserProfile);
   const updateOnboardingProgress = useMutation(api.betaProgram.updateOnboardingProgress);
   const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
+
+  // Pre-populate profile data from user profile
+  React.useEffect(() => {
+    if (userProfile) {
+      setProfileData({
+        school: userProfile.school || "",
+        subject: userProfile.subject || "",
+        gradeLevel: userProfile.gradeLevel || "",
+        district: userProfile.district || "",
+      });
+    }
+  }, [userProfile]);
 
   const steps = [
     {

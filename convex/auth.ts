@@ -18,7 +18,9 @@ const siteUrl = process.env.SITE_URL!;
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
-export const authComponent = createClient<DataModel>(components.betterAuth);
+export const authComponent = createClient<DataModel>(components.betterAuth, {
+  verbose: true,
+});
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
@@ -30,7 +32,11 @@ export const createAuth = (
     logger: {
       disabled: optionsOnly,
     },
-    trustedOrigins: [siteUrl],
+    trustedOrigins: [
+      siteUrl, // Production URL
+      "http://localhost:5173", // Development URL
+      "http://localhost:3000", // Alternative dev port
+    ],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password for beta program
     emailAndPassword: {

@@ -78,11 +78,11 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <DialogHeader className="relative">
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-                     <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-primary to-secondary">
-                <span className="text-white font-bold text-sm">AI</span>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
+                <span className="text-white font-bold text-sm">P</span>
               </div>
               <span className="text-xl font-bold text-foreground">
-                EdCoachAI
+                Pelican AI
               </span>
             </div>
           </DialogTitle>
@@ -95,7 +95,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </CardTitle>
             <CardDescription>
               {flow === "signIn" 
-                ? "Sign in to access your AI coaching tools" 
+                ? "Sign in to access your AI guidance frameworks" 
                 : "Join Louisiana educators using AI to save time"}
             </CardDescription>
           </CardHeader>
@@ -145,7 +145,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </div>
                      <Button
                        type="submit"
-                       className="w-full text-white bg-gradient-to-r from-primary to-secondary"
+                       className="w-full"
                        disabled={submitting}
                      >
                 {submitting ? "Please wait..." : flow === "signIn" ? "Sign in" : "Sign up"}

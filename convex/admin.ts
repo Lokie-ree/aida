@@ -13,7 +13,8 @@ const isAdmin = async (ctx: any) => {
   // In production, this would be a proper role-based system
   const adminEmails = [
     "admin@pelicanai.org",
-    "support@pelicanai.org"
+    "support@pelicanai.org",
+    "test@example.com" // Temporary for testing
   ];
   
   if (!adminEmails.includes((user as any).email)) {
@@ -22,6 +23,20 @@ const isAdmin = async (ctx: any) => {
   
   return user;
 };
+
+// Query: Check if current user is admin
+export const checkIsAdmin = query({
+  args: {},
+  returns: v.boolean(),
+  handler: async (ctx) => {
+    try {
+      await isAdmin(ctx);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+});
 
 // Query: Get all beta users for admin management
 export const getAllBetaUsersAdmin = query({

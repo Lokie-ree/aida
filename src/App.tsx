@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
@@ -90,9 +90,20 @@ function Content({
 }) {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const userProfile = useQuery(api.userProfiles.getUserProfile);
+  const betaStatus = useQuery(api.betaProgram.getBetaStatus);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
   const testimonials = useQuery(api.testimonials.getFeaturedTestimonials, {});
   const betaStats = useQuery(api.betaProgram.getBetaStats, {});
+  
+  const initializeUser = useMutation(api.userProfiles.initializeNewUser);
+
+  // Auto-initialize new users
+  React.useEffect(() => {
+    if (loggedInUser && userProfile === null && betaStatus === null) {
+      console.log("Auto-initializing new user:", loggedInUser.email);
+      initializeUser().catch(console.error);
+    }
+  }, [loggedInUser, userProfile, betaStatus, initializeUser]);
 
   if (loggedInUser === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined) {
     return (
