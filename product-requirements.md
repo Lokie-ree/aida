@@ -1,9 +1,9 @@
 # Product Requirements Document (PRD)
-## AI for LA Educators Platform
+## Pelican AI Platform
 
-**Version:** 1.0  
-**Date:** October 4, 2025  
-**Status:** Phase 1 - Product Definition  
+**Version:** 1.1  
+**Date:** October 8, 2025  
+**Status:** Phase 5 - Software Engineering (In Progress)  
 **Owner:** Project Lead  
 **Document Type:** Product Requirements
 
@@ -12,7 +12,7 @@
 ## 1. Executive Summary
 
 ### 1.1 Product Vision
-AI for LA Educators is an educator empowerment initiative designed to become Louisiana's premier resource for ethical and effective AI usage in K-12 education. Rather than building another software platform, we are creating a comprehensive guidance system that helps educators leverage any AI platform they have access to (MagicSchool AI, Brisk, SchoolAI, Gemini, or others) to save time, reduce burnout, and improve instructional practice.
+Pelican AI is an educator empowerment platform designed to become Louisiana's premier resource for ethical and effective AI usage in K-12 education. Rather than building another software platform, we are creating a comprehensive guidance system that helps educators leverage any AI platform they have access to (MagicSchool AI, Brisk, SchoolAI, Gemini, or others) to save time, reduce burnout, and improve instructional practice.
 
 ### 1.2 Mission Statement
 To empower Louisiana educators with practical, ethical, and platform-agnostic AI guidance that reclaims their time for high-impact teaching while maintaining the highest standards of academic integrity and professional judgment.
@@ -110,17 +110,26 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 ### 4.2 Success Metrics (Beta Phase: Oct-Dec 2025)
 
 **Quantitative Metrics:**
-- 30-50 beta testers recruited from cross-section of schools/subjects
-- 85%+ of testers save 3+ hours per week
-- 15+ documented testimonials with specific impact stories
-- 90%+ satisfaction rating on post-beta survey
+- 50 active beta testers recruited from cross-section of schools/subjects
+- 85%+ of testers save 3+ hours per week (120+ minutes per week)
+- 20+ documented testimonials with specific impact stories
+- 80%+ satisfaction rating on post-beta survey
 - 75%+ weekly engagement with "Productivity Prompt of the Week"
+- 3+ frameworks used per educator per week
 
 **Qualitative Metrics:**
 - Testimonials demonstrating tangible time savings
 - Evidence of improved lesson quality and standards alignment
 - Stories of ethical AI use maintaining academic integrity
 - Peer-to-peer knowledge sharing and innovation
+
+**Platform Metrics:**
+- 10+ frameworks at launch (5 per hub)
+- Page load time: <3 seconds
+- Accessibility compliance: WCAG 2.1 Level AA
+- Uptime reliability: 95%+
+- Mobile-first design with 44px minimum touch targets
+- Platform-agnostic approach (works with any AI tool)
 
 ### 4.3 Long-Term Success Indicators (6-24 months)
 - District-wide adoption and integration into official PD
@@ -449,11 +458,18 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 **Technology Stack:**
 - **Frontend:** React 19, TypeScript, Vite
 - **Backend:** Convex (real-time database and serverless functions)
-- **Authentication:** Convex Auth with Better Auth integration
+- **Authentication:** Better Auth (via @convex-dev/better-auth)
 - **UI Components:** Radix UI, Tailwind CSS, shadcn/ui
 - **Email:** Resend for transactional emails
 - **AI Integration:** OpenAI API (for future RAG system)
-- **Voice:** Vapi.ai integration (future enhancement)
+- **Voice:** Vapi.ai integration
+- **Document Processing:** Firecrawl for document scraping and processing
+
+**MCP Integrations:**
+- **Convex MCP** (v1.27.3) - Direct deployment monitoring and debugging with Better Auth, RAG, and Resend components
+- **Vapi MCP** (@vapi-ai/web v2.3.10) - Voice interface logs and debugging
+- **Firecrawl MCP** (@mendable/firecrawl-js v1.21.1) - Document scraping validation
+- **Playwright MCP** - Automated E2E testing (available but not yet integrated)
 
 ### 8.2 Data Model (Convex Schema)
 
@@ -537,11 +553,15 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 **Visual Identity:**
 - **Logo Concept:** Stylized compass or lighthouse representing guidance
 - **Color Palette:**
-  - Primary Blue (#3B82F6) - Trust, reliability
-  - Secondary Gold (#FBBF24) - Excellence, Louisiana spirit
-  - Accent Green (#10B981) - Growth, success
+  - Pelican Blue (#0ea5e9) - Primary brand color, trust, reliability
+  - Louisiana Gold (#f59e0b) - Secondary brand color, excellence, Louisiana spirit
+  - Deep Blue (#1e40af) - Accent color, depth, professionalism
   - Neutral Grays - Professional, accessible
-- **Typography:** Lexend or Poppins - modern, readable, educational
+- **Typography:** 
+  - Lexend - Primary font (accessibility-focused)
+  - Poppins - Heading font (Louisiana brand)
+  - JetBrains Mono - Monospace font
+- **Spacing System:** 8px base unit scale for consistent spacing
 
 **Brand Personality:**
 - Supportive Mentor (not dictatorial)
@@ -587,6 +607,14 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 - Search functionality with filters
 - Breadcrumb navigation
 - Related content suggestions
+
+**Accessibility Requirements:**
+- Mobile-first responsive design approach
+- 44px minimum touch targets for mobile interaction
+- WCAG 2.1 Level AA compliance throughout
+- Keyboard navigation support
+- Screen reader compatibility
+- High contrast mode support
 
 ---
 
@@ -862,6 +890,7 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | October 4, 2025 | Project Lead | Initial PRD creation based on orchestrator workflow and specification documents |
+| 1.1 | October 8, 2025 | Project Lead | Aligned with orchestrator.json specifications, updated brand colors, technical stack, and success metrics for Phase 5 |
 
 ---
 

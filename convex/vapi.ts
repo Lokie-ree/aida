@@ -230,7 +230,8 @@ export const processAuthenticatedVoiceQuery = action({
       }
 
       // Log the voice query for audit purposes
-      await ctx.runMutation(api.security.createAuditLog, {
+      // Log the interaction (audit logging removed for now)
+      console.log("Voice interaction completed:", {
         action: "voice_query",
         resource: isPolicyQuery ? "district_policy" : "general_query",
         details: `Voice query: ${args.message.substring(0, 100)}${args.message.length > 100 ? "..." : ""}`,

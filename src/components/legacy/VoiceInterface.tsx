@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Vapi from "@vapi-ai/web";
 import { toast } from "sonner";
 import { useAction } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import {

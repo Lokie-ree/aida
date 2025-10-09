@@ -159,45 +159,30 @@ export const getRAGStats = query({
   },
 });
 
-// Migration function to add existing documents to RAG
-export const migrateExistingDocuments = action({
+// Get RAG entries for a user (replaces document migration)
+export const getUserRAGEntries = query({
   args: {},
   returns: v.object({
-    success: v.boolean(),
-    migratedCount: v.number(),
-    totalDocuments: v.number(),
-    errors: v.array(v.string()),
+    entries: v.array(v.any()),
+    totalCount: v.number(),
   }),
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("User must be authenticated");
+      return { entries: [], totalCount: 0 };
     }
 
-    // Get all documents for the user
-    const documents: any = await ctx.runQuery(api.documents.getUserDocuments, {});
+    const namespace = `user_${userId}`;
     
-    let migratedCount = 0;
-    const errors: string[] = [];
-
-    for (const doc of documents) {
-      try {
-        await ctx.runAction(api.rag.addDocumentToRAG, {
-          documentId: doc._id,
-          textContent: doc.textContent,
-          fileName: doc.fileName,
-        });
-        migratedCount++;
-      } catch (error) {
-        errors.push(`Failed to migrate document ${doc.fileName}: ${error}`);
-      }
-    }
+    // Get all entries for this namespace
+    const entries = await rag.list(ctx, {
+      namespaceId: namespace as any,
+      paginationOpts: { numItems: 1000, cursor: null },
+    });
 
     return {
-      success: true,
-      migratedCount,
-      totalDocuments: documents.length,
-      errors,
+      entries: entries.page,
+      totalCount: entries.page.length,
     };
   },
 });
@@ -362,32 +347,32 @@ export const addDemoDataToRAG = action({
   },
 });
 
-// Migration for documents only - web scraping removed
-export const migrateAllExistingContent = action({
+// Initialize RAG with demo content for new users
+export const initializeRAGForUser = action({
   args: {},
   returns: v.object({
     success: v.boolean(),
-    documents: v.object({
-      success: v.boolean(),
-      migratedCount: v.number(),
-      totalDocuments: v.number(),
-      errors: v.array(v.string()),
-    }),
-    totalMigrated: v.number(),
+    addedCount: v.number(),
+    errors: v.array(v.string()),
   }),
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    addedCount: number;
+    errors: string[];
+  }> => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       throw new Error("User must be authenticated");
     }
 
-    // Migrate documents only
-    const documentResult: any = await ctx.runAction(api.rag.migrateExistingDocuments, {});
+    // Add demo content and Louisiana-specific content
+    const demoResult: any = await ctx.runAction(api.rag.addDemoDataToRAG, {});
+    const louisianaResult: any = await ctx.runAction(api.rag.addLouisianaDistrictContent, {});
 
     return {
       success: true,
-      documents: documentResult,
-      totalMigrated: documentResult.migratedCount,
+      addedCount: demoResult.addedPolicies + louisianaResult.addedCount,
+      errors: [...demoResult.errors, ...louisianaResult.errors],
     };
   },
 });

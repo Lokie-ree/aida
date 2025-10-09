@@ -2,10 +2,13 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 /**
- * EdCoachAI Database Schema
+ * Pelican AI Database Schema
  * 
  * Note: Better Auth tables (user, session, account, verification) are automatically
  * managed by the @convex-dev/better-auth component and don't need to be defined here.
+ * 
+ * Note: The RAG tables (documents, chatMessages, feedbackSessions, auditLogs) are
+ * automatically managed by the @convex-dev/rag component and don't need to be defined here.
  */
 
 const applicationTables = {
@@ -164,40 +167,21 @@ const applicationTables = {
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
 
-  // Core application tables
-
-  documents: defineTable({
-    userId: v.string(), // Better Auth user ID
-    fileName: v.string(),
-    fileSize: v.number(),
-    storageId: v.id("_storage"),
-    contentType: v.string(),
-    textContent: v.string(),
-  }).index("by_user", ["userId"]),
-
-  chatMessages: defineTable({
-    userId: v.string(), // Better Auth user ID
-    role: v.union(v.literal("user"), v.literal("assistant")),
-    content: v.string(),
-    contextDocuments: v.optional(v.array(v.string())),
-  }).index("by_user", ["userId"]),
-
-  feedbackSessions: defineTable({
-    userId: v.string(), // Better Auth user ID
-    lessonPlan: v.string(),
-    feedback: v.string(),
-    title: v.optional(v.string()),
-  }).index("by_user", ["userId"]),
-
-  auditLogs: defineTable({
-    userId: v.string(), // Better Auth user ID
-    action: v.string(),
-    resource: v.string(),
-    details: v.optional(v.string()),
+  // Time Tracking
+  timeTracking: defineTable({
+    userId: v.string(),
+    frameworkId: v.id("frameworks"),
+    timeSaved: v.number(), // in minutes
+    activity: v.string(), // description of what was done
+    category: v.optional(v.string()), // optional categorization
     timestamp: v.number(),
-    ipAddress: v.string(),
   }).index("by_user", ["userId"])
-    .index("by_timestamp", ["timestamp"]),
+    .index("by_framework", ["frameworkId"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_category", ["category"]),
+
+  // Note: RAG tables (documents, chatMessages, feedbackSessions, auditLogs) are
+  // automatically managed by the @convex-dev/rag component
 };
 
 export default defineSchema({
