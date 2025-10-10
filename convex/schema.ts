@@ -28,13 +28,14 @@ const applicationTables = {
 
   // User profile extensions (Better Auth manages core user data)
   userProfiles: defineTable({
-    userId: v.string(), // References Better Auth user ID
+    userId: v.string(), // References Better Auth user ID (legacy)
+    authId: v.optional(v.string()), // Better Auth user ID (new pattern)
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
     gradeLevel: v.optional(v.string()),
     district: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-  }).index("by_user", ["userId"]),
+  }).index("by_user", ["userId"]).index("authId", ["authId"]), 
 
   // Frameworks (Atomic Notes)
   frameworks: defineTable({

@@ -3,11 +3,13 @@ import { authComponent, createAuth } from "./auth";
 import { httpAction } from "./_generated/server";
 import { resend } from "./email";
 import { webhook as vapiWebhook } from "./vapi";
+import type { GenericCtx } from "@convex-dev/better-auth";
+import type { DataModel } from "./_generated/dataModel";
 
 const http = httpRouter();
 
 // Register Better Auth route handlers with CORS for client-side frameworks
-authComponent.registerRoutes(http, createAuth, { cors: true });
+authComponent.registerRoutes(http, (ctx: GenericCtx<DataModel>) => createAuth(ctx), { cors: true });
 
 // Vapi webhook endpoint
 http.route({

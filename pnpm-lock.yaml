@@ -12,14 +12,14 @@ importers:
         specifier: ^2.0.43
         version: 2.0.43(zod@3.25.76)
       '@convex-dev/better-auth':
-        specifier: ^0.8.9
-        version: 0.8.9(@standard-schema/spec@1.0.0)(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(convex@1.27.4(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.7.3)
+        specifier: '0.9'
+        version: 0.9.1(@standard-schema/spec@1.0.0)(@types/node@22.18.8)(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(convex@1.27.5(react@19.2.0))(jiti@2.6.1)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(yaml@2.8.1)
       '@convex-dev/rag':
         specifier: ^0.5.3
-        version: 0.5.3(@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0)))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))(zod@3.25.76)
+        version: 0.5.3(@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0)))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))(zod@3.25.76)
       '@convex-dev/resend':
         specifier: ^0.1.13
-        version: 0.1.13(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))(react@19.2.0)
+        version: 0.1.13(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))(react@19.2.0)
       '@mendable/firecrawl-js':
         specifier: ^1.29.3
         version: 1.29.3
@@ -61,16 +61,16 @@ importers:
         version: 2.0.7
       '@useautumn/convex':
         specifier: ^0.0.10
-        version: 0.0.10(@standard-schema/spec@1.0.0)(autumn-js@0.1.40(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.16)(convex@1.27.4(react@19.2.0))(react@19.2.0))(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+        version: 0.0.10(@standard-schema/spec@1.0.0)(autumn-js@0.1.40(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.19)(convex@1.27.5(react@19.2.0))(react@19.2.0))(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
       '@vapi-ai/web':
         specifier: ^2.4.0
         version: 2.4.0
       autumn-js:
         specifier: ^0.1.40
-        version: 0.1.40(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.16)(convex@1.27.4(react@19.2.0))(react@19.2.0)
+        version: 0.1.40(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.19)(convex@1.27.5(react@19.2.0))(react@19.2.0)
       better-auth:
-        specifier: 1.3.8
-        version: 1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: 1.3.27
+        version: 1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -78,8 +78,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       convex:
-        specifier: ^1.27.4
-        version: 1.27.4(react@19.2.0)
+        specifier: ^1.27.5
+        version: 1.27.5(react@19.2.0)
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -355,8 +355,11 @@ packages:
     resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
     engines: {node: '>=6.9.0'}
 
-  '@better-auth/utils@0.2.6':
-    resolution: {integrity: sha512-3y/vaL5Ox33dBwgJ6ub3OPkVqr6B5xL2kgxNHG8eHZuryLyG/4JSPGqjbdRSgjuy9kALUZYDFl+ORIAxlWMSuA==}
+  '@better-auth/core@1.3.27':
+    resolution: {integrity: sha512-3Sfdax6MQyronY+znx7bOsfQHI6m1SThvJWb0RDscFEAhfqLy95k1sl+/PgGyg0cwc2cUXoEiAOSqYdFYrg3vA==}
+
+  '@better-auth/utils@0.3.0':
+    resolution: {integrity: sha512-W+Adw6ZA6mgvnSnhOki270rwJ42t4XzSK6YWGF//BbVXL6SwCLWfyzBc1lN2m/4RM28KubdBKQ4X5VMoLRNPQw==}
 
   '@better-fetch/fetch@1.1.18':
     resolution: {integrity: sha512-rEFOE1MYIsBmoMJtQbl32PGHHXuG2hDxvEd7rUHE0vCBoFQVSDqaVs9hkZEtHCxRoY+CljXKFCOuJ8uxqw1LcA==}
@@ -367,10 +370,10 @@ packages:
   '@bundled-es-modules/statuses@1.0.1':
     resolution: {integrity: sha512-yn7BklA5acgcBr+7w064fGV+SGIFySjCKpqjcWgBAIfrAkY+4GQTJJHQMeT3V/sgz23VTEVV8TtOmkvJAhFVfg==}
 
-  '@convex-dev/better-auth@0.8.9':
-    resolution: {integrity: sha512-t6x2lYsgv0sGL14xmIsTqxVltkS//mWtIjb+Wm39rWUCgeqmCTqsyhQnmTDQNwaqZS0sH0WfTObNHu3xbCSx1w==}
+  '@convex-dev/better-auth@0.9.1':
+    resolution: {integrity: sha512-LzpVGrqmIc0hZZfDLmUqLUcLsWox2Y7jSPK/ex+fWFKwL71mmU4rL7e9/ZNVOtbpLyRZFmTC1ycaP7PpWlimrQ==}
     peerDependencies:
-      better-auth: 1.3.8
+      better-auth: 1.3.27
       convex: ^1.26.2
       react: ^18.3.1 || ^19.0.0
       react-dom: ^18.3.1 || ^19.0.0
@@ -873,12 +876,13 @@ packages:
     resolution: {integrity: sha512-sURvQbbKsq5f8INV54YJgJEdk8oxBanqkTiXXd33rKmofFCwZLhLRszPduMZ9TA9b8/1CHc/IJmOlBHJk2Q5AQ==}
     engines: {node: '>=18'}
 
-  '@noble/ciphers@0.6.0':
-    resolution: {integrity: sha512-mIbq/R9QXk5/cTfESb1OKtyFnk7oc1Om/8onA1158K9/OZUQFDEVy55jVTato+xmp3XX6F6Qh0zz0Nc1AxAlRQ==}
-
   '@noble/ciphers@1.3.0':
     resolution: {integrity: sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw==}
     engines: {node: ^14.21.3 || >=16}
+
+  '@noble/ciphers@2.0.1':
+    resolution: {integrity: sha512-xHK3XHPUW8DTAobU+G0XT+/w+JLM7/8k1UFdB5xg/zTFPnFCobhftzw8wl4Lw2aq/Rvir5pxfZV5fEazmeCJ2g==}
+    engines: {node: '>= 20.19.0'}
 
   '@noble/curves@1.9.7':
     resolution: {integrity: sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==}
@@ -887,6 +891,10 @@ packages:
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
+
+  '@noble/hashes@2.0.1':
+    resolution: {integrity: sha512-XlOlEbQcE9fmuXxrVTXCTlG2nlRXa9Rj3rr5Ue/+tX+nmkgbX720YHh0VR3hBF9xDvwnb8D2shVGOwNx+ulArw==}
+    engines: {node: '>= 20.19.0'}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1481,6 +1489,9 @@ packages:
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
 
+  '@rolldown/pluginutils@1.0.0-beta.38':
+    resolution: {integrity: sha512-N/ICGKleNhA5nc9XXQG/kkKHJ7S55u0x0XUJbbkmdCnFuoRkM1Il12q9q0eX19+M7KKUEPw/daUPIRnxhcxAIw==}
+
   '@rollup/rollup-android-arm-eabi@4.52.4':
     resolution: {integrity: sha512-BTm2qKNnWIQ5auf4deoetINJm2JzvihvGb9R6K/ETwKLql/Bb3Eg2H1FBp1gUb4YGbydMA3jcmQTR73q7J+GAA==}
     cpu: [arm]
@@ -1852,6 +1863,12 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
+  '@vitejs/plugin-react@5.0.4':
+    resolution: {integrity: sha512-La0KD0vGkVkSk6K+piWDKRUyg8Rl5iAIKRMH0vMJI0Eg47bq1eOxmoObAaQG37WMW9MSyk7Cs8EIWwJC1PtzKA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
     engines: {node: '>= 0.6'}
@@ -1958,19 +1975,37 @@ packages:
     resolution: {integrity: sha512-vAPMQdnyKCBtkmQA6FMCBvU9qFIppS3nzyXnEM+Lo2IAhG4Mpjv9cCxMudhgV3YdNNJv6TNqXy97dfRVL2LmaQ==}
     hasBin: true
 
-  better-auth@1.3.8:
-    resolution: {integrity: sha512-uRFzHbWkhr8eWNy+BJwyMnrZPOvQjwrcLND3nc6jusRteYA9cjeRGElgCPTWTIyWUfzaQ708Lb5Mdq9Gv41Qpw==}
+  better-auth@1.3.27:
+    resolution: {integrity: sha512-SwiGAJ7yU6dBhNg0NdV1h5M8T5sa7/AszZVc4vBfMDrLLmvUfbt9JoJ0uRUJUEdKRAAxTyl9yA+F3+GhtAD80w==}
     peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
+      '@lynx-js/react': '*'
+      '@sveltejs/kit': '*'
+      next: '*'
+      react: '*'
+      react-dom: '*'
+      solid-js: '*'
+      svelte: '*'
+      vue: '*'
     peerDependenciesMeta:
+      '@lynx-js/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
       react:
         optional: true
       react-dom:
         optional: true
+      solid-js:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
 
-  better-call@1.0.16:
-    resolution: {integrity: sha512-42dgJ1rOtc0anOoxjXPOWuel/Z/4aeO7EJ2SiXNwvlkySSgjXhNjAjTMWa8DL1nt6EXS3jl3VKC3mPsU/lUgVA==}
+  better-call@1.0.19:
+    resolution: {integrity: sha512-sI3GcA1SCVa3H+CDHl8W8qzhlrckwXOTKhqq3OOPXjgn5aTOMIqGY34zLY/pHA6tRRMjTUC3lz5Mi7EbDA24Kw==}
 
   body-parser@2.2.0:
     resolution: {integrity: sha512-02qvAaxv8tp7fBa/mw1ga98OGm+eCbqzJOKoRt70sLmfEEi+jyBYVTDGfCL/k06/4EMk/z01gCe7HoCH/f2LTg==}
@@ -2124,8 +2159,8 @@ packages:
       zod:
         optional: true
 
-  convex@1.27.4:
-    resolution: {integrity: sha512-aPP3uxOF5v+K4uftXxRh8GAYepsjsFgU+S9IpAyLVNaFU3Z72WB1rIhaSzPAo4Q0TJWsOKANFGU903IU92QDTA==}
+  convex@1.27.5:
+    resolution: {integrity: sha512-6YU/AVPnoNdAaJABKBI9c5IqRSKsow/c4yo/ntaOWtd8Dff2P2zaImA/ougICfPgTuTvjKRbgkxk6lJhODzb4g==}
     engines: {node: '>=18.0.0', npm: '>=7.0.0'}
     hasBin: true
     peerDependencies:
@@ -2655,6 +2690,9 @@ packages:
     resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
     engines: {node: '>= 0.4'}
 
+  globrex@0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -2930,8 +2968,8 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
-  jose@5.10.0:
-    resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
+  jose@6.1.0:
+    resolution: {integrity: sha512-TTQJyoEoKcC1lscpVDCSsVgYzUDg/0Bt3WE//WiTPK6uOCQC2KZS4MpugbMWt/zyjkopgZoXhZuCi00gLudfUA==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -3211,9 +3249,9 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanostores@0.11.4:
-    resolution: {integrity: sha512-k1oiVNN4hDK8NcNERSZLQiMfRzEGtfnvZvdBvey3SQbgn8Dcrk0h1I6vpxApjb10PFUflZrgJ2WEZyJQ+5v7YQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
+  nanostores@1.0.1:
+    resolution: {integrity: sha512-kNZ9xnoJYKg/AfxjrVL4SS0fKX++4awQReGqWnwTRHxeHGZ1FJFVgTqr/eMrNQdp0Tz7M7tG/TDaX8QfHDwVCw==}
+    engines: {node: ^20.0.0 || >=22.0.0}
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -3890,6 +3928,16 @@ packages:
   ts-morph@26.0.0:
     resolution: {integrity: sha512-ztMO++owQnz8c/gIENcM9XfCEzgoGphTv+nKpYNM1bgsdOVC/jRZuEBf6N+mLLDNg68Kl+GgUZfOySaRiG1/Ug==}
 
+  tsconfck@3.1.6:
+    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
@@ -4020,6 +4068,14 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+
   vite@6.3.6:
     resolution: {integrity: sha512-0msEVHJEScQbhkbVTb/4iHZdJ6SXp/AvxL2sjwYQFfBqleHtnCqv1J3sa9zbWz/6kW1m9Tfzn92vW+kZ1WV6QA==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -4033,6 +4089,46 @@ packages:
       sass-embedded: '*'
       stylus: '*'
       sugarss: '*'
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
+        optional: true
+
+  vite@7.1.9:
+    resolution: {integrity: sha512-4nVGliEpxmhCL8DslSAUdxlB6+SMrhB0a1v5ijlh1xB1nEPuy1mxaHxysVucLHuWryAxLWg6a5ei+U4TLn/rFg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^20.19.0 || >=22.12.0
+      jiti: '>=1.21.0'
+      less: ^4.0.0
+      lightningcss: ^1.21.0
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
       yaml: ^2.4.2
@@ -4389,9 +4485,12 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@better-auth/utils@0.2.6':
+  '@better-auth/core@1.3.27':
     dependencies:
-      uncrypto: 0.1.3
+      better-call: 1.0.19
+      zod: 4.1.12
+
+  '@better-auth/utils@0.3.0': {}
 
   '@better-fetch/fetch@1.1.18': {}
 
@@ -4403,53 +4502,68 @@ snapshots:
     dependencies:
       statuses: 2.0.2
 
-  '@convex-dev/better-auth@0.8.9(@standard-schema/spec@1.0.0)(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(convex@1.27.4(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.7.3)':
+  '@convex-dev/better-auth@0.9.1(@standard-schema/spec@1.0.0)(@types/node@22.18.8)(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(convex@1.27.5(react@19.2.0))(jiti@2.6.1)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(yaml@2.8.1)':
     dependencies:
-      '@better-fetch/fetch': 1.1.18
-      better-auth: 1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@vitejs/plugin-react': 5.0.4(vite@7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
+      better-auth: 1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       common-tags: 1.8.2
-      convex: 1.27.4(react@19.2.0)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+      convex: 1.27.5(react@19.2.0)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
       is-network-error: 1.3.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
+      remeda: 2.32.0
       type-fest: 4.41.0
+      vite: 7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)
+      vite-tsconfig-paths: 5.1.4(typescript@5.7.3)(vite@7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
       zod: 3.25.76
     transitivePeerDependencies:
       - '@standard-schema/spec'
+      - '@types/node'
       - hono
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
       - typescript
+      - yaml
 
-  '@convex-dev/rag@0.5.3(@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0)))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))(zod@3.25.76)':
+  '@convex-dev/rag@0.5.3(@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0)))(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))(zod@3.25.76)':
     dependencies:
-      '@convex-dev/workpool': 0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))
+      '@convex-dev/workpool': 0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))
       ai: 5.0.60(zod@3.25.76)
-      convex: 1.27.4(react@19.2.0)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+      convex: 1.27.5(react@19.2.0)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
     transitivePeerDependencies:
       - zod
 
-  '@convex-dev/rate-limiter@0.2.13(convex@1.27.4(react@19.2.0))(react@19.2.0)':
+  '@convex-dev/rate-limiter@0.2.13(convex@1.27.5(react@19.2.0))(react@19.2.0)':
     dependencies:
-      convex: 1.27.4(react@19.2.0)
+      convex: 1.27.5(react@19.2.0)
     optionalDependencies:
       react: 19.2.0
 
-  '@convex-dev/resend@0.1.13(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))(react@19.2.0)':
+  '@convex-dev/resend@0.1.13(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))(react@19.2.0)':
     dependencies:
-      '@convex-dev/rate-limiter': 0.2.13(convex@1.27.4(react@19.2.0))(react@19.2.0)
-      '@convex-dev/workpool': 0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))
-      convex: 1.27.4(react@19.2.0)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+      '@convex-dev/rate-limiter': 0.2.13(convex@1.27.5(react@19.2.0))(react@19.2.0)
+      '@convex-dev/workpool': 0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))
+      convex: 1.27.5(react@19.2.0)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
       remeda: 2.32.0
       svix: 1.76.1
     transitivePeerDependencies:
       - react
 
-  '@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.4(react@19.2.0))':
+  '@convex-dev/workpool@0.2.18(convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76))(convex@1.27.5(react@19.2.0))':
     dependencies:
-      convex: 1.27.4(react@19.2.0)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+      convex: 1.27.5(react@19.2.0)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
 
   '@daily-co/daily-js@0.84.0':
     dependencies:
@@ -4798,15 +4912,17 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@noble/ciphers@0.6.0': {}
-
   '@noble/ciphers@1.3.0': {}
+
+  '@noble/ciphers@2.0.1': {}
 
   '@noble/curves@1.9.7':
     dependencies:
       '@noble/hashes': 1.8.0
 
   '@noble/hashes@1.8.0': {}
+
+  '@noble/hashes@2.0.1': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -5438,6 +5554,8 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 
+  '@rolldown/pluginutils@1.0.0-beta.38': {}
+
   '@rollup/rollup-android-arm-eabi@4.52.4':
     optional: true
 
@@ -5779,11 +5897,11 @@ snapshots:
       '@typescript-eslint/types': 8.46.0
       eslint-visitor-keys: 4.2.1
 
-  '@useautumn/convex@0.0.10(@standard-schema/spec@1.0.0)(autumn-js@0.1.40(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.16)(convex@1.27.4(react@19.2.0))(react@19.2.0))(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)':
+  '@useautumn/convex@0.0.10(@standard-schema/spec@1.0.0)(autumn-js@0.1.40(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.19)(convex@1.27.5(react@19.2.0))(react@19.2.0))(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)':
     dependencies:
-      autumn-js: 0.1.40(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.16)(convex@1.27.4(react@19.2.0))(react@19.2.0)
-      convex: 1.27.4(react@19.2.0)
-      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
+      autumn-js: 0.1.40(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.19)(convex@1.27.5(react@19.2.0))(react@19.2.0)
+      convex: 1.27.5(react@19.2.0)
+      convex-helpers: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76)
       react: 19.2.0
     transitivePeerDependencies:
       - '@standard-schema/spec'
@@ -5807,6 +5925,18 @@ snapshots:
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
       vite: 6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitejs/plugin-react@5.0.4(vite@7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))':
+    dependencies:
+      '@babel/core': 7.28.4
+      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
+      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.4)
+      '@rolldown/pluginutils': 1.0.0-beta.38
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.17.0
+      vite: 7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5887,16 +6017,16 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  autumn-js@0.1.40(better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.16)(convex@1.27.4(react@19.2.0))(react@19.2.0):
+  autumn-js@0.1.40(better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(better-call@1.0.19)(convex@1.27.5(react@19.2.0))(react@19.2.0):
     dependencies:
-      convex: 1.27.4(react@19.2.0)
+      convex: 1.27.5(react@19.2.0)
       query-string: 9.3.1
       rou3: 0.6.3
       swr: 2.3.6(react@19.2.0)
       zod: 4.1.12
     optionalDependencies:
-      better-auth: 1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      better-call: 1.0.16
+      better-auth: 1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      better-call: 1.0.19
       react: 19.2.0
 
   available-typed-arrays@1.0.7:
@@ -5915,26 +6045,28 @@ snapshots:
 
   baseline-browser-mapping@2.8.12: {}
 
-  better-auth@1.3.8(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+  better-auth@1.3.27(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      '@better-auth/utils': 0.2.6
+      '@better-auth/core': 1.3.27
+      '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.18
-      '@noble/ciphers': 0.6.0
-      '@noble/hashes': 1.8.0
+      '@noble/ciphers': 2.0.1
+      '@noble/hashes': 2.0.1
       '@simplewebauthn/browser': 13.2.2
       '@simplewebauthn/server': 13.2.2
-      better-call: 1.0.16
+      better-call: 1.0.19
       defu: 6.1.4
-      jose: 5.10.0
+      jose: 6.1.0
       kysely: 0.28.7
-      nanostores: 0.11.4
+      nanostores: 1.0.1
       zod: 4.1.12
     optionalDependencies:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
-  better-call@1.0.16:
+  better-call@1.0.19:
     dependencies:
+      '@better-auth/utils': 0.3.0
       '@better-fetch/fetch': 1.1.18
       rou3: 0.5.1
       set-cookie-parser: 2.7.1
@@ -6069,16 +6201,16 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.4(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76):
+  convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.27.5(react@19.2.0))(react@19.2.0)(typescript@5.7.3)(zod@3.25.76):
     dependencies:
-      convex: 1.27.4(react@19.2.0)
+      convex: 1.27.5(react@19.2.0)
     optionalDependencies:
       '@standard-schema/spec': 1.0.0
       react: 19.2.0
       typescript: 5.7.3
       zod: 3.25.76
 
-  convex@1.27.4(react@19.2.0):
+  convex@1.27.5(react@19.2.0):
     dependencies:
       esbuild: 0.25.4
       prettier: 3.6.2
@@ -6719,6 +6851,8 @@ snapshots:
       define-properties: 1.2.1
       gopd: 1.2.0
 
+  globrex@0.1.2: {}
+
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
@@ -6962,7 +7096,7 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  jose@5.10.0: {}
+  jose@6.1.0: {}
 
   js-tokens@4.0.0: {}
 
@@ -7192,7 +7326,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanostores@0.11.4: {}
+  nanostores@1.0.1: {}
 
   natural-compare@1.4.0: {}
 
@@ -7938,6 +8072,10 @@ snapshots:
       '@ts-morph/common': 0.27.0
       code-block-writer: 13.0.3
 
+  tsconfck@3.1.6(typescript@5.7.3):
+    optionalDependencies:
+      typescript: 5.7.3
+
   tsconfig-paths@4.2.0:
     dependencies:
       json5: 2.2.3
@@ -8074,7 +8212,33 @@ snapshots:
 
   vary@1.1.2: {}
 
+  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.7.3)
+    optionalDependencies:
+      vite: 7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   vite@6.3.6(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1):
+    dependencies:
+      esbuild: 0.25.10
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.52.4
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 22.18.8
+      fsevents: 2.3.3
+      jiti: 2.6.1
+      lightningcss: 1.30.1
+      yaml: 2.8.1
+
+  vite@7.1.9(@types/node@22.18.8)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
