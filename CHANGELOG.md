@@ -14,19 +14,25 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - ✅ Implement new database schema (6 tables)
 - ✅ Build backend APIs (frameworks, testimonials, innovations, beta program)
 - ✅ Create frontend components and pages
-- 🔄 Beta acceptance flow authentication (investigation in progress)
+- ✅ Beta acceptance flow authentication (resolved Oct 10, 2025)
 - 🔄 Beta launch preparation (build configuration in progress)
 
 ### Completed
-- **Authentication Investigation (Oct 9, 2025)**: Deep investigation of beta acceptance flow issues
-  - **CORS Configuration**: Fixed local development CORS issues in convex/auth.ts
-  - **Deployment URL Fix**: Updated createUserAccountFromBetaSignup to use correct deployment URL
-  - **UI Enhancements**: Enhanced LandingPage.tsx with temporary password display and sign-in button
-  - **Auto-initialization Logic**: Fixed App.tsx logic for new user profile initialization
-  - **Profile Pre-population**: Updated BetaOnboarding.tsx to pre-populate user data
-  - **Validator Fixes**: Resolved ReturnsValidationError in betaSignup.ts queries
-  - **Error Handling**: Improved error handling and user feedback throughout auth flow
-  - **Status**: Investigation complete, account creation flow still needs resolution
+- **Authentication Flow Resolution (Oct 10, 2025)**: Complete resolution of beta acceptance flow issues
+  - **Internal API Workaround**: Created `createUserDirectly` mutation to bypass broken HTTP endpoints
+  - **Manual Profile Creation**: Implemented manual profile creation since triggers don't fire with internal API calls
+  - **CORS Configuration**: Fixed local development CORS issues and added `http://localhost:5175` to trusted origins
+  - **Better Auth Configuration**: Fixed `baseURL` to use frontend URL instead of Convex backend URL
+  - **Session Management**: Updated from deprecated `loggedInUser` to `authClient.useSession()`
+  - **Database Migration**: Added `authId` field to `userProfiles` table for Better Auth 0.9 compatibility
+  - **Error Handling**: Comprehensive error handling and user feedback throughout auth flow
+  - **Status**: ✅ Complete signup-to-dashboard flow functional, beta program ready for launch
+- **Documentation Update (Oct 10, 2025)**: Comprehensive documentation cleanup and organization
+  - **README.md**: Updated to accurately reflect all existing documentation files
+  - **ADR 006**: Updated status from "Investigation Complete" to "Resolved"
+  - **Documentation Inventory**: Catalogued all 14 markdown files across core docs, ADRs, and testing
+  - **Quick Start Guides**: Enhanced role-based navigation paths
+  - **Project Structure**: Updated to show complete documentation ecosystem
 - **Phase 5 P0 Implementation**: Complete implementation of all 12 critical features for beta launch
   - **Database Seeding**: 10+ Louisiana-aligned frameworks with comprehensive content
   - **User Profile Management**: Complete profile system with API and UI
@@ -200,4 +206,4 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-**For detailed planning documentation, see `docs/planning/v0.4.0/`**
+**For detailed architectural decisions, see `docs/decisions/`**

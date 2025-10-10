@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { authComponent } from "./auth";
+import { getAuthUserSafe } from "./auth";
 
 // Query: Get beta program status
 export const getBetaStatus = query({
@@ -16,7 +16,7 @@ export const getBetaStatus = query({
     weeklyEngagementCount: v.number(),
   }), v.null()),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       return null;
     }
@@ -49,7 +49,7 @@ export const initializeBetaProgram = mutation({
   args: {},
   returns: v.id("betaProgram"),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -89,7 +89,7 @@ export const updateOnboardingProgress = mutation({
   args: { step: v.number() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -118,7 +118,7 @@ export const recordWeeklyEngagement = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -152,7 +152,19 @@ export const getBetaStats = query({
     weeklyEngagementStreak: v.number(),
   }),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    let user;
+    try {
+      user = await getAuthUserSafe(ctx);
+    } catch (error) {
+      // If authentication fails, return default values
+      return {
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        weeklyEngagementStreak: 0,
+      };
+    }
+    
     if (!user) {
       return {
         frameworksTried: 0,
@@ -220,5 +232,74 @@ export const getAllBetaUsers = query({
     }
 
     return users;
+  },
+});
+
+// Test helper functions
+export const getAllBetaPrograms = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("betaProgram"),
+    _creationTime: v.number(),
+    userId: v.string(),
+    status: v.string(),
+    joinedAt: v.number(),
+  })),
+  handler: async (ctx) => {
+    const programs = await ctx.db.query("betaProgram").collect();
+    return programs.map(p => ({
+      _id: p._id,
+      _creationTime: p._creationTime,
+      userId: p.userId,
+      status: p.status,
+      joinedAt: p.joinedAt || 0,
+    }));
+  },
+});
+
+export const deleteBetaProgram = mutation({
+  args: { programId: v.id("betaProgram") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.programId);
+    return true;
+  },
+});
+
+// UNAUTHENTICATED VERSION: Create betaProgram for a specific user ID
+// This is used when creating beta programs from actions where the user isn't authenticated yet
+export const createBetaProgramForUserId = mutation({
+  args: {
+    userId: v.string(),
+    invitedAt: v.optional(v.number()),
+  },
+  returns: v.id("betaProgram"),
+  handler: async (ctx, args) => {
+    // Check if already exists
+    const existing = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .first();
+
+    if (existing) {
+      return existing._id;
+    }
+
+    // Create beta program record
+    const betaProgramId = await ctx.db.insert("betaProgram", {
+      userId: args.userId,
+      status: "active",
+      invitedAt: args.invitedAt || Date.now(),
+      joinedAt: Date.now(),
+      onboardingStep: 0,
+      onboardingCompleted: false,
+      frameworksTried: 0,
+      totalTimeSaved: 0,
+      innovationsShared: 0,
+      officeHoursAttended: 0,
+      weeklyEngagementCount: 0,
+    });
+
+    return betaProgramId;
   },
 });

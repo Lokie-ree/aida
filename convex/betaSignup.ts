@@ -2,7 +2,6 @@ import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { resend } from "./email";
-import { authComponent } from "./auth";
 
 export const signupForBeta = mutation({
   args: {
@@ -87,39 +86,43 @@ export const createUserAccountFromBetaSignup = action({
     success: v.boolean(),
     message: v.string(),
   }),
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<{ success: boolean; message: string }> => {
     try {
       // Get beta signup data
-      const signup = await ctx.runQuery(api.betaSignup.getBetaSignupById, { signupId: args.signupId });
+      const signup: any = await ctx.runQuery(api.betaSignup.getBetaSignupById, { 
+        signupId: args.signupId 
+      });
+      
       if (!signup) {
         return { success: false, message: "Beta signup not found" };
       }
 
-      // Create user account using Better Auth's signup API
-      const response = await fetch(`${process.env.CONVEX_SITE_URL}/api/auth/sign-up/email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: signup.email,
-          password: args.temporaryPassword,
-          name: signup.name || signup.email.split('@')[0],
-        }),
+      // Use Better Auth's internal mutation instead of HTTP API
+      // This avoids circular dependency issues and ensures proper user creation
+      console.log(`Creating Better Auth user internally for: ${signup.email}`);
+      
+      const result: any = await ctx.runMutation(api.auth.createUserDirectly, {
+        email: signup.email,
+        password: args.temporaryPassword,
+        name: signup.name || signup.email.split('@')[0],
       });
 
-      if (response.ok) {
+      if (result.success) {
         console.log(`Successfully created user account for ${signup.email}`);
+        
+        // The onCreate trigger will automatically create userProfile and betaProgram
+        // No need for manual creation anymore - the trigger handles everything
+        console.log(`User created, trigger will handle profile creation for ${signup.email}`);
+        
         return {
           success: true,
           message: "User account created successfully",
         };
       } else {
-        const error = await response.text();
-        console.error(`Failed to create user account: ${error}`);
+        console.error(`Failed to create user account: ${result.message}`);
         return {
           success: false,
-          message: "Failed to create user account",
+          message: result.message,
         };
       }
     } catch (error) {
@@ -363,10 +366,40 @@ export const getBetaSignupById = query({
       status: v.string(),
       signupDate: v.number(),
       betaProgramId: v.string(),
+      notes: v.optional(v.string()),
     }),
     v.null()
   ),
   handler: async (ctx, args) => {
     return await ctx.db.get(args.signupId);
+  },
+});
+
+// Test helper functions
+export const getAllBetaSignups = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("betaSignups"),
+    _creationTime: v.number(),
+    email: v.string(),
+    name: v.optional(v.string()),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    status: v.string(),
+    signupDate: v.number(),
+    betaProgramId: v.string(),
+    notes: v.optional(v.string()),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("betaSignups").collect();
+  },
+});
+
+export const deleteBetaSignup = mutation({
+  args: { signupId: v.id("betaSignups") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.signupId);
+    return true;
   },
 });

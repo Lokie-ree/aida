@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
+import { authClient } from "./lib/auth-client";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/shared/ModeToggle";
@@ -88,7 +89,7 @@ function Content({
   currentView: "dashboard" | "frameworks" | "community" | "profile" | "admin" | "time-tracking";
   onShowOnboarding: () => void;
 }) {
-  const loggedInUser = useQuery(api.auth.loggedInUser);
+  const { data: session } = authClient.useSession();
   const userProfile = useQuery(api.userProfiles.getUserProfile);
   const betaStatus = useQuery(api.betaProgram.getBetaStatus);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
@@ -99,13 +100,13 @@ function Content({
 
   // Auto-initialize new users
   React.useEffect(() => {
-    if (loggedInUser && userProfile === null && betaStatus === null) {
-      console.log("Auto-initializing new user:", loggedInUser.email);
+    if (session?.user && userProfile === null && betaStatus === null) {
+      console.log("Auto-initializing new user:", session.user.email);
       initializeUser().catch(console.error);
     }
-  }, [loggedInUser, userProfile, betaStatus, initializeUser]);
+  }, [session?.user, userProfile, betaStatus, initializeUser]);
 
-  if (loggedInUser === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined) {
+  if (session === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined) {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="flex items-center gap-3 text-muted-foreground">
@@ -121,7 +122,7 @@ function Content({
 
   // Use real user profile data
   const user = {
-    name: loggedInUser.name || "Educator",
+    name: session?.user?.name || "Educator",
     school: userProfile?.school || "Not specified",
     subject: userProfile?.subject || "Not specified"
   };

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { authComponent } from "./auth";
+import { getAuthUserSafe } from "./auth";
+import { api } from "./_generated/api";
 
 // Query: Get user profile
 export const getUserProfile = query({
@@ -15,7 +16,14 @@ export const getUserProfile = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   }), v.null()),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    let user;
+    try {
+      user = await getAuthUserSafe(ctx);
+    } catch (error) {
+      // If authentication fails, return null
+      return null;
+    }
+    
     if (!user) {
       return null;
     }
@@ -53,7 +61,13 @@ export const createUserProfile = mutation({
   },
   returns: v.id("userProfiles"),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    let user;
+    try {
+      user = await getAuthUserSafe(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
+    
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -94,7 +108,13 @@ export const updateUserProfile = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    let user;
+    try {
+      user = await getAuthUserSafe(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
+    
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -143,7 +163,7 @@ export const getAllUserProfiles = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   })),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       return [];
     }
@@ -179,7 +199,13 @@ export const initializeProfileForBeta = mutation({
   },
   returns: v.id("userProfiles"),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    let user;
+    try {
+      user = await getAuthUserSafe(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
+    
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -224,7 +250,7 @@ export const initializeNewUser = mutation({
     })
   ),
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       return { success: false, message: "User must be authenticated" };
     }
@@ -280,5 +306,163 @@ export const initializeNewUser = mutation({
       betaProgramId, 
       message: "User initialized successfully" 
     };
+  },
+});
+
+// Test helper functions
+export const deleteUserProfile = mutation({
+  args: { profileId: v.id("userProfiles") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.profileId);
+    return true;
+  },
+});
+
+// Debug query to check database state
+export const debugDatabaseState = query({
+  args: {},
+  returns: v.object({
+    userProfilesCount: v.number(),
+    betaSignupsCount: v.number(),
+    betaProgramsCount: v.number(),
+    userProfiles: v.array(v.object({
+      _id: v.id("userProfiles"),
+      userId: v.string(),
+      school: v.optional(v.string()),
+      subject: v.optional(v.string()),
+    })),
+    betaSignups: v.array(v.object({
+      _id: v.id("betaSignups"),
+      email: v.string(),
+      status: v.string(),
+    })),
+  }),
+  handler: async (ctx) => {
+    const userProfiles = await ctx.db.query("userProfiles").collect();
+    const betaSignups = await ctx.db.query("betaSignups").collect();
+    const betaPrograms = await ctx.db.query("betaProgram").collect();
+
+    return {
+      userProfilesCount: userProfiles.length,
+      betaSignupsCount: betaSignups.length,
+      betaProgramsCount: betaPrograms.length,
+      userProfiles: userProfiles.map(p => ({
+        _id: p._id,
+        userId: p.userId,
+        school: p.school,
+        subject: p.subject,
+      })),
+      betaSignups: betaSignups.map(s => ({
+        _id: s._id,
+        email: s.email,
+        status: s.status,
+      })),
+    };
+  },
+});
+
+// Manual sync function to create userProfiles for existing Better Auth users
+export const syncExistingUsers = mutation({
+  args: {},
+  returns: v.object({
+    success: v.boolean(),
+    syncedCount: v.number(),
+    message: v.string(),
+  }),
+  handler: async (ctx) => {
+    try {
+      // Get all beta signups
+      const betaSignups = await ctx.db.query("betaSignups").collect();
+      
+      let syncedCount = 0;
+      
+      for (const signup of betaSignups) {
+        // Check if userProfile already exists for this email
+        const existingProfile = await ctx.db
+          .query("userProfiles")
+          .withIndex("by_user", (q) => q.eq("userId", signup.email)) // Using email as userId for now
+          .first();
+          
+        if (!existingProfile) {
+          // Create userProfile for this beta signup
+          await ctx.db.insert("userProfiles", {
+            userId: signup.email, // We'll need to map this to actual Better Auth user ID
+            school: signup.school,
+            subject: signup.subject,
+            gradeLevel: undefined,
+            district: undefined,
+            role: "teacher",
+          });
+          
+          // Create beta program record
+          await ctx.db.insert("betaProgram", {
+            userId: signup.email, // We'll need to map this to actual Better Auth user ID
+            status: "active",
+            invitedAt: signup.signupDate,
+            joinedAt: Date.now(),
+            onboardingStep: 0,
+            onboardingCompleted: false,
+            frameworksTried: 0,
+            totalTimeSaved: 0,
+            innovationsShared: 0,
+            officeHoursAttended: 0,
+            weeklyEngagementCount: 0,
+          });
+          
+          syncedCount++;
+        }
+      }
+      
+      return {
+        success: true,
+        syncedCount,
+        message: `Synced ${syncedCount} users`,
+      };
+    } catch (error) {
+      console.error("Error syncing users:", error);
+      return {
+        success: false,
+        syncedCount: 0,
+        message: `Failed to sync users: ${error}`,
+      };
+    }
+  },
+});
+
+// UNAUTHENTICATED VERSION: Create userProfile for a specific user ID
+// This is used when creating profiles from actions where the user isn't authenticated yet
+export const createUserProfileForUserId = mutation({
+  args: {
+    userId: v.string(),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    gradeLevel: v.optional(v.string()),
+    district: v.optional(v.string()),
+    role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
+  },
+  returns: v.id("userProfiles"),
+  handler: async (ctx, args) => {
+    // Check if profile already exists
+    const existingProfile = await ctx.db
+      .query("userProfiles")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .first();
+
+    if (existingProfile) {
+      return existingProfile._id;
+    }
+
+    // Create new profile
+    const profileId = await ctx.db.insert("userProfiles", {
+      userId: args.userId,
+      school: args.school,
+      subject: args.subject,
+      gradeLevel: args.gradeLevel,
+      district: args.district,
+      role: args.role || "teacher",
+    });
+
+    return profileId;
   },
 });

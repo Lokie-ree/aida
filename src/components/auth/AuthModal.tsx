@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { authClient } from "@/lib/auth-client";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -15,6 +17,9 @@ interface AuthModalProps {
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [submitting, setSubmitting] = useState(false);
+  
+  // Use our internal mutation for user creation
+  const createUser = useMutation(api.auth.createUserDirectly);
 
   const handleClose = () => {
     if (!submitting) {
@@ -34,20 +39,42 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const performAuth = async () => {
       try {
         if (flow === "signIn") {
-          await authClient.signIn.email({
+          console.log("Attempting sign-in for:", email);
+          const result = await authClient.signIn.email({
             email,
             password,
           });
-          toast.success("Welcome back!");
-          onClose();
+          
+          console.log("Sign-in result:", result);
+          
+          // Check if sign-in was successful - Better Auth returns data with user property
+          if (result && 'data' in result && result.data && (result.data as any).user) {
+            console.log("Sign-in successful for user:", (result.data as any).user.id);
+            toast.success("Welcome back!");
+            onClose();
+          } else if (result && 'error' in result) {
+            // Better Auth returned an error object
+            console.log("Sign-in error:", (result as any).error);
+            throw new Error((result as any).error?.message || "Invalid email or password");
+          } else {
+            // No user returned, likely authentication failed
+            console.log("Sign-in failed - no user returned");
+            throw new Error("Invalid email or password");
+          }
         } else {
-          await authClient.signUp.email({
+          // Use our internal mutation instead of broken HTTP endpoints
+          const result = await createUser({
             email,
             password,
             name: name || email.split("@")[0],
           });
-          toast.success("Account created successfully!");
-          onClose();
+          
+          if (result.success) {
+            toast.success("Account created successfully!");
+            onClose();
+          } else {
+            throw new Error(result.message);
+          }
         }
       } catch (error: any) {
         console.error("Auth error:", error);

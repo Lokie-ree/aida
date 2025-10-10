@@ -1,19 +1,21 @@
-import { createRoot } from "react-dom/client";
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { ConvexReactClient } from "convex/react";
-import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import App from "./App";
-import { authClient } from "@/lib/auth-client";
+import "./index.css";
+import { ConvexReactClient } from "convex/react";
+import {ConvexBetterAuthProvider} from "@convex-dev/better-auth/react";
+import {authClient} from "@/lib/auth-client";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, {
   // Optionally pause queries until the user is authenticated
-  // Set to false for now since we have public landing page
   expectAuth: false,
   verbose: true,
 });
 
-createRoot(document.getElementById("root")!).render(
-  <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-    <App />
-  </ConvexBetterAuthProvider>,
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
+      <App />
+    </ConvexBetterAuthProvider>
+  </React.StrictMode>
 );

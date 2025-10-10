@@ -37,7 +37,16 @@ npx convex dev
 
 # Start frontend (in another terminal)
 npm run dev
+
+# Test Better Auth triggers
+node scripts/test-triggers.js
 ```
+
+#### **Key Technical Features**
+- **Better Auth Integration**: Secure authentication with automatic user profile synchronization
+- **Database Triggers**: Automatic data sync between Better Auth and application tables
+- **Real-time Updates**: Powered by Convex for instant data synchronization
+- **Type Safety**: Full TypeScript support with Convex-generated types
 
 ### **For Documentation Readers**
 Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for complete navigation.
@@ -53,20 +62,29 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 
 ### **Core Documents** (Living)
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and progress
-- **[docs/decisions/](docs/decisions/)** - Architecture Decision Records (ADRs)
+- **[product-requirements.md](product-requirements.md)** - Product requirements and specifications
+- **[docs/PELICAN_AI_BRAND_GUIDELINES.md](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Brand guidelines and design system
 - **[orchestrator.json](orchestrator.json)** - Project configuration and workflow
 
-### **Planning Documents** (Archived Reference)
-- **[docs/planning/v0.4.0/](docs/planning/)** - Complete planning phase documentation
-  - Product Requirements
-  - Design System & User Flows
-  - Implementation Plan
-  - Strategic Foundation
+### **Architecture Decision Records (ADRs)**
+- **[docs/decisions/](docs/decisions/)** - All architectural decisions
+  - [001](docs/decisions/001-use-convex-backend.md) - Use Convex for Backend
+  - [002](docs/decisions/002-extend-aida-codebase.md) - Extend A.I.D.A. Codebase
+  - [003](docs/decisions/003-framework-based-content.md) - Framework-Based Content
+  - [004](docs/decisions/004-migrate-to-better-auth.md) - Migrate to Better Auth
+  - [005](docs/decisions/005-phase5-p0-implementation.md) - Phase 5 P0 Implementation
+  - [006](docs/decisions/006-beta-auth-investigation.md) - Beta Authentication Flow Investigation
+
+### **Testing & Development**
+- **[scripts/README.md](scripts/README.md)** - Beta authentication testing suite
+- **[scripts/troubleshooting-guide.md](scripts/troubleshooting-guide.md)** - Troubleshooting guide
+- **[scripts/test-e2e-manual-checklist.md](scripts/test-e2e-manual-checklist.md)** - Manual testing checklist
 
 ### **Quick Start by Role**
-- **Engineers**: [orchestrator.json](orchestrator.json) → [Implementation Plan](docs/planning/v0.4.0/implementation-plan.md)
-- **Product**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Product Requirements](docs/planning/v0.4.0/product-requirements.md)
-- **Design**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Design System](docs/planning/v0.4.0/design-documentation/)
+- **Engineers**: [orchestrator.json](orchestrator.json) → [Product Requirements](product-requirements.md) → [Testing Suite](scripts/README.md)
+- **Product**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Product Requirements](product-requirements.md)
+- **Design**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [ADRs](docs/decisions/)
+- **QA/Testing**: [Testing Suite](scripts/README.md) → [Manual Checklist](scripts/test-e2e-manual-checklist.md) → [Troubleshooting](scripts/troubleshooting-guide.md)
 - **Stakeholders**: This README → [CHANGELOG.md](CHANGELOG.md)
 
 ---
@@ -134,9 +152,12 @@ aida/
 │   │   └── utils.ts          # Helper functions
 │   └── main.tsx              # App entry point
 ├── docs/                      # Documentation
-│   ├── decisions/            # Architecture Decision Records
-│   ├── planning/v0.4.0/      # Planning phase docs (archived)
-│   └── *.md                  # Living documentation
+│   ├── decisions/            # Architecture Decision Records (6 ADRs)
+│   └── PELICAN_AI_BRAND_GUIDELINES.md  # Brand guidelines
+├── scripts/                   # Testing & Development
+│   ├── README.md             # Testing suite documentation
+│   ├── troubleshooting-guide.md  # Troubleshooting guide
+│   └── test-e2e-manual-checklist.md  # Manual testing checklist
 ├── public/                    # Static assets
 ├── CHANGELOG.md               # Version history (living)
 ├── README.md                  # This file
@@ -223,9 +244,10 @@ This project follows an orchestrated workflow defined in [`orchestrator.json`](o
 
 ### **Development Workflow**
 1. Review the [orchestrator.json](orchestrator.json) for project configuration
-2. Follow the [Implementation Plan](docs/planning/v0.4.0/implementation-plan.md)
-3. Validate at each checkpoint
-4. Submit PRs with clear descriptions
+2. Follow the [Product Requirements](product-requirements.md)
+3. Check [ADRs](docs/decisions/) for architectural decisions
+4. Use [Testing Suite](scripts/README.md) for validation
+5. Submit PRs with clear descriptions
 
 ### **Documentation Updates**
 1. Update relevant document(s)
@@ -253,6 +275,10 @@ This project follows an orchestrated workflow defined in [`orchestrator.json`](o
 
 ### **Resources**
 - **Documentation**: [docs/](docs/) directory
+- **Product Requirements**: [product-requirements.md](product-requirements.md)
+- **Architecture Decisions**: [docs/decisions/](docs/decisions/) (6 ADRs)
+- **Testing Suite**: [scripts/README.md](scripts/README.md)
+- **Troubleshooting**: [scripts/troubleshooting-guide.md](scripts/troubleshooting-guide.md)
 - **Project Config**: [orchestrator.json](orchestrator.json)
 - **Issues**: [GitHub Issues]
 - **Discussions**: [GitHub Discussions]
@@ -280,6 +306,6 @@ Proprietary - All rights reserved.
 
 ---
 
-**Last Updated:** October 8, 2025  
-**Version:** 1.1  
+**Last Updated:** October 10, 2025  
+**Version:** 1.2  
 **Status:** Phase 5 In Progress - Software Engineering 🚀
