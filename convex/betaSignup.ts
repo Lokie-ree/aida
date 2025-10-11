@@ -1,7 +1,6 @@
 import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { resend } from "./email";
 
 export const signupForBeta = mutation({
   args: {
@@ -14,7 +13,6 @@ export const signupForBeta = mutation({
     success: v.boolean(),
     message: v.string(),
     signupId: v.optional(v.id("betaSignups")),
-    temporaryPassword: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
     // Check if email already exists
@@ -28,21 +26,8 @@ export const signupForBeta = mutation({
         success: false,
         message: "This email is already registered for the beta program.",
         signupId: undefined,
-        temporaryPassword: undefined,
       };
     }
-
-    // Generate a temporary password
-    const generateSecurePassword = () => {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-      let password = '';
-      for (let i = 0; i < 12; i++) {
-        password += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return password;
-    };
-
-    const temporaryPassword = generateSecurePassword();
 
     // Create new beta signup
     const signupId = await ctx.db.insert("betaSignups", {
@@ -50,29 +35,22 @@ export const signupForBeta = mutation({
       name: args.name || "",
       school: args.school || "",
       subject: args.subject || "",
-      status: "approved", // Auto-approve for now
+      status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
       betaProgramId: "beta-v1",
     });
 
-    // Create user account immediately
-    await ctx.scheduler.runAfter(0, api.betaSignup.createUserAccountFromBetaSignup, {
-      signupId,
-      temporaryPassword,
-    });
-
-    // Schedule the welcome email to be sent with platform access
-    await ctx.scheduler.runAfter(1000, api.betaSignup.sendPlatformAccessEmail, {
+    // Send welcome email (no platform access yet)
+    await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
       email: args.email,
       name: args.name,
-      temporaryPassword: temporaryPassword,
+      school: args.school,
     });
 
     return {
       success: true,
-      message: "Successfully signed up for the beta program! You'll receive an email with your platform access credentials within a few minutes.",
+      message: "Successfully signed up for the beta program! Check your email for next steps.",
       signupId,
-      temporaryPassword, // Return for immediate use
     };
   },
 });
@@ -135,94 +113,6 @@ export const createUserAccountFromBetaSignup = action({
   },
 });
 
-export const sendBetaWelcomeEmail = action({
-  args: {
-    email: v.string(),
-    name: v.optional(v.string()),
-    school: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    emailId: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    try {
-      // Note: testMode is currently enabled, so emails will only be sent to @resend.dev addresses
-      // To send to real addresses, verify your domain in Resend and set testMode: false
-      
-      // Create a simple HTML email for beta signup
-      const emailHtml = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to Pelican AI Beta</title>
-        </head>
-        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <div style="background: linear-gradient(135deg, #0ea5e9, #f59e0b); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-              <h1 style="margin: 0; font-size: 28px;">Pelican AI</h1>
-              <p style="margin: 10px 0 0 0; font-size: 16px;">Reclaim Your Time with Confidence</p>
-            </div>
-          </div>
-          
-          <h2 style="color: #1F2937; margin-bottom: 20px;">Welcome to the Beta Program!</h2>
-          
-          <p>Hi${args.name ? ` ${args.name}` : ''},</p>
-          
-          <p>Thank you for joining the Pelican AI beta program! We're excited to have you as part of our community of Louisiana educators who are reclaiming their time and teaching with confidence.</p>
-          
-          <div style="background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #1F2937;">What's Next?</h3>
-            <ul style="margin: 0; padding-left: 20px;">
-              <li>You'll receive access to the platform within 24-48 hours</li>
-              <li>Complete the 3-minute onboarding survey</li>
-              <li>Start exploring our curated AI guidance frameworks</li>
-              <li>Join our weekly community check-ins</li>
-            </ul>
-          </div>
-          
-          <div style="background: #EFF6FF; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0ea5e9;">
-            <h3 style="margin-top: 0; color: #1F2937;">What You'll Get</h3>
-            <ul style="margin: 0; padding-left: 20px;">
-              <li><strong>10+ AI Guidance Frameworks</strong> - Copy-paste prompts for common tasks</li>
-              <li><strong>Louisiana Standards Alignment</strong> - LER domains and state standards mapped</li>
-              <li><strong>Time Savings Tracking</strong> - Measure your efficiency gains</li>
-              <li><strong>Community Access</strong> - Share innovations with fellow educators</li>
-            </ul>
-          </div>
-          
-          <p>We'll be in touch soon with your platform access and next steps. In the meantime, feel free to reply to this email if you have any questions.</p>
-          
-          <p>Thank you for helping us build AI tools that truly serve Louisiana educators!</p>
-          
-          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E5E7EB; text-align: center; color: #6B7280; font-size: 14px;">
-            <p><strong>Pelican AI</strong> - Reclaim Your Time with Confidence<br>
-            Built with Louisiana educators, for Louisiana educators<br>
-            <a href="https://pelicanai.org" style="color: #0ea5e9; text-decoration: none;">pelicanai.org</a></p>
-          </div>
-        </body>
-        </html>
-      `;
-
-      // Send the email using the Convex Resend component
-      const emailId = await resend.sendEmail(ctx, {
-        from: "Pelican AI <beta@pelicanai.org>",
-        to: args.email,
-        subject: "Welcome to Pelican AI Beta Program - Reclaim Your Time!",
-        html: emailHtml,
-      });
-
-      console.log("Beta welcome email sent successfully:", emailId);
-      return { success: true, emailId };
-    } catch (error) {
-      console.error("Error sending beta welcome email:", error);
-      throw new Error("Failed to send beta welcome email");
-    }
-  },
-});
-
 export const getBetaSignupStats = mutation({
   args: {},
   returns: v.object({
@@ -265,7 +155,7 @@ export const approveBetaSignup = mutation({
     });
 
     // Schedule platform access email
-    await ctx.scheduler.runAfter(0, api.betaSignup.sendPlatformAccessEmail, {
+    await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
       email: signup.email,
       name: signup.name,
       temporaryPassword: args.temporaryPassword,
@@ -275,63 +165,6 @@ export const approveBetaSignup = mutation({
       success: true,
       message: "Beta signup approved. User will receive platform access instructions."
     };
-  },
-});
-
-export const sendPlatformAccessEmail = action({
-  args: {
-    email: v.string(),
-    name: v.optional(v.string()),
-    temporaryPassword: v.string(),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    emailId: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Your Pelican AI Platform Access</title>
-      </head>
-      <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #0ea5e9, #f59e0b); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-          <h1 style="margin: 0;">Pelican AI</h1>
-          <p style="margin: 10px 0 0 0;">Your Platform Access is Ready!</p>
-        </div>
-        
-        <h2>Welcome${args.name ? ` ${args.name}` : ''}!</h2>
-        
-        <p>Your beta program application has been approved! You now have access to the Pelican AI platform.</p>
-        
-        <div style="background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin-top: 0;">Your Login Credentials</h3>
-          <p><strong>Email:</strong> ${args.email}</p>
-          <p><strong>Temporary Password:</strong> ${args.temporaryPassword}</p>
-          <p style="color: #DC2626; font-size: 14px;">Please change your password after your first login.</p>
-        </div>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://pelicanai.org" style="background: #0ea5e9; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; display: inline-block;">
-            Access Platform
-          </a>
-        </div>
-        
-        <p>Once you log in, you'll complete a brief onboarding to personalize your experience.</p>
-      </body>
-      </html>
-    `;
-
-    const emailId = await resend.sendEmail(ctx, {
-      from: "Pelican AI <beta@pelicanai.org>",
-      to: args.email,
-      subject: "Your Pelican AI Platform Access is Ready!",
-      html: emailHtml,
-    });
-
-    return { success: true, emailId };
   },
 });
 

@@ -1,11 +1,14 @@
+"use node";
 import { action } from "./_generated/server";
 import { v } from "convex/values";
 import { WelcomeEmail } from "../src/emails/WelcomeEmail";
 import { VoiceSessionSummaryEmail } from "../src/emails/VoiceSessionSummaryEmail";
 import { WeeklyPromptEmail } from "../src/emails/WeeklyPromptEmail";
 import { BetaInviteEmail } from "../src/emails/BetaInviteEmail";
+import { BetaWelcomeEmail } from "../src/emails/BetaWelcomeEmail";
+import { PlatformAccessEmail } from "../src/emails/PlatformAccessEmail";
 import { render } from "@react-email/render";
-import { components } from "./_generated/api";
+import { components, internal } from "./_generated/api";
 import { api } from "./_generated/api";
 import { Resend } from "@convex-dev/resend";
 
@@ -14,6 +17,7 @@ import { Resend } from "@convex-dev/resend";
 // testMode: false = send to real addresses (requires verified domain in Resend)
 export const resend: Resend = new Resend(components.resend, {
   testMode: false, // Set to false once you have a verified domain in Resend
+  onEmailEvent: internal.emailEvents.handleEmailEvent,
 });
 
 export const sendWelcomeEmail = action({
@@ -50,6 +54,81 @@ export const sendWelcomeEmail = action({
     } catch (error) {
       console.error("Error sending welcome email:", error);
       throw new Error("Failed to send welcome email");
+    }
+  },
+});
+
+export const sendBetaWelcomeEmail = action({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+    school: v.optional(v.string()),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    emailId: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // Render the React email component to HTML
+      const emailHtml = await render(
+        BetaWelcomeEmail({
+          name: args.name || "Educator",
+          school: args.school,
+        })
+      );
+
+      // Send the email using the Convex Resend component
+      const emailId = await resend.sendEmail(ctx, {
+        from: "Pelican AI <beta@pelicanai.org>",
+        to: args.email,
+        subject: "Welcome to Pelican AI Beta Program - Reclaim Your Time!",
+        html: emailHtml,
+      });
+
+      console.log("Beta welcome email sent successfully:", emailId);
+      return { success: true, emailId };
+    } catch (error) {
+      console.error("Error sending beta welcome email:", error);
+      throw new Error("Failed to send beta welcome email");
+    }
+  },
+});
+
+export const sendPlatformAccessEmail = action({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+    temporaryPassword: v.string(),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    emailId: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // Render the React email component to HTML
+      const emailHtml = await render(
+        PlatformAccessEmail({
+          email: args.email,
+          name: args.name || "Educator",
+          temporaryPassword: args.temporaryPassword,
+        })
+      );
+
+      // Send the email using the Convex Resend component
+      const emailId = await resend.sendEmail(ctx, {
+        from: "Pelican AI <beta@pelicanai.org>",
+        to: args.email,
+        subject: "Your Pelican AI Platform Access is Ready!",
+        html: emailHtml,
+      });
+
+      console.log("Platform access email sent successfully:", emailId);
+      return { success: true, emailId };
+    } catch (error) {
+      console.error("Error sending platform access email:", error);
+      throw new Error("Failed to send platform access email");
     }
   },
 });

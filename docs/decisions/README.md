@@ -23,6 +23,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [004](004-migrate-to-better-auth.md) | Migrate to Better Auth | ✅ Completed | Oct 6, 2025 |
 | [005](005-phase5-p0-implementation.md) | Phase 5 P0 Implementation | ✅ Completed | Oct 8, 2025 |
 | [006](006-beta-auth-investigation.md) | Beta Authentication Flow Investigation | ✅ Resolved | Oct 10, 2025 |
+| [007](007-email-first-beta-flow.md) | Email-First Beta Signup Flow | ✅ Completed | Oct 11, 2025 |
 
 ## ADR Lifecycle
 
