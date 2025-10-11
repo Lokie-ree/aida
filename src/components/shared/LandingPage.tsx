@@ -40,8 +40,6 @@ export function LandingPage() {
   const [validationErrors, setValidationErrors] = useState<{email?: string}>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [temporaryPassword, setTemporaryPassword] = useState<string | null>(null);
-  const [signupEmail, setSignupEmail] = useState<string>("");
   
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
 
@@ -74,17 +72,13 @@ export function LandingPage() {
       
       if (result.success) {
         setIsSubmitted(true);
-        setSignupEmail(email.trim());
-        setTemporaryPassword(result.temporaryPassword || null);
         setEmail("");
         setError(null);
         setValidationErrors({});
-        // Reset success state after 10 seconds
+        // Reset success state after 8 seconds
         setTimeout(() => {
           setIsSubmitted(false);
-          setTemporaryPassword(null);
-          setSignupEmail("");
-        }, 10000);
+        }, 8000);
       } else {
         setError(result.message || "Signup failed. Please try again.");
       }
@@ -693,38 +687,14 @@ export function LandingPage() {
                 <div className="text-center py-8 bg-primary/10 rounded-lg">
                   <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-primary mb-2">
-                    Welcome to the Beta Program!
+                    Thanks for Signing Up!
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Your platform access is ready! Use these credentials to sign in:
+                    Check your email for next steps. We'll notify you once your beta access is approved.
                   </p>
-                  
-                  {temporaryPassword && (
-                    <div className="bg-background border rounded-lg p-4 mb-4 text-left">
-                      <div className="space-y-2">
-                        <div>
-                          <span className="text-sm font-medium text-muted-foreground">Email:</span>
-                          <p className="font-mono text-sm">{signupEmail}</p>
-                        </div>
-                        <div>
-                          <span className="text-sm font-medium text-muted-foreground">Temporary Password:</span>
-                          <p className="font-mono text-sm break-all">{temporaryPassword}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="space-y-2">
-                    <Button
-                      onClick={() => setIsAuthModalOpen(true)}
-                      className="w-full"
-                    >
-                      Sign In Now
-                    </Button>
-                    <p className="text-xs text-muted-foreground">
-                      You'll also receive these credentials via email
-                    </p>
-                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Be sure to check your spam folder if you don't see it within a few minutes.
+                  </p>
                 </div>
               )}
             </CardContent>
