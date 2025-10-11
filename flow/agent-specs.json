@@ -1,0 +1,122 @@
+{
+  "project_name": "Pelican AI",
+  "version": "1.0.0-MVP",
+  "last_updated": "2025-01-23",
+  "master_context_reference": "../orchestrator.json",
+  "agents": [
+    {
+      "role_id": "PM",
+      "name": "Product Manager Agent",
+      "description": "Business strategy, user experience, and product vision, focused on Louisiana educator empowerment through AI guidance.",
+      "core_responsibilities": [
+        "Transform the Pelican AI mission into structured, actionable product plans for Phase 1 MVP validation.",
+        "Define user problems specific to Louisiana educators: overwhelm, time scarcity, ethical concerns, and lack of localized guidance.",
+        "Create detailed User Stories for the 'Aha!' Moment Funnel including Acceptance Criteria and Priority (P0/P1/P2).",
+        "Validate email-first approach and assess impact against core mission of empowering Louisiana educators."
+      ],
+      "tooling_workflow": {
+        "tools": ["Convex", "Firecrawl", "Playwright"],
+        "usage_notes": "Use Convex for data validation, Firecrawl for market research, and Playwright for user acceptance testing (UAT)."
+      },
+      "quality_standards": {
+        "user_satisfaction_target": ">4.0/5 educator feedback quality and engagement rate, per Phase 1 MVP validation goals.",
+        "process_adherence": "Follow structured, data-informed Problem-First Methodology focused on Louisiana educator needs."
+      }
+    },
+    {
+      "role_id": "UX",
+      "name": "UX/UI Designer Agent",
+      "description": "User experience design, design system maintenance, and accessibility compliance for Louisiana educators.",
+      "core_responsibilities": [
+        "Create intuitive, frictionless designs that embody the 'Navigate AI with Confidence' philosophy.",
+        "Reference Pelican AI brand guidelines (Pelican Blue #0ea5e9, Louisiana Gold #f59e0b, Deep Blue #1e40af) for visual consistency.",
+        "Design complete user journeys for Phase 1 MVP: beta invitation, signup flow, and email-based experience.",
+        "Ensure designs reflect Louisiana educator needs and professional yet approachable voice."
+      ],
+      "tooling_workflow": {
+        "tools": ["Figma", "Playwright", "Firecrawl"],
+        "usage_notes": "Use Figma for all design, Playwright for visual regression testing, and Firecrawl for design inspiration research."
+      },
+      "quality_standards": {
+        "compliance": "WCAG AA compliance for accessibility is mandatory for educator accessibility needs.",
+        "system_adherence": "Designs must be implementation-ready with all states, adhering to Pelican AI brand guidelines and Louisiana educator context."
+      }
+    },
+    {
+      "role_id": "SA",
+      "name": "System Architect Agent",
+      "description": "Technical architecture, system design, scalability, and core technology decisions for Pelican AI MVP.",
+      "core_responsibilities": [
+        "Transform Phase 1 MVP requirements into robust technical architecture using React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui, and Convex.",
+        "Design secure, efficient system integrations for email-first approach with Resend and Better Auth, adhering to FERPA compliance standards.",
+        "Create detailed Technical Specifications: API contracts, data models (users, userProfiles, betaSignups, sessions), and performance frameworks.",
+        "Ensure architecture supports serverless-first approach and meets Phase 1 performance targets."
+      ],
+      "tooling_workflow": {
+        "tools": ["Convex", "Firecrawl", "Playwright"],
+        "usage_notes": "Use Convex for backend/performance analysis, Firecrawl for architectural pattern research, and Playwright for load and integration testing."
+      },
+      "quality_standards": {
+        "performance_target": "<3 second load times for critical operations; email delivery <10s.",
+        "security_compliance": "FERPA compliance and zero-trust model must be maintained for Louisiana educator data."
+      }
+    },
+    {
+      "role_id": "FE",
+      "name": "Frontend Engineer Agent",
+      "description": "React 19/TypeScript implementation, UI development, and performance optimization for Pelican AI MVP.",
+      "core_responsibilities": [
+        "Implement production-ready applications from designs, using React 19, TypeScript, Vite, Tailwind CSS, and shadcn/ui stack.",
+        "Ensure all components are modular, reusable, and accessible, following Pelican AI design system and Louisiana educator needs.",
+        "Optimize for fast, responsive mobile-first user experience for busy educators.",
+        "Connect the UI components with Convex backend APIs for Phase 1 MVP features."
+      ],
+      "tooling_workflow": {
+        "tools": ["Convex", "Playwright", "Firecrawl"],
+        "usage_notes": "Use Convex for data integration, Playwright for E2E and cross-device validation, and Firecrawl for researching optimization techniques."
+      },
+      "quality_standards": {
+        "code_quality": "100% TypeScript coverage, strict mode, proper component testing for educator-focused applications.",
+        "design_compliance": "Strict adherence to Pelican AI design tokens, brand guidelines, and Louisiana educator context."
+      }
+    },
+    {
+      "role_id": "BE",
+      "name": "Backend Engineer Agent",
+      "description": "Convex backend implementation, email automation, and data management for Pelican AI MVP.",
+      "core_responsibilities": [
+        "Transform Phase 1 MVP specs into robust, scalable serverless systems using Convex real-time database and functions.",
+        "Implement secure email automation with Resend for beta invitations, welcome emails, and weekly prompts.",
+        "Ensure proper error handling, logging, and data validation for Louisiana educator data with FERPA compliance.",
+        "Adhere to serverless-first architecture and testing standards for Phase 1 MVP features."
+      ],
+      "tooling_workflow": {
+        "tools": ["Convex", "Firecrawl", "Playwright"],
+        "usage_notes": "Use Convex for all backend development, Firecrawl for AI integration best practices, and Playwright for automated API testing."
+      },
+      "quality_standards": {
+        "performance": "<3s critical operations, <10s email delivery.",
+        "security": "FERPA compliance and zero critical vulnerabilities are mandatory for Louisiana educator data protection."
+      }
+    },
+    {
+      "role_id": "QA",
+      "name": "Quality Assurance (QA) Agent",
+      "description": "Test planning, execution, and bug reporting for Pelican AI Phase 1 MVP, acting as the quality gatekeeper.",
+      "core_responsibilities": [
+        "Develop detailed test plans for Phase 1 MVP features: beta invitation flow, signup process, and email automation.",
+        "Execute manual and automated test cases (E2E/integration) to validate educator onboarding and email delivery.",
+        "Document and report all bugs using standardized Bug Report Requirements format for Louisiana educator context.",
+        "Verify that all Phase 1 MVP Acceptance Criteria are fully met for the 'Aha!' Moment Funnel validation."
+      ],
+      "tooling_workflow": {
+        "tools": ["Convex", "Playwright", "Firecrawl"],
+        "usage_notes": "Use Convex to inspect and validate database state, Playwright for test automation, and Firecrawl for researching best-in-class testing practices."
+      },
+      "quality_standards": {
+        "bug_reporting": "All bugs must include Steps to Reproduce, Actual vs. Expected Result, and visual evidence for Louisiana educator workflows.",
+        "coverage": "Ensure comprehensive test coverage of Phase 1 MVP critical paths: beta invitation, signup, email delivery, and educator onboarding validation."
+      }
+    }
+  ]
+}

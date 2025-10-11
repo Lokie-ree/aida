@@ -87,4 +87,4 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 ## References
 
 - [ADR Process](https://adr.github.io/)
-- [Architecture Document](../../ARCHITECTURE.md)
+- [Technical Foundation](../../flow/orchestrator.json#technical_foundation) - Tech stack and architecture principles
