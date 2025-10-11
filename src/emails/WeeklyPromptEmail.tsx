@@ -33,7 +33,7 @@ export const WeeklyPromptEmail = ({
   difficultyLevel = "beginner",
   weekNumber = 1,
 }: WeeklyPromptEmailProps) => {
-  const previewText = `This week's productivity prompt: ${frameworkTitle}`;
+  const previewText = `Week ${weekNumber}: ${frameworkTitle} - Navigate AI with Confidence`;
 
   return (
     <Html>
@@ -44,7 +44,7 @@ export const WeeklyPromptEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/logo.png"
+              src="https://pelicanai.org/icon.png"
               width="40"
               height="40"
               alt="Pelican AI"
@@ -56,7 +56,7 @@ export const WeeklyPromptEmail = ({
           {/* Main Content */}
           <Section style={content}>
             <Heading style={h1}>
-              This Week's Productivity Prompt
+              Week {weekNumber}: Your Louisiana Educator AI Prompt
             </Heading>
             
             <Text style={text}>
@@ -64,11 +64,17 @@ export const WeeklyPromptEmail = ({
             </Text>
             
             <Text style={text}>
-              Welcome to Week {weekNumber} of your Pelican AI journey! This week's featured framework 
-              is designed to help you save time on a common teaching task.
+              Welcome to Week {weekNumber} of your Pelican AI journey! This week's Atomic Note 
+              is designed to help you save time on a common Louisiana educator task using 
+              ANY AI platform you have access to.
             </Text>
 
-            {/* Framework Card */}
+            <Text style={text}>
+              <strong>Remember:</strong> This guidance works with MagicSchool AI, Brisk, 
+              SchoolAI, Gemini, ChatGPT, or any other AI tool your district provides.
+            </Text>
+
+            {/* Atomic Note Card */}
             <Section style={frameworkCard}>
               <div style={frameworkHeader}>
                 <Text style={frameworkIdStyle}>{frameworkId}</Text>
@@ -81,56 +87,75 @@ export const WeeklyPromptEmail = ({
               <Heading style={frameworkTitleStyle}>{frameworkTitle}</Heading>
               
               <Text style={frameworkDescription}>
-                Copy the prompt below and paste it into your preferred AI platform 
-                (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
+                <strong>The Challenge:</strong> This Atomic Note addresses a common Louisiana educator pain point.
+              </Text>
+              
+              <Text style={frameworkDescription}>
+                <strong>The AI-Powered Solution:</strong> Copy the prompt below and paste it into your 
+                preferred AI platform (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
               </Text>
               
               <Section style={promptBox}>
                 <Text style={promptText}>{samplePrompt}</Text>
               </Section>
               
+              <Text style={ethicalGuardrail}>
+                <strong>Ethical Guardrail:</strong> AI is a drafting assistant. The final output, 
+                professional judgment, and accountability are always yours. Always review and 
+                personalize any AI-generated content.
+              </Text>
+              
               <Button style={button} href="https://pelicanai.org/frameworks">
-                View Full Framework
+                View Full Atomic Note
               </Button>
             </Section>
 
             <Text style={text}>
-              <strong>Pro Tip:</strong> Try this framework with a real task this week and let us know 
-              how much time you saved! We'd love to hear about your experience.
+              <strong>Louisiana Educator Pro Tip:</strong> Try this Atomic Note with a real task this week 
+              and let us know how much time you saved! We'd love to hear about your experience and how 
+              it aligns with Louisiana standards.
+            </Text>
+
+            <Text style={text}>
+              <strong>Success Metric:</strong> Can you use this technique to save measurable time 
+              (e.g., "I saved 30 minutes on my newsletter this week")? That's our goal for every 
+              Atomic Note we share.
             </Text>
 
             <Hr style={hr} />
 
-            {/* Community Section */}
+            {/* Phase 1 MVP Focus */}
             <Section style={communitySection}>
-              <Heading style={h2}>Join the Conversation</Heading>
+              <Heading style={h2}>Phase 1 MVP: Email-First Approach</Heading>
               <Text style={text}>
-                Share your innovations and learn from other Louisiana educators in our community space.
+                You're part of our Phase 1 MVP validation! We're testing whether an email-first 
+                approach can successfully deliver immediate value to Louisiana educators.
               </Text>
-              <Button style={secondaryButton} href="https://pelicanai.org/community">
-                Join Community
-              </Button>
+              <Text style={text}>
+                <strong>Your feedback matters:</strong> Reply to this email with your experience 
+                using this Atomic Note. Did it save you time? How did it align with Louisiana standards?
+              </Text>
             </Section>
 
-            {/* Office Hours */}
+            {/* Future Features Preview */}
             <Section style={officeHoursSection}>
-              <Heading style={h2}>Need Help?</Heading>
+              <Heading style={h2}>Coming in Phase 2</Heading>
               <Text style={text}>
-                Book a 30-minute office hours session with our team for personalized support.
+                Based on your feedback, we're building a web-based framework library and 
+                community features. Your input as a Phase 1 beta tester directly shapes 
+                what comes next.
               </Text>
               <Text style={text}>
-                <strong>Available:</strong> Tuesdays & Thursdays, 4:00-6:00 PM CST
+                <strong>Phase 2 Preview:</strong> Searchable framework library, community 
+                sharing, and personalized dashboard.
               </Text>
-              <Button style={secondaryButton} href="https://pelicanai.org/office-hours">
-                Schedule Session
-              </Button>
             </Section>
           </Section>
 
           {/* Footer */}
           <Section style={footer}>
             <Text style={footerText}>
-              You're receiving this because you're part of the Pelican AI beta program.
+              You're receiving this because you're part of the Pelican AI Phase 1 MVP beta program.
             </Text>
             <Text style={footerText}>
               <Link href="https://pelicanai.org/unsubscribe" style={link}>
@@ -142,7 +167,8 @@ export const WeeklyPromptEmail = ({
               </Link>
             </Text>
             <Text style={footerText}>
-              Pelican AI • Navigate AI with Confidence
+              Pelican AI • Navigate AI with Confidence<br/>
+              Platform-agnostic guidance for Louisiana educators
             </Text>
           </Section>
         </Container>
@@ -271,6 +297,17 @@ const promptText = {
   lineHeight: "20px",
   margin: 0,
   whiteSpace: "pre-wrap" as const,
+};
+
+const ethicalGuardrail = {
+  backgroundColor: "#fef3c7",
+  border: "1px solid #f59e0b",
+  borderRadius: "6px",
+  padding: "12px",
+  margin: "16px 0",
+  color: "#92400e",
+  fontSize: "14px",
+  fontStyle: "italic",
 };
 
 const button = {

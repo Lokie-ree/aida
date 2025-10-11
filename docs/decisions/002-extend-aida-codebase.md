@@ -153,6 +153,6 @@ We have an existing A.I.D.A. codebase with:
 
 ## References
 
-- [Architecture Document](../../ARCHITECTURE.md)
+- [Technical Foundation](../../flow/orchestrator.json#technical_foundation) - Current tech stack and architecture
 - [Implementation Plan](../planning/v0.4.0/implementation-plan.md)
 - [A.I.D.A. Codebase Analysis](../planning/v0.4.0/architecture-output.md)

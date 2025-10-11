@@ -261,9 +261,7 @@ export function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
-              <span className="text-white font-bold text-sm">P</span>
-            </div>
+            <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
             <span className="text-xl font-bold text-foreground">
               Pelican AI
             </span>
@@ -902,9 +900,7 @@ export function LandingPage() {
              <div className="md:col-span-1">
                <div className="mb-4">
                  <div className="flex items-center gap-3">
-                   <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
-                     <span className="text-white font-bold text-sm">P</span>
-                   </div>
+                   <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
                    <span className="text-xl font-bold text-foreground">
                      Pelican AI
                    </span>

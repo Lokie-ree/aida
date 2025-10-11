@@ -33,15 +33,15 @@ export const BetaInviteEmail = ({
     startDate: "October 15, 2025",
     duration: "12 weeks",
     benefits: [
-      "Access to 10+ AI guidance frameworks",
-      "Weekly productivity prompts",
+      "Weekly productivity prompts delivered via email",
+      "Platform-agnostic AI guidance frameworks",
+      "Louisiana standards-aligned content",
       "Community of Louisiana educators",
-      "Office hours with our team",
-      "Early access to new features"
+      "Direct input into Phase 1 MVP development"
     ]
   }
 }: BetaInviteEmailProps) => {
-  const previewText = `You're invited to join the Pelican AI beta program!`;
+  const previewText = `You're invited to join Pelican AI beta - Navigate AI with Confidence`;
 
   return (
     <Html>
@@ -52,7 +52,7 @@ export const BetaInviteEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/logo.png"
+              src="https://pelicanai.org/icon.png"
               width="40"
               height="40"
               alt="Pelican AI"
@@ -64,7 +64,7 @@ export const BetaInviteEmail = ({
           {/* Main Content */}
           <Section style={content}>
             <Heading style={h1}>
-              You're Invited to Join Pelican AI Beta!
+              You're Invited to Navigate AI with Confidence
             </Heading>
             
             <Text style={text}>
@@ -73,19 +73,26 @@ export const BetaInviteEmail = ({
             
             <Text style={text}>
               <strong>{inviterName}</strong> from <strong>{inviterSchool}</strong> has invited you 
-              to join the Pelican AI beta program. We're building a platform specifically for 
-              Louisiana educators to navigate AI with confidence.
+              to join the Pelican AI beta program. We're building Louisiana's premier resource 
+              for ethical and effective AI usage in K-12 education.
             </Text>
 
             <Text style={text}>
-              Pelican AI isn't another AI tool—it's a comprehensive guidance system that helps 
-              you use ANY AI platform effectively while maintaining the highest standards of 
-              academic integrity and professional judgment.
+              Pelican AI isn't another software platform—it's a comprehensive guidance system 
+              that helps you leverage ANY AI tool you have access to (MagicSchool AI, Brisk, 
+              SchoolAI, Gemini, or others) to save time, reduce burnout, and improve your 
+              instructional practice.
+            </Text>
+
+            <Text style={text}>
+              <strong>Our Mission:</strong> To empower Louisiana educators with practical, 
+              ethical, and platform-agnostic AI guidance that reclaims your time for 
+              high-impact teaching while maintaining the highest standards of academic integrity.
             </Text>
 
             {/* Beta Program Card */}
             <Section style={programCard}>
-              <Heading style={programTitle}>Beta Program Details</Heading>
+              <Heading style={programTitle}>Phase 1 MVP Beta Program</Heading>
               
               <div style={programInfo}>
                 <div style={infoRow}>
@@ -97,6 +104,11 @@ export const BetaInviteEmail = ({
                   <Text style={infoValue}>{betaProgramDetails.duration}</Text>
                 </div>
               </div>
+
+              <Text style={programDescription}>
+                Join Louisiana educators who are reclaiming 3-5 hours per week with 
+                ethical AI guidance aligned to Louisiana standards.
+              </Text>
 
               <Text style={benefitsTitle}>What You'll Get:</Text>
               <ul style={benefitsList}>
@@ -114,10 +126,10 @@ export const BetaInviteEmail = ({
               
               <div style={valueGrid}>
                 <div style={valueItem}>
-                  <Text style={valueIcon}>📚</Text>
-                  <Text style={valueTitle}>Guided Frameworks</Text>
+                  <Text style={valueIcon}>🔧</Text>
+                  <Text style={valueTitle}>Platform-Agnostic</Text>
                   <Text style={valueDescription}>
-                    Copy-paste ready prompts with ethical guardrails for common teaching tasks
+                    Works with ANY AI tool you have access to - MagicSchool AI, Brisk, SchoolAI, Gemini, or others
                   </Text>
                 </div>
                 
@@ -125,15 +137,23 @@ export const BetaInviteEmail = ({
                   <Text style={valueIcon}>🏫</Text>
                   <Text style={valueTitle}>Louisiana-Aligned</Text>
                   <Text style={valueDescription}>
-                    Built specifically for Louisiana standards and educator rubric
+                    Built specifically for Louisiana standards and the Louisiana Educator Rubric
                   </Text>
                 </div>
                 
                 <div style={valueItem}>
-                  <Text style={valueIcon}>⏱️</Text>
+                  <Text style={valueIcon}>🛡️</Text>
+                  <Text style={valueTitle}>Ethical Guardrails</Text>
+                  <Text style={valueDescription}>
+                    Responsible AI use with academic integrity and data privacy built-in
+                  </Text>
+                </div>
+                
+                <div style={valueItem}>
+                  <Text style={valueIcon}>⏰</Text>
                   <Text style={valueTitle}>Time-Saving</Text>
                   <Text style={valueDescription}>
-                    Practical solutions that reclaim valuable teaching time
+                    Immediate, practical solutions for common tasks that save 3-5 hours per week
                   </Text>
                 </div>
               </div>
@@ -142,12 +162,12 @@ export const BetaInviteEmail = ({
             {/* Testimonial */}
             <Section style={testimonialSection}>
               <Text style={testimonialText}>
-                "Pelican AI has saved me 3+ hours per week on administrative tasks. 
-                The frameworks are practical and the ethical guidance gives me confidence 
-                in using AI responsibly."
+                "This isn't another tool to learn—it's guidance on using the tools I already have access to. 
+                I saved 4 hours last week on lesson planning alone! The Louisiana alignment makes it perfect 
+                for our standards."
               </Text>
               <Text style={testimonialAuthor}>
-                — Sarah Johnson, {inviterSchool}
+                — Sarah Johnson, High School English Teacher, Jefferson Parish
               </Text>
             </Section>
 
@@ -327,6 +347,13 @@ const infoValue = {
   fontSize: "14px",
   fontWeight: "bold",
   margin: 0,
+};
+
+const programDescription = {
+  color: "#6b7280",
+  fontSize: "14px",
+  lineHeight: "20px",
+  margin: "0 0 16px",
 };
 
 const benefitsTitle = {
