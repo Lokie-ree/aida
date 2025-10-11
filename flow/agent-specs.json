@@ -15,8 +15,8 @@
         "Validate email-first approach and assess impact against core mission of empowering Louisiana educators."
       ],
       "tooling_workflow": {
-        "tools": ["Convex", "Firecrawl", "Playwright"],
-        "usage_notes": "Use Convex for data validation, Firecrawl for market research, and Playwright for user acceptance testing (UAT)."
+        "tools": ["Convex", "Playwright", "Linear", "Firecrawl"],
+        "usage_notes": "Use Convex for data validation, Playwright for user acceptance testing (UAT), Linear for tracking user feedback and feature requests, and Firecrawl for market research and competitive analysis."
       },
       "quality_standards": {
         "user_satisfaction_target": ">4.0/5 educator feedback quality and engagement rate, per Phase 1 MVP validation goals.",
@@ -34,8 +34,8 @@
         "Ensure designs reflect Louisiana educator needs and professional yet approachable voice."
       ],
       "tooling_workflow": {
-        "tools": ["Figma", "Playwright", "Firecrawl"],
-        "usage_notes": "Use Figma for all design, Playwright for visual regression testing, and Firecrawl for design inspiration research."
+        "tools": ["Playwright", "Context7", "Firecrawl"],
+        "usage_notes": "Use Playwright for visual regression testing and accessibility validation, Context7 for researching design system best practices and component libraries, and Firecrawl for design inspiration research and competitor analysis."
       },
       "quality_standards": {
         "compliance": "WCAG AA compliance for accessibility is mandatory for educator accessibility needs.",
@@ -53,8 +53,8 @@
         "Ensure architecture supports serverless-first approach and meets Phase 1 performance targets."
       ],
       "tooling_workflow": {
-        "tools": ["Convex", "Firecrawl", "Playwright"],
-        "usage_notes": "Use Convex for backend/performance analysis, Firecrawl for architectural pattern research, and Playwright for load and integration testing."
+        "tools": ["Convex", "Playwright", "Context7", "Firecrawl"],
+        "usage_notes": "Use Convex for backend/performance analysis, Playwright for load and integration testing, Context7 for researching architectural patterns and serverless best practices, and Firecrawl for scraping technical documentation and API specifications."
       },
       "quality_standards": {
         "performance_target": "<3 second load times for critical operations; email delivery <10s.",
@@ -72,8 +72,8 @@
         "Connect the UI components with Convex backend APIs for Phase 1 MVP features."
       ],
       "tooling_workflow": {
-        "tools": ["Convex", "Playwright", "Firecrawl"],
-        "usage_notes": "Use Convex for data integration, Playwright for E2E and cross-device validation, and Firecrawl for researching optimization techniques."
+        "tools": ["Convex", "Playwright", "Context7", "Firecrawl"],
+        "usage_notes": "Use Convex for data integration, Playwright for E2E and cross-device validation, Context7 for researching React 19 best practices and optimization techniques, and Firecrawl for scraping component library documentation and code examples."
       },
       "quality_standards": {
         "code_quality": "100% TypeScript coverage, strict mode, proper component testing for educator-focused applications.",
@@ -91,8 +91,8 @@
         "Adhere to serverless-first architecture and testing standards for Phase 1 MVP features."
       ],
       "tooling_workflow": {
-        "tools": ["Convex", "Firecrawl", "Playwright"],
-        "usage_notes": "Use Convex for all backend development, Firecrawl for AI integration best practices, and Playwright for automated API testing."
+        "tools": ["Convex", "Playwright", "Context7", "Firecrawl"],
+        "usage_notes": "Use Convex for all backend development, Playwright for automated API testing, Context7 for researching serverless patterns and email integration best practices, and Firecrawl for scraping API documentation and integration guides."
       },
       "quality_standards": {
         "performance": "<3s critical operations, <10s email delivery.",
@@ -110,8 +110,8 @@
         "Verify that all Phase 1 MVP Acceptance Criteria are fully met for the 'Aha!' Moment Funnel validation."
       ],
       "tooling_workflow": {
-        "tools": ["Convex", "Playwright", "Firecrawl"],
-        "usage_notes": "Use Convex to inspect and validate database state, Playwright for test automation, and Firecrawl for researching best-in-class testing practices."
+        "tools": ["Convex", "Playwright", "Linear", "Firecrawl"],
+        "usage_notes": "Use Convex to inspect and validate database state, Playwright for test automation, Linear for bug tracking and test case management, and Firecrawl for researching testing best practices and automation patterns."
       },
       "quality_standards": {
         "bug_reporting": "All bugs must include Steps to Reproduce, Actual vs. Expected Result, and visual evidence for Louisiana educator workflows.",
