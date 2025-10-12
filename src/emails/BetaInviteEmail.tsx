@@ -33,11 +33,11 @@ export const BetaInviteEmail = ({
     startDate: "October 15, 2025",
     duration: "12 weeks",
     benefits: [
-      "Weekly productivity prompts delivered via email",
-      "Platform-agnostic AI guidance frameworks",
+      "AI-assisted lesson planning framework (works with ANY AI tool)",
+      "Co-create frameworks based on YOUR pain points",
       "Louisiana standards-aligned content",
       "Community of Louisiana educators",
-      "Direct input into Phase 1 MVP development"
+      "Direct input into what we build next"
     ]
   }
 }: BetaInviteEmailProps) => {
@@ -52,13 +52,12 @@ export const BetaInviteEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/icon.png"
-              width="40"
+              src="https://pelicanai.org/primary-logo.png"
+              width="160"
               height="40"
               alt="Pelican AI"
               style={logo}
             />
-            <Heading style={headerTitle}>Pelican AI</Heading>
           </Section>
 
           {/* Main Content */}
@@ -274,6 +273,8 @@ const header = {
 
 const logo = {
   margin: "0 auto",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 const headerTitle = {

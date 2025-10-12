@@ -40,63 +40,83 @@ Because Louisiana educators tell us you're overwhelmed. You're managing:
 
 ---
 
-## 📚 Core Frameworks
+## 📚 Your Beta Experience
 
-### Framework #1: Parent Communication ✅ Available Now
+### The Foundation: Lesson Objective Unpacker ✅ Available Now
 
-**Problem Solved:** Draft professional, empathetic parent emails in 5 minutes instead of 30 minutes
+**Problem Solved:** Unpack lesson objectives and create student-friendly success criteria in 3 minutes instead of 10-15 minutes
 
-**Time Saved:** 25 minutes per email (imagine getting through 10 emails in under an hour!)
+**Time Saved:** 7-12 minutes per lesson planned
 
 **What You Get:**
+- Objective breakdown into component sub-skills
+- Student-friendly "I can..." success criteria statements
+- Predictable misconception alerts
+- Highest-leverage scaffold identification
 - Copy-paste ready prompt for any AI platform
-- Step-by-step usage instructions
-- Example outputs showing what good looks like
-- Ethical guidelines for responsible use
-- Tips for different scenarios (positive updates, concerns, conference requests)
+- Works across ALL content areas (ELA, Math, Science, Social Studies)
 
-**🔗 Access Framework:** [Insert link to Parent Communication Framework Google Doc]
+**🔗 Access Framework:** [Insert link to Lesson Objective Unpacker Google Doc]
 
 **When to Use:** 
-- Reporting academic progress or concerns
-- Requesting parent conferences
-- Sharing behavioral observations
-- Celebrating student successes
-- Any time you need professional parent communication
+- Planning any lesson with a standards-based objective
+- Creating success criteria to post for students
+- Anticipating misconceptions before teaching
+- Identifying which parts of objectives need most scaffolding
+- Collaborative planning with colleagues
+
+**Your Beta Focus (Weeks 1-4):** Master this one powerful framework. Use it with 3-5 different lessons. Get comfortable with AI-assisted planning. Then tell us what YOU need next.
 
 ---
 
-### Framework #2: Assessment Analysis 🔜 Coming Week 2
+## 🤝 What We'll Build Together
 
-**Problem Solved:** Analyze curriculum assessments and identify learning objectives efficiently
+This beta program is different. We're not giving you 4 pre-built frameworks. We're giving you ONE foundation framework and then **co-creating** the next ones based on YOUR actual needs.
 
-**Time Saved:** 2.5 hours per assessment analysis
+### Why Co-Creation?
 
-**Status:** Currently in development based on Louisiana educator feedback
+**Traditional Approach:** "Here are 10 tools. Hope one fits your needs!"  
+**Our Approach:** "Here's one powerful foundation. Now show us what you're struggling with and we'll build it together."
 
-**What It Will Include:**
-- Fast assessment question analysis
-- Louisiana standards mapping
-- Key vocabulary identification
-- Learning objective articulation
-- Cognitive rigor classification
+### Your Voice Matters
 
----
+Every week, we'll ask you:
+- **What's your biggest pain point this week?**
+- **What task took too much time?**
+- **If AI could help with ONE thing, what would it be?**
 
-### Framework #3: Differentiation Support 🔜 Coming Week 3
+Then we'll look for patterns across all 8 beta testers and build frameworks that address the challenges YOU actually face.
 
-**Problem Solved:** Adapt materials for diverse learners without spending hours per lesson
+### Known Pain Points We're Exploring
 
-**Time Saved:** 1 hour per lesson
+Based on conversations with your cohort, we know you're facing:
 
-**Status:** Scheduled for release in Week 3
+**1. Lesson Plan Internalization & Differentiation**
+- Challenge: Spending too much time copy/pasting from curriculum providers instead of adapting for your students
+- Opportunity: Efficiently internalize curriculum and differentiate without straying from approved resources
+- Bonus: Map math/STEM topics to student interests
 
-**What It Will Include:**
-- Reading level adjustment strategies
-- Scaffolded material creation
-- Visual support generation
-- Extension activity ideas
-- IEP-aligned adaptation guidance
+**2. Data Analysis for Collaborative Meetings**
+- Challenge: Turning raw assessment data into meaningful talking points
+- Opportunity (For Teachers): Prepare data insights in under 10 minutes
+- Opportunity (For Master Teachers): Facilitate focused, productive discussions with structured questions
+
+**3. Tedious Task Automation**
+- Challenge: Repetitive tasks consuming 30-60 minutes daily
+- Opportunity: Identify and automate the highest-impact tedious tasks
+- Examples: Creating problem variations, formatting materials, routine communications
+
+**Your weekly feedback will tell us which of these (or other challenges) to prioritize.**
+
+### The Beta Timeline
+
+**Weeks 1-2:** Master the Lesson Objective Unpacker  
+**Weeks 3-4:** Continue using it, share detailed feedback on your pain points  
+**Weeks 5-6:** We analyze your feedback and prototype 1-2 new frameworks  
+**Weeks 7-8:** You test the new frameworks, we refine based on your input  
+**Weeks 9-12:** Finalize frameworks that truly solve YOUR problems
+
+**This is YOUR beta program. We build what YOU need.**
 
 ---
 
@@ -112,11 +132,11 @@ Because Louisiana educators tell us you're overwhelmed. You're managing:
 **First Session:** [Date TBD - you'll receive email notification]
 
 **What to Expect:**
-- Ask questions about any framework
+- Ask questions about the Lesson Objective Unpacker
 - See live demonstrations of AI prompts across different platforms
 - Share what's working (or not working) for you
 - Connect with other beta testers
-- Influence what frameworks we build next
+- Discuss pain points and influence what we build next together
 
 **No RSVP Required** - Just show up! Sessions are recorded for those who can't attend live.
 
@@ -128,7 +148,7 @@ Your feedback directly shapes what we build. Here's how to share your experience
 
 ### Post-Framework Survey
 
-**When:** After trying each framework  
+**When:** After using the Lesson Objective Unpacker  
 **Time:** Less than 2 minutes  
 **Purpose:** Rate clarity, report time saved, suggest improvements
 
@@ -137,7 +157,7 @@ Your feedback directly shapes what we build. Here's how to share your experience
 **What We Ask:**
 - How clear were the instructions? (1-5 scale)
 - How much time did this save you? (multiple choice)
-- What would make this framework even more useful? (open-ended)
+- What would make this even more useful? (open-ended)
 
 ---
 
@@ -145,15 +165,15 @@ Your feedback directly shapes what we build. Here's how to share your experience
 
 **When:** Every Friday afternoon (automated email reminder)  
 **Time:** 5 minutes  
-**Purpose:** Track your overall progress and identify any challenges
+**Purpose:** Track your progress and identify pain points for future development
 
 **🔗 Weekly Check-In Link:** [Insert link when created]
 
 **What We Ask:**
-- Which frameworks did you try this week? (checklist)
-- Total time saved this week (estimate)
-- Challenges you encountered (open-ended)
-- New frameworks you'd like to see (open-ended)
+- Did you use the Lesson Objective Unpacker this week?
+- How much time did it save you? (estimate)
+- What challenges did you encounter? (open-ended)
+- **What's your biggest pain point this week that AI could help with?** (This is the KEY question!)
 
 ---
 
@@ -178,11 +198,11 @@ Don't hesitate to reach out. We're here to help you succeed.
 Ready to dive in? Here's your first-week action plan:
 
 - [ ] **Read this entire Welcome Kit** (you're almost done!)
-- [ ] **Bookmark the Parent Communication Framework** for easy access
-- [ ] **Try your first framework this week** - Draft one parent email using our prompt
+- [ ] **Bookmark the Lesson Objective Unpacker Framework** for easy access
+- [ ] **Try the framework this week** - Unpack 2-3 lesson objectives and create success criteria
 - [ ] **Complete the Post-Framework Survey** - Tell us how it went
 - [ ] **Add office hours to your calendar** (when scheduled)
-- [ ] **Identify your biggest time challenge** - What framework would help you most?
+- [ ] **Start thinking about your pain points** - What tasks take too much time? Your feedback drives what we build next!
 
 ---
 
@@ -190,15 +210,15 @@ Ready to dive in? Here's your first-week action plan:
 
 As a beta tester, you're part of a community of innovative Louisiana educators. Here's how we work together:
 
-**Share Freely:** If you discover a great way to use a framework, share it with the group
+**Share Freely:** If you discover a great way to use the framework, share it with the group
 
-**Give Honest Feedback:** We need to know what's not working, not just what is
+**Give Honest Feedback:** We need to know what's not working, not just what is. Be specific about your pain points!
 
 **Respect Privacy:** Never share student names, sensitive information, or school-specific details in community spaces
 
 **Support Each Other:** We're all learning together—questions are encouraged
 
-**Innovate Together:** Your ideas for new frameworks directly influence our roadmap
+**Co-Create Together:** Your pain points and ideas directly shape what we build next. This is collaborative development!
 
 ---
 
@@ -221,30 +241,36 @@ As a beta tester, you're part of a community of innovative Louisiana educators. 
 
 ## 📅 What's Next?
 
-1. **This Week:** Try the Parent Communication Framework
-2. **Week 2:** New framework release (Assessment Analysis)
-3. **Week 3:** New framework release (Differentiation Support)
-4. **Week 4:** Office hours session #1
-5. **Ongoing:** Weekly prompts, new frameworks, community features
+1. **Weeks 1-2:** Master the Lesson Objective Unpacker with multiple lessons
+2. **Weeks 3-4:** Share detailed pain point feedback through weekly check-ins
+3. **Weeks 5-6:** We analyze patterns and prototype NEW frameworks based on YOUR needs
+4. **Weeks 7-8:** Test prototypes, provide feedback, help us refine
+5. **Weeks 9-12:** Use finalized frameworks that solve problems YOU identified
+6. **Ongoing:** Office hours, weekly check-ins, community features
+
+**Remember:** You're not just testing—you're co-creating!
 
 ---
 
 ## ❓ Frequently Asked Questions
 
 **Q: Do I need to use a specific AI platform?**  
-A: No! Our frameworks work with ANY AI tool you have access to.
+A: No! The Lesson Objective Unpacker works with ANY AI tool you have access to (MagicSchool AI, Gemini, Claude, ChatGPT, etc.).
 
 **Q: What if I've never used AI before?**  
-A: Perfect! Our frameworks are designed for beginners. Just copy, paste, and follow the instructions.
+A: Perfect! The framework is designed for beginners. Just copy, paste, and follow the instructions.
 
 **Q: How much time do I really need to commit?**  
-A: Plan for about 1 hour per week: 15 minutes trying frameworks, 5 minutes on feedback, plus optional office hours.
+A: Plan for about 1 hour per week: 15 minutes using the framework, 5 minutes on feedback surveys, plus optional office hours.
 
-**Q: What if a framework doesn't work for me?**  
-A: Tell us! That's exactly why we have a beta program. Your feedback helps us improve.
+**Q: What if the framework doesn't work for me?**  
+A: Tell us! That's exactly why we have a beta program. Your feedback helps us improve—and build the NEXT frameworks you actually need.
 
-**Q: Can I share these frameworks with colleagues?**  
+**Q: Can I share this framework with colleagues?**  
 A: Not yet—beta testers get early access. After our public launch, you can share freely!
+
+**Q: What if my pain points are different from other beta testers?**  
+A: That's valuable information! We look for patterns, but we also note unique needs. Every pain point helps us understand the real challenges educators face.
 
 **Q: Will this cost money after beta?**  
 A: Beta testers will receive lifetime benefits and founder pricing when we launch publicly.
