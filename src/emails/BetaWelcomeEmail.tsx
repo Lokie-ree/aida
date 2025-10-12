@@ -31,13 +31,12 @@ export function BetaWelcomeEmail({
           {/* Header with Pelican AI Branding */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/icon.png"
-              width="40"
+              src="https://pelicanai.org/primary-logo.png"
+              width="160"
               height="40"
               alt="Pelican AI"
               style={logo}
             />
-            <Heading style={headerTitle}>Pelican AI</Heading>
             <Text style={tagline}>Reclaim Your Time with Confidence</Text>
           </Section>
 
@@ -47,64 +46,107 @@ export function BetaWelcomeEmail({
             <Text style={paragraph}>Hi {name},</Text>
 
             <Text style={paragraph}>
-              Thank you for joining the Pelican AI beta program! We're excited
-              to have you as part of our community of Louisiana educators who
-              are reclaiming their time and teaching with confidence.
+              I know you're managing a lot right now. Between responding to parent 
+              emails, planning lessons, grading, and everything else that fills your 
+              evenings and weekends, finding time for one more thing feels impossible.
             </Text>
+
+            <Text style={paragraph}>
+              That's exactly why Pelican AI exists. <strong>I'm committed to helping 
+              you save 3-5 hours per week on administrative tasks</strong> so you can 
+              focus on what matters most: teaching Louisiana students.
+            </Text>
+
+            {/* Immediate Action Box */}
+            <Section style={actionBox}>
+              <Heading style={h2}>🎯 Try This Right Now (Seriously, Right Now)</Heading>
+              <Text style={paragraph}>
+                Before you attend any training or read lengthy documentation, you can 
+                use Pelican AI today. Here's how:
+              </Text>
+              <Text style={listItem}>
+                <strong>1. Click this link</strong> → <Link href="https://docs.google.com/document/d/your-framework-link-here/edit" style={ctaLink}>
+                  Parent Communication Framework
+                </Link>
+              </Text>
+              <Text style={listItem}>
+                <strong>2. Copy the sample prompt</strong> (it's ready to use)
+              </Text>
+              <Text style={listItem}>
+                <strong>3. Paste it into ANY AI tool</strong> you have access to (MagicSchool AI, Gemini, ChatGPT, etc.)
+              </Text>
+              <Text style={listItem}>
+                <strong>4. Draft your next parent email in 5 minutes</strong> instead of 30 minutes
+              </Text>
+              <Text style={paragraph}>
+                <strong>That's it.</strong> You'll save 25 minutes on your very first try.
+              </Text>
+            </Section>
 
             {/* What's Next Section */}
             <Section style={infoBox}>
-              <Heading style={h2}>What's Next?</Heading>
+              <Heading style={h2}>What Happens Next?</Heading>
               <Text style={listItem}>
-                • We'll review your application and notify you via email
+                • <strong>Within 24-48 hours:</strong> We'll review your application and send platform access credentials
               </Text>
               <Text style={listItem}>
-                • Once approved, you'll receive platform access credentials
+                • <strong>Upon approval:</strong> Access to 10+ frameworks, community features, and time tracking
               </Text>
               <Text style={listItem}>
-                • Start exploring our curated AI guidance frameworks
+                • <strong>First week:</strong> Try at least one framework and tell us how much time you saved
               </Text>
               <Text style={listItem}>
-                • Join our community of Louisiana educators
+                • <strong>Ongoing:</strong> Weekly productivity prompts, office hours support, and new frameworks
               </Text>
             </Section>
 
-            {/* What You'll Get Section */}
+            {/* Beta Welcome Kit */}
             <Section style={highlightBox}>
-              <Heading style={h2}>What You'll Get</Heading>
-              <Text style={listItem}>
-                <strong>10+ AI Guidance Frameworks</strong> - Copy-paste prompts
-                for common tasks
+              <Heading style={h2}>📚 Your Beta Welcome Kit</Heading>
+              <Text style={paragraph}>
+                Everything you need to succeed in the beta program:
               </Text>
               <Text style={listItem}>
-                <strong>Louisiana Standards Alignment</strong> - LER domains and
-                state standards mapped
+                ✓ <strong>Quick Start Guide</strong> - Understand Pelican AI in 5 minutes
               </Text>
               <Text style={listItem}>
-                <strong>Time Savings Tracking</strong> - Measure your efficiency
-                gains
+                ✓ <strong>All Available Frameworks</strong> - Direct links and usage instructions
               </Text>
               <Text style={listItem}>
-                <strong>Community Access</strong> - Share innovations with
-                fellow educators
+                ✓ <strong>Office Hours Schedule</strong> - Get live support from our team
+              </Text>
+              <Text style={listItem}>
+                ✓ <strong>Feedback Forms</strong> - Help us build what Louisiana educators need
+              </Text>
+              <Text style={paragraph}>
+                <Link href="https://docs.google.com/document/d/your-welcome-kit-link-here/edit" style={ctaLink}>
+                  <strong>→ Access Your Beta Welcome Kit</strong>
+                </Link>
               </Text>
             </Section>
 
+            {/* Time Commitment */}
             <Text style={paragraph}>
-              We'll be in touch soon with your platform access and next steps.
-              In the meantime, feel free to reply to this email if you have any
-              questions.
+              <strong>Your Time Commitment:</strong> About 1 hour per week for 8-12 weeks—
+              try frameworks (~15 min), provide feedback (~5 min), and optionally join 
+              office hours. In return, you'll save 3-5 hours per week.
             </Text>
 
             <Text style={paragraph}>
-              Thank you for helping us build AI tools that truly serve Louisiana
-              educators!
+              Thank you for helping us build AI guidance that truly serves Louisiana 
+              educators. Your feedback will directly shape what we create next.
+            </Text>
+
+            <Text style={paragraph}>
+              Questions? Just reply to this email.
             </Text>
 
             <Text style={paragraph}>
               Best regards,
               <br />
               The Pelican AI Team
+              <br />
+              <em>Built by Louisiana educators, for Louisiana educators</em>
             </Text>
           </Section>
 
@@ -153,6 +195,8 @@ const header = {
 
 const logo = {
   margin: "0 auto",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 const headerTitle = {
@@ -211,6 +255,22 @@ const highlightBox = {
   padding: "20px",
   margin: "24px 0",
   borderLeft: "4px solid #0ea5e9",
+};
+
+const actionBox = {
+  backgroundColor: "#fef3c7",
+  border: "2px solid #f59e0b",
+  borderRadius: "8px",
+  padding: "20px",
+  margin: "24px 0",
+  borderLeft: "4px solid #f59e0b",
+};
+
+const ctaLink = {
+  color: "#0ea5e9",
+  textDecoration: "none",
+  fontWeight: "bold",
+  fontSize: "16px",
 };
 
 const listItem = {
