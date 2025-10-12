@@ -26,10 +26,10 @@ interface WeeklyPromptEmailProps {
 
 export const WeeklyPromptEmail = ({
   userName = "Educator",
-  frameworkTitle = "Email Drafting for Parent Communication",
+  frameworkTitle = "Lesson Objective Unpacker & Success Criteria Builder",
   frameworkId = "AIB-001",
   samplePrompt = "Act as a compassionate and professional [grade level] [subject] teacher...",
-  timeEstimate = 10,
+  timeEstimate = 3,
   difficultyLevel = "beginner",
   weekNumber = 1,
 }: WeeklyPromptEmailProps) => {
@@ -44,13 +44,12 @@ export const WeeklyPromptEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/icon.png"
-              width="40"
+              src="https://pelicanai.org/primary-logo.png"
+              width="160"
               height="40"
               alt="Pelican AI"
               style={logo}
             />
-            <Heading style={headerTitle}>Pelican AI</Heading>
           </Section>
 
           {/* Main Content */}
@@ -111,15 +110,15 @@ export const WeeklyPromptEmail = ({
             </Section>
 
             <Text style={text}>
-              <strong>Louisiana Educator Pro Tip:</strong> Try this Atomic Note with a real task this week 
-              and let us know how much time you saved! We'd love to hear about your experience and how 
-              it aligns with Louisiana standards.
+              <strong>Louisiana Educator Pro Tip:</strong> Try this framework with 2-3 different lessons 
+              this week and let us know how much time you saved! Your experience helps us understand 
+              what's working and what you need next.
             </Text>
 
             <Text style={text}>
-              <strong>Success Metric:</strong> Can you use this technique to save measurable time 
-              (e.g., "I saved 30 minutes on my newsletter this week")? That's our goal for every 
-              Atomic Note we share.
+              <strong>Co-Creation Reminder:</strong> This week's check-in survey will ask about your biggest 
+              pain points. Your answers drive what we build next—this is YOUR beta program, and we're building 
+              the frameworks YOU actually need!
             </Text>
 
             <Hr style={hr} />
@@ -197,6 +196,8 @@ const header = {
 
 const logo = {
   margin: "0 auto",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 const headerTitle = {

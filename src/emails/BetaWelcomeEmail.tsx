@@ -46,14 +46,15 @@ export function BetaWelcomeEmail({
             <Text style={paragraph}>Hi {name},</Text>
 
             <Text style={paragraph}>
-              I know you're managing a lot right now. Between responding to parent 
-              emails, planning lessons, grading, and everything else that fills your 
-              evenings and weekends, finding time for one more thing feels impossible.
+              I know you're managing a lot right now. Between lesson planning, 
+              differentiating for diverse learners, analyzing data, and everything 
+              else that fills your evenings and weekends, finding time for one more 
+              thing feels impossible.
             </Text>
 
             <Text style={paragraph}>
               That's exactly why Pelican AI exists. <strong>I'm committed to helping 
-              you save 3-5 hours per week on administrative tasks</strong> so you can 
+              you save 3-5 hours per week on planning and prep tasks</strong> so you can 
               focus on what matters most: teaching Louisiana students.
             </Text>
 
@@ -66,7 +67,7 @@ export function BetaWelcomeEmail({
               </Text>
               <Text style={listItem}>
                 <strong>1. Click this link</strong> → <Link href="https://docs.google.com/document/d/your-framework-link-here/edit" style={ctaLink}>
-                  Parent Communication Framework
+                  Lesson Objective Unpacker & Success Criteria Builder
                 </Link>
               </Text>
               <Text style={listItem}>
@@ -76,10 +77,10 @@ export function BetaWelcomeEmail({
                 <strong>3. Paste it into ANY AI tool</strong> you have access to (MagicSchool AI, Gemini, ChatGPT, etc.)
               </Text>
               <Text style={listItem}>
-                <strong>4. Draft your next parent email in 5 minutes</strong> instead of 30 minutes
+                <strong>4. Unpack a lesson objective and create student-friendly success criteria in 3 minutes</strong> instead of 10-15 minutes
               </Text>
               <Text style={paragraph}>
-                <strong>That's it.</strong> You'll save 25 minutes on your very first try.
+                <strong>That's it.</strong> You'll save 7-12 minutes on your very first try—and you do this for EVERY lesson you plan.
               </Text>
             </Section>
 
@@ -90,13 +91,19 @@ export function BetaWelcomeEmail({
                 • <strong>Within 24-48 hours:</strong> We'll review your application and send platform access credentials
               </Text>
               <Text style={listItem}>
-                • <strong>Upon approval:</strong> Access to 10+ frameworks, community features, and time tracking
+                • <strong>Upon approval:</strong> Access to the Lesson Objective Unpacker framework, beta community, and time tracking
               </Text>
               <Text style={listItem}>
-                • <strong>First week:</strong> Try at least one framework and tell us how much time you saved
+                • <strong>Weeks 1-2:</strong> Master the Lesson Objective Unpacker with multiple lessons
               </Text>
               <Text style={listItem}>
-                • <strong>Ongoing:</strong> Weekly productivity prompts, office hours support, and new frameworks
+                • <strong>Weeks 3-4:</strong> Share your biggest pain points through weekly check-ins—this drives what we build next
+              </Text>
+              <Text style={listItem}>
+                • <strong>Weeks 5-12:</strong> We co-create NEW frameworks based on YOUR needs, you test prototypes, and we refine together
+              </Text>
+              <Text style={listItem}>
+                • <strong>Ongoing:</strong> Weekly feedback surveys, office hours support, and collaborative framework development
               </Text>
             </Section>
 

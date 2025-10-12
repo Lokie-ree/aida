@@ -8,26 +8,24 @@
 
 ## Questions
 
-### 1. Which frameworks did you try this week?
-**Type:** Checkboxes (required - select all that apply)
+### 1. Did you use the Lesson Objective Unpacker framework this week?
+**Type:** Multiple choice (required)
 
 **Options:**
-- Parent Communication Framework
-- Assessment Analysis Framework
-- Differentiation Support Framework
-- Other frameworks
-- I didn't try any frameworks this week
+- Yes, I used it
+- No, I didn't try it this week
+- I tried it but encountered issues
 
 ---
 
-### 2. If you didn't try any frameworks this week, what got in the way?
-**Type:** Long answer (conditional - only show if "I didn't try any frameworks" was selected)
+### 2. If you didn't try the framework this week, what got in the way?
+**Type:** Long answer (conditional - only show if "No" or "tried but encountered issues" was selected)
 
-**Placeholder text:** We want to understand barriers so we can help. What prevented you from using a framework this week?
+**Placeholder text:** We want to understand barriers so we can help. What prevented you from using the framework this week?
 
 ---
 
-### 3. Approximately how much total time did you save this week using Pelican AI frameworks?
+### 3. Approximately how much total time did you save this week using the Lesson Objective Unpacker?
 **Type:** Multiple choice (required)
 
 **Options:**
@@ -47,14 +45,14 @@
 
 ---
 
-### 5. What's your biggest time-saving need right now?
+### 5. What's your biggest pain point this week that AI could help with?
 **Type:** Long answer (required)
 
-**Placeholder text:** Help us prioritize which frameworks to build next! What task takes up too much of your time?
+**Placeholder text:** Tell us about a specific task or challenge you faced this week that took too much time. What would you love AI to help with? (Examples: analyzing student data, differentiating a lesson, creating practice problems, planning a collaborative meeting, etc.)
 
 ---
 
-### 6. On a scale of 1-5, how valuable has Pelican AI been for you so far?
+### 6. On a scale of 1-5, how valuable has the Lesson Objective Unpacker been for you so far?
 **Type:** Linear scale 1-5 (required)
 
 **Labels:**

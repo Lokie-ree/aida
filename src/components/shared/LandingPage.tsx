@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -99,6 +99,22 @@ export function LandingPage() {
     document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' });
     setIsMobileMenuOpen(false);
   };
+
+  const handleCloseMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Close menu on Escape key press
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen]);
 
   // Animation variants
   const fadeInUp = {
@@ -225,7 +241,7 @@ export function LandingPage() {
     },
     {
       question: "How is this aligned to Louisiana standards?",
-      answer: "Every framework, prompt, and example is built specifically for Louisiana's educational standards and the Louisiana Educator Rubric. We understand your district's expectations and requirements."
+      answer: "Our framework and prompts are built specifically for Louisiana's educational standards and the Louisiana Educator Rubric. We understand your district's expectations and requirements, and we co-create additional frameworks based on what Louisiana educators actually need."
     },
     {
       question: "What about ethical concerns and academic integrity?",
@@ -233,11 +249,11 @@ export function LandingPage() {
     },
     {
       question: "How much time will this actually save me?",
-      answer: "Beta testers report saving 3-5 hours per week on lesson planning, email drafting, resource development, and administrative tasks. The time savings are immediate and measurable."
+      answer: "Our Lesson Objective Unpacker saves 7-12 minutes per lesson planned. With 5-10 lessons planned weekly, that's 35-120 minutes saved just on objective unpacking and success criteria creation. As we co-create additional frameworks based on YOUR pain points, time savings compound."
     },
     {
       question: "What's included in the beta program?",
-      answer: "Beta testers get access to curated AI frameworks, weekly productivity prompts, bi-weekly office hours with facilitators, a community space to share innovations, and direct input into our development."
+      answer: "Beta testers start with our AI-assisted lesson planning framework, then co-create additional frameworks with us. You get weekly feedback opportunities, bi-weekly office hours, a community of Louisiana educators, and direct influence on what we build next. This isn't just testing—it's collaborative development based on YOUR needs."
     },
     {
       question: "Do I need to be tech-savvy to benefit?",
@@ -300,8 +316,14 @@ export function LandingPage() {
 
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-              <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-                <div className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg">
+              <div 
+                className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+                onClick={handleCloseMenu}
+              >
+                <div 
+                  className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <div className="p-4 space-y-2">
                     <Button
                       variant="ghost"
@@ -539,7 +561,7 @@ export function LandingPage() {
               </GradientText>
             </motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Every framework addresses real Louisiana educator pain points with platform-agnostic AI solutions
+              Our framework addresses real Louisiana educator pain points with platform-agnostic AI solutions, and we co-create additional frameworks based on YOUR feedback
             </motion.p>
           </motion.div>
 
@@ -600,7 +622,7 @@ export function LandingPage() {
               </GradientText>
             </motion.div>
             <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Be among the first 50 Louisiana educators to access curated AI guidance frameworks, save time, and shape the future of AI in education.
+              Be among the first 50 Louisiana educators to master AI-assisted lesson planning, co-create frameworks based on YOUR needs, and shape the future of AI in education.
             </motion.p>
           </motion.div>
 

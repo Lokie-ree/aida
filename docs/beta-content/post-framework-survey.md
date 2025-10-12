@@ -12,9 +12,10 @@
 **Type:** Dropdown (required)
 
 **Options:**
-- Parent Communication Framework
-- Assessment Analysis Framework
-- Differentiation Support Framework
+- AIB-001: Lesson Objective Unpacker & Success Criteria Builder
+- AIB-002: Curriculum Fidelity Check
+- AIB-003: OnCourse CDA Data Summarizer
+- AIB-004: Internalization Alignment Scrutiny
 - Other (please specify)
 
 ---
@@ -105,7 +106,7 @@
 7. Test the form by submitting a response
 8. Copy the shareable link
 9. Add the link to:
-   - Parent Communication Framework document
+   - All framework documents (AIB-001 through AIB-004)
    - Beta Welcome Kit document
    - Weekly email reminders
 
