@@ -5,6 +5,7 @@ import {
   Container,
   Head,
   Heading,
+  Img,
   Link,
   Preview,
   Section,
@@ -28,6 +29,17 @@ export function WelcomeEmail({
       </Preview>
       <Body style={main}>
         <Container style={container}>
+          {/* Logo Header */}
+          <Section style={logoHeader}>
+            <Img
+              src="https://pelicanai.org/primary-logo.png"
+              width="160"
+              height="40"
+              alt="Pelican AI"
+              style={logo}
+            />
+          </Section>
+
           <Section style={header}>
             <Heading style={h1}>Welcome to Pelican AI!</Heading>
             <Text style={subtitle}>
@@ -47,7 +59,7 @@ export function WelcomeEmail({
               <Heading style={h2}>🐦 Reclaim Your Time</Heading>
               <Text style={paragraph}>
                 Learn to use ANY AI tool effectively—MagicSchool AI, Brisk, SchoolAI, 
-                Gemini, or others. We teach principles, not platforms. Every framework 
+                Gemini, or others. We teach principles, not platforms. Our guidance 
                 is designed specifically for Louisiana's educational standards.
               </Text>
             </Section>
@@ -135,8 +147,19 @@ const container = {
   maxWidth: "600px",
 };
 
+const logoHeader = {
+  padding: "32px 32px 16px",
+  textAlign: "center" as const,
+};
+
+const logo = {
+  margin: "0 auto",
+  display: "block",
+  objectFit: "contain" as const,
+};
+
 const header = {
-  padding: "32px 32px 0",
+  padding: "0 32px 0",
   textAlign: "center" as const,
 };
 
