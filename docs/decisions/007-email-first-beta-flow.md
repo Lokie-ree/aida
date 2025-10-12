@@ -229,11 +229,61 @@ This ensures proper separation while maintaining functionality.
 - ✅ No credential display after signup
 - ✅ Sign In button remains available
 - ✅ Error handling for failed signups
+- ✅ Mobile menu closes when clicking outside
+- ✅ Mobile menu closes on Escape key press
 
 ### Email Testing
 - ✅ Beta Welcome email renders correctly
 - ✅ Platform Access email renders with credentials
 - ✅ Email delivery events logged via webhook
+- ✅ Email logos display correctly without color distortion
+- ✅ All email templates use primary-logo.png consistently
+
+---
+
+## Post-Implementation Improvements
+
+### October 11, 2025 - UX and Branding Enhancements
+
+#### Landing Page Mobile Menu Fix
+**Issue:** Mobile menu overlay could not be closed by clicking outside or pressing Escape key.
+
+**Changes Made:**
+- Added `useEffect` hook to handle Escape key press
+- Added click-outside handler to menu overlay
+- Added `stopPropagation` to menu content to prevent unintended closes
+- Improved accessibility with keyboard navigation
+
+**Files Modified:**
+- `src/components/shared/LandingPage.tsx`
+
+**Result:** Mobile users can now intuitively close the menu by clicking outside the menu area or pressing Escape, improving UX on mobile devices.
+
+---
+
+#### Email Logo Standardization
+**Issue:** Email templates used `icon.png` (40x40) which caused color distortion in some email clients. New `primary-logo.png` and `secondary-logo.png` assets were added to the project but not utilized.
+
+**Changes Made:**
+- Updated all email templates to use `primary-logo.png` (160x40)
+- Added proper styling to prevent color distortion: `display: "block"` and `objectFit: "contain"`
+- Removed redundant "Pelican AI" text headings where logo is self-explanatory
+- Added logo sections to emails that were missing them
+
+**Files Modified:**
+- `src/emails/BetaWelcomeEmail.tsx` - Updated logo and removed heading
+- `src/emails/BetaInviteEmail.tsx` - Updated logo and removed heading  
+- `src/emails/WelcomeEmail.tsx` - Added logo section
+- `src/emails/PlatformAccessEmail.tsx` - Updated logo and removed heading
+- `src/emails/WeeklyPromptEmail.tsx` - Updated logo and removed heading
+- `src/emails/VoiceSessionSummaryEmail.tsx` - Added logo section
+
+**Logo Specifications:**
+- Source: `https://pelicanai.org/primary-logo.png`
+- Dimensions: 160x40 pixels
+- Styling: Block display with object-fit contain
+
+**Result:** All emails now display the Pelican AI logo consistently without color distortion, maintaining brand integrity across all email communications.
 
 ---
 
@@ -268,4 +318,26 @@ This ensures proper separation while maintaining functionality.
 - Manual approval process aligns with Phase 1 MVP "email-first" vision
 - Node.js runtime constraint resolution demonstrates proper Convex architecture
 - System ready for beta program launch with quality control in place
+
+---
+
+## Update: Single-Framework Beta Strategy (October 12, 2025)
+
+Following implementation of the email-first beta flow, the beta program strategy was refined based on the actual 8-person cohort composition (6 math/STEM teachers + 2 master teachers without formal district partnerships).
+
+**Strategic Adjustment:**
+- Focus on **single foundation framework** (AIB-001: Lesson Objective Unpacker) for Weeks 1-4
+- Archive district-specific frameworks (AIB-002, AIB-003, AIB-004) for future use
+- Implement **co-creation model**: gather pain point feedback, build frameworks based on actual beta tester needs
+
+**Email Template Impact:**
+- `BetaWelcomeEmail.tsx` updated to focus on lesson planning (not parent communication)
+- Welcome email now emphasizes single framework + co-creation journey
+- Timeline updated to show 12-week collaborative development process
+
+**Related Documentation:**
+- See `docs/beta-content/FRAMEWORK-STRATEGY-UPDATE.md` for full strategic rationale
+- See `docs/beta-content/BETA-TESTER-PAIN-POINTS.md` for documented pain points driving Phase 2
+
+**Note:** The email-first signup flow remains unchanged. This update only affects the content and messaging within the beta emails, not the technical implementation of the signup/approval process.
 
