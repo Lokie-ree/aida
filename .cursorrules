@@ -1,0 +1,171 @@
+# Pelican AI - Agent-Based Development System
+
+## Project Context
+
+**Name:** Pelican AI  
+**Tagline:** Navigate AI with Confidence  
+**Mission:** Empower Louisiana educators with practical, ethical, and platform-agnostic AI guidance that reclaims their time for high-impact teaching.
+
+**Current Phase:** Phase 1 - MVP Validation (Email-First Approach)  
+**Goal:** Validate email-first onboarding with 20+ beta testers, achieve 75%+ weekly email open rate over 4 weeks
+
+## Core Value Proposition
+
+- **Platform-Agnostic Guidance:** Works with ANY AI tool (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
+- **Louisiana-Aligned:** Built for Louisiana state standards and educator rubric
+- **Ethical Guardrails:** Responsible AI use is built-in
+- **Time-Saving:** Immediate, practical solutions for common tasks (3-5 hours/week savings target)
+
+## Tech Stack & Architecture
+
+### Frontend
+- React 19, TypeScript, Vite
+- Tailwind CSS, shadcn/ui
+- Mobile-first, WCAG 2.1 AA compliance
+
+### Backend
+- Convex (real-time database, serverless functions)
+- Better Auth (@convex-dev/better-auth)
+- Resend (email automation)
+- OpenAI API (RAG system)
+
+### MCP Integrations
+- **Convex MCP** (v1.27.3) - Deployment monitoring, database inspection, function debugging
+- **Playwright MCP** - Automated E2E testing, visual regression, accessibility validation
+- **Firecrawl MCP** (@mendable/firecrawl-js v1.21.1) - Document scraping and processing
+- **Vapi MCP** (@vapi-ai/web v2.3.10) - Voice interface logs and debugging
+
+### Architecture Principles
+- Serverless-first approach
+- End-to-end type safety
+- Zero-trust security (FERPA compliant)
+- Performance: <3s load times, <10s email delivery
+
+## Design System
+
+**Colors:**
+- Pelican Blue: #0ea5e9 (primary)
+- Louisiana Gold: #f59e0b (accent)
+- Deep Blue: #1e40af (secondary)
+
+**Typography:**
+- Primary: Lexend (accessibility-focused)
+- Headings: Poppins (Louisiana brand)
+- Monospace: JetBrains Mono
+
+**Voice & Tone:**
+- Professional yet approachable
+- Louisiana-proud
+- Educator-first focus
+- Confident but humble
+
+## Phase 1 MVP Scope
+
+**In Scope:**
+- Beta invitation email system
+- Simple web signup/auth flow (Better Auth)
+- Automated welcome email
+- Automated weekly prompt email (cron job)
+- Database schema: users, userProfiles, betaSignups, sessions
+
+**Out of Scope:**
+- Web dashboard
+- Framework library UI
+- Community features (innovations, testimonials)
+- Admin panel
+- User profile UI
+
+## Success Metrics (Phase 1)
+
+**Quantitative:**
+- 20+ active beta testers
+- 75%+ weekly email open rate over 4 weeks
+- 80%+ report immediate time savings (10+ minutes per prompt)
+- 90%+ satisfaction rating
+- <3s page load times
+- 99%+ uptime during MVP period
+
+**Qualitative:**
+- Testimonials demonstrating time savings
+- Evidence of successful AI prompt application
+- Positive feedback on email-first approach
+- Stories of ethical AI use
+
+## Data Model (Convex Schema)
+
+**Phase 1 Tables:**
+- `betaSignups` - Beta tester recruitment and approval
+- `userProfiles` - User extensions (school, subject, gradeLevel, district, role)
+- `user` - Better Auth managed
+- `session` - Better Auth managed
+- `account` - Better Auth managed
+- `verification` - Better Auth managed
+
+**Future Tables (Phase 2+):**
+- frameworks, innovations, testimonials, timeTracking, frameworkUsage, betaProgram
+
+## Agent Selection System
+
+To activate a specific agent's context and role, reference the appropriate rule file from the `.cursor/rules/` directory.
+
+### Available Agents
+
+Each agent has a dedicated `.mdc` rule file with role-specific context, responsibilities, MCP tool configurations, and quality standards:
+
+- **@.cursor/rules/pm.mdc** - Product Manager (business strategy, user stories, validation)
+- **@.cursor/rules/ux-designer.mdc** - UX/UI Designer (design system, accessibility, user journeys)
+- **@.cursor/rules/architect.mdc** - System Architect (technical architecture, API contracts, scalability)
+- **@.cursor/rules/engineer.mdc** - Engineer (full-stack implementation, React 19, Convex integration)
+- **@.cursor/rules/security.mdc** - Security Specialist (Semgrep analysis, FERPA compliance, vulnerability detection)
+- **@.cursor/rules/wrecking-ball.mdc** - Wrecking Ball Specialist (simplification, debt removal, refactoring)
+- **@.cursor/rules/qa.mdc** - Quality Assurance (testing, bug reporting, validation)
+
+### Agent Selection Guidelines
+
+1. **Single Agent Mode:** Reference one agent at a time for focused work
+   - Example: `@.cursor/rules/engineer.mdc Help me implement the auth flow`
+
+2. **Multi-Agent Mode:** Reference multiple agents when cross-functional perspective needed
+   - Example: `@.cursor/rules/architect.mdc @.cursor/rules/engineer.mdc Design and implement the email API`
+
+3. **Default Mode:** Without agent reference, use general full-stack development context (this file)
+
+### Example Usage
+
+```
+@.cursor/rules/pm.mdc Help me prioritize these features for Phase 1 MVP
+@.cursor/rules/ux-designer.mdc Review this component for accessibility compliance
+@.cursor/rules/architect.mdc Design the API contract for weekly email scheduling
+@.cursor/rules/engineer.mdc Implement the Better Auth integration with user profiles
+@.cursor/rules/security.mdc Run Semgrep security scan on the authentication flow
+@.cursor/rules/wrecking-ball.mdc Identify and remove unused dependencies from package.json
+@.cursor/rules/qa.mdc Create E2E test plan for beta signup flow
+```
+
+### Quick Reference: When to Use Each Agent
+
+- **Product decisions?** → @.cursor/rules/pm.mdc
+- **Design or UX questions?** → @.cursor/rules/ux-designer.mdc
+- **Architecture or system design?** → @.cursor/rules/architect.mdc
+- **Implementation work?** → @.cursor/rules/engineer.mdc
+- **Security or FERPA compliance?** → @.cursor/rules/security.mdc
+- **Simplification or cleanup?** → @.cursor/rules/wrecking-ball.mdc
+- **Testing or quality?** → @.cursor/rules/qa.mdc
+
+## Key Decision Records
+
+- **ADR-001:** Use Convex Backend (docs/decisions/001-use-convex-backend.md)
+- **ADR-002:** Extend A.I.D.A. Codebase (docs/decisions/002-extend-aida-codebase.md)
+- **ADR-003:** Framework-Based Content (docs/decisions/003-framework-based-content.md)
+- **ADR-004:** Migrate to Better Auth (docs/decisions/004-migrate-to-better-auth.md)
+- **ADR-005:** Phase 5 P0 Implementation (docs/decisions/005-phase5-p0-implementation.md)
+- **ADR-006:** Beta Auth Investigation (docs/decisions/006-beta-auth-investigation.md)
+- **ADR-007:** Email-First Beta Flow (docs/decisions/007-email-first-beta-flow.md)
+
+## References
+
+- **Full PRD:** flow/product-requirements.md (766 lines)
+- **Brand Guidelines:** docs/PELICAN_AI_BRAND_GUIDELINES.md
+- **Testing Suite:** scripts/README.md
+- **Troubleshooting:** scripts/troubleshooting-guide.md
+

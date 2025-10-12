@@ -61,6 +61,8 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 ## 📚 Documentation
 
 ### **Core Documents** (Living)
+- **[.cursorrules](.cursorrules)** - Master cursor rules and agent system
+- **[.cursor/rules/](.cursor/rules/)** - Agent-specific cursor rules (PM, UX, Architect, Engineer, Security, Wrecking Ball, QA)
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and progress
 - **[product-requirements.md](product-requirements.md)** - Product requirements and specifications
 - **[docs/PELICAN_AI_BRAND_GUIDELINES.md](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Brand guidelines and design system
@@ -81,10 +83,13 @@ Start with the **[Project Documentation Index](PROJECT_DOCUMENTATION.md)** for c
 - **[scripts/test-e2e-manual-checklist.md](scripts/test-e2e-manual-checklist.md)** - Manual testing checklist
 
 ### **Quick Start by Role**
-- **Engineers**: [orchestrator.json](orchestrator.json) → [Product Requirements](product-requirements.md) → [Testing Suite](scripts/README.md)
-- **Product**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [Product Requirements](product-requirements.md)
-- **Design**: [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md) → [ADRs](docs/decisions/)
-- **QA/Testing**: [Testing Suite](scripts/README.md) → [Manual Checklist](scripts/test-e2e-manual-checklist.md) → [Troubleshooting](scripts/troubleshooting-guide.md)
+- **Engineers**: [Cursor Rules](.cursorrules) → [Engineer Agent](.cursor/rules/engineer.mdc) → [Testing Suite](scripts/README.md)
+- **Product**: [PM Agent](.cursor/rules/pm.mdc) → [Product Requirements](product-requirements.md)
+- **Design**: [UX Designer Agent](.cursor/rules/ux-designer.mdc) → [Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md)
+- **Architecture**: [Architect Agent](.cursor/rules/architect.mdc) → [ADRs](docs/decisions/)
+- **Security**: [Security Agent](.cursor/rules/security.mdc) → [FERPA Compliance] → [Semgrep Scans]
+- **QA/Testing**: [QA Agent](.cursor/rules/qa.mdc) → [Testing Suite](scripts/README.md)
+- **Simplification**: [Wrecking Ball Agent](.cursor/rules/wrecking-ball.mdc) → [Tech Debt Backlog]
 - **Stakeholders**: This README → [CHANGELOG.md](CHANGELOG.md)
 
 ---

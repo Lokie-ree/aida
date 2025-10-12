@@ -1,9 +1,9 @@
 # Product Requirements Document (PRD)
 ## Pelican AI Platform
 
-**Version:** 1.1  
-**Date:** October 8, 2025  
-**Status:** Phase 5 - Software Engineering (In Progress)  
+**Version:** 1.2  
+**Date:** October 10, 2025  
+**Status:** Phase 1 - MVP Validation (In Progress)  
 **Owner:** Project Lead  
 **Document Type:** Product Requirements
 
@@ -107,31 +107,31 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 - Create a peer-to-peer learning network
 - Foster innovation sharing and collaborative problem-solving
 
-### 4.2 Success Metrics (Beta Phase: Oct-Dec 2025)
+### 4.2 Success Metrics (Phase 1 MVP: October-December 2025)
 
 **Quantitative Metrics:**
-- 50 active beta testers recruited from cross-section of schools/subjects
-- 85%+ of testers save 3+ hours per week (120+ minutes per week)
-- 20+ documented testimonials with specific impact stories
-- 80%+ satisfaction rating on post-beta survey
-- 75%+ weekly engagement with "Productivity Prompt of the Week"
-- 3+ frameworks used per educator per week
+- 20+ active beta testers recruited from cross-section of schools/subjects
+- 75%+ weekly email open rate over 4 weeks
+- 80%+ of testers report immediate time savings (10+ minutes per prompt)
+- 90%+ satisfaction rating on post-MVP survey
+- 100% successful onboarding completion rate
+- <3 second page load times for signup/auth flow
 
 **Qualitative Metrics:**
-- Testimonials demonstrating tangible time savings
-- Evidence of improved lesson quality and standards alignment
+- Testimonials demonstrating immediate time savings
+- Evidence of successful AI prompt application
 - Stories of ethical AI use maintaining academic integrity
-- Peer-to-peer knowledge sharing and innovation
+- Positive feedback on email-first approach
 
 **Platform Metrics:**
-- 10+ frameworks at launch (5 per hub)
+- 4 weekly prompts at launch (one per week for 4 weeks)
 - Page load time: <3 seconds
-- Accessibility compliance: WCAG 2.1 Level AA
-- Uptime reliability: 95%+
-- Mobile-first design with 44px minimum touch targets
+- Email delivery: <5 minutes for transactional emails
+- Uptime reliability: 99%+ during MVP period
+- Mobile-responsive design with 44px minimum touch targets
 - Platform-agnostic approach (works with any AI tool)
 
-### 4.3 Long-Term Success Indicators (6-24 months)
+### 4.3 Long-Term Success Indicators (Phase 2+: 6-24 months)
 - District-wide adoption and integration into official PD
 - Recognition as Louisiana's leading AI education resource
 - Expansion to other districts and parishes
@@ -139,315 +139,189 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 
 ---
 
-## 5. Core Features & Requirements
+## 5. Core Features & Requirements (Phase 1 MVP)
 
-### 5.1 Feature Category: Guided Frameworks (formerly "Spaces")
+### 5.1 Feature Category: Email-First Onboarding System
 
-**Description:** Curated collections of prompts, workflows, and ethical considerations for specific educational tasks, providing structured best-practice approaches to using AI.
+**Description:** Core infrastructure for beta tester recruitment, onboarding, and engagement through email-based communication.
 
-**Priority:** P0 (Must-Have for Beta)
-
-**Framework Examples:**
-
-**Framework 1: The Lesson Internalization Framework**
-- **Purpose:** Help educators deeply understand curriculum and anticipate student misconceptions
-- **Components:**
-  - Standards unpacking prompts
-  - Misconception identification workflows
-  - Questioning strategy generators
-  - Louisiana standards alignment tools
-- **Success Criteria:** Educators create more deeply aligned lesson components
-
-**Framework 2: The Differentiation Framework**
-- **Purpose:** Tailor materials for diverse learners efficiently
-- **Components:**
-  - Reading level adjustment prompts
-  - Multiple means of representation strategies
-  - Scaffolding and extension generators
-  - IEP accommodation support
-- **Success Criteria:** Educators differentiate materials in 50% less time
-
-**Framework 3: The Parent Communication Framework**
-- **Purpose:** Draft professional, compassionate parent communications quickly
-- **Components:**
-  - Email templates for various scenarios
-  - Newsletter generation prompts
-  - Conference preparation tools
-  - Tone and sensitivity guidelines
-- **Success Criteria:** Educators save 30+ minutes per communication task
-
-**Framework 4: The Resource Development Framework**
-- **Purpose:** Source and analyze curriculum materials efficiently
-- **Components:**
-  - Primary source finding prompts
-  - Text complexity analysis tools
-  - Exemplar work generators
-  - Rubric development support
-- **Success Criteria:** Educators find quality resources in 60% less time
-
-**Framework 5: The Student Engagement Framework**
-- **Purpose:** Create engaging activities aligned to learning styles
-- **Components:**
-  - Activity idea generators
-  - Hook and anticipatory set creators
-  - Questioning technique libraries
-  - Formative assessment tools
-- **Success Criteria:** Educators generate 3+ engagement strategies per lesson
-
-### 5.2 Feature Category: Content Structure & Delivery
-
-**Description:** Atomic, reusable content modules optimized for both human readability and RAG system ingestion.
-
-**Priority:** P0 (Must-Have for Beta)
+**Priority:** P0 (Must-Have for Phase 1 MVP)
 
 **Requirements:**
 
-**R1: Atomic Note Structure**
-- Each piece of content follows consistent markdown template
-- Clear sections: Challenge, AI-Powered Solution, Sample Prompt, Ethical Guardrail
-- Unique ID system (e.g., AIB-001, IEH-012)
-- Module tags and metadata for organization
-- **Acceptance Criteria:** All content uses standardized template, easily searchable
+**R1: Beta Invitation System**
+- Automated beta invitation email delivery
+- Simple web signup/auth flow using Better Auth
+- Database schema for users and beta signups
+- **Acceptance Criteria:** Educators can receive invitation and successfully create account
 
-**R2: Platform-Agnostic Guidance**
-- All prompts and workflows work across multiple AI platforms
-- Explicit mentions of "any AI platform" or "your preferred AI tool"
-- No vendor lock-in or tool-specific instructions
-- **Acceptance Criteria:** Beta testers using different platforms report equal success
+**R2: Welcome Email Automation**
+- Automated welcome email upon successful registration
+- Quick Start Guide delivery
+- Onboarding confirmation
+- **Acceptance Criteria:** 90%+ of beta testers receive welcome email within 1 hour
 
-**R3: Louisiana Standards Alignment**
-- Every instructional framework explicitly maps to Louisiana educational standards
-- References to Louisiana Educator Rubric (LER) domains
-- Integration with district strategic plan goals
-- **Acceptance Criteria:** Educators can directly cite standards alignment in evaluations
+**R3: Weekly Prompt Email System**
+- Automated weekly prompt email (cron job)
+- Copy-paste ready AI prompts
+- Louisiana educator context and ethical guardrails
+- **Acceptance Criteria:** 75%+ weekly email open rate over 4 weeks
 
-**R4: Ethical Guardrails**
-- Every prompt includes responsible use guidance
-- Clear statements on human oversight requirements
-- Academic integrity and data privacy considerations
-- **Acceptance Criteria:** Zero ethical concerns raised in beta feedback
+### 5.2 Feature Category: Basic User Management
 
-### 5.3 Feature Category: Beta Program Infrastructure
+**Description:** Essential user profile and authentication systems for Phase 1 MVP.
 
-**Description:** Systems and processes to support beta tester onboarding, engagement, and feedback collection.
-
-**Priority:** P0 (Must-Have for Beta)
+**Priority:** P0 (Must-Have for Phase 1 MVP)
 
 **Requirements:**
 
-**R5: Onboarding System**
-- Welcome Kit email with Quick Start Guide
-- First "Aha!" moment task assignment
-- Virtual office hours scheduling
-- Google Space or collaboration platform setup
-- **Acceptance Criteria:** 90%+ of beta testers complete onboarding within 48 hours
+**R4: User Authentication**
+- Better Auth integration for secure login
+- Email-based authentication
+- Session management
+- **Acceptance Criteria:** Secure, reliable authentication system
 
-**R6: Weekly Engagement Mechanism**
-- "Productivity Prompt of the Week" email every Monday
-- Bi-weekly virtual office hours
-- Shared space for collaboration and tip sharing
-- **Acceptance Criteria:** 75%+ weekly engagement rate
+**R5: User Profile Management**
+- Basic profile information (school, subject, grade level)
+- Louisiana educator context
+- **Acceptance Criteria:** Users can maintain basic profile information
 
-**R7: Feedback Collection System**
-- Post-task surveys for each framework
-- Weekly check-in forms
-- Testimonial collection process
-- Usage tracking (self-reported time savings)
-- **Acceptance Criteria:** 15+ documented testimonials, comprehensive usage data
+### 5.3 Feature Category: Email Content Delivery
 
-**R8: Communication Channels**
-- Email distribution system
-- Google Space or Slack for peer collaboration
-- Office hours video conferencing
-- Quick response system for urgent questions
-- **Acceptance Criteria:** <24 hour response time to beta tester questions
+**Description:** Content delivery system for weekly AI prompts and educational guidance.
 
-### 5.4 Feature Category: Knowledge Base Architecture
-
-**Description:** Technical infrastructure for content storage, retrieval, and future RAG system integration.
-
-**Priority:** P1 (Important for Beta, Critical for Scale)
+**Priority:** P0 (Must-Have for Phase 1 MVP)
 
 **Requirements:**
 
-**R9: Content Management System**
-- Markdown-based documentation repository
-- Version control for content updates
-- Tagging and categorization system
-- Search functionality
-- **Acceptance Criteria:** Educators can find relevant content in <30 seconds
+**R6: Weekly Prompt Content**
+- Curated AI prompts for Louisiana educators
+- Platform-agnostic guidance
+- Ethical guardrails and responsible use
+- **Acceptance Criteria:** Educators can immediately apply prompts to save time
 
-**R10: RAG System Foundation**
-- Vector database setup for content ingestion
-- Structured metadata for semantic search
-- Content chunking strategy for optimal retrieval
-- **Acceptance Criteria:** RAG system can accurately retrieve relevant content (Phase 2)
-
-**R11: Analytics & Insights**
-- Usage tracking per framework
-- Time savings calculations
-- Engagement metrics dashboard
-- Feedback sentiment analysis
-- **Acceptance Criteria:** Clear data on most/least used frameworks, average time savings
-
-### 5.5 Feature Category: Professional Development Integration
-
-**Description:** Materials and processes for launching the initiative through district PD and sustaining engagement.
-
-**Priority:** P0 (Must-Have for Beta Launch)
-
-**Requirements:**
-
-**R12: PD Launch Presentation**
-- Compelling slide deck addressing educator pain points
-- Live demonstration of 2-3 high-impact frameworks
-- QR code/sign-up link for beta program
-- Handout with Quick Start Guide
-- **Acceptance Criteria:** 30-50 beta tester sign-ups from PD session
-
-**R13: Quick Start Guide**
-- 1-page or 2-minute video overview
-- 3 immediate-win prompts educators can use today
-- Link to full framework library
-- Office hours schedule
-- **Acceptance Criteria:** 90%+ of beta testers report guide was helpful
-
-**R14: Testimonial Showcase System**
-- Template for collecting impact stories
-- Permission forms for sharing testimonials
-- Highlight mechanism in weekly communications
-- **Acceptance Criteria:** 15+ testimonials with measurable impact data
+**R7: Email Template System**
+- Professional email templates
+- Pelican AI branding
+- Mobile-responsive design
+- **Acceptance Criteria:** Emails render correctly across all devices and email clients
 
 ---
 
-## 6. User Flows & Scenarios
+## 6. User Flows & Scenarios (Phase 1 MVP)
 
 ### 6.1 User Flow 1: Beta Tester Onboarding
 
-**Scenario:** A teacher attends the PD session and decides to join the beta program.
+**Scenario:** A teacher receives a beta invitation and decides to join the program.
 
 **Steps:**
-1. Teacher scans QR code during PD presentation
-2. Completes simple sign-up form (name, email, school, subject, AI tools currently used)
-3. Receives Welcome Kit email within 1 hour
-4. Opens Quick Start Guide and tries first prompt
-5. Joins Google Space for peer collaboration
-6. Attends first virtual office hours session
-7. Receives first "Productivity Prompt of the Week" on Monday
+1. Teacher receives BetaInviteEmail
+2. Clicks signup link and completes simple web form (name, email, school, subject)
+3. Successfully creates account via Better Auth
+4. Receives WelcomeEmail confirming registration
+5. Receives first weekly prompt email on Monday
 
 **Success Criteria:**
 - 90%+ complete onboarding within 48 hours
 - 80%+ try at least one prompt in first week
-- 60%+ attend first office hours
+- Secure authentication system
 
-### 6.2 User Flow 2: Using a Framework
+### 6.2 User Flow 2: Weekly Prompt Engagement
 
-**Scenario:** An overwhelmed teacher needs to draft a parent email quickly.
+**Scenario:** A beta tester receives and uses a weekly AI prompt.
 
 **Steps:**
-1. Teacher opens Parent Communication Framework document
-2. Reads "The Challenge" section and identifies with pain point
-3. Reviews "The AI-Powered Solution" step-by-step instructions
-4. Copies "Sample Prompt" and pastes into their preferred AI platform (e.g., MagicSchool AI)
-5. Customizes prompt with student-specific details
-6. Reviews AI-generated draft
-7. Personalizes and sends email
-8. Reports time savings in weekly check-in form
+1. Teacher receives WeeklyPromptEmail on Monday
+2. Reads prompt content and ethical guidelines
+3. Copies prompt and pastes into their preferred AI platform
+4. Customizes prompt with student-specific details
+5. Reviews AI-generated output
+6. Applies the result to their teaching practice
 
 **Success Criteria:**
-- Task completed in <10 minutes (vs. 30-45 minutes traditional method)
-- Email maintains professional tone and personal touch
+- 75%+ weekly email open rate over 4 weeks
+- Task completed in <10 minutes
 - Teacher feels confident about ethical use
+- Immediate time savings achieved
 
-### 6.3 User Flow 3: Sharing an Innovation
+### 6.3 User Flow 3: Profile Management
 
-**Scenario:** An eager innovator discovers a creative AI use case and wants to share with peers.
+**Scenario:** A beta tester updates their profile information.
 
 **Steps:**
-1. Teacher posts innovation in Google Space with context
-2. Peers react and ask questions
-3. Initiative lead highlights innovation in next "Productivity Prompt of the Week"
-4. Other teachers try the technique and report results
-5. Innovation is formalized into new Atomic Note for knowledge base
+1. Teacher logs into their account
+2. Navigates to profile settings
+3. Updates school, subject, or grade level information
+4. Saves changes
+5. Receives confirmation of update
 
 **Success Criteria:**
-- 5+ peer-to-peer innovations shared during beta
-- 80%+ of shared innovations are tried by other testers
-- Community engagement increases over beta period
+- Profile information accurately maintained
+- Changes persist across sessions
+- Louisiana educator context preserved
 
 ---
 
-## 7. Content Requirements
+## 7. Content Requirements (Phase 1 MVP)
 
-### 7.1 Module 1: The AI Basics Hub
+### 7.1 Weekly Prompt Content
 
-**Target Audience:** Louisiana educators new to AI or seeking immediate productivity improvements
+**Target Audience:** Louisiana educators participating in Phase 1 MVP beta program
 
-**Core Objective:** Provide practical, hands-on foundation for using any AI platform to save time and reduce administrative workload
+**Core Objective:** Provide practical, immediately applicable AI prompts that save time and demonstrate value
 
-**Required Content (Atomic Notes):**
+**Required Content:**
 
-**Teacher Productivity Category:**
-- AIB-001: Email Drafting for Parent Communication
-- AIB-002: Newsletter Generation and Templates
-- AIB-003: Document Summarization for Professional Reading
-- AIB-004: Meeting Notes and Action Item Extraction
-- AIB-005: Professional Email Responses
+**Week 1: Email Drafting for Parent Communication**
+- Challenge: Teachers spend 30+ minutes crafting professional parent emails
+- AI-Powered Solution: Use AI to draft initial email, then personalize
+- Sample Prompt: "Draft a professional email to a parent about [specific situation]..."
+- Ethical Guardrail: Always review and personalize AI-generated content
 
-**AI Platform Best Practices Category:**
-- AIB-010: Prompt Engineering Fundamentals for Educators
-- AIB-011: Understanding AI Limitations and Hallucinations
-- AIB-012: Ethical AI Use and Academic Integrity
-- AIB-013: Data Privacy and Student Information Protection
-- AIB-014: Iterative Prompting for Better Results
+**Week 2: Newsletter Generation**
+- Challenge: Monthly newsletters take hours to create
+- AI-Powered Solution: Generate newsletter content, then customize
+- Sample Prompt: "Create a classroom newsletter for [grade level] about [month/theme]..."
+- Ethical Guardrail: Include authentic student work and personal touches
 
-**Curriculum Analysis Tools Category:**
-- AIB-020: Sourcing Primary Source Documents
-- AIB-021: Text Complexity Analysis
-- AIB-022: Creating Vocabulary Lists from Complex Texts
-- AIB-023: Generating Discussion Questions
-- AIB-024: Finding Supplemental Resources
+**Week 3: Lesson Planning Support**
+- Challenge: Creating engaging lesson plans takes significant time
+- AI-Powered Solution: Generate lesson components, then adapt
+- Sample Prompt: "Create a lesson plan for [subject] on [topic] aligned to Louisiana standards..."
+- Ethical Guardrail: Ensure alignment with district curriculum and standards
 
-### 7.2 Module 2: The Instructional Expert Hub
+**Week 4: Assessment Creation**
+- Challenge: Creating differentiated assessments is time-consuming
+- AI-Powered Solution: Generate assessment questions, then refine
+- Sample Prompt: "Create assessment questions for [grade level] on [topic]..."
+- Ethical Guardrail: Review for accuracy and appropriateness
 
-**Target Audience:** Louisiana educators focused on instructional design, standards alignment, and professional practice
+### 7.2 Email Template Content
 
-**Core Objective:** Provide advanced frameworks for leveraging any AI platform to enhance lesson internalization and ensure alignment with Louisiana educational standards
+**Welcome Email Template:**
+- Pelican AI branding and Louisiana educator context
+- Quick Start Guide attachment
+- First prompt preview
+- Office hours information (if applicable)
 
-**Required Content (Atomic Notes):**
-
-**Louisiana Educational Framework Category:**
-- IEH-001: Unpacking Louisiana State Standards
-- IEH-002: Creating Standards-Aligned "I Can" Statements
-- IEH-003: Designing Rigorous Learning Objectives
-- IEH-004: Aligning Assessments to Standards
-- IEH-005: Curriculum Mapping Support
-
-**Louisiana Educator Rubric (LER) Category:**
-- IEH-010: Domain 1 - Planning and Preparation Support
-- IEH-011: Domain 2 - Differentiated Materials Generation
-- IEH-012: Domain 3 - Questioning Strategy Development
-- IEH-013: Domain 4 - Professional Communication Templates
-- IEH-014: Evidence Collection for Evaluation
-
-**Instructional Design Category:**
-- IEH-020: Anticipating Student Misconceptions
-- IEH-021: Creating Exemplar Work and Rubrics
-- IEH-022: Designing Scaffolded Learning Progressions
-- IEH-023: Developing Formative Assessment Strategies
-- IEH-024: Engagement Strategy Generation
+**Weekly Prompt Email Template:**
+- Professional header with Pelican AI branding
+- Clear subject line with week number
+- Prompt content with ethical guidelines
+- Louisiana educator context and standards alignment
+- Mobile-responsive design
 
 ### 7.3 Content Quality Standards
 
-**All content must meet these criteria:**
+**All Phase 1 content must meet these criteria:**
 
 1. **Clarity:** Written in clear, jargon-free language accessible to all educators
 2. **Actionability:** Includes copy-paste ready prompts and step-by-step instructions
 3. **Platform-Agnostic:** Works across all major AI platforms (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
-4. **Louisiana-Aligned:** Explicitly references Louisiana standards, frameworks, or district goals
+4. **Louisiana-Aligned:** Explicitly references Louisiana standards or educator context
 5. **Ethical:** Includes responsible use guidance and human oversight requirements
 6. **Tested:** Validated by at least 3 beta testers before formal release
-7. **Maintained:** Reviewed and updated quarterly based on feedback and technology changes
+7. **Immediate Value:** Provides tangible time savings within 10 minutes of use
 
 ---
 
@@ -456,14 +330,13 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 ### 8.1 Platform Architecture
 
 **Technology Stack:**
-- **Frontend:** React 19, TypeScript, Vite
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, shadcn/ui
 - **Backend:** Convex (real-time database and serverless functions)
 - **Authentication:** Better Auth (via @convex-dev/better-auth)
-- **UI Components:** Radix UI, Tailwind CSS, shadcn/ui
 - **Email:** Resend for transactional emails
 - **AI Integration:** OpenAI API (for future RAG system)
-- **Voice:** Vapi.ai integration
-- **Document Processing:** Firecrawl for document scraping and processing
+- **Voice:** Vapi.ai integration (future phase)
+- **Document Processing:** Firecrawl for document scraping and processing (future phase)
 
 **MCP Integrations:**
 - **Convex MCP** (v1.27.3) - Direct deployment monitoring and debugging with Better Auth, RAG, and Resend components
@@ -473,44 +346,30 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 
 ### 8.2 Data Model (Convex Schema)
 
-**Required Tables:**
+**Phase 1 MVP Tables:**
 
-**users**
-- Standard auth fields (from @convex-dev/auth)
-- name, email, school, subject, grade level
-- AI tools currently used
-- beta program status
+**betaSignups** (Landing Page & Recruitment)
+- email, name, school, subject
+- status: "pending" | "approved" | "rejected"
+- signupDate, betaProgramId, notes
+- Indexes: by_email, by_status, by_signup_date
 
-**spaces**
-- name, description
-- ownerId (creator)
-- type: "personal" | "beta-program" | "school" | "district"
+**userProfiles** (User Extensions)
+- userId, authId (Better Auth integration)
+- school, subject, gradeLevel, district
+- role: "teacher" | "admin" | "coach"
+- Indexes: by_user, by_authId
 
-**spaceMembers**
-- spaceId, userId
-- invitationStatus: "pending" | "accepted"
-- invitedBy, invitedEmail
+**sessions** (Better Auth Integration)
+- Automatically managed by Better Auth
+- Indexes: by_user, by_expiry
 
-**documents** (for future knowledge base)
-- userId, spaceId
-- fileName, fileSize, storageId, contentType
-- textContent (for RAG ingestion)
+**Future Tables (Phase 2+):**
+- frameworks, innovations, testimonials, timeTracking, frameworkUsage, betaProgram, innovationInteractions
 
-**chatMessages** (for future AI assistant)
-- userId, spaceId
-- role: "user" | "assistant"
-- content
-- contextDocuments (array of document IDs used for RAG)
-
-**feedbackSessions**
-- userId, spaceId
-- frameworkId (e.g., "AIB-001")
-- rating, comments
-- timeSaved (self-reported)
-
-**auditLogs** (for FERPA compliance)
-- userId, action, resource, details
-- timestamp, ipAddress
+**Automatically Managed Tables:**
+- **Better Auth Tables:** user, session, account, verification (via @convex-dev/better-auth)
+- **RAG Tables:** documents, chatMessages, feedbackSessions, auditLogs (via @convex-dev/rag)
 
 ### 8.3 Performance Requirements
 
@@ -551,7 +410,7 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 ### 9.1 Brand Identity
 
 **Visual Identity:**
-- **Logo Concept:** Stylized compass or lighthouse representing guidance
+- **Logo Concept:** Stylized pelican
 - **Color Palette:**
   - Pelican Blue (#0ea5e9) - Primary brand color, trust, reliability
   - Louisiana Gold (#f59e0b) - Secondary brand color, excellence, Louisiana spirit
@@ -618,57 +477,53 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 
 ---
 
-## 10. Launch Strategy & Rollout Plan
+## 10. Launch Strategy & Rollout Plan (Phase 1 MVP)
 
-### 10.1 Phase 1: Professional Development Launch (October 2025)
+### 10.1 Phase 1: MVP Validation (October-December 2025)
 
-**Goal:** Recruit 30-50 beta testers from cross-section of schools and subjects
-
-**Activities:**
-1. Deliver compelling PD presentation addressing educator pain points
-2. Live demonstration of 2-3 high-impact frameworks
-3. Distribute QR code/sign-up link
-4. Provide Quick Start Guide handout
-
-**Success Metrics:**
-- 30-50 beta tester sign-ups
-- 90%+ post-PD survey satisfaction
-- 80%+ report "would recommend to colleague"
-
-### 10.2 Phase 2: Beta Program (October - December 2025)
-
-**Goal:** Guide beta testers to achieve and document specific wins
+**Goal:** Validate email-first approach with 20+ beta testers and prove core concept
 
 **Activities:**
-1. **Week 1-2:** Onboarding and first wins
-   - Send Welcome Kit emails
-   - Host first virtual office hours
-   - Assign first "Aha!" moment task
-2. **Week 3-6:** Framework exploration
-   - Weekly "Productivity Prompt of the Week"
-   - Bi-weekly office hours
-   - Collect initial testimonials
-3. **Week 7-10:** Community building
-   - Highlight peer innovations
-   - Host "AI Show & Tell" session
-   - Refine frameworks based on feedback
-4. **Week 11-12:** Wrap-up and analysis
-   - Final surveys and testimonials
-   - Usage data analysis
-   - Beta program summary report
+1. **Week 1-2:** Beta tester recruitment and onboarding
+   - Send beta invitation emails
+   - Complete signup/auth flow testing
+   - Deliver welcome emails and quick start guides
+2. **Week 3-6:** Weekly prompt delivery and engagement
+   - Send weekly prompt emails every Monday
+   - Collect feedback on prompt effectiveness
+   - Monitor engagement metrics
+3. **Week 7-8:** Analysis and validation
+   - Compile usage data and testimonials
+   - Analyze success metrics against exit criteria
+   - Prepare Phase 1 summary report
 
 **Success Metrics:**
-- 85%+ of testers save 3+ hours per week
-- 15+ documented testimonials
-- 75%+ weekly engagement rate
+- 20+ beta tester sign-ups
+- 75%+ weekly email open rate
+- 80%+ report immediate time savings
 - 90%+ satisfaction rating
 
-### 10.3 Phase 3: District-Wide Expansion (January 2026+)
+### 10.2 Phase 2: Web Experience Development (January-March 2026)
 
-**Goal:** Present beta results to district leadership and roll out to all educators
+**Goal:** Build simple web framework library based on Phase 1 learnings
 
 **Activities:**
-1. Compile beta program success report
+1. Develop web-based framework library
+2. Implement search and filtering capabilities
+3. Add user profile management
+4. Integrate feedback collection system
+
+**Success Metrics:**
+- Web platform launch
+- User engagement with web interface
+- Framework library usage
+
+### 10.3 Phase 3: District-Wide Expansion (April 2026+)
+
+**Goal:** Present MVP results to district leadership and roll out to all educators
+
+**Activities:**
+1. Compile Phase 1 success report
 2. Present findings to district leadership
 3. Secure approval for district-wide rollout
 4. Deliver follow-up PD sessions
@@ -792,40 +647,40 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 
 ---
 
-## 13. Success Criteria & Acceptance
+## 13. Success Criteria & Acceptance (Phase 1 MVP)
 
-### 13.1 Beta Phase Success Criteria
+### 13.1 Phase 1 MVP Success Criteria
 
-**The beta phase will be considered successful if:**
+**The Phase 1 MVP will be considered successful if:**
 
-1. **Recruitment:** 30-50 beta testers from diverse schools and subjects
-2. **Engagement:** 75%+ weekly engagement with prompts and communications
-3. **Impact:** 85%+ of testers report saving 3+ hours per week
-4. **Quality:** 15+ documented testimonials with specific impact stories
-5. **Satisfaction:** 90%+ satisfaction rating on post-beta survey
-6. **Community:** 5+ peer-to-peer innovations shared and adopted
-7. **Completion:** Comprehensive beta program summary report delivered to district leadership
+1. **Recruitment:** 20+ beta testers from diverse schools and subjects
+2. **Engagement:** 75%+ weekly email open rate over 4 weeks
+3. **Impact:** 80%+ of testers report immediate time savings (10+ minutes per prompt)
+4. **Satisfaction:** 90%+ satisfaction rating on post-MVP survey
+5. **Technical:** <3 second page load times, 99%+ uptime
+6. **Completion:** Comprehensive Phase 1 summary report delivered
 
 ### 13.2 Content Success Criteria
 
-**Content will be considered production-ready if:**
+**Phase 1 content will be considered production-ready if:**
 
 1. **Tested:** Validated by at least 3 beta testers with positive feedback
 2. **Platform-Agnostic:** Confirmed to work across 3+ AI platforms
-3. **Aligned:** Explicitly maps to Louisiana standards or district goals
+3. **Aligned:** Explicitly references Louisiana standards or educator context
 4. **Ethical:** Includes clear responsible use guidance
 5. **Clear:** Written at appropriate reading level with no jargon
 6. **Actionable:** Includes copy-paste ready prompts and step-by-step instructions
+7. **Immediate Value:** Provides tangible time savings within 10 minutes of use
 
 ### 13.3 Technical Success Criteria
 
-**Technical infrastructure will be considered production-ready if:**
+**Phase 1 technical infrastructure will be considered production-ready if:**
 
-1. **Performance:** Page load times <2 seconds, search results <500ms
-2. **Reliability:** 99.5%+ uptime during beta period
+1. **Performance:** Page load times <3 seconds, email delivery <5 minutes
+2. **Reliability:** 99%+ uptime during MVP period
 3. **Security:** Passes security audit, FERPA compliant
 4. **Accessibility:** WCAG 2.1 Level AA compliant
-5. **Scalability:** Supports 100+ concurrent users without degradation
+5. **Scalability:** Supports 50+ concurrent users without degradation
 
 ---
 
@@ -891,6 +746,7 @@ To empower Louisiana educators with practical, ethical, and platform-agnostic AI
 |---------|------|--------|---------|
 | 1.0 | October 4, 2025 | Project Lead | Initial PRD creation based on orchestrator workflow and specification documents |
 | 1.1 | October 8, 2025 | Project Lead | Aligned with orchestrator.json specifications, updated brand colors, technical stack, and success metrics for Phase 5 |
+| 1.2 | October 10, 2025 | Project Lead | Aligned with Phase 1 MVP scope from orchestrator.json and agent-specs.json, updated features, success metrics, and launch strategy |
 
 ---
 
