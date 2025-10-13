@@ -17,24 +17,24 @@ const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.con
 // Test suites configuration
 const TEST_SUITES = {
   unit: [
-    'test-unit-beta-signup.js',
-    'test-unit-user-profiles.js',
-    'test-unit-beta-program.js',
-    'test-unit-auth.js'
+    'unit/test-unit-beta-signup.js',
+    'unit/test-unit-user-profiles.js',
+    'unit/test-unit-beta-program.js',
+    'unit/test-unit-auth.js'
   ],
   integration: [
-    'test-integration-signup-flow.js',
-    'test-integration-auth-initialization.js'
+    'integration/test-integration-signup-flow.js',
+    'integration/test-integration-auth-initialization.js'
   ],
   e2e: [
-    'test-e2e-beta-flow.js'
+    'e2e/test-e2e-beta-flow.js'
   ],
   api: [
-    'test-api-better-auth.js'
+    'api/test-api-better-auth.js'
   ],
   diagnostic: [
-    'test-environment-config.js',
-    'test-database-state.js'
+    'diagnostic/test-environment-config.js',
+    'diagnostic/test-database-state.js'
   ]
 };
 

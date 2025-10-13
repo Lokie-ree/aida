@@ -13,6 +13,7 @@ export const signupForBeta = mutation({
     success: v.boolean(),
     message: v.string(),
     signupId: v.optional(v.id("betaSignups")),
+    temporaryPassword: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
     // Check if email already exists
@@ -26,8 +27,12 @@ export const signupForBeta = mutation({
         success: false,
         message: "This email is already registered for the beta program.",
         signupId: undefined,
+        temporaryPassword: undefined,
       };
     }
+
+    // Generate secure temporary password for the user
+    const temporaryPassword = generateSecurePassword();
 
     // Create new beta signup
     const signupId = await ctx.db.insert("betaSignups", {
@@ -40,17 +45,29 @@ export const signupForBeta = mutation({
       betaProgramId: "beta-v1",
     });
 
-    // Send welcome email (no platform access yet)
+    // Schedule user account creation with temporary password
+    await ctx.scheduler.runAfter(
+      1000,
+      api.betaSignup.createUserAccountFromBetaSignup,
+      {
+        signupId,
+        temporaryPassword,
+      }
+    );
+
+    // Send welcome email with temporary password
     await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
       email: args.email,
       name: args.name,
       school: args.school,
+      temporaryPassword,
     });
 
     return {
       success: true,
       message: "Successfully signed up for the beta program! Check your email for next steps.",
       signupId,
+      temporaryPassword,
     };
   },
 });
@@ -92,6 +109,12 @@ export const createUserAccountFromBetaSignup = action({
         // No need for manual creation anymore - the trigger handles everything
         console.log(`User created, trigger will handle profile creation for ${signup.email}`);
         
+        // Update signup status to approved
+        await ctx.runMutation(api.betaSignup.updateSignupStatus, {
+          signupId: args.signupId,
+          status: "approved",
+        });
+        
         return {
           success: true,
           message: "User account created successfully",
@@ -128,6 +151,22 @@ export const getBetaSignupStats = mutation({
       pendingSignups: allSignups.filter(s => s.status === "pending").length,
       approvedSignups: allSignups.filter(s => s.status === "approved").length,
     };
+  },
+});
+
+export const updateSignupStatus = mutation({
+  args: {
+    signupId: v.id("betaSignups"),
+    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("rejected")),
+    notes: v.optional(v.string()),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.signupId, {
+      status: args.status,
+      ...(args.notes && { notes: args.notes }),
+    });
+    return null;
   },
 });
 
@@ -172,11 +211,15 @@ export const getPendingSignups = query({
   args: {},
   returns: v.array(v.object({
     _id: v.id("betaSignups"),
+    _creationTime: v.number(), // System field
     email: v.string(),
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
     signupDate: v.number(),
+    betaProgramId: v.string(),
+    status: v.string(),
+    notes: v.optional(v.string()),
   })),
   handler: async (ctx) => {
     return await ctx.db
@@ -236,3 +279,19 @@ export const deleteBetaSignup = mutation({
     return true;
   },
 });
+
+/**
+ * Generate a secure temporary password for beta testers
+ * Password includes uppercase, lowercase, numbers, and special characters
+ * Default length: 16 characters
+ */
+function generateSecurePassword(length = 16): string {
+  const charset = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
+  }
+  return password;
+}

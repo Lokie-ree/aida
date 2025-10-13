@@ -11,8 +11,8 @@
  * - Validation and error handling
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep } from './test-utils.js';
-import { TEST_USERS, BETA_SIGNUP_SCENARIOS } from './test-fixtures.js';
+import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
+import { TEST_USERS, BETA_SIGNUP_SCENARIOS } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";

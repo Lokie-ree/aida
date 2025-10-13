@@ -13,6 +13,7 @@ import type * as auth from "../auth.js";
 import type * as betaProgram from "../betaProgram.js";
 import type * as betaSignup from "../betaSignup.js";
 import type * as email from "../email.js";
+import type * as emailEvents from "../emailEvents.js";
 import type * as frameworks from "../frameworks.js";
 import type * as http from "../http.js";
 import type * as innovations from "../innovations.js";
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   betaProgram: typeof betaProgram;
   betaSignup: typeof betaSignup;
   email: typeof email;
+  emailEvents: typeof emailEvents;
   frameworks: typeof frameworks;
   http: typeof http;
   innovations: typeof innovations;

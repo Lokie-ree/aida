@@ -10,8 +10,8 @@
  * - Better Auth integration works correctly
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep } from './test-utils.js';
-import { TEST_USERS } from './test-fixtures.js';
+import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
+import { TEST_USERS } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";
@@ -152,8 +152,9 @@ async function testBetterAuthEndpoints(runner, client) {
     // Test if Better Auth endpoints are accessible
     // We'll test the session endpoint which should be available
     
-    const baseUrl = CONVEX_URL.replace('/api', '');
-    const sessionUrl = `${baseUrl}/api/auth/session`;
+    // Use the correct Better Auth domain (.convex.site) not the Convex API domain (.convex.cloud)
+    const betterAuthBaseUrl = process.env.VITE_CONVEX_SITE_URL || 'https://kindly-setter-935.convex.site';
+    const sessionUrl = `${betterAuthBaseUrl}/api/auth/get-session`;
     
     runner.log(`Testing Better Auth session endpoint: ${sessionUrl}`);
     

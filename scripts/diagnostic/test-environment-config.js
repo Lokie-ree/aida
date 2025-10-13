@@ -11,8 +11,8 @@
  */
 
 import { readFileSync } from 'fs';
-import { TestRunner, ConvexTestClient, cleanTestData } from './test-utils.js';
-import { ENV_CONFIG } from './test-fixtures.js';
+import { TestRunner, ConvexTestClient, cleanTestData } from '../test-utils.js';
+import { ENV_CONFIG } from '../test-fixtures.js';
 
 // Load environment variables from .env.local
 try {

@@ -10,11 +10,11 @@ This guide provides solutions to common issues encountered during beta authentic
 
 ```bash
 # Check environment and database state
-npm run test:diagnostic
+pnpm test:diagnostic
 
 # Check specific diagnostic tests
-npm run test:diagnostic:env
-npm run test:diagnostic:db
+pnpm test:diagnostic:env
+pnpm test:diagnostic:db
 ```
 
 ### 2. Check Environment Variables
@@ -61,7 +61,7 @@ echo "BETTER_AUTH_SECRET: $BETTER_AUTH_SECRET"
 3. **Test Better Auth Endpoints:**
    ```bash
    # Test if Better Auth endpoints are accessible
-   npm run test:api:better-auth
+   pnpm test:api:better-auth
    ```
 
 ### Issue 2: User Account Creation Failing
@@ -124,7 +124,7 @@ echo "BETTER_AUTH_SECRET: $BETTER_AUTH_SECRET"
 2. **Test Authentication Flow:**
    ```bash
    # Run integration tests
-   npm run test:integration:auth-init
+   pnpm test:integration:auth-init
    ```
 
 3. **Check Session Creation:**
@@ -158,13 +158,13 @@ echo "BETTER_AUTH_SECRET: $BETTER_AUTH_SECRET"
 2. **Test Profile Initialization:**
    ```bash
    # Run unit tests for user profiles
-   npm run test:unit:user-profiles
+   pnpm test:unit:user-profiles
    ```
 
 3. **Check Database State:**
    ```bash
    # Run database state tests
-   npm run test:diagnostic:db
+   pnpm test:diagnostic:db
    ```
 
 ### Issue 5: Email Delivery Issues
@@ -197,7 +197,7 @@ echo "BETTER_AUTH_SECRET: $BETTER_AUTH_SECRET"
 3. **Verify Email Templates:**
    ```bash
    # Check email template rendering
-   npm run test:unit:beta-signup
+   pnpm test:unit:beta-signup
    ```
 
 ## Debugging Steps
@@ -212,30 +212,30 @@ npx convex env list
 npx convex logs --limit 10
 
 # 3. Test database connectivity
-npm run test:diagnostic:db
+pnpm test:diagnostic:db
 ```
 
 ### Step 2: Component Testing
 
 ```bash
 # 1. Test individual components
-npm run test:unit
+pnpm test:unit
 
 # 2. Test component interactions
-npm run test:integration
+pnpm test:integration
 
 # 3. Test complete flow
-npm run test:e2e
+pnpm test:e2e
 ```
 
 ### Step 3: API Testing
 
 ```bash
 # 1. Test Better Auth endpoints
-npm run test:api:better-auth
+pnpm test:api:better-auth
 
 # 2. Test Convex functions
-npm run test:unit:beta-signup
+pnpm test:unit:beta-signup
 ```
 
 ### Step 4: Database Investigation
@@ -245,10 +245,10 @@ npm run test:unit:beta-signup
 npx convex data
 
 # 2. Run database state tests
-npm run test:diagnostic:db
+pnpm test:diagnostic:db
 
 # 3. Clean and retry
-npm run test:cleanup
+pnpm test:cleanup
 ```
 
 ## Monitoring and Logs
@@ -302,7 +302,7 @@ npx convex data --table betaProgram
 2. **Monitor Performance:**
    ```bash
    # Run performance tests
-   npm run test:diagnostic:db
+   pnpm test:diagnostic:db
    ```
 
 3. **Check Database Size:**
@@ -323,14 +323,14 @@ npx convex data --table betaProgram
 1. **Clean Test Data:**
    ```bash
    # Clean database between tests
-   npm run test:cleanup
+   pnpm test:cleanup
    ```
 
 2. **Run Tests in Smaller Batches:**
    ```bash
    # Run individual test suites
-   npm run test:unit
-   npm run test:integration
+   pnpm test:unit
+   pnpm test:integration
    ```
 
 ## Recovery Procedures
@@ -339,13 +339,13 @@ npx convex data --table betaProgram
 
 ```bash
 # 1. Clean all test data
-npm run test:cleanup
+pnpm test:cleanup
 
 # 2. Restart Convex development
 npx convex dev --once
 
 # 3. Run all tests
-npm run test:beta-auth
+pnpm test:beta-auth
 ```
 
 ### Partial Reset
@@ -355,7 +355,7 @@ npm run test:beta-auth
 node scripts/test-utils.js --cleanup
 
 # 2. Run specific test suite
-npm run test:unit:beta-signup
+pnpm test:unit:beta-signup
 ```
 
 ### Environment Reset
@@ -368,7 +368,7 @@ npx convex env list
 npx convex env set CONVEX_SITE_URL "https://your-deployment.convex.site"
 
 # 3. Restart development server
-npm run dev
+pnpm dev
 ```
 
 ## Getting Help
@@ -377,10 +377,10 @@ npm run dev
 
 ```bash
 # Run all tests and check results
-npm run test:beta-auth
+pnpm test:beta-auth
 
 # Check specific test suite
-npm run test:unit
+pnpm test:unit
 ```
 
 ### Review Logs
@@ -396,7 +396,7 @@ npx convex logs --limit 100
 
 If issues persist after following this guide:
 
-1. Collect test results: `npm run test:beta-auth > test-results.log`
+1. Collect test results: `pnpm test:beta-auth > test-results.log`
 2. Collect logs: `npx convex logs --limit 100 > convex-logs.log`
 3. Document environment: `npx convex env list > env-vars.log`
 4. Create issue with collected information
@@ -407,24 +407,24 @@ If issues persist after following this guide:
 
 ```bash
 # Run tests regularly during development
-npm run test:unit
+pnpm test:unit
 
 # Run full test suite before deployment
-npm run test:beta-auth
+pnpm test:beta-auth
 ```
 
 ### Environment Validation
 
 ```bash
 # Check environment before starting development
-npm run test:diagnostic:env
+pnpm test:diagnostic:env
 ```
 
 ### Database Maintenance
 
 ```bash
 # Clean test data regularly
-npm run test:cleanup
+pnpm test:cleanup
 ```
 
 ---

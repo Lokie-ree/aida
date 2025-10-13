@@ -63,6 +63,7 @@ export const sendBetaWelcomeEmail = action({
     email: v.string(),
     name: v.optional(v.string()),
     school: v.optional(v.string()),
+    temporaryPassword: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -75,6 +76,7 @@ export const sendBetaWelcomeEmail = action({
         BetaWelcomeEmail({
           name: args.name || "Educator",
           school: args.school,
+          temporaryPassword: args.temporaryPassword,
         })
       );
 

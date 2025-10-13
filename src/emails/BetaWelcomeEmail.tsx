@@ -16,11 +16,13 @@ import {
 interface BetaWelcomeEmailProps {
   name?: string;
   school?: string;
+  temporaryPassword?: string;
 }
 
 export function BetaWelcomeEmail({
   name = "Educator",
   school,
+  temporaryPassword,
 }: BetaWelcomeEmailProps) {
   return (
     <Html>
@@ -57,6 +59,30 @@ export function BetaWelcomeEmail({
               you save 3-5 hours per week on planning and prep tasks</strong> so you can 
               focus on what matters most: teaching Louisiana students.
             </Text>
+
+            {/* Platform Access Credentials (if provided) */}
+            {temporaryPassword && (
+              <Section style={credentialsBox}>
+                <Heading style={h2}>🔑 Your Platform Access Credentials</Heading>
+                <Text style={paragraph}>
+                  <strong>Your beta account has been created!</strong> Use these credentials to sign in:
+                </Text>
+                <Section style={passwordBox}>
+                  <Text style={credentialLabel}>Email:</Text>
+                  <Text style={credentialValue}>{name ? `${name}'s email` : "Your signup email"}</Text>
+                  <Text style={credentialLabel}>Temporary Password:</Text>
+                  <Text style={passwordValue}>{temporaryPassword}</Text>
+                </Section>
+                <Text style={paragraph}>
+                  <Link href="https://pelicanai.org/signin" style={ctaButton}>
+                    <strong>→ Sign In to Pelican AI Platform</strong>
+                  </Link>
+                </Text>
+                <Text style={smallText}>
+                  <em>Note: You'll be prompted to change this password on your first login.</em>
+                </Text>
+              </Section>
+            )}
 
             {/* Immediate Action Box */}
             <Section style={actionBox}>
@@ -307,6 +333,68 @@ const footerText = {
 const link = {
   color: "#0ea5e9",
   textDecoration: "none",
+};
+
+const credentialsBox = {
+  backgroundColor: "#dcfce7",
+  border: "2px solid #22c55e",
+  borderRadius: "8px",
+  padding: "20px",
+  margin: "24px 0",
+  borderLeft: "4px solid #22c55e",
+};
+
+const passwordBox = {
+  backgroundColor: "#ffffff",
+  border: "1px solid #d1d5db",
+  borderRadius: "6px",
+  padding: "16px",
+  margin: "16px 0",
+  fontFamily: '"Courier New", monospace',
+};
+
+const credentialLabel = {
+  color: "#6b7280",
+  fontSize: "12px",
+  fontWeight: "600",
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.5px",
+  margin: "8px 0 4px",
+};
+
+const credentialValue = {
+  color: "#1f2937",
+  fontSize: "14px",
+  margin: "0 0 12px",
+};
+
+const passwordValue = {
+  color: "#0ea5e9",
+  fontSize: "18px",
+  fontWeight: "bold",
+  fontFamily: '"Courier New", monospace',
+  margin: "0",
+  letterSpacing: "1px",
+};
+
+const ctaButton = {
+  display: "inline-block",
+  backgroundColor: "#0ea5e9",
+  color: "#ffffff",
+  padding: "12px 24px",
+  borderRadius: "6px",
+  textDecoration: "none",
+  fontWeight: "bold",
+  fontSize: "16px",
+  textAlign: "center" as const,
+  margin: "16px 0",
+};
+
+const smallText = {
+  color: "#6b7280",
+  fontSize: "13px",
+  lineHeight: "18px",
+  margin: "8px 0 0",
 };
 
 export default BetaWelcomeEmail;

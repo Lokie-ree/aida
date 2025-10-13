@@ -11,8 +11,8 @@
  * - CORS configuration is correct
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep, generateTestEmail, generateTestPassword } from './test-utils.js';
-import { TEST_USERS, API_TEST_DATA } from './test-fixtures.js';
+import { TestRunner, ConvexTestClient, cleanTestData, sleep, generateTestEmail, generateTestPassword } from '../test-utils.js';
+import { TEST_USERS, API_TEST_DATA } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";

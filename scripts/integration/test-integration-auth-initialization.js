@@ -10,8 +10,8 @@
  * - Database state consistency
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep } from './test-utils.js';
-import { TEST_USERS } from './test-fixtures.js';
+import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
+import { TEST_USERS } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";
@@ -82,8 +82,9 @@ async function testAuthenticationFlowSimulation(runner, client) {
     await sleep(3000);
     
     // Test Better Auth endpoints directly
-    const baseUrl = CONVEX_URL.replace('/api', '');
-    const signinUrl = `${baseUrl}/api/auth/sign-in/email`;
+    // Use the correct Better Auth domain (.convex.site) not the Convex API domain (.convex.cloud)
+    const betterAuthBaseUrl = process.env.VITE_CONVEX_SITE_URL || 'https://kindly-setter-935.convex.site';
+    const signinUrl = `${betterAuthBaseUrl}/api/auth/sign-in/email`;
     
     runner.log(`  Testing Better Auth signin endpoint: ${signinUrl}`);
     

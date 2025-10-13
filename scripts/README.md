@@ -18,51 +18,66 @@ The testing suite provides multiple layers of testing:
 
 ```bash
 # Run complete test suite
-npm run test:beta-auth
+pnpm test:beta-auth
 
 # Run specific test suite
-npm run test:unit
-npm run test:integration
-npm run test:e2e
-npm run test:api
-npm run test:diagnostic
+pnpm test:unit
+pnpm test:integration
+pnpm test:e2e
+pnpm test:api
+pnpm test:diagnostic
 ```
 
 ### Run Individual Tests
 
 ```bash
 # Unit tests
-npm run test:unit:beta-signup
-npm run test:unit:user-profiles
-npm run test:unit:beta-program
-npm run test:unit:auth
+pnpm test:unit:beta-signup
+pnpm test:unit:user-profiles
+pnpm test:unit:beta-program
+pnpm test:unit:auth
 
 # Integration tests
-npm run test:integration:signup-flow
-npm run test:integration:auth-init
+pnpm test:integration:signup-flow
+pnpm test:integration:auth-init
 
 # E2E tests
-npm run test:e2e:automated
+pnpm test:e2e:automated
 
 # API tests
-npm run test:api:better-auth
+pnpm test:api:better-auth
 
 # Diagnostic tests
-npm run test:diagnostic:env
-npm run test:diagnostic:db
+pnpm test:diagnostic:env
+pnpm test:diagnostic:db
 ```
 
 ### Cleanup
 
 ```bash
 # Clean test data
-npm run test:cleanup
+pnpm test:cleanup
 
 # Clean and run tests
-npm run test:cleanup && npm run test:beta-auth
+pnpm test:cleanup && pnpm test:beta-auth
 ```
 
 ## Test Structure
+
+### Directory Organization
+```
+scripts/
+├── unit/                  # Unit tests (individual functions)
+├── integration/           # Integration tests (cross-component)
+├── e2e/                   # End-to-end tests (full user journeys)
+├── api/                   # API endpoint tests
+├── diagnostic/            # Environment & database validation
+├── archive/               # Archived/legacy test files
+├── test-utils.js          # Shared test utilities
+├── test-fixtures.js       # Reusable test data
+├── test-runner.js         # Test orchestrator
+└── [documentation files]  # Test documentation
+```
 
 ### Test Utilities (`test-utils.js`)
 
@@ -81,7 +96,7 @@ Reusable test data and scenarios:
 - `USER_PROFILE_SCENARIOS`: Profile data variations
 - `API_TEST_DATA`: Better Auth API test data
 
-### Unit Tests
+### Unit Tests (`unit/`)
 
 Test individual Convex functions:
 
@@ -90,32 +105,37 @@ Test individual Convex functions:
 - `test-unit-beta-program.js`: Beta program functions
 - `test-unit-auth.js`: Authentication functions
 
-### Integration Tests
+### Integration Tests (`integration/`)
 
 Test component interactions:
 
 - `test-integration-signup-flow.js`: Complete signup flow
 - `test-integration-auth-initialization.js`: Auth to profile initialization
 
-### End-to-End Tests
+### End-to-End Tests (`e2e/`)
 
 Test complete user journeys:
 
 - `test-e2e-beta-flow.js`: Automated E2E tests
 - `test-e2e-manual-checklist.md`: Manual testing checklist
 
-### API Tests
+### API Tests (`api/`)
 
 Test Better Auth endpoints:
 
 - `test-api-better-auth.js`: Direct API endpoint testing
 
-### Diagnostic Tests
+### Diagnostic Tests (`diagnostic/`)
 
 Test environment and database:
 
 - `test-environment-config.js`: Environment variable validation
 - `test-database-state.js`: Database state validation
+
+### Archived Tests (`archive/`)
+
+Legacy test files preserved for historical reference:
+- See `archive/README.md` for details on archived files
 
 ## Configuration
 
@@ -261,9 +281,25 @@ npx convex data --table betaSignups
 
 ## Documentation
 
-- [ADR 006](../docs/decisions/006-beta-auth-investigation.md): Original investigation
+### Testing Documentation
+- [Test Suite Overview](./README.md): This file - complete testing guide
 - [Troubleshooting Guide](./troubleshooting-guide.md): Common issues and solutions
 - [Manual Testing Checklist](./test-e2e-manual-checklist.md): Manual testing procedures
+- [ADR 006](../docs/decisions/006-beta-auth-investigation.md): Original investigation
+
+### Phase 1 MVP Test Results (2025-10-13)
+**Quick Links:**
+- 📋 [**PHASE1-MVP-READINESS.md**](./PHASE1-MVP-READINESS.md) - **START HERE** - 1-page executive summary
+- ✅ [FIX-COMPLETION-REPORT.md](./FIX-COMPLETION-REPORT.md) - What we implemented today
+- 📊 [MVP-PHASE1-GAP-ANALYSIS.md](./MVP-PHASE1-GAP-ANALYSIS.md) - Detailed analysis (863 lines, reference)
+
+**Detailed Coverage Reports:**
+- [USER-STORY-COVERAGE.md](./USER-STORY-COVERAGE.md) - User story coverage analysis
+- [TEST-COVERAGE-MATRIX.md](./TEST-COVERAGE-MATRIX.md) - Test coverage matrix
+- [COVERAGE-SUMMARY.md](./COVERAGE-SUMMARY.md) - Test coverage summary
+
+### Archived Documentation
+- [archive/](./archive/) - Obsolete docs preserved for historical reference
 
 ## Support
 
@@ -276,6 +312,6 @@ If you encounter issues not covered in this documentation:
 
 ---
 
-**Last Updated**: [Current Date]  
-**Version**: 1.0  
-**Next Review**: [Date + 1 week]
+**Last Updated**: 2025-10-13  
+**Version**: 1.1 (Post-Critical-Fixes)  
+**Status**: ✅ All critical fixes complete, ready for UAT
