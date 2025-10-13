@@ -158,14 +158,13 @@ Each agent has a dedicated `.mdc` rule file with role-specific context, responsi
 - **ADR-002:** Extend A.I.D.A. Codebase (docs/decisions/002-extend-aida-codebase.md)
 - **ADR-003:** Framework-Based Content (docs/decisions/003-framework-based-content.md)
 - **ADR-004:** Migrate to Better Auth (docs/decisions/004-migrate-to-better-auth.md)
-- **ADR-005:** Phase 5 P0 Implementation (docs/decisions/005-phase5-p0-implementation.md)
 - **ADR-006:** Beta Auth Investigation (docs/decisions/006-beta-auth-investigation.md)
 - **ADR-007:** Email-First Beta Flow (docs/decisions/007-email-first-beta-flow.md)
 
 ## References
 
-- **Full PRD:** flow/product-requirements.md (766 lines)
 - **Brand Guidelines:** docs/PELICAN_AI_BRAND_GUIDELINES.md
 - **Testing Suite:** scripts/README.md
 - **Troubleshooting:** scripts/troubleshooting-guide.md
+- **Agent System Migration:** docs/AGENT-SYSTEM-MIGRATION.md
 

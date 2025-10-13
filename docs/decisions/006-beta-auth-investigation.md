@@ -8,7 +8,7 @@
 
 ## Context
 
-During Phase 5 implementation, we encountered critical issues with the beta acceptance flow:
+During Phase 1 MVP implementation, we encountered critical issues with the beta acceptance flow:
 
 1. **User Account Creation Failure**: Beta signup creates `betaSignups` record but fails to create actual user account in Better Auth
 2. **Authentication State Mismatch**: User remains on landing page after successful authentication

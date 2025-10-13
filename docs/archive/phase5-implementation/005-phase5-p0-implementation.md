@@ -1,8 +1,10 @@
 # ADR 005: Phase 5 P0 Implementation
 
 **Date:** October 8, 2025  
-**Status:** ✅ Completed  
+**Status:** ⚠️ SUPERSEDED by ADR-007 (Email-First Beta Flow)  
 **Deciders:** Development Team, Product Manager
+
+> **Note:** This ADR documents Phase 5 implementation work that was completed but later refocused to Phase 1 MVP (email-first approach) per ADR-007. The comprehensive platform features described here are deferred to future phases. Phase 1 focuses on beta validation with 20+ testers via email-first onboarding.
 
 ---
 
