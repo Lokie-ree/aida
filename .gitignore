@@ -30,4 +30,6 @@ dist-ssr
 *.sln
 *.sw?
 *./docs
-*./cursor
+
+# Cursor AI plan files
+.cursor/plans/
