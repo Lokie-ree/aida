@@ -9,7 +9,7 @@
 
 ## Context
 
-During Phase 5 implementation, the beta signup flow was initially configured to:
+During Phase 1 MVP implementation, the beta signup flow was initially configured to:
 1. Automatically approve beta signups
 2. Generate temporary passwords immediately
 3. Create user accounts instantly
