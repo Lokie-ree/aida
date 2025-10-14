@@ -311,7 +311,7 @@ export function LandingPage() {
           </div>
           
            {/* Desktop Navigation */}
-           <div className="hidden md:flex items-center gap-2 sm:gap-4">
+           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 sm:gap-4">
              <AnimatedThemeToggler />
              <Button 
                size="sm"
@@ -329,7 +329,7 @@ export function LandingPage() {
              >
                Join Beta
              </Button>
-           </div>
+           </nav>
 
           {/* Mobile Hamburger Menu */}
           <div className="md:hidden">
@@ -353,7 +353,8 @@ export function LandingPage() {
                 className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
                 onClick={handleCloseMenu}
               >
-                <div 
+                <nav 
+                  aria-label="Mobile navigation"
                   className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -395,13 +396,15 @@ export function LandingPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </nav>
               </div>
             )}
           </div>
         </div>
       </motion.header>
 
+      {/* Main Content */}
+      <main>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-6">
         {/* Background */}
@@ -1003,6 +1006,7 @@ export function LandingPage() {
           </motion.div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-background border-t border-border py-12 px-6">
