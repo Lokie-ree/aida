@@ -1,3 +1,9 @@
+// ============================================
+// PHASE 2: Out of scope for MVP
+// ============================================
+// This file contains admin panel functionality which is not part of Phase 1 MVP.
+// Uncomment and refactor when Phase 2 development begins.
+
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
@@ -302,7 +308,7 @@ export const sendBetaInviteAdmin = mutation({
     });
     
     // TODO: Send actual invite email
-    console.log(`Beta invite sent to ${args.email}`);
+    console.log("Beta invite sent successfully");
     
     return null;
   },

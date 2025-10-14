@@ -23,15 +23,26 @@ export const authComponent = createClient<DataModel>(components.betterAuth, {
   triggers: {
     user: {
       onCreate: async (ctx, doc) => {
-        console.log("Better Auth user created, creating user profile:", doc._id);
-        
-        // Check if profile already exists using authId
-        const existingProfile = await ctx.db
-          .query("userProfiles")
-          .withIndex("authId", (q) => q.eq("authId", doc._id))
-          .first();
+        try {
+          console.log("Better Auth user created, creating user profile:", doc._id);
+          
+          // Validate required fields
+          if (!doc._id || !doc.email) {
+            console.error("User creation trigger: Missing required fields");
+            return; // Gracefully exit without throwing
+          }
+          
+          // Check if profile already exists using authId
+          const existingProfile = await ctx.db
+            .query("userProfiles")
+            .withIndex("authId", (q) => q.eq("authId", doc._id))
+            .first();
 
-        if (!existingProfile) {
+          if (existingProfile) {
+            console.log("User profile already exists for user:", doc._id);
+            return; // Profile already created, nothing to do
+          }
+
           // Look up beta signup data by email to populate profile
           const betaSignup = await ctx.db
             .query("betaSignups")
@@ -66,6 +77,10 @@ export const authComponent = createClient<DataModel>(components.betterAuth, {
             weeklyEngagementCount: 0,
           });
           console.log("Beta program record created for user:", doc._id);
+        } catch (error) {
+          console.error("Error in onCreate trigger:", error);
+          // Don't throw - let Better Auth continue even if profile creation fails
+          // This prevents blocking user creation if there's a profile sync issue
         }
       },
       onUpdate: async (ctx, newDoc, oldDoc) => {
@@ -74,7 +89,7 @@ export const authComponent = createClient<DataModel>(components.betterAuth, {
         
         // Check if email changed and update any related data
         if (newDoc.email !== oldDoc.email) {
-          console.log("User email changed from", oldDoc.email, "to", newDoc.email);
+          console.log("User email changed for user:", newDoc._id);
           
           // Update user profile if it exists
           const userProfile = await ctx.db
@@ -84,77 +99,95 @@ export const authComponent = createClient<DataModel>(components.betterAuth, {
           
           if (userProfile) {
             // Update any related records that might reference the email
-            console.log("User profile found, email change handled");
+            console.log("User profile found, email change handled for user:", newDoc._id);
           }
         }
       },
       onDelete: async (ctx, doc) => {
-        // When a Better Auth user is deleted, clean up related data
-        console.log("Better Auth user deleted, cleaning up user profile:", doc._id);
-        
-        // Find and delete the associated user profile using authId
-        const profile = await ctx.db
-          .query("userProfiles")
-          .withIndex("authId", (q) => q.eq("authId", doc._id))
-          .first();
+        try {
+          // When a Better Auth user is deleted, clean up related data
+          console.log("Better Auth user deleted, cleaning up user profile:", doc._id);
+          
+          // Validate required fields
+          if (!doc._id) {
+            console.error("User deletion trigger: Missing user ID");
+            return;
+          }
+          
+          // Find and delete the associated user profile using authId
+          const profile = await ctx.db
+            .query("userProfiles")
+            .withIndex("authId", (q) => q.eq("authId", doc._id))
+            .first();
 
-        if (profile) {
-          await ctx.db.delete(profile._id);
-          console.log("User profile deleted for user:", doc._id);
+          if (profile) {
+            await ctx.db.delete(profile._id);
+            console.log("User profile deleted for user:", doc._id);
+          } else {
+            console.log("No user profile found to delete for user:", doc._id);
+          }
+        } catch (error) {
+          console.error("Error in onDelete trigger (profile):", error);
+          // Continue with cleanup even if profile deletion fails
         }
 
-        // Clean up other related data
-        // Delete beta program records
-        const betaPrograms = await ctx.db
-          .query("betaProgram")
-          .withIndex("by_user", (q) => q.eq("userId", doc._id))
-          .collect();
-        
-        for (const betaProgram of betaPrograms) {
-          await ctx.db.delete(betaProgram._id);
-        }
+        // Clean up Phase 2 related data (wrapped in try-catch for resilience)
+        try {
+          // Delete beta program records
+          const betaPrograms = await ctx.db
+            .query("betaProgram")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .collect();
+          
+          for (const betaProgram of betaPrograms) {
+            await ctx.db.delete(betaProgram._id);
+          }
 
-        // Delete framework usage records
-        const frameworkUsage = await ctx.db
-          .query("frameworkUsage")
-          .withIndex("by_user", (q) => q.eq("userId", doc._id))
-          .collect();
-        
-        for (const usage of frameworkUsage) {
-          await ctx.db.delete(usage._id);
-        }
+          // Delete framework usage records
+          const frameworkUsage = await ctx.db
+            .query("frameworkUsage")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .collect();
+          
+          for (const usage of frameworkUsage) {
+            await ctx.db.delete(usage._id);
+          }
 
-        // Delete testimonials
-        const testimonials = await ctx.db
-          .query("testimonials")
-          .withIndex("by_user", (q) => q.eq("userId", doc._id))
-          .collect();
-        
-        for (const testimonial of testimonials) {
-          await ctx.db.delete(testimonial._id);
-        }
+          // Delete testimonials
+          const testimonials = await ctx.db
+            .query("testimonials")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .collect();
+          
+          for (const testimonial of testimonials) {
+            await ctx.db.delete(testimonial._id);
+          }
 
-        // Delete innovations
-        const innovations = await ctx.db
-          .query("innovations")
-          .withIndex("by_user", (q) => q.eq("userId", doc._id))
-          .collect();
-        
-        for (const innovation of innovations) {
-          await ctx.db.delete(innovation._id);
-        }
+          // Delete innovations
+          const innovations = await ctx.db
+            .query("innovations")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .collect();
+          
+          for (const innovation of innovations) {
+            await ctx.db.delete(innovation._id);
+          }
 
-        // Delete time tracking records
-        const timeTracking = await ctx.db
-          .query("timeTracking")
-          .withIndex("by_user", (q) => q.eq("userId", doc._id))
-          .collect();
-        
-        for (const tracking of timeTracking) {
-          await ctx.db.delete(tracking._id);
-        }
+          // Delete time tracking records
+          const timeTracking = await ctx.db
+            .query("timeTracking")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .collect();
+          
+          for (const tracking of timeTracking) {
+            await ctx.db.delete(tracking._id);
+          }
 
-        console.log("All user data cleaned up for user:", doc._id);
+          console.log("All user data cleaned up for user:", doc._id);
+        } catch (error) {
+          console.error("Error cleaning up Phase 2 data in onDelete trigger:", error);
+          // Log but don't throw - cleanup should continue even if Phase 2 data fails
+        }
       },
     },
   },
@@ -195,8 +228,30 @@ export const createAuth = (
 };
 
 /**
- * Internal mutation to create a Better Auth user using the internal API
- * This bypasses the broken HTTP endpoints and creates users directly
+ * Internal mutation to create a Better Auth user using the internal API.
+ * 
+ * This bypasses the HTTP endpoints and creates users directly through Better Auth's
+ * internal signup API. Used primarily for testing and internal user creation flows.
+ * 
+ * **Security:** This function should only be called from trusted internal actions.
+ * 
+ * @param {string} args.email - User's email address (must be unique)
+ * @param {string} args.password - User's password (will be hashed by Better Auth)
+ * @param {string} [args.name] - Optional display name (defaults to email prefix)
+ * 
+ * @returns {Object} Result object containing:
+ *   - success: boolean indicating if user was created
+ *   - userId: string ID of created user (if successful)
+ *   - message: string description of result
+ * 
+ * @throws {Error} Implicitly throws if Better Auth API fails
+ * 
+ * @example
+ * const result = await ctx.runMutation(api.auth.createBetterAuthUser, {
+ *   email: "teacher@school.edu",
+ *   password: "SecureTemp123!",
+ *   name: "Jane Teacher"
+ * });
  */
 export const createBetterAuthUser = mutation({
   args: {
@@ -211,7 +266,7 @@ export const createBetterAuthUser = mutation({
   }),
   handler: async (ctx, args) => {
     try {
-      console.log(`Creating Better Auth user internally: ${args.email}`);
+      console.log("Creating Better Auth user internally");
       
       const auth = createAuth(ctx);
       
@@ -225,7 +280,7 @@ export const createBetterAuthUser = mutation({
       });
 
       if (result && result.user) {
-        console.log(`Successfully created Better Auth user: ${args.email}`);
+        console.log("Successfully created Better Auth user, ID:", result.user.id);
         console.log(`User ID: ${result.user.id}`);
         
         return {
@@ -251,8 +306,30 @@ export const createBetterAuthUser = mutation({
 });
 
 /**
- * Public mutation for frontend to create users directly
- * This replaces the broken HTTP endpoint approach
+ * Public mutation for frontend to create users directly via internal API.
+ * 
+ * This function creates a Better Auth user and manually initializes their profile records
+ * since Better Auth triggers don't fire when using the internal signup API.
+ * 
+ * **Phase 1 MVP:** Primary user creation method for beta signup flow.
+ * 
+ * @param {string} args.email - User's email address (must be unique)
+ * @param {string} args.password - User's password (will be hashed by Better Auth)
+ * @param {string} [args.name] - Optional display name (defaults to email prefix)
+ * 
+ * @returns {Object} Result object containing:
+ *   - success: boolean indicating if user was created
+ *   - userId: string ID of created user (if successful)
+ *   - message: string description of result
+ * 
+ * @throws {Error} Implicitly throws if profile creation fails
+ * 
+ * @example
+ * const result = await ctx.runMutation(api.auth.createUserDirectly, {
+ *   email: "teacher@school.edu",
+ *   password: "SecureTemp123!",
+ *   name: "Jane Teacher"
+ * });
  */
 export const createUserDirectly = mutation({
   args: {
@@ -267,7 +344,7 @@ export const createUserDirectly = mutation({
   }),
   handler: async (ctx, args) => {
     try {
-      console.log(`Creating user directly via internal API: ${args.email}`);
+      console.log("Creating user directly via internal API");
       
       const auth = createAuth(ctx);
       
@@ -281,7 +358,7 @@ export const createUserDirectly = mutation({
       });
 
       if (result && result.user) {
-        console.log(`Successfully created user: ${args.email}`);
+        console.log("Successfully created user, ID:", result.user.id);
         console.log(`User ID: ${result.user.id}`);
         
         // Since triggers don't fire with internal API, manually create profile records
@@ -344,10 +421,20 @@ export const createUserDirectly = mutation({
 });
 
 /**
-
-/**
- * Get the currently authenticated user
- * Returns the user object if authenticated, null otherwise
+ * Get the currently authenticated user from session.
+ * 
+ * This query safely retrieves the current user without throwing errors.
+ * Used by frontend components to check authentication status.
+ * 
+ * **Phase 1 MVP:** Used in dashboard and profile components.
+ * 
+ * @returns {Object|null} Better Auth user object or null if not authenticated
+ * 
+ * @example
+ * const user = useQuery(api.auth.getCurrentUser);
+ * if (user) {
+ *   console.log("Logged in as:", user.email);
+ * }
  */
 export const getCurrentUser = query({
   args: {},
@@ -362,9 +449,21 @@ export const getCurrentUser = query({
 });
 
 /**
- * Safe wrapper for getting authenticated user
- * Returns the user object if authenticated, null otherwise
- * This can be used in other functions to avoid authentication errors
+ * Safe wrapper for getting authenticated user in mutations and queries.
+ * 
+ * This helper function catches authentication errors and returns null instead of throwing.
+ * Use this in mutations/queries that should gracefully handle unauthenticated requests.
+ * 
+ * **Phase 1 MVP:** Used throughout userProfiles.ts and betaSignup.ts for safe auth checks.
+ * 
+ * @param {GenericCtx<DataModel>} ctx - Convex context object
+ * @returns {Promise<Object|null>} Better Auth user object or null if not authenticated
+ * 
+ * @example
+ * const user = await getAuthUserSafe(ctx);
+ * if (!user) {
+ *   throw new Error("User must be authenticated");
+ * }
  */
 export const getAuthUserSafe = async (ctx: GenericCtx<DataModel>) => {
   try {

@@ -35,7 +35,13 @@ const applicationTables = {
     gradeLevel: v.optional(v.string()),
     district: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-  }).index("by_user", ["userId"]).index("authId", ["authId"]), 
+  }).index("by_user", ["userId"]).index("authId", ["authId"]),
+
+  // ============================================
+  // PHASE 2 TABLES (defined but not actively used in MVP)
+  // ============================================
+  // These tables exist for future functionality but are not part of Phase 1 MVP scope.
+  // See phase 2 files: frameworks.ts, innovations.ts, testimonials.ts, timeTracking.ts, admin.ts, betaProgram.ts
 
   // Frameworks (Atomic Notes)
   frameworks: defineTable({
