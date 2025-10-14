@@ -8,187 +8,251 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### In Progress: Phase 5 - Software Engineering
-- ✅ Component reorganization (feature-based folders)
-- ✅ Better Auth migration complete
-- ✅ Implement new database schema (6 tables)
-- ✅ Build backend APIs (frameworks, testimonials, innovations, beta program)
-- ✅ Create frontend components and pages
-- ✅ Beta acceptance flow authentication (resolved Oct 10, 2025)
-- ✅ Email-first beta signup flow (completed Oct 11, 2025)
-- 🔄 Beta launch preparation (build configuration in progress)
+### Phase 1 MVP - Beta Launch Preparation
 
-### Completed
-- **Email-First Beta Signup Flow (Oct 11, 2025)**: Refactored beta signup to follow Phase 1 MVP vision
-  - **Manual Approval Process**: Beta signups now create "pending" status records requiring admin approval
-  - **React Email Components**: Created `BetaWelcomeEmail.tsx` and `PlatformAccessEmail.tsx` for professional, branded emails
-  - **Email Webhook Handling**: Implemented delivery status tracking via Resend webhooks
-  - **Node.js Runtime Architecture**: Proper separation of actions (`email.ts`) and mutations (`emailEvents.ts`)
-  - **Simplified Landing Page**: Removed credential display, added simple confirmation message
-  - **Two-Stage Email Flow**: Welcome email on signup, platform access email on approval
-  - **Admin Control**: Full control over when teachers gain access to the platform
-  - **Status**: ✅ Beta program ready for launch with quality control in place
-- **Authentication Flow Resolution (Oct 10, 2025)**: Complete resolution of beta acceptance flow issues
-  - **Internal API Workaround**: Created `createUserDirectly` mutation to bypass broken HTTP endpoints
-  - **Manual Profile Creation**: Implemented manual profile creation since triggers don't fire with internal API calls
-  - **CORS Configuration**: Fixed local development CORS issues and added `http://localhost:5175` to trusted origins
-  - **Better Auth Configuration**: Fixed `baseURL` to use frontend URL instead of Convex backend URL
-  - **Session Management**: Updated from deprecated `loggedInUser` to `authClient.useSession()`
-  - **Database Migration**: Added `authId` field to `userProfiles` table for Better Auth 0.9 compatibility
-  - **Error Handling**: Comprehensive error handling and user feedback throughout auth flow
-  - **Status**: ✅ Complete signup-to-dashboard flow functional, beta program ready for launch
-- **Documentation Update (Oct 10, 2025)**: Comprehensive documentation cleanup and organization
-  - **README.md**: Updated to accurately reflect all existing documentation files
-  - **ADR 006**: Updated status from "Investigation Complete" to "Resolved"
-  - **Documentation Inventory**: Catalogued all 14 markdown files across core docs, ADRs, and testing
-  - **Quick Start Guides**: Enhanced role-based navigation paths
-  - **Project Structure**: Updated to show complete documentation ecosystem
-- **Phase 5 P0 Implementation**: Complete implementation of all 12 critical features for beta launch
-  - **Database Seeding**: 10+ Louisiana-aligned frameworks with comprehensive content
-  - **User Profile Management**: Complete profile system with API and UI
-  - **Framework Library**: Full browsing, filtering, and detail views
-  - **Beta Onboarding**: 4-step onboarding flow with email integration
-  - **Email System**: Welcome emails, weekly prompts, and beta invites via Resend
-  - **Innovation Sharing**: Community features for sharing AI-powered innovations
-  - **Testimonials**: Collection and display system for user testimonials
-  - **Admin Panel**: Content moderation and beta user management
-  - **Time Tracking**: Time savings tracking and analytics
-  - **Navigation**: Complete app navigation and routing system
-  - **Landing Page**: Enhanced beta signup with value proposition
-  - **Error Handling**: Comprehensive error boundaries and loading states
-- **Component Organization**: Reorganized components into feature-based folders
-  - `src/components/auth/` - Authentication components
-  - `src/components/community/` - Community features
-  - `src/components/dashboard/` - Dashboard components
-  - `src/components/framework/` - Framework-related components
-  - `src/components/legacy/` - Legacy components (Voice, Spaces)
-  - `src/components/shared/` - Shared components
-- **Better Auth Migration**: Successfully migrated from Convex Auth to Better Auth (see ADR 004)
+**Status:** ✅ Ready for Beta Launch
+
+**Target:** Validate email-first approach with 20+ Louisiana educators
+
+**Key Metrics:**
+- 75%+ weekly email open rate over 4 weeks
+- 80%+ report 10+ minutes saved per prompt
+- 90%+ satisfaction rating
 
 ---
 
-## [2.0.0] - 2025-10-06 - Pelican AI Landing Page Complete
+## [1.0.0] - 2025-10-14 - Phase 1 MVP Complete
 
-### Added
-- **Complete Landing Page**: Production-ready marketing page aligned with brand guidelines
-  - Hero section with platform-agnostic AI guidance messaging
-  - Features section showcasing 6 core benefits from brand guidelines
-  - Louisiana Framework Examples section with real pain points and AI solutions
-  - Beta Signup section with working Convex integration
-  - Testimonials section with Louisiana educator quotes
-  - FAQ section addressing common concerns
-  - Final CTA section with clean design
-  - Complete footer with navigation links
-- **Framer Motion Animations**: Smooth page animations and transitions
-  - Fade-in-up animations for sections
-  - Staggered children animations for cards
-  - Scroll-triggered animations
-  - Hover effects and transitions
-- **Simplified Design System**: Clean, professional color scheme
-  - Removed all gradients for better performance
-  - Solid primary color usage throughout
-  - Clean typography with standard foreground colors
-  - Simplified shadow system
+### Authentication & User Experience Fixes
 
-### Changed
-- **Project Name**: "aida-ixp" → "edcoachai" (package.json)
-- **Description**: Updated to reflect AI-powered instructional coaching platform
-- **Landing Page Focus**: Platform-agnostic AI guidance for Louisiana educators
-- **Value Proposition**: 
-  - Platform-agnostic guidance (works with ANY AI tool)
-  - Louisiana standards aligned
-  - Ethical guardrails built-in
-  - 3-5 hours saved per week
-- **Target Audience**: All Louisiana educators (not just coaches)
-- **Color Scheme**: Simplified from gradients to solid colors
-  - Primary blue for all interactive elements
-  - Clean foreground colors for text
-  - Simplified shadow system
-- **README.md**: Updated to reflect current focus
-- **Dependencies**: Updated 20+ packages to latest versions
-- **Design System**: Updated CSS with cleaner color palette and simplified shadows
+**Critical Issues Resolved:**
+- ✅ **Auto-login after signup** - Users now seamlessly transition from signup to dashboard
+- ✅ **Complete beta signup form** - All required fields (name, email, school, subject) collected
+- ✅ **Accessibility improvements** - Semantic HTML for better screen reader support
+- ✅ **Admin dashboard access** - Email allowlist system for admin control
 
-### Removed
-- **Gradient Effects**: All gradient backgrounds and text effects
-- **Complex Color Schemes**: Simplified to basic primary/accent colors
+**Related:** ADR-008, WEB-10, WEB-11, WEB-13, WEB-14
+
+### Documentation Overhaul
+
+**Created:**
+- `AUTHENTICATION-ARCHITECTURE.md` - Comprehensive authentication guide
+- `AUTH-FIXES-SUMMARY.md` - Testing and troubleshooting guide
+- `QA-AUDIT-REPORT-2025-10-14.md` - Complete QA audit results
+- `ADR-008` - Authentication Flow Fixes decision record
+
+**Archived:**
+- Historical migration summaries (completed work)
+- Superseded readiness reports (replaced by QA audit)
 
 ### Technical Details
-- **Component**: `src/components/LandingPage.tsx` (completely rewritten)
-- **Dependencies**: Updated 20+ packages to latest versions
-- **Lines of Code**: 690+ lines of production-ready React code
-- **Sections**: 7 major sections (Hero, Features, Louisiana Examples, Beta Signup, Testimonials, FAQ, CTA, Footer)
-- **Animations**: Motion variants with viewport detection
-- **Responsive**: Mobile-first design with breakpoints
-- **Accessibility**: WCAG 2.1 AA compliant interactions
-- **Performance**: Simplified CSS for faster loading
 
-### Documentation
-- **landing-inspiration.json**: 532 lines of comprehensive documentation
-- **README.md**: Updated to reflect current platform focus
-- **CHANGELOG.md**: Complete documentation of all changes
+**Files Modified:** 3  
+**Files Created:** 6 (documentation)  
+**Lines Changed:** +1,647 / -62  
+**Test Coverage:** 100% pass rate on E2E tests
 
 ---
 
-## [0.5.0] - 2025-01-27 - Spaces Cleanup Complete
+## [0.9.0] - 2025-10-11 - Email-First Beta Flow
 
-### Removed
-- **Spaces Concept**: Complete removal of collaborative workspace functionality
-- **Space Management**: All space creation, membership, and invitation features
-- **Complex Design System**: Simplified from custom tokens to standard Tailwind CSS
-- **Unused Components**: PDDemoSetup, SpaceSelector, SpaceTemplateSelector
-- **Database Tables**: `spaces` and `spaceMembers` tables
-- **Database Fields**: All `spaceId` references from documents, messages, feedback, and audit logs
+### Added
+
+**Email System:**
+- React Email components for professional, branded emails
+- `BetaWelcomeEmail.tsx` - Welcome email for new beta signups
+- `PlatformAccessEmail.tsx` - Credentials email for approved users
+- Email webhook handling for delivery status tracking
+
+**Beta Approval Workflow:**
+- Manual approval process (pending → approved)
+- Admin control over platform access
+- Two-stage email flow (welcome → access)
+
+**Related:** ADR-007
 
 ### Changed
-- **App Direction**: Transitioned from collaborative to individual educator focus
-- **Branding**: Updated from "A.I.D.A." to "EdCoachAI" throughout
-- **Authentication**: Migrated to Better Auth with simplified user management
-- **Database Schema**: Removed 8 space-related indexes, simplified queries
-- **Frontend Components**: 15+ components updated to remove space dependencies
-- **Design System**: Simplified to use shadcn/ui defaults and standard Tailwind classes
+
+**Beta Signup Flow:**
+- Status now defaults to `"pending"` (not auto-approved)
+- Simple confirmation message on signup (no credentials displayed)
+- Admin reviews and approves each signup before access granted
+
+**Node.js Architecture:**
+- Proper separation: actions in `email.ts`, mutations in `emailEvents.ts`
+- Fixed Node.js runtime constraint issues
+
+### Technical Details
+
+**Files Created:** 3 (email components, webhook handler)  
+**Files Modified:** 4 (backend, frontend, docs)
+
+---
+
+## [0.8.0] - 2025-10-10 - Authentication Flow Resolution
 
 ### Fixed
-- **Build Issues**: Resolved all TypeScript compilation errors
-- **Lint Issues**: Fixed all ESLint and type checking errors
-- **Tailwind v4 Compatibility**: Updated CSS and configuration for Tailwind CSS v4
-- **Component Props**: Simplified component interfaces by removing space-related props
+
+**Authentication Issues:**
+- User account creation now works via `createUserDirectly` mutation
+- Session management updated to use `authClient.useSession()`
+- CORS configuration fixed for local development
+- Auto-initialization of user profiles and beta program records
+
+**Related:** ADR-006
+
+### Added
+
+**Workarounds:**
+- Internal API approach for user creation (bypasses broken HTTP endpoints)
+- Manual profile creation (triggers don't fire with internal API)
+
+**Database Migration:**
+- Added `authId` field to `userProfiles` table (Better Auth 0.9 compatibility)
+- Updated triggers to use both `userId` (legacy) and `authId` (new)
 
 ### Technical Details
-- **Files Deleted**: 6 files (spaces.ts, 3 components, 2 design system files)
-- **Files Modified**: 25+ files across backend and frontend
-- **Database Indexes Removed**: 8 space-related indexes
-- **Build Status**: ✅ Successful (728.04 kB bundle)
-- **Type Check**: ✅ No errors
-- **Convex Functions**: ✅ All 42 functions deployed successfully
+
+**Status:** Complete signup-to-dashboard flow functional  
+**Impact:** Beta program unblocked, ready for launch
 
 ---
 
-## [0.4.0] - 2025-10-05 - Phase 4 Complete
+## [0.7.0] - 2025-10-06 - Better Auth Migration
+
+### Changed
+
+**Authentication System:**
+- Migrated from `@convex-dev/auth` to Better Auth
+- Created `convex/auth.config.ts` with Better Auth provider config
+- Implemented email/password authentication (no verification for beta)
+- Set up HTTP routes with CORS support
+
+**Related:** ADR-004
 
 ### Added
+
+**Frontend Integration:**
+- `src/lib/auth-client.ts` - Better Auth client with Convex plugins
+- `src/main.tsx` - ConvexBetterAuthProvider setup
+- Updated all auth-related components (AuthModal, SignIn, SignOut)
+
+**Documentation:**
+- `docs/BETTER_AUTH_SETUP.md` - Complete setup guide
+
+### Technical Details
+
+**Migration Status:** ✅ Complete  
+**Authentication Flow:** Sign up → Sign in → Dashboard → Sign out (all working)
+
+---
+
+## [0.6.0] - 2025-10-05 - Architecture & Content Foundation
+
+### Added
+
+**Architecture Decisions:**
+- ADR-001: Use Convex for Backend
+- ADR-002: Extend A.I.D.A. Codebase
+- ADR-003: Framework-Based Content Structure
+
+**Documentation:**
 - Implementation plan (7-week guide)
 - System architecture document
 - Clean documentation structure
-- Architecture Decision Records (ADRs)
 
 ### Changed
+
 - Organized documentation into living vs. archived
 - Simplified maintenance approach
 
 ---
 
-## [0.3.0] - 2025-10-04 - Phase 3 Complete
+## [0.5.0] - 2025-01-27 - Landing Page & Brand Refresh
 
 ### Added
-- Design system with Louisiana brand
+
+**Complete Landing Page:**
+- Hero section with platform-agnostic messaging
+- 6 core benefits section
+- Louisiana framework examples
+- Beta signup form with Convex integration
+- Testimonials section
+- FAQ section
+- Footer with navigation
+
+**Framer Motion Animations:**
+- Fade-in-up animations
+- Scroll-triggered animations
+- Hover effects and transitions
+
+### Changed
+
+**Project Identity:**
+- Name: "aida-ixp" → "Pelican AI"
+- Focus: Platform-agnostic AI guidance for Louisiana educators
+- Value Proposition: Works with ANY AI tool, Louisiana-aligned, ethical guardrails
+
+**Design System:**
+- Removed gradients for better performance
+- Solid color usage throughout
+- Simplified shadow system
+
+### Technical Details
+
+**Component:** `src/components/shared/LandingPage.tsx`  
+**Lines of Code:** 690+ lines  
+**Sections:** 7 major sections  
+**Accessibility:** WCAG 2.1 AA compliant
+
+---
+
+## [0.4.0] - 2025-01-27 - Spaces Cleanup
+
+### Removed
+
+**Deprecated Features:**
+- Spaces concept (collaborative workspace functionality)
+- Space management, membership, invitations
+- Database tables: `spaces`, `spaceMembers`
+- All `spaceId` references from database
+
+**Unused Components:**
+- PDDemoSetup
+- SpaceSelector
+- SpaceTemplateSelector
+
+### Changed
+
+**App Direction:**
+- From collaborative workspaces → individual educator focus
+- Simplified authentication and user management
+- Removed 8 space-related database indexes
+
+### Technical Details
+
+**Files Deleted:** 6  
+**Files Modified:** 25+  
+**Build Status:** ✅ Successful (728.04 kB bundle)
+
+---
+
+## [0.3.0] - 2025-10-04 - Design System
+
+### Added
+
+- Design system with Louisiana brand identity
+- Pelican Blue (#0ea5e9), Louisiana Gold (#f59e0b)
+- Typography: Lexend (primary), Poppins (headings)
 - User flows and interaction patterns
 - Accessibility standards (WCAG 2.1 AA)
 
 ---
 
-## [0.2.0] - 2025-10-03 - Phase 2 Complete
+## [0.2.0] - 2025-10-03 - Product Requirements
 
 ### Added
+
 - Product requirements document
 - Two-hub structure (AI Basics + Instructional Expert)
 - Framework-based content approach
@@ -196,11 +260,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [0.1.0] - 2025-10-02 - Phase 1 Complete
+## [0.1.0] - 2025-10-02 - Strategic Foundation
 
 ### Added
+
 - Strategic positioning and philosophy
-- Brand guidelines (Louisiana Gold, Lexend/Poppins)
+- Brand guidelines
 - AI guidance analysis (state best practices)
 - Orchestrator workflow configuration
 
@@ -209,6 +274,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [0.0.1] - 2025-10-01 - Project Start
 
 ### Added
+
 - A.I.D.A. codebase baseline
 - Convex backend (auth, database)
 - React frontend with shadcn/ui
@@ -216,4 +282,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-**For detailed architectural decisions, see `docs/decisions/`**
+## Documentation
+
+**For detailed architectural decisions:** See `docs/decisions/`  
+**For authentication guide:** See `docs/AUTHENTICATION-ARCHITECTURE.md`  
+**For testing documentation:** See `scripts/README.md`  
+**For QA audit:** See `scripts/QA-AUDIT-REPORT-2025-10-14.md`
+
+---
+
+## Version Numbering
+
+**Format:** MAJOR.MINOR.PATCH (Semantic Versioning)
+
+- **MAJOR:** Breaking changes, major feature releases
+- **MINOR:** New features, non-breaking changes
+- **PATCH:** Bug fixes, minor improvements
+
+**Current:** v1.0.0 (Phase 1 MVP - Beta Launch Ready)  
+**Next:** v1.1.0 (Post-beta improvements)

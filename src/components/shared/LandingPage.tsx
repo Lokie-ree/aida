@@ -34,10 +34,18 @@ import { api } from "../../../convex/_generated/api";
 export function LandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [school, setSchool] = useState("");
+  const [subject, setSubject] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [validationErrors, setValidationErrors] = useState<{email?: string}>({});
+  const [validationErrors, setValidationErrors] = useState<{
+    email?: string;
+    name?: string;
+    school?: string;
+    subject?: string;
+  }>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   
@@ -55,24 +63,49 @@ export function LandingPage() {
     setError(null);
     setValidationErrors({});
     
-    // Validate email
+    // Validate all required fields
+    const errors: {email?: string; name?: string; school?: string; subject?: string} = {};
+    
     if (!email.trim()) {
-      setValidationErrors({ email: "Email is required" });
-      return;
+      errors.email = "Email is required";
+    } else if (!validateEmail(email)) {
+      errors.email = "Please enter a valid email address";
     }
     
-    if (!validateEmail(email)) {
-      setValidationErrors({ email: "Please enter a valid email address" });
+    if (!name.trim()) {
+      errors.name = "Name is required";
+    }
+    
+    if (!school.trim()) {
+      errors.school = "School is required";
+    }
+    
+    if (!subject.trim()) {
+      errors.subject = "Subject is required";
+    }
+    
+    // If there are any validation errors, show them and stop
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
     
     setIsSubmitting(true);
     try {
-      const result = await signupForBeta({ email: email.trim() });
+      const result = await signupForBeta({ 
+        email: email.trim(),
+        name: name.trim(),
+        school: school.trim(),
+        subject: subject.trim(),
+      });
       
       if (result.success) {
         setIsSubmitted(true);
+        // Clear all form fields
         setEmail("");
+        setName("");
+        setSchool("");
+        setSubject("");
         setError(null);
         setValidationErrors({});
         // Reset success state after 8 seconds
@@ -278,7 +311,7 @@ export function LandingPage() {
           </div>
           
            {/* Desktop Navigation */}
-           <div className="hidden md:flex items-center gap-2 sm:gap-4">
+           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 sm:gap-4">
              <AnimatedThemeToggler />
              <Button 
                size="sm"
@@ -296,7 +329,7 @@ export function LandingPage() {
              >
                Join Beta
              </Button>
-           </div>
+           </nav>
 
           {/* Mobile Hamburger Menu */}
           <div className="md:hidden">
@@ -320,7 +353,8 @@ export function LandingPage() {
                 className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
                 onClick={handleCloseMenu}
               >
-                <div 
+                <nav 
+                  aria-label="Mobile navigation"
                   className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -362,13 +396,15 @@ export function LandingPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </nav>
               </div>
             )}
           </div>
         </div>
       </motion.header>
 
+      {/* Main Content */}
+      <main>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-6">
         {/* Background */}
@@ -645,52 +681,139 @@ export function LandingPage() {
             </CardHeader>
             <CardContent>
               {!isSubmitted ? (
-                <form onSubmit={handleBetaSignup} className="space-y-6" aria-live="polite">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1">
-                      <label htmlFor="beta-email" className="sr-only">
-                        Email address for beta program signup
-                      </label>
-                      <Input
-                        id="beta-email"
-                        type="email"
-                        placeholder="Enter your email address"
-                        value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                          // Clear validation error when user starts typing
-                          if (validationErrors.email) {
-                            setValidationErrors({});
-                          }
-                        }}
-                        className={`w-full text-base py-4 h-[45px] ${validationErrors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-                        required
-                        aria-invalid={!!validationErrors.email}
-                        aria-describedby={validationErrors.email ? 'email-error' : undefined}
-                      />
-                      {validationErrors.email && (
-                        <p id="email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {validationErrors.email}
-                        </p>
-                      )}
-                    </div>
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full sm:w-auto bg-primary hover:bg-primary/90 px-6 py-4 text-base h-[45px]"
-                      aria-busy={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                          Joining...
-                        </>
-                      ) : (
-                        "Join Beta"
-                      )}
-                    </Button>
+                <form onSubmit={handleBetaSignup} className="space-y-4" aria-live="polite">
+                  {/* Name Field */}
+                  <div>
+                    <label htmlFor="beta-name" className="block text-sm font-medium mb-2">
+                      Full Name <span className="text-destructive">*</span>
+                    </label>
+                    <Input
+                      id="beta-name"
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        if (validationErrors.name) {
+                          setValidationErrors(prev => ({ ...prev, name: undefined }));
+                        }
+                      }}
+                      className={`w-full text-base py-4 h-[45px] ${validationErrors.name ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      required
+                      aria-invalid={!!validationErrors.name}
+                      aria-describedby={validationErrors.name ? 'name-error' : undefined}
+                    />
+                    {validationErrors.name && (
+                      <p id="name-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {validationErrors.name}
+                      </p>
+                    )}
                   </div>
+
+                  {/* Email Field */}
+                  <div>
+                    <label htmlFor="beta-email" className="block text-sm font-medium mb-2">
+                      Email Address <span className="text-destructive">*</span>
+                    </label>
+                    <Input
+                      id="beta-email"
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (validationErrors.email) {
+                          setValidationErrors(prev => ({ ...prev, email: undefined }));
+                        }
+                      }}
+                      className={`w-full text-base py-4 h-[45px] ${validationErrors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      required
+                      aria-invalid={!!validationErrors.email}
+                      aria-describedby={validationErrors.email ? 'email-error' : undefined}
+                    />
+                    {validationErrors.email && (
+                      <p id="email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {validationErrors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* School Field */}
+                  <div>
+                    <label htmlFor="beta-school" className="block text-sm font-medium mb-2">
+                      School <span className="text-destructive">*</span>
+                    </label>
+                    <Input
+                      id="beta-school"
+                      type="text"
+                      placeholder="Enter your school name"
+                      value={school}
+                      onChange={(e) => {
+                        setSchool(e.target.value);
+                        if (validationErrors.school) {
+                          setValidationErrors(prev => ({ ...prev, school: undefined }));
+                        }
+                      }}
+                      className={`w-full text-base py-4 h-[45px] ${validationErrors.school ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      required
+                      aria-invalid={!!validationErrors.school}
+                      aria-describedby={validationErrors.school ? 'school-error' : undefined}
+                    />
+                    {validationErrors.school && (
+                      <p id="school-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {validationErrors.school}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Subject Field */}
+                  <div>
+                    <label htmlFor="beta-subject" className="block text-sm font-medium mb-2">
+                      Subject Area <span className="text-destructive">*</span>
+                    </label>
+                    <Input
+                      id="beta-subject"
+                      type="text"
+                      placeholder="e.g., Mathematics, English, Science"
+                      value={subject}
+                      onChange={(e) => {
+                        setSubject(e.target.value);
+                        if (validationErrors.subject) {
+                          setValidationErrors(prev => ({ ...prev, subject: undefined }));
+                        }
+                      }}
+                      className={`w-full text-base py-4 h-[45px] ${validationErrors.subject ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      required
+                      aria-invalid={!!validationErrors.subject}
+                      aria-describedby={validationErrors.subject ? 'subject-error' : undefined}
+                    />
+                    {validationErrors.subject && (
+                      <p id="subject-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {validationErrors.subject}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-primary hover:bg-primary/90 px-6 py-4 text-base h-[45px]"
+                    aria-busy={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                        Joining Beta Program...
+                      </>
+                    ) : (
+                      "Join Beta Program"
+                    )}
+                  </Button>
                   
                   {error && (
                     <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
@@ -883,6 +1006,7 @@ export function LandingPage() {
           </motion.div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-background border-t border-border py-12 px-6">

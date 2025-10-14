@@ -62,7 +62,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             throw new Error("Invalid email or password");
           }
         } else {
-          // Use our internal mutation instead of broken HTTP endpoints
+          // Sign up flow
           const result = await createUser({
             email,
             password,
@@ -70,8 +70,24 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           });
           
           if (result.success) {
-            toast.success("Account created successfully!");
-            onClose();
+            // Auto-login after successful signup
+            console.log("Account created, auto-logging in user...");
+            const signInResult = await authClient.signIn.email({
+              email,
+              password,
+            });
+            
+            // Check if auto-login was successful
+            if (signInResult && 'data' in signInResult && signInResult.data && (signInResult.data as any).user) {
+              console.log("Auto-login successful");
+              toast.success("Welcome to Pelican AI! Your account has been created.");
+              onClose();
+            } else {
+              // Signup worked but auto-login failed - prompt user to sign in manually
+              console.warn("Auto-login failed, switching to sign-in mode");
+              toast.success("Account created! Please sign in with your credentials.");
+              setFlow("signIn");
+            }
           } else {
             throw new Error(result.message);
           }
