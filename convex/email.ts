@@ -58,6 +58,33 @@ export const sendWelcomeEmail = action({
   },
 });
 
+/**
+ * Action to send welcome email to new beta tester.
+ * 
+ * Sends a welcome email with temporary password and next steps for beta testers
+ * who have successfully signed up.
+ * 
+ * **Phase 1 MVP:** Scheduled automatically after beta signup.
+ * 
+ * @param {string} args.email - Recipient email address
+ * @param {string} [args.name] - Recipient name (defaults to "Educator")
+ * @param {string} [args.school] - School name (included in email)
+ * @param {string} [args.temporaryPassword] - Generated temporary password
+ * 
+ * @returns {Object} Result containing:
+ *   - success: boolean indicating email sent status
+ *   - emailId: Resend email ID for tracking
+ * 
+ * @throws {Error} If email sending fails
+ * 
+ * @example
+ * await ctx.runAction(api.email.sendBetaWelcomeEmail, {
+ *   email: "teacher@school.edu",
+ *   name: "Jane Teacher",
+ *   school: "Lincoln High",
+ *   temporaryPassword: "Temp123!"
+ * });
+ */
 export const sendBetaWelcomeEmail = action({
   args: {
     email: v.string(),
@@ -175,6 +202,41 @@ export const sendVoiceInteractionSummary = action({
   },
 });
 
+/**
+ * Action to send weekly AI prompt email to a user.
+ * 
+ * Sends a curated AI prompt with time estimate, difficulty level, and ethical guardrails.
+ * Used for weekly engagement and value delivery to beta testers.
+ * 
+ * **Phase 1 MVP:** Scheduled via cron job every Monday 6am CT.
+ * 
+ * @param {string} args.userEmail - Recipient email address
+ * @param {string} args.userName - Recipient name for personalization
+ * @param {string} args.frameworkTitle - Title of the AI framework/prompt
+ * @param {string} args.frameworkId - Framework ID for tracking
+ * @param {string} args.samplePrompt - The actual prompt text
+ * @param {number} args.timeEstimate - Estimated time savings in minutes
+ * @param {string} args.difficultyLevel - Difficulty level (beginner/intermediate/advanced)
+ * @param {number} args.weekNumber - Week number since beta launch
+ * 
+ * @returns {Object} Result containing:
+ *   - success: boolean indicating email sent status
+ *   - emailId: Resend email ID for tracking
+ * 
+ * @throws {Error} If email sending fails
+ * 
+ * @example
+ * await ctx.runAction(api.email.sendWeeklyPromptEmail, {
+ *   userEmail: "teacher@school.edu",
+ *   userName: "Jane",
+ *   frameworkTitle: "Lesson Objective Unpacker",
+ *   frameworkId: "AIB-001",
+ *   samplePrompt: "Break down this objective...",
+ *   timeEstimate: 15,
+ *   difficultyLevel: "beginner",
+ *   weekNumber: 3
+ * });
+ */
 export const sendWeeklyPromptEmail = action({
   args: {
     userEmail: v.string(),

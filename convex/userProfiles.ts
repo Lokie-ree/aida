@@ -3,7 +3,22 @@ import { query, mutation } from "./_generated/server";
 import { getAuthUserSafe } from "./auth";
 import { api } from "./_generated/api";
 
-// Query: Get user profile
+/**
+ * Query to get the current user's profile.
+ * 
+ * Retrieves the authenticated user's profile data including school, subject, grade level, etc.
+ * Returns null if user is not authenticated or profile doesn't exist.
+ * 
+ * **Phase 1 MVP:** Used to display user information and pre-fill forms.
+ * 
+ * @returns {Object|null} User profile object or null if not found/authenticated
+ * 
+ * @example
+ * const profile = useQuery(api.userProfiles.getUserProfile);
+ * if (profile) {
+ *   console.log("Teaching at:", profile.school);
+ * }
+ */
 export const getUserProfile = query({
   args: {},
   returns: v.union(v.object({
@@ -16,15 +31,11 @@ export const getUserProfile = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   }), v.null()),
   handler: async (ctx) => {
-    let user;
-    try {
-      user = await getAuthUserSafe(ctx);
-    } catch (error) {
-      // If authentication fails, return null
-      return null;
-    }
+    // Use safe auth getter (returns null if not authenticated, no throw)
+    const user = await getAuthUserSafe(ctx);
     
     if (!user) {
+      console.log("getUserProfile: No authenticated user");
       return null;
     }
     const userId = user._id;
@@ -35,6 +46,7 @@ export const getUserProfile = query({
       .first();
 
     if (!profile) {
+      console.log("getUserProfile: No profile found for user:", userId);
       return null;
     }
 
@@ -97,7 +109,32 @@ export const createUserProfile = mutation({
   },
 });
 
-// Mutation: Update user profile
+/**
+ * Mutation to update the current user's profile.
+ * 
+ * Updates or creates the authenticated user's profile with provided fields.
+ * If profile doesn't exist, creates a new one automatically.
+ * 
+ * **Phase 1 MVP:** Used for onboarding and profile editing.
+ * 
+ * @param {string} [args.school] - School name
+ * @param {string} [args.subject] - Subject taught
+ * @param {string} [args.gradeLevel] - Grade level taught
+ * @param {string} [args.district] - School district
+ * @param {"teacher"|"admin"|"coach"} [args.role] - User role
+ * 
+ * @returns {null}
+ * 
+ * @throws {Error} If user is not authenticated
+ * 
+ * @example
+ * const updateProfile = useMutation(api.userProfiles.updateUserProfile);
+ * await updateProfile({
+ *   school: "Lincoln High School",
+ *   subject: "Mathematics",
+ *   gradeLevel: "9-12"
+ * });
+ */
 export const updateUserProfile = mutation({
   args: {
     school: v.optional(v.string()),

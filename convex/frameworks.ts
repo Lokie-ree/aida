@@ -1,3 +1,9 @@
+// ============================================
+// PHASE 2: Out of scope for MVP
+// ============================================
+// This file contains framework library functionality which is not part of Phase 1 MVP.
+// Uncomment and refactor when Phase 2 development begins.
+
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";

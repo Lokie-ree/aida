@@ -2,6 +2,35 @@ import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 
+/**
+ * Public mutation for beta program signup.
+ * 
+ * Creates a beta signup record, generates a temporary password, and schedules
+ * user account creation and welcome email delivery.
+ * 
+ * **Phase 1 MVP:** Primary entry point for beta tester recruitment.
+ * 
+ * @param {string} args.email - Beta tester's email address (must be unique)
+ * @param {string} [args.name] - Beta tester's name (optional)
+ * @param {string} [args.school] - School name (optional, used for profile)
+ * @param {string} [args.subject] - Subject taught (optional, used for profile)
+ * 
+ * @returns {Object} Result containing:
+ *   - success: boolean indicating signup status
+ *   - message: string description for user
+ *   - signupId: ID of created signup record (if successful)
+ *   - temporaryPassword: generated password for initial login (if successful)
+ * 
+ * @throws {Error} Implicitly throws if database operations fail
+ * 
+ * @example
+ * const result = await ctx.runMutation(api.betaSignup.signupForBeta, {
+ *   email: "teacher@school.edu",
+ *   name: "Jane Teacher",
+ *   school: "Lincoln High School",
+ *   subject: "Math"
+ * });
+ */
 export const signupForBeta = mutation({
   args: {
     email: v.string(),
@@ -19,8 +48,8 @@ export const signupForBeta = mutation({
     // Check if email already exists
     const existingSignup = await ctx.db
       .query("betaSignups")
-      .filter((q) => q.eq(q.field("email"), args.email))
-      .first();
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
 
     if (existingSignup) {
       return {
@@ -72,6 +101,28 @@ export const signupForBeta = mutation({
   },
 });
 
+/**
+ * Internal action to create Better Auth user account from beta signup.
+ * 
+ * This action runs asynchronously after beta signup to create the actual user account,
+ * sync their profile, and approve their signup status.
+ * 
+ * **Phase 1 MVP:** Scheduled automatically 1 second after beta signup.
+ * 
+ * @param {Id<"betaSignups">} args.signupId - ID of the beta signup record
+ * @param {string} args.temporaryPassword - Generated temporary password for user
+ * 
+ * @returns {Object} Result containing:
+ *   - success: boolean indicating account creation status
+ *   - message: string description of result
+ * 
+ * @example
+ * // Automatically scheduled in signupForBeta
+ * await ctx.scheduler.runAfter(1000, api.betaSignup.createUserAccountFromBetaSignup, {
+ *   signupId,
+ *   temporaryPassword
+ * });
+ */
 export const createUserAccountFromBetaSignup = action({
   args: {
     signupId: v.id("betaSignups"),
@@ -94,7 +145,7 @@ export const createUserAccountFromBetaSignup = action({
 
       // Use Better Auth's internal mutation instead of HTTP API
       // This avoids circular dependency issues and ensures proper user creation
-      console.log(`Creating Better Auth user internally for: ${signup.email}`);
+      console.log("Creating Better Auth user internally for signup:", args.signupId);
       
       const result: any = await ctx.runMutation(api.auth.createUserDirectly, {
         email: signup.email,
@@ -103,11 +154,11 @@ export const createUserAccountFromBetaSignup = action({
       });
 
       if (result.success) {
-        console.log(`Successfully created user account for ${signup.email}`);
+        console.log("Successfully created user account, ID:", result.userId);
         
         // The onCreate trigger will automatically create userProfile and betaProgram
         // No need for manual creation anymore - the trigger handles everything
-        console.log(`User created, trigger will handle profile creation for ${signup.email}`);
+        console.log("User created, trigger will handle profile creation, ID:", result.userId);
         
         // Update signup status to approved
         await ctx.runMutation(api.betaSignup.updateSignupStatus, {
@@ -207,6 +258,19 @@ export const approveBetaSignup = mutation({
   },
 });
 
+/**
+ * Query to get all pending beta signups for admin review.
+ * 
+ * Returns beta signup records with "pending" status, ordered by signup date.
+ * Used by admin panel to approve or reject beta applications.
+ * 
+ * **Phase 1 MVP:** Used for manual beta tester approval workflow.
+ * 
+ * @returns {Array<Object>} Array of pending beta signup records
+ * 
+ * @example
+ * const pendingSignups = useQuery(api.betaSignup.getPendingSignups);
+ */
 export const getPendingSignups = query({
   args: {},
   returns: v.array(v.object({
