@@ -4,10 +4,18 @@ import { v } from "convex/values";
 import { authComponent } from "./auth";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  baseURL: process.env.CONVEX_OPENAI_BASE_URL,
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid module load errors during deployment
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+  if (!openai) {
+    openai = new OpenAI({
+      baseURL: process.env.CONVEX_OPENAI_BASE_URL,
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openai;
+}
 
 /**
  * Helper function to get the authenticated user ID
@@ -147,7 +155,7 @@ User question: ${args.message}`;
       }
 
       // Generate AI response
-      const response = await openai.chat.completions.create({
+      const response = await getOpenAI().chat.completions.create({
         model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 300,

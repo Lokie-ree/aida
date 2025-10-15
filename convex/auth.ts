@@ -203,15 +203,7 @@ export const createAuth = (
     logger: {
       disabled: optionsOnly,
     },
-    baseURL: frontendUrl, // Use frontend URL for Better Auth redirects
-    trustedOrigins: [
-      siteUrl, // Production URL
-      "http://localhost:5173", // Development URL
-      "http://localhost:5175", // Alternative dev port (current)
-      "http://localhost:3000", // Alternative dev port
-      "https://pelicanai.org", // Production domain
-      "https://www.pelicanai.org", // Production domain with www
-    ],
+    trustedOrigins: [siteUrl],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password for beta program
     emailAndPassword: {
@@ -220,7 +212,7 @@ export const createAuth = (
     },
     plugins: [
       // The cross domain plugin is required for client side frameworks
-      crossDomain({ siteUrl: frontendUrl }),
+      crossDomain({ siteUrl }),
       // The Convex plugin is required for Convex compatibility
       convex(),
     ],
