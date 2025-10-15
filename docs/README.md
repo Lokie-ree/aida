@@ -23,16 +23,12 @@
 - **[Brand Guidelines](PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
 
 ### Development
-- **[Resend Testing](RESEND_TESTING.md)** - Email automation testing
-- **[UI Healing System](UI_HEALING_SYSTEM.md)** - Interface audit protocol
 - **[Git Workflow](GIT-WORKFLOW.md)** - Development process
 
 ### Decisions
 - **[ADR-001: Convex Backend](decisions/001-use-convex-backend.md)**
 - **[ADR-002: Extend AIDA Codebase](decisions/002-extend-aida-codebase.md)**
 - **[ADR-004: Better Auth Migration](decisions/004-migrate-to-better-auth.md)**
-- **[ADR-006: Beta Auth Investigation](decisions/006-beta-auth-investigation.md)**
-- **[ADR-007: Email-First Beta Flow](decisions/007-email-first-beta-flow.md)**
 - **[ADR-008: Auth Flow Fixes](decisions/008-authentication-flow-fixes.md)**
 
 ## 🎯 Phase 1 MVP Scope

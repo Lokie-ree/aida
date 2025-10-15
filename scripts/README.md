@@ -35,8 +35,7 @@ pnpm test:diagnostic   # Diagnostic tests
 - `test-integration-signup-flow.js` - Complete signup flow
 
 ### E2E Tests
-- `test-e2e-beta-flow.js` - Automated browser testing
-- `test-e2e-manual-checklist.md` - Manual testing checklist
+- *E2E tests removed as part of Phase 2 cleanup*
 
 ### API Tests
 - `test-api-better-auth.js` - Better Auth HTTP endpoints
@@ -53,7 +52,7 @@ pnpm test:diagnostic   # Diagnostic tests
 
 ## 📁 Archive
 
-Historical test reports and summaries moved to `docs/archive-consolidated/summary-reports/`
+Historical test reports and summaries have been cleaned up as part of Phase 2 transition.
 
 ---
 

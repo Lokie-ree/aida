@@ -1,18 +1,9 @@
-import * as React from "react";
 import {
-  Html,
-  Body,
-  Container,
-  Head,
   Heading,
-  Img,
-  Link,
-  Preview,
   Section,
   Text,
-  Button,
-  Hr,
 } from "@react-email/components";
+import { BaseEmailTemplate, CredentialsBox, InfoBox, CTAButton, SecondaryButton, textStyles } from "./BaseEmailTemplate";
 
 interface PlatformAccessEmailProps {
   email: string;
@@ -26,206 +17,86 @@ export function PlatformAccessEmail({
   temporaryPassword,
 }: PlatformAccessEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Preview>
-        Your Pelican AI Platform Access is Ready - {temporaryPassword}
-      </Preview>
-      <Body style={main}>
-        <Container style={container}>
-          {/* Header with Pelican AI Branding */}
-          <Section style={header}>
-    <Img
-      src="https://pelicanai.org/horizontal-primary-logo.png"
-      width="200"
-      height="50"
-      alt="Pelican AI"
-      style={logo}
-    />
-            <Text style={tagline}>Your Platform Access is Ready!</Text>
-          </Section>
+    <BaseEmailTemplate
+      previewText={`Your Pelican AI Platform Access is Ready - ${temporaryPassword}`}
+      headerTitle={`Welcome ${name}!`}
+      headerSubtitle="Your Platform Access is Ready!"
+    >
+      <Text style={textStyles.paragraph}>
+        Your beta program application has been approved! You now have
+        access to the Pelican AI platform.
+      </Text>
 
-          <Section style={content}>
-            <Heading style={h1}>Welcome {name}!</Heading>
+      {/* Credentials Section */}
+      <CredentialsBox>
+        <Heading style={textStyles.h2}>Your Login Credentials</Heading>
+        <Text style={credentialLabel}>Email:</Text>
+        <Text style={credentialValue}>{email}</Text>
+        <Text style={credentialLabel}>Temporary Password:</Text>
+        <Text style={credentialValue}>{temporaryPassword}</Text>
+        <Text style={securityWarning}>
+          ⚠️ Please change your password after your first login.
+        </Text>
+      </CredentialsBox>
 
-            <Text style={paragraph}>
-              Your beta program application has been approved! You now have
-              access to the Pelican AI platform.
-            </Text>
+      {/* CTA Button */}
+      <Section style={ctaSection}>
+        <CTAButton href="https://pelicanai.org">
+          Access Platform
+        </CTAButton>
+      </Section>
 
-            {/* Credentials Section */}
-            <Section style={credentialsBox}>
-              <Heading style={h2}>Your Login Credentials</Heading>
-              <Text style={credentialLabel}>Email:</Text>
-              <Text style={credentialValue}>{email}</Text>
-              <Text style={credentialLabel}>Temporary Password:</Text>
-              <Text style={credentialValue}>{temporaryPassword}</Text>
-              <Text style={securityWarning}>
-                ⚠️ Please change your password after your first login.
-              </Text>
-            </Section>
+      <Text style={textStyles.paragraph}>
+        Once you log in, you'll complete a brief onboarding to personalize
+        your experience.
+      </Text>
 
-            {/* CTA Button */}
-            <Section style={ctaSection}>
-              <Button style={button} href="https://pelicanai.org">
-                Access Platform
-              </Button>
-            </Section>
+      {/* Next Steps */}
+      <InfoBox>
+        <Heading style={textStyles.h2}>Getting Started</Heading>
+        <Text style={listItem}>
+          1. Click the button above to access the platform
+        </Text>
+        <Text style={listItem}>
+          2. Log in with your email and temporary password
+        </Text>
+        <Text style={listItem}>
+          3. Change your password for security
+        </Text>
+        <Text style={listItem}>
+          4. Complete your profile setup
+        </Text>
+        <Text style={listItem}>
+          5. Explore our AI guidance frameworks
+        </Text>
+      </InfoBox>
 
-            <Text style={paragraph}>
-              Once you log in, you'll complete a brief onboarding to personalize
-              your experience.
-            </Text>
+      {/* Beta Program Overview */}
+      <InfoBox>
+        <Heading style={textStyles.h2}>Learn More About the Beta Program</Heading>
+        <Text style={textStyles.paragraph}>
+          Get a comprehensive overview of what to expect during your beta journey:
+        </Text>
+        <SecondaryButton href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing">
+          Podcast Beta Overview
+        </SecondaryButton>
+      </InfoBox>
 
-            {/* Next Steps */}
-            <Section style={nextStepsBox}>
-              <Heading style={h2}>Getting Started</Heading>
-              <Text style={listItem}>
-                1. Click the button above to access the platform
-              </Text>
-              <Text style={listItem}>
-                2. Log in with your email and temporary password
-              </Text>
-              <Text style={listItem}>
-                3. Change your password for security
-              </Text>
-              <Text style={listItem}>
-                4. Complete your profile setup
-              </Text>
-              <Text style={listItem}>
-                5. Explore our AI guidance frameworks
-              </Text>
-            </Section>
+      <Text style={textStyles.paragraph}>
+        We're excited to have you as part of the Pelican AI community!
+        If you have any questions, feel free to reply to this email.
+      </Text>
 
-            {/* Beta Program Overview */}
-            <Section style={overviewBox}>
-              <Heading style={h2}>Learn More About the Beta Program</Heading>
-              <Text style={paragraph}>
-                Get a comprehensive overview of what to expect during your beta journey:
-              </Text>
-              <Button style={secondaryButton} href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing">
-                Podcast Beta Overview
-              </Button>
-            </Section>
-
-            <Text style={paragraph}>
-              We're excited to have you as part of the Pelican AI community!
-              If you have any questions, feel free to reply to this email.
-            </Text>
-
-            <Text style={paragraph}>
-              Best regards,
-              <br />
-              The Pelican AI Team
-            </Text>
-            
-            <Img
-              src="https://pelicanai.org/email-signature.png"
-              width="200"
-              height="60"
-              alt="Pelican AI Email Signature"
-              style={signature}
-            />
-          </Section>
-
-          <Hr style={hr} />
-
-          {/* Footer */}
-          <Section style={footer}>
-            <Text style={footerText}>
-              <strong>Pelican AI</strong> - Navigate AI with Confidence
-              <br />
-              Built with Louisiana educators, for Louisiana educators
-            </Text>
-            <Text style={footerText}>
-              <Link href="https://pelicanai.org" style={link}>
-                pelicanai.org
-              </Link>
-              {" • "}
-              <Link href="mailto:hello@pelicanai.org" style={link}>
-                Support
-              </Link>
-            </Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
+      <Text style={textStyles.paragraph}>
+        Best regards,
+        <br />
+        The Pelican AI Team
+      </Text>
+    </BaseEmailTemplate>
   );
 }
 
-const main = {
-  backgroundColor: "#f6f9fc",
-  fontFamily:
-    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-};
-
-const container = {
-  backgroundColor: "#ffffff",
-  margin: "0 auto",
-  padding: "20px 0 48px",
-  maxWidth: "600px",
-};
-
-const header = {
-  padding: "32px 24px 0",
-  textAlign: "center" as const,
-};
-
-const logo = {
-  margin: "0 auto",
-  display: "block",
-  objectFit: "contain" as const,
-};
-
-const headerTitle = {
-  color: "#0ea5e9",
-  fontSize: "24px",
-  fontWeight: "bold",
-  margin: "16px 0 0",
-  textAlign: "center" as const,
-};
-
-const tagline = {
-  color: "#6b7280",
-  fontSize: "14px",
-  margin: "8px 0 0",
-  textAlign: "center" as const,
-};
-
-const content = {
-  padding: "0 24px",
-};
-
-const h1 = {
-  color: "#1e40af",
-  fontSize: "28px",
-  fontWeight: "bold",
-  margin: "32px 0 16px",
-  textAlign: "center" as const,
-};
-
-const h2 = {
-  color: "#1e40af",
-  fontSize: "20px",
-  fontWeight: "bold",
-  margin: "0 0 12px",
-};
-
-const paragraph = {
-  color: "#374151",
-  fontSize: "16px",
-  lineHeight: "24px",
-  margin: "16px 0",
-};
-
-const credentialsBox = {
-  backgroundColor: "#f8fafc",
-  border: "2px solid #0ea5e9",
-  borderRadius: "8px",
-  padding: "24px",
-  margin: "24px 0",
-};
-
+// Styles specific to this email template
 const credentialLabel = {
   color: "#6b7280",
   fontSize: "14px",
@@ -256,83 +127,11 @@ const ctaSection = {
   margin: "32px 0",
 };
 
-const button = {
-  backgroundColor: "#0ea5e9",
-  borderRadius: "6px",
-  color: "#ffffff",
-  fontSize: "16px",
-  fontWeight: "bold",
-  textDecoration: "none",
-  textAlign: "center" as const,
-  display: "inline-block",
-  padding: "12px 32px",
-  margin: "0 auto",
-};
-
-const nextStepsBox = {
-  backgroundColor: "#fffbeb",
-  border: "1px solid #f59e0b",
-  borderRadius: "8px",
-  padding: "20px",
-  margin: "24px 0",
-};
-
-const overviewBox = {
-  backgroundColor: "#f8fafc",
-  border: "1px solid #e2e8f0",
-  borderRadius: "8px",
-  padding: "24px",
-  margin: "24px 0",
-  textAlign: "center" as const,
-};
-
-const secondaryButton = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #0ea5e9",
-  borderRadius: "6px",
-  color: "#0ea5e9",
-  fontSize: "16px",
-  fontWeight: "bold",
-  textDecoration: "none",
-  textAlign: "center" as const,
-  display: "inline-block",
-  padding: "12px 24px",
-  margin: "8px",
-};
-
 const listItem = {
   color: "#374151",
   fontSize: "14px",
   lineHeight: "22px",
   margin: "8px 0",
-};
-
-const hr = {
-  borderColor: "#e5e7eb",
-  margin: "32px 0",
-};
-
-const footer = {
-  padding: "32px 24px 0",
-  textAlign: "center" as const,
-};
-
-const footerText = {
-  color: "#6b7280",
-  fontSize: "14px",
-  lineHeight: "20px",
-  margin: "8px 0",
-};
-
-const link = {
-  color: "#0ea5e9",
-  textDecoration: "none",
-};
-
-const signature = {
-  margin: "16px 0 0",
-  display: "block",
-  objectFit: "contain" as const,
 };
 
 export default PlatformAccessEmail;
