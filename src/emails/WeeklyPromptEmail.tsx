@@ -43,13 +43,13 @@ export const WeeklyPromptEmail = ({
         <Container style={container}>
           {/* Header */}
           <Section style={header}>
-            <Img
-              src="https://pelicanai.org/primary-logo.png"
-              width="160"
-              height="40"
-              alt="Pelican AI"
-              style={logo}
-            />
+    <Img
+      src="https://pelicanai.org/horizontal-primary-logo.png"
+      width="200"
+      height="50"
+      alt="Pelican AI"
+      style={logo}
+    />
           </Section>
 
           {/* Main Content */}
@@ -120,6 +120,20 @@ export const WeeklyPromptEmail = ({
               pain points. Your answers drive what we build next—this is YOUR beta program, and we're building 
               the frameworks YOU actually need!
             </Text>
+
+            {/* Feedback Forms */}
+            <Section style={feedbackSection}>
+              <Heading style={h2}>Share Your Experience</Heading>
+              <Text style={text}>
+                Help us improve by sharing your experience with this framework:
+              </Text>
+      <Button style={button} href="https://forms.gle/VhY3qexkgsGLNTu59">
+        Framework Feedback Form
+      </Button>
+      <Button style={secondaryButton} href="https://forms.gle/gqGTj3j5AKKSN9iD6">
+        Weekly Check-in Survey
+      </Button>
+            </Section>
 
             <Hr style={hr} />
 
@@ -349,6 +363,15 @@ const communitySection = {
 
 const officeHoursSection = {
   margin: "32px 0",
+};
+
+const feedbackSection = {
+  backgroundColor: "#f8fafc",
+  border: "1px solid #e2e8f0",
+  borderRadius: "8px",
+  padding: "24px",
+  margin: "24px 0",
+  textAlign: "center" as const,
 };
 
 const footer = {

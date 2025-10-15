@@ -52,7 +52,7 @@ export const BetaInviteEmail = ({
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://pelicanai.org/primary-logo.png"
+              src="https://pelicanai.org/horizontal-primary-logo.png"
               width="160"
               height="40"
               alt="Pelican AI"

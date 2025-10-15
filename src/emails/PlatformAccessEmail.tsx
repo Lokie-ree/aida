@@ -35,14 +35,13 @@ export function PlatformAccessEmail({
         <Container style={container}>
           {/* Header with Pelican AI Branding */}
           <Section style={header}>
-            <Img
-              src="https://pelicanai.org/icon.png"
-              width="40"
-              height="40"
-              alt="Pelican AI"
-              style={logo}
-            />
-            <Heading style={headerTitle}>Pelican AI</Heading>
+    <Img
+      src="https://pelicanai.org/horizontal-primary-logo.png"
+      width="200"
+      height="50"
+      alt="Pelican AI"
+      style={logo}
+    />
             <Text style={tagline}>Your Platform Access is Ready!</Text>
           </Section>
 
@@ -98,6 +97,17 @@ export function PlatformAccessEmail({
               </Text>
             </Section>
 
+            {/* Beta Program Overview */}
+            <Section style={overviewBox}>
+              <Heading style={h2}>Learn More About the Beta Program</Heading>
+              <Text style={paragraph}>
+                Get a comprehensive overview of what to expect during your beta journey:
+              </Text>
+              <Button style={secondaryButton} href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing">
+                Podcast Beta Overview
+              </Button>
+            </Section>
+
             <Text style={paragraph}>
               We're excited to have you as part of the Pelican AI community!
               If you have any questions, feel free to reply to this email.
@@ -108,6 +118,14 @@ export function PlatformAccessEmail({
               <br />
               The Pelican AI Team
             </Text>
+            
+            <Img
+              src="https://pelicanai.org/email-signature.png"
+              width="200"
+              height="60"
+              alt="Pelican AI Email Signature"
+              style={signature}
+            />
           </Section>
 
           <Hr style={hr} />
@@ -155,6 +173,8 @@ const header = {
 
 const logo = {
   margin: "0 auto",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 const headerTitle = {
@@ -257,6 +277,29 @@ const nextStepsBox = {
   margin: "24px 0",
 };
 
+const overviewBox = {
+  backgroundColor: "#f8fafc",
+  border: "1px solid #e2e8f0",
+  borderRadius: "8px",
+  padding: "24px",
+  margin: "24px 0",
+  textAlign: "center" as const,
+};
+
+const secondaryButton = {
+  backgroundColor: "#ffffff",
+  border: "1px solid #0ea5e9",
+  borderRadius: "6px",
+  color: "#0ea5e9",
+  fontSize: "16px",
+  fontWeight: "bold",
+  textDecoration: "none",
+  textAlign: "center" as const,
+  display: "inline-block",
+  padding: "12px 24px",
+  margin: "8px",
+};
+
 const listItem = {
   color: "#374151",
   fontSize: "14px",
@@ -284,6 +327,12 @@ const footerText = {
 const link = {
   color: "#0ea5e9",
   textDecoration: "none",
+};
+
+const signature = {
+  margin: "16px 0 0",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 export default PlatformAccessEmail;
