@@ -16,6 +16,7 @@ import { TEST_USERS, API_TEST_DATA } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";
+const CONVEX_SITE_URL = process.env.CONVEX_SITE_URL || "https://kindly-setter-935.convex.site";
 const SITE_URL = process.env.SITE_URL || "https://pelicanai.org";
 
 async function runBetterAuthAPITests() {
@@ -72,7 +73,7 @@ async function testBetterAuthEndpointAvailability(runner) {
   runner.log("🧪 Testing Better Auth endpoint availability...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const endpoints = [
       '/api/auth/session',
       '/api/auth/sign-up/email',
@@ -115,7 +116,7 @@ async function testUserRegistrationEndpoint(runner) {
   runner.log("🧪 Testing user registration endpoint...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const signupUrl = `${baseUrl}/api/auth/sign-up/email`;
     
     const testUser = {
@@ -163,7 +164,7 @@ async function testUserAuthenticationEndpoint(runner) {
   runner.log("🧪 Testing user authentication endpoint...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const signinUrl = `${baseUrl}/api/auth/sign-in/email`;
     
     // Use the user from registration test or create a new one
@@ -215,7 +216,7 @@ async function testSessionManagement(runner) {
   runner.log("🧪 Testing session management...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const sessionUrl = `${baseUrl}/api/auth/session`;
     
     // Test session endpoint without authentication
@@ -270,7 +271,7 @@ async function testErrorHandling(runner) {
   runner.log("🧪 Testing error handling...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const signupUrl = `${baseUrl}/api/auth/sign-up/email`;
     const signinUrl = `${baseUrl}/api/auth/sign-in/email`;
     
@@ -382,7 +383,7 @@ async function testCORSConfiguration(runner) {
   runner.log("🧪 Testing CORS configuration...");
   
   try {
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const sessionUrl = `${baseUrl}/api/auth/session`;
     
     // Test CORS by making a request with different origin
@@ -442,7 +443,7 @@ async function testConvexIntegration(runner, client) {
     await sleep(3000);
     
     // Test Better Auth signin with the temporary password
-    const baseUrl = CONVEX_URL.replace('/api', '');
+    const baseUrl = CONVEX_SITE_URL;
     const signinUrl = `${baseUrl}/api/auth/sign-in/email`;
     
     const authResponse = await fetch(signinUrl, {
