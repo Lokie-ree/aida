@@ -32,13 +32,13 @@ export function BetaWelcomeEmail({
         <Container style={container}>
           {/* Header with Pelican AI Branding */}
           <Section style={header}>
-            <Img
-              src="https://pelicanai.org/primary-logo.png"
-              width="160"
-              height="40"
-              alt="Pelican AI"
-              style={logo}
-            />
+    <Img
+      src="https://pelicanai.org/horizontal-primary-logo.png"
+      width="200"
+      height="50"
+      alt="Pelican AI"
+      style={logo}
+    />
             <Text style={tagline}>Reclaim Your Time with Confidence</Text>
           </Section>
 
@@ -91,11 +91,11 @@ export function BetaWelcomeEmail({
                 Before you attend any training or read lengthy documentation, you can 
                 use Pelican AI today. Here's how:
               </Text>
-              <Text style={listItem}>
-                <strong>1. Click this link</strong> → <Link href="https://docs.google.com/document/d/your-framework-link-here/edit" style={ctaLink}>
-                  Lesson Objective Unpacker & Success Criteria Builder
-                </Link>
-              </Text>
+      <Text style={listItem}>
+        <strong>1. Click this link</strong> → <Link href="https://docs.google.com/document/d/1yv9sBUXL84U1X1DQ0NxAILBrflGThOFbBePNv4uHUsc/edit" style={ctaLink}>
+          Lesson Objective Unpacker & Success Criteria Builder
+        </Link>
+      </Text>
               <Text style={listItem}>
                 <strong>2. Copy the sample prompt</strong> (it's ready to use)
               </Text>
@@ -152,9 +152,9 @@ export function BetaWelcomeEmail({
                 ✓ <strong>Feedback Forms</strong> - Help us build what Louisiana educators need
               </Text>
               <Text style={paragraph}>
-                <Link href="https://docs.google.com/document/d/your-welcome-kit-link-here/edit" style={ctaLink}>
-                  <strong>→ Access Your Beta Welcome Kit</strong>
-                </Link>
+        <Link href="https://docs.google.com/document/d/1-oZ1qHqyM-cdhX8jmkm1nPQ5ahiAnVWiQun1qqeBNo8/edit" style={ctaLink}>
+          <strong>→ Access Your Beta Welcome Kit</strong>
+        </Link>
               </Text>
             </Section>
 
@@ -181,6 +181,14 @@ export function BetaWelcomeEmail({
               <br />
               <em>Built by Louisiana educators, for Louisiana educators</em>
             </Text>
+            
+            <Img
+              src="https://pelicanai.org/email-signature.png"
+              width="200"
+              height="60"
+              alt="Pelican AI Email Signature"
+              style={signature}
+            />
           </Section>
 
           <Hr style={hr} />
@@ -395,6 +403,12 @@ const smallText = {
   fontSize: "13px",
   lineHeight: "18px",
   margin: "8px 0 0",
+};
+
+const signature = {
+  margin: "16px 0 0",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 export default BetaWelcomeEmail;

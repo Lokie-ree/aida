@@ -66,6 +66,9 @@ async function testCompleteHappyPathFlow(runner, client) {
   try {
     const testUser = TEST_USERS.validBetaUser();
     
+    // Store test user for later tests
+    runner.testUser = testUser;
+    
     // Step 1: Beta signup (simulating landing page form submission)
     runner.log("  Step 1: Beta signup...");
     const signupResult = await client.mutation("betaSignup:signupForBeta", {

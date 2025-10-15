@@ -12,7 +12,7 @@
  */
 
 import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
-import { TEST_USERS, BETA_SIGNUP_SCENARIOS } from '../test-fixtures.js';
+import { TEST_USERS } from '../test-fixtures.js';
 
 // Configuration
 const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";
@@ -205,7 +205,8 @@ async function testGetBetaSignupByIdInvalid(runner, client) {
   runner.log("🧪 Testing getBetaSignupById with invalid ID...");
   
   try {
-    const invalidId = "invalid-id-123";
+    // Use a valid Convex ID format for testing
+    const invalidId = "j1234567890123456789012345678901234567890";
     
     const signup = await client.query("betaSignup:getBetaSignupById", {
       signupId: invalidId

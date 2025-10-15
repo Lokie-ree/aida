@@ -152,16 +152,16 @@ Keep track of all shareable links for easy reference:
 
 ```
 AIB-001: Lesson Objective Unpacker Framework:
-https://docs.google.com/document/d/[YOUR-DOC-ID]/edit
+https://docs.google.com/document/d/1yv9sBUXL84U1X1DQ0NxAILBrflGThOFbBePNv4uHUsc/edit
 
 Beta Welcome Kit:
-https://docs.google.com/document/d/[YOUR-DOC-ID]/edit
+https://docs.google.com/document/d/1-oZ1qHqyM-cdhX8jmkm1nPQ5ahiAnVWiQun1qqeBNo8/edit
 
 Post-Framework Survey:
-https://forms.google.com/[YOUR-FORM-ID]
+https://forms.gle/VhY3qexkgsGLNTu59
 
 Weekly Check-In Survey:
-https://forms.google.com/[YOUR-FORM-ID]
+https://forms.gle/gqGTj3j5AKKSN9iD6
 
 Office Hours Zoom Link:
 https://zoom.us/j/[YOUR-MEETING-ID]

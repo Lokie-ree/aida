@@ -11,6 +11,7 @@ import {
   Text,
   Button,
   Hr,
+  Img
 } from "@react-email/components";
 
 interface VoiceSessionSummaryEmailProps {
@@ -98,6 +99,14 @@ export function VoiceSessionSummaryEmail({
               <br />
               The Pelican AI Team
             </Text>
+            
+            <Img
+              src="https://pelicanai.org/email-signature.png"
+              width="200"
+              height="60"
+              alt="Pelican AI Email Signature"
+              style={signature}
+            />
           </Section>
 
           <Hr style={hr} />
@@ -263,6 +272,12 @@ const footerText = {
 const link = {
   color: "#3b82f6",
   textDecoration: "none",
+};
+
+const signature = {
+  margin: "16px 0 0",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 export default VoiceSessionSummaryEmail;

@@ -45,10 +45,20 @@ export const signupForBeta = mutation({
     temporaryPassword: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
+    // Validate email is not null or empty
+    if (!args.email || args.email.trim() === "") {
+      return {
+        success: false,
+        message: "Email is required.",
+        signupId: undefined,
+        temporaryPassword: undefined,
+      };
+    }
+
     // Check if email already exists
     const existingSignup = await ctx.db
       .query("betaSignups")
-      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .withIndex("by_email", (q) => q.eq("email", args.email.trim()))
       .unique();
 
     if (existingSignup) {
@@ -213,6 +223,12 @@ export const updateSignupStatus = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
+    // Check if document exists before updating
+    const existingDoc = await ctx.db.get(args.signupId);
+    if (!existingDoc) {
+      throw new Error(`Beta signup with ID ${args.signupId} not found`);
+    }
+    
     await ctx.db.patch(args.signupId, {
       status: args.status,
       ...(args.notes && { notes: args.notes }),

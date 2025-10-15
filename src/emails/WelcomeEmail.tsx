@@ -32,7 +32,7 @@ export function WelcomeEmail({
           {/* Logo Header */}
           <Section style={logoHeader}>
             <Img
-              src="https://pelicanai.org/primary-logo.png"
+              src="https://pelicanai.org/horizontal-primary-logo.png"
               width="160"
               height="40"
               alt="Pelican AI"
@@ -112,6 +112,14 @@ export function WelcomeEmail({
               <br />
               The Pelican AI Team
             </Text>
+            
+            <Img
+              src="https://pelicanai.org/email-signature.png"
+              width="200"
+              height="60"
+              alt="Pelican AI Email Signature"
+              style={signature}
+            />
           </Section>
 
           <Section style={footer}>
@@ -251,6 +259,12 @@ const footerText = {
 const link = {
   color: "#3b82f6",
   textDecoration: "none",
+};
+
+const signature = {
+  margin: "16px 0 0",
+  display: "block",
+  objectFit: "contain" as const,
 };
 
 export default WelcomeEmail;
