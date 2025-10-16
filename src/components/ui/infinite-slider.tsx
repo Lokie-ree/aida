@@ -1,8 +1,8 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { useMotionValue, animate, motion } from 'motion/react';
+import { useMotionValue, animate, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import useMeasure from 'react-use-measure';
+// import useMeasure from 'react-use-measure'; // Removed unused dependency
 
 export type InfiniteSliderProps = {
   children: React.ReactNode;
@@ -24,7 +24,22 @@ export function InfiniteSlider({
   className,
 }: InfiniteSliderProps) {
   const [currentSpeed, setCurrentSpeed] = useState(speed);
-  const [ref, { width, height }] = useMeasure();
+  const [ref, setRef] = useState<HTMLDivElement | null>(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (!ref) return;
+    
+    const updateDimensions = () => {
+      setWidth(ref.offsetWidth);
+      setHeight(ref.offsetHeight);
+    };
+    
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [ref]);
   const translation = useMotionValue(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [key, setKey] = useState(0);
@@ -101,7 +116,7 @@ export function InfiniteSlider({
           gap: `${gap}px`,
           flexDirection: direction === 'horizontal' ? 'row' : 'column',
         }}
-        ref={ref}
+        ref={setRef}
         {...hoverProps}
       >
         {children}
