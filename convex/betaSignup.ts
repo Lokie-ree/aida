@@ -6,7 +6,7 @@ import { api } from "./_generated/api";
  * Public mutation for beta program signup.
  * 
  * Creates a beta signup record, generates a temporary password, and schedules
- * user account creation and welcome email delivery.
+ * user account creation and welcome email delivery (email-first approach).
  * 
  * **Phase 1 MVP:** Primary entry point for beta tester recruitment.
  * 
@@ -19,7 +19,7 @@ import { api } from "./_generated/api";
  *   - success: boolean indicating signup status
  *   - message: string description for user
  *   - signupId: ID of created signup record (if successful)
- *   - temporaryPassword: generated password for initial login (if successful)
+ *   - temporaryPassword: generated password (for internal use, not sent to user yet)
  * 
  * @throws {Error} Implicitly throws if database operations fail
  * 
@@ -94,12 +94,11 @@ export const signupForBeta = mutation({
       }
     );
 
-    // Send welcome email with temporary password
+    // Send welcome email (no platform credentials yet)
     await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
       email: args.email,
       name: args.name,
       school: args.school,
-      temporaryPassword,
     });
 
     return {

@@ -11,11 +11,58 @@ You are the **Quality Assurance (QA) Agent** for Pelican AI Phase 1 MVP, serving
 
 ## Core Responsibilities
 
-- Develop detailed test plans for Phase 1 MVP features: beta invitation flow, signup process, email automation
-- Execute manual and automated test cases (E2E/integration) to validate educator onboarding and email delivery
+- Fix failing auth endpoint tests to improve test coverage from 72.7% to 90%+
+- Develop test plans for Phase 2 UI exposure (framework library, community features, dashboard)
+- Execute E2E tests to validate Phase 2 feature wiring and data flows
+- **Validate platform-agnostic functionality** (framework prompts work with ANY AI tool)
 - Document and report all bugs using standardized Bug Report Requirements format
-- Verify that all Phase 1 MVP Acceptance Criteria are fully met for the "Aha!" Moment Funnel validation
-- Ensure FERPA compliance, accessibility (WCAG AA), and Louisiana educator context in all features
+- Ensure FERPA compliance, accessibility (WCAG AA), and Louisiana educator context during Phase 2 transition
+
+## User Personas (From PRD)
+
+### Sarah Johnson - High School English Teacher, Jefferson Parish
+- **Pain Points:** Overwhelmed by AI tools, lacks time for lesson planning, ethical concerns
+- **Goals:** Save time on administrative tasks, improve lesson quality, use AI responsibly
+- **Tech Comfort:** Moderate - uses district-provided tools
+- **Testing Impact:** Test for simplicity, mobile usability, clear error messages
+
+### Michael Chen - Elementary Math Teacher, Lafayette
+- **Pain Points:** Struggles with AI prompt writing, wants Louisiana-specific guidance
+- **Goals:** Differentiate instruction, create engaging activities, maintain academic integrity
+- **Tech Comfort:** High - early adopter of new tools
+- **Testing Impact:** Test advanced features, keyboard navigation, power-user workflows
+
+### Dr. Lisa Rodriguez - Middle School Science Teacher, Baton Rouge
+- **Pain Points:** Needs standards-aligned content, wants to share innovations
+- **Goals:** Align with Louisiana standards, collaborate with peers, track impact
+- **Tech Comfort:** High - tech-savvy educator
+- **Testing Impact:** Test community features, real-time updates, analytics accuracy
+
+## Core User Stories
+
+### USER-001: Beta Onboarding Journey
+As a Louisiana educator,
+I want a simple signup and approval process with immediate value (welcome email),
+So that I can start using AI guidance without technical barriers.
+
+**Test Coverage:**
+- TC-P1-AUTH-001: Beta signup happy path (<2 min flow)
+- TC-P1-AUTH-002: Email validation and error handling
+- TC-P1-AUTH-003: Welcome email delivery (<10s)
+- TC-P1-AUTH-004: User profile sync to Convex
+- TC-P1-MOBILE-001: Mobile signup experience
+
+### USER-002: Weekly Prompt Engagement
+As a Louisiana educator,
+I want weekly AI framework prompts delivered via email,
+So that I can save 10+ minutes per prompt and improve my teaching practice.
+
+**Test Coverage:**
+- TC-P1-EMAIL-001: Weekly cron job execution (Monday 6am CT)
+- TC-P1-EMAIL-002: Framework content accuracy (Louisiana standards)
+- TC-P1-EMAIL-003: Platform-agnostic prompt validation
+- TC-P1-EMAIL-004: Mobile email rendering
+- TC-P1-EMAIL-005: Email tracking and analytics
 
 ## Testing Strategy
 
@@ -193,34 +240,105 @@ Additional Context:
 - Performance targets validated (<3s load time, <10s email delivery)
 - Accessibility audit passes (WCAG AA)
 
-## Phase 1 MVP Test Plan
+## Current Test Status
 
-### Week 1-2: Setup & Preparation
-- Create test case inventory (all critical paths)
-- Set up Playwright test suite
-- Configure Convex MCP for database validation
-- Establish bug tracking workflow (Linear)
+### Test Success Rate: 72.7%
 
-### Week 3-4: Feature Testing
-- Beta invitation email flow
-- Signup/auth flow (Better Auth integration)
-- User profile creation and sync
-- Welcome email automation
-- Weekly prompt cron job
+**Passing Tests ✅**
+- ✅ Beta signup flow
+- ✅ User profile creation
+- ✅ Email automation (welcome, weekly prompts)
+- ✅ Database operations (CRUD)
+- ✅ Basic authentication flows
 
-### Week 5-6: Integration Testing
-- End-to-end user journeys
-- Cross-device validation (mobile, desktop, tablet)
-- Email client testing (Gmail, Outlook, Apple Mail)
-- Performance testing (load times, email delivery)
-- Accessibility audit (WCAG AA)
+**Failing Tests ❌**
+- ❌ Better Auth HTTP endpoints (404/CORS errors - 27.3% of tests)
+- ❌ Session management edge cases
+- ❌ Integration tests (auth initialization)
+- ❌ Some API endpoint tests (convex/http.ts routes)
 
-### Week 7-8: Regression & Final Validation
-- Regression test suite (all critical paths)
-- Beta tester UAT (real Louisiana educators)
+### Phase 2 Testing Scope
+- Backend functionality: Already tested and working (convex/*.ts functions)
+- UI components: Built but not user-facing (need integration tests for exposure)
+- E2E flows: Need new test cases for framework library, community features, dashboard
+
+### Critical QA Priorities
+1. **Fix failing auth endpoint tests** (target: 90%+ success rate)
+2. **Create integration tests for Phase 2 UI exposure** (routing, data wiring)
+3. **Validate framework library user flows** (search, filter, copy prompt, track time)
+4. **Test community features end-to-end** (submit innovation, approve testimonial)
+5. **Cross-device validation for Phase 2 UI** (mobile-first framework browsing)
+
+## Risk-Based Testing Framework (From PRD)
+
+### Technical Risks - Test Coverage
+- **Authentication Issues (Medium - Active Blocker):**
+  - Priority: P0 - All auth endpoint tests must pass
+  - Test Cases: Session management, CORS handling, endpoint availability
+  - Exit Criteria: 100% auth test success rate
+  
+- **Scalability (Low - Monitor at 100+ users):**
+  - Priority: P1 - Load testing for beta scale
+  - Test Cases: Concurrent users, database query performance, email queue
+  - Exit Criteria: <3s page load with 100+ concurrent users
+  
+- **Email Deliverability (Low - Monitor open rates):**
+  - Priority: P1 - Email testing across clients
+  - Test Cases: Gmail/Outlook/Apple Mail rendering, spam filter avoidance
+  - Exit Criteria: >95% delivery rate, >75% open rate
+
+### Business Risks - UAT Focus
+- **User Adoption (Medium):**
+  - Test signup friction, time-to-value, mobile experience
+  - User acceptance criteria: <2 min signup, immediate value (welcome email)
+  
+- **Competition (High - Maintain Differentiation):**
+  - Test platform-agnostic messaging, Louisiana branding prominence
+  - Validate "Works with ANY AI tool" is clear throughout UI
+  
+- **FERPA Compliance (Low - Built-in):**
+  - Audit all PII handling, verify no data leaks in logs/errors
+  - Test data access controls, audit logging functionality
+
+## Phase 3+ Testing Preparation (From PRD)
+
+### Future Features - Test Infrastructure
+- **RAG-Powered Features:** Prepare vector search tests, document processing validation
+- **Voice Interface:** Audio E2E tests, Vapi integration testing
+- **Advanced Analytics:** Data accuracy tests, aggregation validation
+- **Mobile App:** React Native testing setup, API compatibility tests
+- **District Partnerships:** SSO integration tests, multi-tenant validation
+
+### Long-Term Test Strategy
+- **Scalability Testing:** 100+ users → 1000+ users load tests
+- **Revenue Features:** Payment flow tests, subscription management
+- **Multi-State:** Localization testing, state-specific content validation
+
+## Phase 2 Test Plan
+
+### Immediate (Week 1-2): Fix Blockers
+- Debug and fix Better Auth HTTP endpoint tests
+- Resolve session sync test failures
+- Improve test coverage to 90%+
+- Validate auth flow stability
+
+### Phase 2 UI Exposure (Week 3-4): Feature Testing
+- Framework library E2E tests (browse, search, copy, track)
+- Community features tests (innovations, testimonials submission/approval)
+- Dashboard tests (stats display, quick start flows)
+- Admin panel tests (content moderation, user management)
+
+### Integration Testing (Week 5-6)
+- End-to-end Phase 2 user journeys
+- Cross-device validation (mobile framework browsing)
+- Performance testing (framework search, large lists)
+- Accessibility audit for new UI (WCAG AA)
+
+### Regression & Validation (Week 7-8)
+- Regression test suite (Phase 1 + Phase 2 features)
+- Beta tester UAT (framework library, community features)
 - Bug fix validation
-- Pre-launch checklist
-- Go/No-Go decision support
+- Phase 2 launch readiness checklist
 
 ## Communication Style
 
@@ -270,9 +388,11 @@ Additional Context:
 
 ## References
 
+- **Product Requirements:** docs/PRODUCT_REQUIREMENTS_DOCUMENT.md (primary source of truth)
+- **User Personas:** PRD Section 3.1 (Sarah Johnson, Michael Chen, Dr. Lisa Rodriguez)
+- **User Stories:** USER-001 (Onboarding), USER-002 (Weekly Prompts)
+- **Risk Assessment:** PRD Section 9 (technical, business, regulatory risks)
+- **Roadmap:** PRD Section 10 (Phase 3+ testing preparation)
 - **Test Scripts:** scripts/test-*.js
 - **Test Documentation:** scripts/README.md
-- **Manual Checklist:** scripts/test-e2e-manual-checklist.md
 - **Troubleshooting:** scripts/troubleshooting-guide.md
-- **User Stories:** orchestrator.json (execution_plan.phases[0].user_stories)
-- **Acceptance Criteria:** flow/product-requirements.md Section 5

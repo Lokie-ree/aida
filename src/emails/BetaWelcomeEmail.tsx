@@ -5,18 +5,16 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, CredentialsBox, ActionBox, InfoBox, HighlightBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, ActionBox, InfoBox, HighlightBox, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface BetaWelcomeEmailProps {
   name?: string;
   school?: string;
-  temporaryPassword?: string;
 }
 
 export function BetaWelcomeEmail({
   name = "Educator",
   school,
-  temporaryPassword,
 }: BetaWelcomeEmailProps) {
   return (
     <BaseEmailTemplate
@@ -39,29 +37,6 @@ export function BetaWelcomeEmail({
         focus on what matters most: teaching Louisiana students.
       </Text>
 
-      {/* Platform Access Credentials (if provided) */}
-      {temporaryPassword && (
-        <CredentialsBox>
-          <Heading style={textStyles.h2}>🔑 Your Platform Access Credentials</Heading>
-          <Text style={textStyles.paragraph}>
-            <strong>Your beta account has been created!</strong> Use these credentials to sign in:
-          </Text>
-          <Section style={passwordBox}>
-            <Text style={credentialLabel}>Email:</Text>
-            <Text style={credentialValue}>{name ? `${name}'s email` : "Your signup email"}</Text>
-            <Text style={credentialLabel}>Temporary Password:</Text>
-            <Text style={passwordValue}>{temporaryPassword}</Text>
-          </Section>
-          <Text style={textStyles.paragraph}>
-            <Link href="https://pelicanai.org/signin" style={ctaButton}>
-              <strong>→ Sign In to Pelican AI Platform</strong>
-            </Link>
-          </Text>
-          <Text style={smallText}>
-            <em>Note: You'll be prompted to change this password on your first login.</em>
-          </Text>
-        </CredentialsBox>
-      )}
 
       {/* Immediate Action Box */}
       <ActionBox>
@@ -93,10 +68,7 @@ export function BetaWelcomeEmail({
       <InfoBox>
         <Heading style={textStyles.h2}>What Happens Next?</Heading>
         <Text style={listItem}>
-          • <strong>Within 24-48 hours:</strong> We'll review your application and send platform access credentials
-        </Text>
-        <Text style={listItem}>
-          • <strong>Upon approval:</strong> Access to the Lesson Objective Unpacker framework, beta community, and time tracking
+          • <strong>Immediately:</strong> Access the Lesson Objective Unpacker framework and start saving time today
         </Text>
         <Text style={listItem}>
           • <strong>Weeks 1-2:</strong> Master the Lesson Objective Unpacker with multiple lessons
@@ -109,6 +81,9 @@ export function BetaWelcomeEmail({
         </Text>
         <Text style={listItem}>
           • <strong>Ongoing:</strong> Weekly feedback surveys, office hours support, and collaborative framework development
+        </Text>
+        <Text style={textStyles.paragraph}>
+          <strong>Platform access coming soon in Phase 2!</strong> For now, you'll receive weekly prompts via email and can access all frameworks through the links below.
         </Text>
       </InfoBox>
 
@@ -130,9 +105,33 @@ export function BetaWelcomeEmail({
         <Text style={listItem}>
           ✓ <strong>Feedback Forms</strong> - Help us build what Louisiana educators need
         </Text>
+        <Text style={listItem}>
+          ✓ <strong>Beta Overview Podcast</strong> - Listen to the full vision and approach
+        </Text>
+        <Text style={listItem}>
+          ✓ <strong>Weekly Check-in Survey</strong> - Share your progress and feedback
+        </Text>
+        <Text style={listItem}>
+          ✓ <strong>Post-Framework Survey</strong> - Help us improve each framework
+        </Text>
         <Text style={textStyles.paragraph}>
           <Link href="https://docs.google.com/document/d/1-oZ1qHqyM-cdhX8jmkm1nPQ5ahiAnVWiQun1qqeBNo8/edit" style={ctaLink}>
             <strong>→ Access Your Beta Welcome Kit</strong>
+          </Link>
+        </Text>
+        <Text style={textStyles.paragraph}>
+          <Link href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing" style={ctaLink}>
+            <strong>→ Listen to Beta Overview Podcast</strong>
+          </Link>
+        </Text>
+        <Text style={textStyles.paragraph}>
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdZxABU24KLmaUs0J9OrWqdUuhVV_zEQ5RjU6ttIHgTIR3OWw/viewform?usp=sharing&ouid=110279044776974210923" style={ctaLink}>
+            <strong>→ Weekly Check-in Survey</strong>
+          </Link>
+        </Text>
+        <Text style={textStyles.paragraph}>
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLScs85mhZvVU7F_Ldcpgu3XhrT3qIXrnMmT050c7pn5mPqpQ9A/viewform?usp=sharing&ouid=110279044776974210923" style={ctaLink}>
+            <strong>→ Post-Framework Survey</strong>
           </Link>
         </Text>
       </HighlightBox>
@@ -165,51 +164,6 @@ export function BetaWelcomeEmail({
 }
 
 // Styles specific to this email template
-const passwordBox = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #d1d5db",
-  borderRadius: "6px",
-  padding: "16px",
-  margin: "16px 0",
-  fontFamily: '"Courier New", monospace',
-};
-
-const credentialLabel = {
-  color: "#6b7280",
-  fontSize: "12px",
-  fontWeight: "600",
-  textTransform: "uppercase" as const,
-  letterSpacing: "0.5px",
-  margin: "8px 0 4px",
-};
-
-const credentialValue = {
-  color: "#1f2937",
-  fontSize: "14px",
-  margin: "0 0 12px",
-};
-
-const passwordValue = {
-  color: "#0ea5e9",
-  fontSize: "18px",
-  fontWeight: "bold",
-  fontFamily: '"Courier New", monospace',
-  margin: "0",
-  letterSpacing: "1px",
-};
-
-const ctaButton = {
-  display: "inline-block",
-  backgroundColor: "#0ea5e9",
-  color: "#ffffff",
-  padding: "12px 24px",
-  borderRadius: "6px",
-  textDecoration: "none",
-  fontWeight: "bold",
-  fontSize: "16px",
-  textAlign: "center" as const,
-  margin: "16px 0",
-};
 
 const ctaLink = {
   color: "#0ea5e9",

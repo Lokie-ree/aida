@@ -1,135 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { BorderBeam } from "@/components/ui/border-beam";
-import { Marquee } from "@/components/ui/marquee";
-import RotatingText from "@/components/shared/RotatingText";
-import GradientText from "@/components/shared/GradientText";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { AuthModal } from "@/components/auth/AuthModal";
-import { 
-  Sparkles, 
-  Users, 
-  BookOpen, 
-  ArrowRight, 
-  ChevronDown,
-  CheckCircle,
-  Quote,
-  Target,
-  Shield,
-  Clock,
-  Lightbulb,
-  Loader2,
-  AlertCircle,
-  Menu,
-  X,
-  LogIn,
-} from "lucide-react";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { BetaSignupModal } from "@/components/shared/BetaSignupModal";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { FeaturesSection } from "@/components/landing/FeaturesSection";
+import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamplesSection";
+import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
+import { FAQSection } from "@/components/landing/FAQSection";
+import { CTASection } from "@/components/landing/CTASection";
+import { Menu, X, Users } from "lucide-react";
 
 export function LandingPage() {
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [school, setSchool] = useState("");
-  const [subject, setSubject] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [validationErrors, setValidationErrors] = useState<{
-    email?: string;
-    name?: string;
-    school?: string;
-    subject?: string;
-  }>({});
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  
-  const signupForBeta = useMutation(api.betaSignup.signupForBeta);
+  const [isBetaSignupModalOpen, setIsBetaSignupModalOpen] = useState(false);
 
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleBetaSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Clear previous errors
-    setError(null);
-    setValidationErrors({});
-    
-    // Validate all required fields
-    const errors: {email?: string; name?: string; school?: string; subject?: string} = {};
-    
-    if (!email.trim()) {
-      errors.email = "Email is required";
-    } else if (!validateEmail(email)) {
-      errors.email = "Please enter a valid email address";
-    }
-    
-    if (!name.trim()) {
-      errors.name = "Name is required";
-    }
-    
-    if (!school.trim()) {
-      errors.school = "School is required";
-    }
-    
-    if (!subject.trim()) {
-      errors.subject = "Subject is required";
-    }
-    
-    // If there are any validation errors, show them and stop
-    if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors);
-      return;
-    }
-    
-    setIsSubmitting(true);
-    try {
-      const result = await signupForBeta({ 
-        email: email.trim(),
-        name: name.trim(),
-        school: school.trim(),
-        subject: subject.trim(),
-      });
-      
-      if (result.success) {
-        setIsSubmitted(true);
-        // Clear all form fields
-        setEmail("");
-        setName("");
-        setSchool("");
-        setSubject("");
-        setError(null);
-        setValidationErrors({});
-        // Reset success state after 8 seconds
-        setTimeout(() => {
-          setIsSubmitted(false);
-        }, 8000);
-      } else {
-        setError(result.message || "Signup failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Signup failed:", error);
-      setError("Network error. Please check your connection and try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleSignIn = () => {
-    setIsAuthModalOpen(true);
-    setIsMobileMenuOpen(false);
-  };
-
-  const scrollToBetaSignup = () => {
-    document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' });
+  const handleBetaSignupClick = () => {
+    setIsBetaSignupModalOpen(true);
     setIsMobileMenuOpen(false);
   };
 
@@ -149,151 +36,6 @@ export function LandingPage() {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isMobileMenuOpen]);
 
-  // Animation variants
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  };
-
-  const staggerChildren = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  // Consistent color scheme - Blues and Golds
-  const blueGradient = ['#0ea5e9', '#1e40af', '#0ea5e9'];
-  const blueGoldGradient = ['#0ea5e9', '#f59e0b', '#0ea5e9'];
-  
-
-  // Features based on brand guidelines
-  const features = [
-    {
-      icon: BookOpen,
-      title: "Platform-Agnostic Guidance",
-      description: "Learn to use ANY AI tool effectively—MagicSchool AI, Brisk, SchoolAI, Gemini, or others. We teach principles, not platforms."
-    },
-    {
-      icon: Target,
-      title: "Louisiana Standards Aligned",
-      description: "Every framework and prompt is designed specifically for Louisiana's educational standards and the Louisiana Educator Rubric."
-    },
-    {
-      icon: Shield,
-      title: "Ethical Guardrails Built-In",
-      description: "Clear guidance on academic integrity, data privacy, and responsible AI use that aligns with district policies."
-    },
-    {
-      icon: Clock,
-      title: "Reclaim 3-5 Hours Per Week",
-      description: "Practical solutions for lesson planning, email drafting, differentiation, and admin tasks that save real time."
-    },
-    {
-      icon: Users,
-      title: "Community-Driven Learning",
-      description: "Share innovations with Louisiana educators. Learn from peers who understand your classroom challenges."
-    },
-    {
-      icon: Lightbulb,
-      title: "Educator-First Approach",
-      description: "No corporate jargon. No tech-speak. Just practical advice from educators for educators."
-    }
-  ];
-
-  // How it works - Louisiana alignment examples
-  const louisianaExamples = [
-    {
-      component: "Standards Alignment",
-      pain: "It takes so long to unpack standards and write clear, measurable objectives",
-      solution: "Use any AI platform to analyze a state standard and generate three differentiated 'I can' statements in 30 seconds"
-    },
-    {
-      component: "Resource Development",
-      pain: "I struggle to find high-quality texts that align with my unit and students' reading levels",
-      solution: "Upload your curriculum guide to any AI platform, then ask it to find and summarize primary sources"
-    },
-    {
-      component: "Lesson Planning",
-      pain: "Not enough time to internalize the lesson plan and anticipate misconceptions",
-      solution: "Ask any AI tool: 'What are 3 potential misconceptions students might have about this topic?'"
-    },
-    {
-      component: "High Expectations",
-      pain: "Creating exemplar work to set a vision for 'what good looks like' is time-consuming",
-      solution: "Provide your rubric and prompt, ask AI to generate an 'A' level and 'C' level response with explanations"
-    },
-    {
-      component: "Student Engagement",
-      pain: "I want more engaging activities, but I'm drawing a blank on new ideas",
-      solution: "Describe your lesson and ask for three engagement strategies: kinesthetic, verbal, and logical"
-    },
-    {
-      component: "Parent Communication",
-      pain: "Drafting newsletters and parent emails takes up my entire planning period",
-      solution: "Ask any AI platform to write professional emails with suggestions for at-home support"
-    }
-  ];
-
-  // Testimonials
-  const testimonials = [
-    {
-      quote: "This isn't another tool to learn—it's guidance on using the tools I already have access to. I saved 4 hours last week on lesson planning alone!",
-      author: "Sarah Johnson",
-      title: "High School English Teacher, Jefferson Parish"
-    },
-    {
-      quote: "The ethical guardrails give me confidence. I know I'm using AI responsibly while still saving time on administrative tasks.",
-      author: "Michael Chen",
-      title: "Elementary Math Teacher, Lafayette"
-    },
-    {
-      quote: "Finally, AI guidance that understands Louisiana standards! The frameworks are specific, practical, and actually help me teach better.",
-      author: "Dr. Lisa Rodriguez",
-      title: "Middle School Science Teacher, Baton Rouge"
-    },
-    {
-      quote: "Platform-agnostic means I can use whatever my district provides. No subscription fatigue, just better teaching strategies.",
-      author: "James Williams",
-      title: "Elementary Principal, New Orleans"
-    },
-    {
-      quote: "The community aspect is incredible. I'm learning from other Louisiana educators who face the same challenges I do every day.",
-      author: "Maria Garcia",
-      title: "Special Education Teacher, Shreveport"
-    }
-  ];
-
-  // FAQ data
-  const faqs = [
-    {
-      question: "Is this another AI tool I have to learn?",
-      answer: "No! We teach you how to use whatever AI platform you already have access to—MagicSchool AI, Brisk, SchoolAI, Gemini, ChatGPT, or others. We're a guidance system, not a software product."
-    },
-    {
-      question: "How is this aligned to Louisiana standards?",
-      answer: "Our framework and prompts are built specifically for Louisiana's educational standards and the Louisiana Educator Rubric. We understand your district's expectations and requirements, and we co-create additional frameworks based on what Louisiana educators actually need."
-    },
-    {
-      question: "What about ethical concerns and academic integrity?",
-      answer: "Every framework includes clear ethical guardrails. We show you how to use AI as a productivity partner while maintaining academic integrity, protecting student privacy, and following district policies."
-    },
-    {
-      question: "How much time will this actually save me?",
-      answer: "Our Lesson Objective Unpacker saves 7-12 minutes per lesson planned. With 5-10 lessons planned weekly, that's 35-120 minutes saved just on objective unpacking and success criteria creation. As we co-create additional frameworks based on YOUR pain points, time savings compound."
-    },
-    {
-      question: "What's included in the beta program?",
-      answer: "Beta testers start with our AI-assisted lesson planning framework, then co-create additional frameworks with us. You get weekly feedback opportunities, bi-weekly office hours, a community of Louisiana educators, and direct influence on what we build next. This isn't just testing—it's collaborative development based on YOUR needs."
-    },
-    {
-      question: "Do I need to be tech-savvy to benefit?",
-      answer: "Not at all! We meet you where you are. Whether you're an AI novice or an eager innovator, we have guidance tailored to your readiness level. Start simple, grow at your pace."
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
@@ -310,34 +52,25 @@ export function LandingPage() {
             </span>
           </div>
           
-           {/* Desktop Navigation */}
-           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 sm:gap-4">
-             <AnimatedThemeToggler />
-             <Button 
-               size="sm"
-               variant="outline"
-               onClick={handleSignIn}
-               className="transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
-             >
-               <LogIn className="w-4 h-4 mr-2" />
-               Sign In
-             </Button>
-             <Button 
-               size="sm"
-               onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-               className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
-             >
-               Join Beta
-             </Button>
-           </nav>
+          {/* Desktop Navigation */}
+          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 sm:gap-4">
+            <AnimatedThemeToggler />
+            <Button 
+              size="sm"
+              onClick={handleBetaSignupClick}
+              className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+            >
+              Join Beta
+            </Button>
+          </nav>
 
           {/* Mobile Hamburger Menu */}
-          <div className="md:hidden">
+          <div className="md:hidden relative z-[60]">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 relative z-[60]"
             >
               {isMobileMenuOpen ? (
                 <X className="h-4 w-4" />
@@ -350,34 +83,19 @@ export function LandingPage() {
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
               <div 
-                className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
+                className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
                 onClick={handleCloseMenu}
               >
                 <nav 
                   aria-label="Mobile navigation"
-                  className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg"
+                  className="fixed top-16 left-0 right-0 bg-background border-b shadow-lg z-50"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="p-4 space-y-2">
                     <Button
                       variant="ghost"
                       size="lg"
-                      onClick={handleSignIn}
-                      className="w-full justify-start gap-3 h-12"
-                    >
-                      <LogIn className="h-5 w-5" />
-                      <div className="text-left">
-                        <div className="font-medium">Sign In</div>
-                        <div className="text-xs text-muted-foreground">
-                          Access your account
-                        </div>
-                      </div>
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="lg"
-                      onClick={scrollToBetaSignup}
+                      onClick={handleBetaSignupClick}
                       className="w-full justify-start gap-3 h-12"
                     >
                       <Users className="h-5 w-5" />
@@ -405,630 +123,35 @@ export function LandingPage() {
 
       {/* Main Content */}
       <main>
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-6">
-        {/* Background */}
-        <div className="absolute inset-0 bg-background" />
-        
-        {/* Decorative Elements - Pelican Blue */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#0ea5e9]/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#1e40af]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-
-        <div className="relative z-10 max-w-6xl mx-auto text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-block mb-8"
-          >
-            <div className="relative px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
-              <BorderBeam 
-                colorFrom="#0ea5e9"
-                colorTo="#1e40af"
-                size={60}
-                duration={6}
-              />
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">Curated AI Guidance for LA Educators</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Main Headline with RotatingText */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground"
-          >
-             <RotatingText 
-               texts={[
-                 "Reclaim Your Time",
-                 "Teach with Confidence", 
-                 "Master Any AI Tool"
-               ]}
-               className="inline-block"
-               elementLevelClassName="text-primary"
-               rotationInterval={8000}
-               staggerDuration={0.05}
-             />
-          </motion.h1>
-
-           <motion.p
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.5, delay: 0.2 }}
-             className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed px-4"
-           >
-             Works with <span className="text-primary font-semibold">ANY AI tool</span> you already use. Designed specifically for Louisiana educators.
-           </motion.p>
-
-          {/* Social Proof */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mb-8"
-          >
-            <p className="text-sm text-muted-foreground">
-              Louisiana educators save <span className="text-primary font-semibold">3-5 hours per week</span> with ethical AI guidance
-            </p>
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto"
-          >
-            <Button
-              size="lg"
-              onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl w-full sm:w-auto"
-            >
-              Join Beta Program - Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 py-6 w-full sm:w-auto"
-              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              See How It Works
-            </Button>
-          </motion.div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-16"
-          >
-            <ChevronDown 
-              className="w-6 h-6 mx-auto text-muted-foreground animate-bounce" 
-              aria-label="Scroll down for more information"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Section with GlassIcons */}
-      <section className="py-20 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.div variants={fadeInUp}>
-              <GradientText 
-                as="h2"
-                colors={blueGradient}
-                className="text-4xl md:text-5xl font-bold mb-4"
-              >
-                Practical, Ethical AI Guidance
-              </GradientText>
-            </motion.div>
-            <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We're not a software company. We're an educator-led support system helping you navigate AI with confidence.
-            </motion.p>
-          </motion.div>
-
-           {/* Detailed Feature Cards with BorderBeam */}
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16"
-          >
-            {features.map((feature, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-2 relative overflow-hidden group">
-                  <BorderBeam 
-                    size={80} 
-                    duration={8} 
-                    delay={index * 2}
-                    colorFrom="#0ea5e9"
-                    colorTo="#1e40af"
-                  />
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <feature.icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* How It Works - Louisiana Framework Section */}
-      <section id="how-it-works" className="py-20 px-6 bg-background">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.div variants={fadeInUp}>
-              <GradientText 
-                as="h2"
-                colors={blueGoldGradient}
-                className="text-4xl md:text-5xl font-bold mb-4"
-              >
-                Louisiana-Aligned AI Solutions
-              </GradientText>
-            </motion.div>
-            <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our framework addresses real Louisiana educator pain points with platform-agnostic AI solutions, and we co-create additional frameworks based on YOUR feedback
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {louisianaExamples.map((example, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 relative overflow-hidden">
-                  <BorderBeam 
-                    size={60} 
-                    duration={10} 
-                    delay={index * 1.5}
-                    colorFrom="#0ea5e9"
-                    colorTo="#f59e0b"
-                    borderWidth={2}
-                  />
-                  <CardHeader>
-                    <Badge className="w-fit mb-2 bg-primary">{example.component}</Badge>
-                    <CardTitle className="text-lg text-muted-foreground italic">
-                      "{example.pain}"
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="w-5 h-5 text-primary shrink-0 mt-1" />
-                      <p className="text-sm">{example.solution}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Beta Signup Section */}
-      <section id="beta-signup" className="py-20 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.div variants={fadeInUp}>
-              <GradientText 
-                as="h2"
-                colors={blueGradient}
-                className="text-4xl md:text-5xl font-bold mb-4"
-              >
-                Join the Beta Program
-              </GradientText>
-            </motion.div>
-            <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Be among the first 50 Louisiana educators to master AI-assisted lesson planning, co-create frameworks based on YOUR needs, and shape the future of AI in education.
-            </motion.p>
-          </motion.div>
-
-          <Card className="border-primary/20 bg-primary/5 relative overflow-hidden">
-            <BorderBeam 
-              size={100} 
-              duration={6}
-              colorFrom="#0ea5e9"
-              colorTo="#f59e0b"
-              borderWidth={2}
-            />
-            <CardHeader className="text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <CardTitle className="text-2xl text-primary">Early Access Program</CardTitle>
-              <CardDescription className="text-lg">
-                Get exclusive access to AI frameworks designed specifically for Louisiana educators
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {!isSubmitted ? (
-                <form onSubmit={handleBetaSignup} className="space-y-4" aria-live="polite">
-                  {/* Name Field */}
-                  <div>
-                    <label htmlFor="beta-name" className="block text-sm font-medium mb-2">
-                      Full Name <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="beta-name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                        if (validationErrors.name) {
-                          setValidationErrors(prev => ({ ...prev, name: undefined }));
-                        }
-                      }}
-                      className={`w-full text-base py-4 h-[45px] ${validationErrors.name ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-                      required
-                      aria-invalid={!!validationErrors.name}
-                      aria-describedby={validationErrors.name ? 'name-error' : undefined}
-                    />
-                    {validationErrors.name && (
-                      <p id="name-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {validationErrors.name}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Email Field */}
-                  <div>
-                    <label htmlFor="beta-email" className="block text-sm font-medium mb-2">
-                      Email Address <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="beta-email"
-                      type="email"
-                      placeholder="Enter your email address"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (validationErrors.email) {
-                          setValidationErrors(prev => ({ ...prev, email: undefined }));
-                        }
-                      }}
-                      className={`w-full text-base py-4 h-[45px] ${validationErrors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-                      required
-                      aria-invalid={!!validationErrors.email}
-                      aria-describedby={validationErrors.email ? 'email-error' : undefined}
-                    />
-                    {validationErrors.email && (
-                      <p id="email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {validationErrors.email}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* School Field */}
-                  <div>
-                    <label htmlFor="beta-school" className="block text-sm font-medium mb-2">
-                      School <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="beta-school"
-                      type="text"
-                      placeholder="Enter your school name"
-                      value={school}
-                      onChange={(e) => {
-                        setSchool(e.target.value);
-                        if (validationErrors.school) {
-                          setValidationErrors(prev => ({ ...prev, school: undefined }));
-                        }
-                      }}
-                      className={`w-full text-base py-4 h-[45px] ${validationErrors.school ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-                      required
-                      aria-invalid={!!validationErrors.school}
-                      aria-describedby={validationErrors.school ? 'school-error' : undefined}
-                    />
-                    {validationErrors.school && (
-                      <p id="school-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {validationErrors.school}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Subject Field */}
-                  <div>
-                    <label htmlFor="beta-subject" className="block text-sm font-medium mb-2">
-                      Subject Area <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="beta-subject"
-                      type="text"
-                      placeholder="e.g., Mathematics, English, Science"
-                      value={subject}
-                      onChange={(e) => {
-                        setSubject(e.target.value);
-                        if (validationErrors.subject) {
-                          setValidationErrors(prev => ({ ...prev, subject: undefined }));
-                        }
-                      }}
-                      className={`w-full text-base py-4 h-[45px] ${validationErrors.subject ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-                      required
-                      aria-invalid={!!validationErrors.subject}
-                      aria-describedby={validationErrors.subject ? 'subject-error' : undefined}
-                    />
-                    {validationErrors.subject && (
-                      <p id="subject-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {validationErrors.subject}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 px-6 py-4 text-base h-[45px]"
-                    aria-busy={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                        Joining Beta Program...
-                      </>
-                    ) : (
-                      "Join Beta Program"
-                    )}
-                  </Button>
-                  
-                  {error && (
-                    <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-                      <div className="flex items-center gap-2 text-destructive">
-                        <AlertCircle className="w-5 h-5" />
-                        <p className="text-sm font-medium">{error}</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <p className="text-sm text-muted-foreground text-center">
-                    No spam, ever. Unsubscribe at any time.
-                  </p>
-                </form>
-              ) : (
-                <div className="text-center py-8 bg-primary/10 rounded-lg">
-                  <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-primary mb-2">
-                    Thanks for Signing Up!
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Check your email for next steps. We'll notify you once your beta access is approved.
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Be sure to check your spam folder if you don't see it within a few minutes.
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Testimonials Section with Marquee */}
-      <section className="py-20 px-6 bg-background overflow-hidden">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.div variants={fadeInUp}>
-              <GradientText 
-                as="h2"
-                colors={blueGradient}
-                className="text-4xl md:text-5xl font-bold mb-4"
-              >
-                What Louisiana Educators Are Saying
-              </GradientText>
-            </motion.div>
-          </motion.div>
-
-          <Marquee pauseOnHover className="[--duration:90s] [--gap:0.5rem]" repeat={2}>
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
-                <CardContent className="p-4 sm:p-6">
-                  <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-primary/60 mb-3 sm:mb-4" />
-                  <p className="text-sm sm:text-base italic mb-4 sm:mb-6">"{testimonial.quote}"</p>
-                  <div>
-                    <p className="text-sm sm:text-base font-semibold">{testimonial.author}</p>
-                    <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.title}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </Marquee>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-20 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.div variants={fadeInUp}>
-              <GradientText 
-                as="h2"
-                colors={blueGradient}
-                className="text-4xl md:text-5xl font-bold mb-4"
-              >
-                Common Questions
-              </GradientText>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="space-y-4"
-          >
-            {faqs.map((faq, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card 
-                  className="cursor-pointer hover:shadow-md transition-shadow relative overflow-hidden"
-                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                  role="button"
-                  tabIndex={0}
-                  aria-expanded={expandedFaq === index}
-                  aria-label={`${expandedFaq === index ? 'Collapse' : 'Expand'} FAQ: ${faq.question}`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setExpandedFaq(expandedFaq === index ? null : index);
-                    }
-                  }}
-                >
-                  {expandedFaq === index && (
-                    <BorderBeam 
-                      size={50} 
-                      duration={4}
-                      colorFrom="#0ea5e9"
-                      colorTo="#1e40af"
-                    />
-                  )}
-                  <CardHeader>
-                    <div className="flex justify-between items-start gap-4">
-                      <CardTitle className="text-lg text-left">{faq.question}</CardTitle>
-                      <ChevronDown 
-                        className={`w-5 h-5 shrink-0 transition-transform text-primary ${expandedFaq === index ? 'rotate-180' : ''}`}
-                      />
-                    </div>
-                  </CardHeader>
-                  {expandedFaq === index && (
-                    <CardContent>
-                      <p className="text-muted-foreground">{faq.answer}</p>
-                    </CardContent>
-                  )}
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-20 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-          >
-            <motion.div variants={fadeInUp}>
-              <Card className="text-center relative overflow-hidden bg-background/80 backdrop-blur-sm border-2">
-                <BorderBeam 
-                  size={100} 
-                  duration={6}
-                  colorFrom="#0ea5e9"
-                  colorTo="#1e40af"
-                  borderWidth={3}
-                />
-                <CardContent className="p-12">
-                  <motion.div variants={fadeInUp} className="mb-6">
-                    <GradientText 
-                      as="h2"
-                      colors={['#0ea5e9', '#f59e0b', '#1e40af', '#f59e0b', '#0ea5e9']}
-                      className="text-4xl md:text-5xl font-bold"
-                      animationSpeed={3}
-                      showBorder={false}
-                    >
-                      Ready to Transform Your Teaching?
-                    </GradientText>
-                  </motion.div>
-                  <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground">
-                    Join Louisiana educators who are reclaiming their time and deepening their practice with ethical, platform-agnostic AI guidance.
-                  </motion.p>
-                  <motion.div variants={fadeInUp}>
-                    <Button
-                      size="lg"
-                      onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
-                      className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl w-full"
-                    >
-                      Join Beta Program
-                      <ArrowRight className="h-5 w-5" />
-                    </Button>
-                  </motion.div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+        <HeroSection onBetaSignupClick={handleBetaSignupClick} />
+        <FeaturesSection />
+        <LouisianaExamplesSection />
+        <TestimonialsSection />
+        <FAQSection />
+        <CTASection onBetaSignupClick={handleBetaSignupClick} />
       </main>
 
       {/* Footer */}
       <footer className="bg-background border-t border-border py-12 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-             {/* Brand Column */}
-             <div className="md:col-span-1">
-               <div className="mb-4">
-                 <div className="flex items-center gap-3">
-                   <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
-                   <span className="text-xl font-bold text-foreground">
-                     Pelican AI
-                   </span>
-                 </div>
-               </div>
-               <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                 Navigate AI with Confidence
-               </p>
-               <p className="text-sm text-muted-foreground leading-relaxed">
-                 Platform-agnostic guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with ethical guardrails aligned to Louisiana standards.
-               </p>
-             </div>
+            {/* Brand Column */}
+            <div className="md:col-span-1">
+              <div className="mb-4">
+                <div className="flex items-center gap-3">
+                  <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
+                  <span className="text-xl font-bold text-foreground">
+                    Pelican AI
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                Navigate AI with Confidence
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Platform-agnostic guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with ethical guardrails aligned to Louisiana standards.
+              </p>
+            </div>
 
             {/* Product Links */}
             <div>
@@ -1047,9 +170,9 @@ export function LandingPage() {
                 </li>
                 <li>
                   <button 
-                    onClick={() => document.getElementById('beta-signup')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={handleBetaSignupClick}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
-                    aria-label="Navigate to Beta Program signup section"
+                    aria-label="Join Beta Program"
                   >
                     Beta Program
                   </button>
@@ -1100,23 +223,22 @@ export function LandingPage() {
             </div>
           </div>
 
-           <div className="border-t border-border pt-8 text-center">
-             <p className="text-sm text-muted-foreground mb-2">
-               Created with 💙 by an educator for educators
-             </p>
-             <p className="text-sm text-muted-foreground">
-               © {new Date().getFullYear()} Pelican AI. All rights reserved.
-             </p>
-           </div>
+          <div className="border-t border-border pt-8 text-center">
+            <p className="text-sm text-muted-foreground mb-2">
+              Created with 💙 by an educator for educators
+            </p>
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} Pelican AI. All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
 
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+      {/* Beta Signup Modal */}
+      <BetaSignupModal 
+        isOpen={isBetaSignupModalOpen} 
+        onClose={() => setIsBetaSignupModalOpen(false)} 
       />
-
     </div>
   );
 }

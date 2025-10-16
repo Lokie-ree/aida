@@ -13,7 +13,7 @@ import { Resend } from "@convex-dev/resend";
 // testMode: true = only send to @resend.dev test addresses (for development)
 // testMode: false = send to real addresses (requires verified domain in Resend)
 export const resend: Resend = new Resend(components.resend, {
-  testMode: false, // Set to false once you have a verified domain in Resend
+  testMode: true, // Set to true for testing with @resend.dev addresses
   onEmailEvent: internal.emailEvents.handleEmailEvent,
 });
 
@@ -21,7 +21,7 @@ export const resend: Resend = new Resend(components.resend, {
 /**
  * Action to send welcome email to new beta tester.
  * 
- * Sends a welcome email with temporary password and next steps for beta testers
+ * Sends a welcome email with next steps for beta testers
  * who have successfully signed up.
  * 
  * **Phase 1 MVP:** Scheduled automatically after beta signup.
@@ -29,7 +29,6 @@ export const resend: Resend = new Resend(components.resend, {
  * @param {string} args.email - Recipient email address
  * @param {string} [args.name] - Recipient name (defaults to "Educator")
  * @param {string} [args.school] - School name (included in email)
- * @param {string} [args.temporaryPassword] - Generated temporary password
  * 
  * @returns {Object} Result containing:
  *   - success: boolean indicating email sent status
@@ -41,8 +40,7 @@ export const resend: Resend = new Resend(components.resend, {
  * await ctx.runAction(api.email.sendBetaWelcomeEmail, {
  *   email: "teacher@school.edu",
  *   name: "Jane Teacher",
- *   school: "Lincoln High",
- *   temporaryPassword: "Temp123!"
+ *   school: "Lincoln High"
  * });
  */
 export const sendBetaWelcomeEmail = action({
@@ -50,7 +48,6 @@ export const sendBetaWelcomeEmail = action({
     email: v.string(),
     name: v.optional(v.string()),
     school: v.optional(v.string()),
-    temporaryPassword: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -63,7 +60,6 @@ export const sendBetaWelcomeEmail = action({
         BetaWelcomeEmail({
           name: args.name || "Educator",
           school: args.school,
-          temporaryPassword: args.temporaryPassword,
         })
       );
 

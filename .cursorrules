@@ -6,8 +6,8 @@
 **Tagline:** Navigate AI with Confidence  
 **Mission:** Empower Louisiana educators with practical, ethical, and platform-agnostic AI guidance that reclaims their time for high-impact teaching.
 
-**Current Phase:** Phase 1 - MVP Validation (Email-First Approach)  
-**Goal:** Validate email-first onboarding with 20+ beta testers, achieve 75%+ weekly email open rate over 4 weeks
+**Current Phase:** Phase 1 Complete - Transitioning to Phase 2  
+**Status:** Phase 1 MVP functionally complete (72.7% test success rate), Phase 2 backend implemented but UI not exposed
 
 ## Core Value Proposition
 
@@ -32,8 +32,9 @@
 ### MCP Integrations
 - **Convex MCP** (v1.27.3) - Deployment monitoring, database inspection, function debugging
 - **Playwright MCP** - Automated E2E testing, visual regression, accessibility validation
-- **Firecrawl MCP** (@mendable/firecrawl-js v1.21.1) - Document scraping and processing
-- **Vapi MCP** (@vapi-ai/web v2.3.10) - Voice interface logs and debugging
+- **Firecrawl MCP** (@mendable/firecrawl-js v1.29.3) - Document scraping and processing (Phase 2+)
+- **Vapi MCP** (@vapi-ai/web v2.4.0) - Voice interface logs and debugging (Phase 2+)
+- **RAG System** (@convex-dev/rag v0.5.3) - Document embeddings and intelligent retrieval (Phase 2+)
 
 ### Architecture Principles
 - Serverless-first approach
@@ -59,21 +60,31 @@
 - Educator-first focus
 - Confident but humble
 
-## Phase 1 MVP Scope
+## Current System Status
 
-**In Scope:**
-- Beta invitation email system
-- Simple web signup/auth flow (Better Auth)
-- Automated welcome email
-- Automated weekly prompt email (cron job)
-- Database schema: users, userProfiles, betaSignups, sessions
+### Phase 1 MVP (Functionally Complete ✅)
+- ✅ Beta invitation email system
+- ✅ Web signup/auth flow (Better Auth)
+- ✅ Automated welcome email
+- ✅ Automated weekly prompt email (cron job)
+- ✅ Database schema: users, userProfiles, betaSignups, sessions
+- ⚠️ **Known Issues:** 72.7% test success rate, Better Auth HTTP endpoint problems (CORS/404 errors), session sync issues
 
-**Out of Scope:**
-- Web dashboard
-- Framework library UI
-- Community features (innovations, testimonials)
-- Admin panel
-- User profile UI
+### Phase 2 Backend (Implemented, UI Not Exposed ✅/❌)
+- ✅ Framework library backend (convex/frameworks.ts, 80+ CRUD operations)
+- ✅ Community features backend (convex/innovations.ts, testimonials.ts)
+- ✅ Admin dashboard backend (convex/admin.ts)
+- ✅ Time tracking backend (convex/timeTracking.ts)
+- ✅ RAG system integration (@convex-dev/rag)
+- ✅ UI components built (src/components/framework/, community/, admin/, dashboard/)
+- ❌ UI not connected to user-facing routes or data flows
+
+### Critical Blockers for Phase 2 Transition
+1. **Fix Better Auth HTTP endpoint issues** (CORS, 404 errors blocking tests)
+2. **Improve test coverage** from 72.7% to 90%+ (auth endpoint tests failing)
+3. **Expose framework library UI** to beta users (wire existing UI to backend)
+4. **Connect community features UI** (add routing, data connections)
+5. **Resolve session management sync issues** (edge cases in session persistence)
 
 ## Success Metrics (Phase 1)
 
@@ -93,7 +104,7 @@
 
 ## Data Model (Convex Schema)
 
-**Phase 1 Tables:**
+**Phase 1 Tables (Active in Production):**
 - `betaSignups` - Beta tester recruitment and approval
 - `userProfiles` - User extensions (school, subject, gradeLevel, district, role)
 - `user` - Better Auth managed
@@ -101,8 +112,15 @@
 - `account` - Better Auth managed
 - `verification` - Better Auth managed
 
-**Future Tables (Phase 2+):**
-- frameworks, innovations, testimonials, timeTracking, frameworkUsage, betaProgram
+**Phase 2 Tables (Already Implemented in Schema):**
+- `frameworks` - AI guidance frameworks with Louisiana standards alignment
+- `frameworkUsage` - User interaction tracking
+- `testimonials` - User feedback and success stories
+- `innovations` - Community-shared innovations
+- `innovationInteractions` - Community engagement tracking
+- `betaProgram` - Beta program tracking and analytics
+- `timeTracking` - Time savings analytics
+- **Note:** RAG tables (documents, chatMessages, feedbackSessions, auditLogs) auto-managed by @convex-dev/rag
 
 ## Agent Selection System
 
