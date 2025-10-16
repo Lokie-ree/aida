@@ -35,13 +35,6 @@ export function BaseEmailTemplate({
         <Container style={container}>
           {/* Header with Pelican AI Branding */}
           <Section style={header}>
-            <Img
-              src="https://pelicanai.org/horizontal-primary-logo.png"
-              width="200"
-              height="50"
-              alt="Pelican AI"
-              style={logo}
-            />
             {headerTitle && (
               <Text style={headerTitleStyle}>{headerTitle}</Text>
             )}
@@ -70,20 +63,9 @@ export function BaseEmailTemplate({
               </Link>
               {" • "}
               <Link href="mailto:hello@pelicanai.org" style={link}>
-                Support
-              </Link>
-              {" • "}
-              <Link href="https://pelicanai.org/unsubscribe" style={link}>
-                Unsubscribe
+                hello@pelicanai.org
               </Link>
             </Text>
-            <Img
-              src="https://pelicanai.org/email-signature.png"
-              width="200"
-              height="60"
-              alt="Pelican AI Email Signature"
-              style={signature}
-            />
           </Section>
         </Container>
       </Body>
@@ -132,7 +114,7 @@ export const SecondaryButton = ({ href, children, ...props }: any) => (
 const main = {
   backgroundColor: "#f6f9fc",
   fontFamily:
-    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    '"Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
 };
 
 const container = {
@@ -147,16 +129,12 @@ const header = {
   textAlign: "center" as const,
 };
 
-const logo = {
-  margin: "0 auto",
-  display: "block",
-  objectFit: "contain" as const,
-};
 
 const headerTitleStyle = {
   color: "#1e40af",
   fontSize: "28px",
   fontWeight: "bold",
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   margin: "16px 0 8px",
   textAlign: "center" as const,
 };
@@ -176,6 +154,7 @@ const h1 = {
   color: "#1e40af",
   fontSize: "24px",
   fontWeight: "bold",
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   margin: "0 0 16px",
 };
 
@@ -183,6 +162,7 @@ const h2 = {
   color: "#1e40af",
   fontSize: "20px",
   fontWeight: "bold",
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   margin: "0 0 12px",
 };
 
@@ -277,11 +257,6 @@ const link = {
   textDecoration: "none",
 };
 
-const signature = {
-  margin: "16px 0 0",
-  display: "block",
-  objectFit: "contain" as const,
-};
 
 // Export common text styles for use in child components
 export const textStyles = {

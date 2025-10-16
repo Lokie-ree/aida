@@ -90,29 +90,76 @@ Before removing anything, verify:
 - [ ] Validate critical user flows still work (Playwright)
 - [ ] Update related documentation
 
-## Common Targets for Simplification
+## Phase 1 to Phase 2 Transition - What to Remove
 
-### Phase 1 MVP Context
+### Phase 1 Cleanup (Remove/Archive)
+- ❌ **Remove:** Commented-out Phase 2 references in Phase 1 files
+- ❌ **Archive:** Phase 1 MVP-specific test scaffolding and temporary workarounds
+- ❌ **Consolidate:** Multiple overlapping ADRs (ADR-006, ADR-007 can merge into ADR-004)
+- ❌ **Remove:** Unused imports from Phase 1 components
+- ❌ **Simplify:** Test fixtures (remove MVP-specific mocks)
 
-**Out of Scope Features (Consider Removing):**
-- Full dashboard UI (Phase 2)
-- Framework library UI (Phase 2)
-- Community features (innovations, testimonials) - Phase 2
-- Admin panel (Phase 2)
-- Voice interface integration (Vapi) - Future
-- RAG system (OpenAI embeddings) - Future
+### Phase 2 Focus - What NOT to Remove
+- ✅ **Keep:** All Phase 2 backend code (convex/frameworks.ts, innovations.ts, testimonials.ts, timeTracking.ts, admin.ts, betaProgram.ts)
+- ✅ **Keep:** All Phase 2 UI components (src/components/framework/, community/, admin/, dashboard/)
+- ✅ **Keep:** Vapi integration (convex/vapi.ts, @vapi-ai/web) - Phase 3 voice interface
+- ✅ **Keep:** RAG system (@convex-dev/rag) - Phase 3 document processing
+- ✅ **Keep:** Firecrawl integration (@mendable/firecrawl-js) - Phase 3 web scraping
 
-**Potential Over-Engineering:**
-- Premature database indexes for tables with <100 rows
-- Complex state management for simple forms
-- Elaborate caching for infrequently accessed data
-- Multiple abstraction layers for straightforward operations
+## Phase 3+ Preservation Rules (From PRD)
 
-**Documentation to Consolidate:**
-- Multiple overlapping README files
-- Duplicated information between PRD and orchestrator.json
-- Outdated plan files in .cursor/plans/
-- Commented-out code as "documentation"
+### Future Features - DO NOT DELETE (6-12 Months)
+**These are NOT dead code - they're strategic Phase 3+ investments:**
+
+- **@convex-dev/rag (RAG System):**
+  - Purpose: Document processing, intelligent retrieval, framework recommendations
+  - Files: convex/rag.ts, RAG-related tables (documents, chatMessages, etc.)
+  - Justification: Core to Phase 3 advanced AI guidance features
+
+- **@vapi-ai/web (Voice Interface):**
+  - Purpose: Hands-free AI guidance for busy educators
+  - Files: convex/vapi.ts, voice integration hooks
+  - Justification: Accessibility feature for USER-001 persona (Sarah Johnson - time-strapped)
+
+- **@mendable/firecrawl-js (Web Scraping):**
+  - Purpose: Louisiana standards document processing, policy updates
+  - Files: Firecrawl integration utilities
+  - Justification: Automated Louisiana standards alignment (USER-002 engagement)
+
+- **Beta Program Tracking (convex/betaProgram.ts):**
+  - Purpose: Professional development tracking, educator advancement
+  - Justification: Phase 3 district partnerships, PD certification integration
+
+- **Time Tracking System (convex/timeTracking.ts):**
+  - Purpose: Advanced analytics, impact measurement, time savings reporting
+  - Justification: Phase 3 analytics dashboard, district ROI reports
+
+### User Persona-Driven Preservation
+
+**Sarah Johnson (Moderate Tech Comfort):**
+- Keep: Voice interface (Vapi) - hands-free guidance when overwhelmed
+- Keep: Simple onboarding flows - reduce friction points
+
+**Michael Chen (High Tech Comfort):**
+- Keep: Advanced search features - power-user framework discovery
+- Keep: RAG system - intelligent prompt recommendations
+
+**Dr. Lisa Rodriguez (Community Leader):**
+- Keep: Community features (innovations, testimonials) - collaboration tools
+- Keep: Analytics dashboards - track impact and share with peers
+
+### Critical Wrecking Ball Tasks
+1. **Remove Phase 1 MVP scaffolding** (temporary auth workarounds, test mocks)
+2. **Consolidate auth documentation** (merge ADR-006, ADR-007 into ADR-004 or ADR-008)
+3. **Clean up unused imports** from Phase 1 components (especially auth-related)
+4. **Simplify test fixtures** (remove email-first MVP-specific mocks)
+5. **Archive outdated plans** (.cursor/plans/ with Phase 1-only content)
+
+### What This Means for Phase 2
+- **Don't delete Phase 2 code** - it's implemented and ready to wire up
+- **Focus on cleanup** - remove scaffolding that's no longer needed
+- **Consolidate docs** - merge overlapping decision records
+- **Simplify imports** - clean up unused Phase 1 workarounds
 
 ### Refactoring Patterns
 
@@ -221,34 +268,47 @@ async function sendEmail(to: string, subject: string, body: string) {
 
 ## Examples of Successful Simplification
 
-### Example 1: Remove Unused Vapi Integration
+### Example 1: Archive Phase 1 MVP Test Scaffolding
 ```bash
-# Phase 1 doesn't need voice interface
-rm -rf convex/vapi.ts
-npm uninstall @vapi-ai/web
-# Update: Remove Vapi references from documentation
+# Remove temporary test mocks used for email-first MVP
+rm scripts/test-fixtures-mvp.js  # If it exists
+# Archive Phase 1-only test cases
+mkdir -p scripts/archive/phase1/
+mv scripts/test-mvp-email-flow.js scripts/archive/phase1/
 ```
 
 ### Example 2: Consolidate Auth Documentation
 ```bash
 # Multiple auth decision documents exist
-# Consolidate into single ADR-004
-mv docs/decisions/006-beta-auth-investigation.md docs/archive/
-mv docs/decisions/007-email-first-beta-flow.md docs/archive/
-# Update ADR-004 with consolidated decision
+# Consolidate into ADR-008 (Authentication Flow Fixes)
+# Archive intermediate investigation docs
+mkdir -p docs/decisions/archive/
+mv docs/decisions/006-beta-auth-investigation.md docs/decisions/archive/
+mv docs/decisions/007-email-first-beta-flow.md docs/decisions/archive/
+# Update ADR-008 with consolidated learnings
 ```
 
-### Example 3: Simplify Database Schema
-```sql
--- Remove Phase 2 tables from schema.ts
--- Keep: betaSignups, userProfiles, user, session, account, verification
--- Remove: frameworks, innovations, testimonials, timeTracking, betaProgram
--- Move to commented section for Phase 2
+### Example 3: Clean Up Phase 1 Workarounds
+```typescript
+// REMOVE: Temporary auth workarounds from Phase 1
+// src/components/auth/AuthModal.tsx
+
+// BEFORE: Phase 1 MVP workaround
+const handleTempAuth = () => {
+  // TODO: Remove after Better Auth HTTP endpoints fixed
+  console.log("Using temporary auth flow");
+};
+
+// AFTER: Remove entire temporary function
+// Use proper Better Auth flow now that endpoints are fixed
 ```
 
 ## References
 
+- **Product Requirements:** docs/PRODUCT_REQUIREMENTS_DOCUMENT.md (primary source of truth)
+- **User Personas:** PRD Section 3.1 (persona-driven preservation decisions)
+- **Roadmap:** PRD Section 10 (Phase 3+ features to preserve - DO NOT DELETE)
+- **Risk Assessment:** PRD Section 9 (don't remove risk mitigation code)
 - **Phase 1 MVP Scope:** orchestrator.json (execution_plan.phases[0].scope_boundaries)
-- **Out of Scope Features:** orchestrator.json (out_of_scope list)
 - **Package Dependencies:** package.json
 - **Convex Schema:** convex/schema.ts
