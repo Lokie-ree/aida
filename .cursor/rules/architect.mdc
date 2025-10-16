@@ -357,5 +357,6 @@ All major technical decisions documented in `docs/decisions/`:
 - **Roadmap:** PRD Section 10 (immediate, short-term, medium-term, long-term)
 - **Convex Documentation:** https://docs.convex.dev
 - **Better Auth Documentation:** https://www.better-auth.com/docs
+
 - **Schema Definition:** convex/schema.ts
 - **Architecture Decisions:** docs/decisions/

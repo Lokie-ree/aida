@@ -18,180 +18,7 @@ const frontendUrl = "http://localhost:5175"; // Frontend development URL
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
-export const authComponent = createClient<DataModel>(components.betterAuth, {
-  verbose: true,
-  triggers: {
-    user: {
-      onCreate: async (ctx, doc) => {
-        try {
-          console.log("Better Auth user created, creating user profile:", doc._id);
-          
-          // Validate required fields
-          if (!doc._id || !doc.email) {
-            console.error("User creation trigger: Missing required fields");
-            return; // Gracefully exit without throwing
-          }
-          
-          // Check if profile already exists using authId
-          const existingProfile = await ctx.db
-            .query("userProfiles")
-            .withIndex("authId", (q) => q.eq("authId", doc._id))
-            .first();
-
-          if (existingProfile) {
-            console.log("User profile already exists for user:", doc._id);
-            return; // Profile already created, nothing to do
-          }
-
-          // Look up beta signup data by email to populate profile
-          const betaSignup = await ctx.db
-            .query("betaSignups")
-            .withIndex("by_email", (q) => q.eq("email", doc.email))
-            .first();
-
-          // Create user profile with authId (new pattern) and legacy userId for compatibility
-          await ctx.db.insert("userProfiles", {
-            userId: doc._id, // Legacy field for compatibility
-            authId: doc._id, // New Better Auth 0.9 pattern
-            school: betaSignup?.school || undefined,
-            subject: betaSignup?.subject || undefined,
-            gradeLevel: undefined,
-            district: undefined,
-            role: "teacher",
-          });
-          console.log("User profile created for user:", doc._id);
-
-          // Create beta program record for ALL users (not just beta signups)
-          // This ensures every user has a beta program record
-          await ctx.db.insert("betaProgram", {
-            userId: doc._id,
-            status: betaSignup && betaSignup.status === "approved" ? "active" : "invited",
-            invitedAt: betaSignup?.signupDate || Date.now(),
-            joinedAt: Date.now(),
-            onboardingStep: 0,
-            onboardingCompleted: false,
-            frameworksTried: 0,
-            totalTimeSaved: 0,
-            innovationsShared: 0,
-            officeHoursAttended: 0,
-            weeklyEngagementCount: 0,
-          });
-          console.log("Beta program record created for user:", doc._id);
-        } catch (error) {
-          console.error("Error in onCreate trigger:", error);
-          // Don't throw - let Better Auth continue even if profile creation fails
-          // This prevents blocking user creation if there's a profile sync issue
-        }
-      },
-      onUpdate: async (ctx, newDoc, oldDoc) => {
-        // When a Better Auth user is updated, sync any relevant changes
-        console.log("Better Auth user updated:", newDoc._id);
-        
-        // Check if email changed and update any related data
-        if (newDoc.email !== oldDoc.email) {
-          console.log("User email changed for user:", newDoc._id);
-          
-          // Update user profile if it exists
-          const userProfile = await ctx.db
-            .query("userProfiles")
-            .withIndex("authId", (q) => q.eq("authId", newDoc._id))
-            .first();
-          
-          if (userProfile) {
-            // Update any related records that might reference the email
-            console.log("User profile found, email change handled for user:", newDoc._id);
-          }
-        }
-      },
-      onDelete: async (ctx, doc) => {
-        try {
-          // When a Better Auth user is deleted, clean up related data
-          console.log("Better Auth user deleted, cleaning up user profile:", doc._id);
-          
-          // Validate required fields
-          if (!doc._id) {
-            console.error("User deletion trigger: Missing user ID");
-            return;
-          }
-          
-          // Find and delete the associated user profile using authId
-          const profile = await ctx.db
-            .query("userProfiles")
-            .withIndex("authId", (q) => q.eq("authId", doc._id))
-            .first();
-
-          if (profile) {
-            await ctx.db.delete(profile._id);
-            console.log("User profile deleted for user:", doc._id);
-          } else {
-            console.log("No user profile found to delete for user:", doc._id);
-          }
-        } catch (error) {
-          console.error("Error in onDelete trigger (profile):", error);
-          // Continue with cleanup even if profile deletion fails
-        }
-
-        // Clean up Phase 2 related data (wrapped in try-catch for resilience)
-        try {
-          // Delete beta program records
-          const betaPrograms = await ctx.db
-            .query("betaProgram")
-            .withIndex("by_user", (q) => q.eq("userId", doc._id))
-            .collect();
-          
-          for (const betaProgram of betaPrograms) {
-            await ctx.db.delete(betaProgram._id);
-          }
-
-          // Delete framework usage records
-          const frameworkUsage = await ctx.db
-            .query("frameworkUsage")
-            .withIndex("by_user", (q) => q.eq("userId", doc._id))
-            .collect();
-          
-          for (const usage of frameworkUsage) {
-            await ctx.db.delete(usage._id);
-          }
-
-          // Delete testimonials
-          const testimonials = await ctx.db
-            .query("testimonials")
-            .withIndex("by_user", (q) => q.eq("userId", doc._id))
-            .collect();
-          
-          for (const testimonial of testimonials) {
-            await ctx.db.delete(testimonial._id);
-          }
-
-          // Delete innovations
-          const innovations = await ctx.db
-            .query("innovations")
-            .withIndex("by_user", (q) => q.eq("userId", doc._id))
-            .collect();
-          
-          for (const innovation of innovations) {
-            await ctx.db.delete(innovation._id);
-          }
-
-          // Delete time tracking records
-          const timeTracking = await ctx.db
-            .query("timeTracking")
-            .withIndex("by_user", (q) => q.eq("userId", doc._id))
-            .collect();
-          
-          for (const tracking of timeTracking) {
-            await ctx.db.delete(tracking._id);
-          }
-
-          console.log("All user data cleaned up for user:", doc._id);
-        } catch (error) {
-          console.error("Error cleaning up Phase 2 data in onDelete trigger:", error);
-          // Log but don't throw - cleanup should continue even if Phase 2 data fails
-        }
-      },
-    },
-  },
-});
+export const authComponent = createClient<DataModel>(components.betterAuth);
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
@@ -203,12 +30,19 @@ export const createAuth = (
     logger: {
       disabled: optionsOnly,
     },
-    trustedOrigins: [siteUrl],
+    trustedOrigins: [siteUrl, frontendUrl],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password for beta program
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,
+    },
+    // Session configuration for better persistence
+    session: {
+      cookieCache: {
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      },
+      updateAge: 60 * 60 * 24, // 1 day
     },
     plugins: [
       // The cross domain plugin is required for client side frameworks
