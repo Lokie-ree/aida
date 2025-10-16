@@ -104,7 +104,7 @@ export function generateTestEmail(prefix = "test") {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@example.com`;
 }
 
-export function generateTestPassword(length = 12) {
+export function generateTestPassword(length = 16) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
   let password = '';
   for (let i = 0; i < length; i++) {
