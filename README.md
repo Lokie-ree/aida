@@ -4,7 +4,7 @@
 > Platform-agnostic guidance that works with ANY AI tool you already use, designed specifically for Louisiana educators.
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/your-org/pelican-ai)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](LICENSE)
 [![Convex](https://img.shields.io/badge/backend-Convex-00d4aa.svg)](https://convex.dev)
 [![React](https://img.shields.io/badge/frontend-React%2019-61dafb.svg)](https://react.dev)
 
@@ -187,7 +187,13 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is proprietary software. Educational use by Louisiana educators is permitted under our [Software License Agreement](LICENSE). For commercial licensing or other uses, please contact legal@pelicanai.com.
+
+**Key Points:**
+- ✅ **Educational Use:** Louisiana educators can use for classroom instruction and professional development
+- ❌ **Commercial Use:** Requires written permission and commercial licensing
+- 🔒 **Proprietary:** AI guidance frameworks, Louisiana standards alignment, and platform-agnostic strategies are protected IP
+- 📧 **Contact:** For licensing questions, email legal@pelicanai.com
 
 ## 🙏 Acknowledgments
 

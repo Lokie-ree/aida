@@ -62,19 +62,58 @@ git push origin feature/your-feature-name
 git push -u origin feature/your-feature-name
 ```
 
-### 4. **Create Pull Request**
+### 4. **Generate PR Title and Description**
+
+After pushing your feature branch, generate a clear PR title and description:
+
+**PR Title Format:**
+- `feat: Add [feature name]` (e.g., "feat: Add privacy policy and terms of service modals")
+- `fix: Fix [issue description]` (e.g., "fix: Resolve authentication validation error")
+- `docs: Update [documentation]` (e.g., "docs: Update API guidelines")
+
+**PR Description Template:**
+```markdown
+## 📋 What Changed
+- Brief bullet points of main changes
+- New features added
+- Bug fixes implemented
+
+## 🎯 Why This Change
+- Problem being solved
+- User benefit
+- Business value
+
+## 🧪 Testing
+- [ ] Unit tests pass (`npm run test:unit`)
+- [ ] Integration tests pass (`npm run test:integration`)
+- [ ] Build successful (`npm run build`)
+- [ ] Lint checks pass (`npm run lint`)
+- [ ] Manual testing completed
+
+## 📸 Screenshots (if UI changes)
+- Before/after screenshots
+- New UI components
+- Mobile responsiveness
+
+## 🔗 Related Issues
+- Closes #[issue-number]
+- Related to #[issue-number]
+
+## 📝 Additional Notes
+- Any special considerations
+- Breaking changes
+- Migration steps needed
+```
+
+### 5. **Create Pull Request**
 
 1. Go to GitHub repository: https://github.com/Lokie-ree/aida
 2. Click "Compare & pull request" (appears after push)
-3. Fill in PR template:
-   - **Title:** Clear, descriptive (e.g., "Add temporary password generation system")
-   - **Description:** What, why, how, impact
-   - **Testing:** Test results, validation steps
-   - **Screenshots:** If UI changes
+3. Use the generated PR title and description from step 4
 4. Request review (if working with team)
 5. Link related issues
 
-### 5. **Merge & Cleanup**
+### 6. **Merge & Cleanup**
 
 ```bash
 # After PR approval and merge, clean up
@@ -208,13 +247,68 @@ git commit -m "feat: add temporaryPassword field to betaSignups schema"
 # 5. Push feature branch
 git push -u origin feature/database-schema-update
 
-# 6. Create PR on GitHub
-# ... fill in PR template ...
+# 6. Generate PR title and description
+# Title: "feat: Add temporaryPassword field to betaSignups schema"
+# Description: Use the template from step 4 above
 
-# 7. After approval & merge, clean up
+# 7. Create PR on GitHub
+# ... use generated title and description ...
+
+# 8. After approval & merge, clean up
 git checkout main
 git pull origin main
 git branch -d feature/database-schema-update
+```
+
+---
+
+## 📝 PR Generation Example
+
+Based on your recent changes, here's how to generate PR content:
+
+**For the current branch `feature/privacy-terms-modals-and-email-updates`:**
+
+**PR Title:**
+```
+feat: Add privacy policy and terms of service modals with email updates
+```
+
+**PR Description:**
+```markdown
+## 📋 What Changed
+- Add PrivacyPolicyModal and TermsOfServiceModal components
+- Update LandingPage to include privacy/terms links
+- Enhance email.ts with additional functionality
+- Update README.md with latest project information
+- Add LICENSE file
+- Include Playwright MCP test screenshots
+
+## 🎯 Why This Change
+- Improves legal compliance with privacy policy and terms of service
+- Enhances user trust with transparent legal documentation
+- Provides better email functionality for user communication
+- Updates project documentation for better maintainability
+
+## 🧪 Testing
+- [x] Unit tests pass (`npm run test:unit`)
+- [x] Integration tests pass (`npm run test:integration`)
+- [x] Build successful (`npm run build`)
+- [x] Lint checks pass (`npm run lint`)
+- [x] Manual testing completed
+
+## 📸 Screenshots (if UI changes)
+- New privacy policy modal component
+- New terms of service modal component
+- Updated landing page with legal links
+
+## 🔗 Related Issues
+- Improves legal compliance requirements
+- Enhances user experience with clear legal documentation
+
+## 📝 Additional Notes
+- All components follow Pelican AI design system
+- Modals are accessible and mobile-responsive
+- Email updates maintain backward compatibility
 ```
 
 ---
