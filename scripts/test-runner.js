@@ -20,21 +20,31 @@ const TEST_SUITES = {
     'unit/test-unit-beta-signup.js',
     'unit/test-unit-user-profiles.js',
     'unit/test-unit-beta-program.js',
-    'unit/test-unit-auth.js'
+    'unit/test-unit-auth.js',
+    'unit/test-unit-frameworks.js',
+    'unit/test-unit-community.js'
   ],
   integration: [
     'integration/test-integration-signup-flow.js',
-    'integration/test-integration-auth-initialization.js'
+    'integration/test-integration-auth-initialization.js',
+    'integration/test-integration-phase2-features.js'
   ],
   e2e: [
     'e2e/test-e2e-beta-flow.js'
   ],
   api: [
-    'api/test-api-better-auth.js'
+    'api/test-api-better-auth.js',
+    'api/test-api-phase2-emails.js'
   ],
   diagnostic: [
     'diagnostic/test-environment-config.js',
     'diagnostic/test-database-state.js'
+  ],
+  phase2: [
+    'unit/test-unit-frameworks.js',
+    'unit/test-unit-community.js',
+    'integration/test-integration-phase2-features.js',
+    'api/test-api-phase2-emails.js'
   ]
 };
 
@@ -250,10 +260,12 @@ Test Suites:
   e2e                End-to-end tests for complete user journey
   api                API tests for Better Auth endpoints
   diagnostic         Diagnostic tests for environment and database
+  phase2             Phase 2 feature tests (frameworks, community, analytics)
 
 Examples:
   node scripts/test-runner.js                    # Run all tests
   node scripts/test-runner.js --suite unit       # Run unit tests only
+  node scripts/test-runner.js --suite phase2     # Run Phase 2 feature tests only
   node scripts/test-runner.js --suite e2e        # Run E2E tests only
   node scripts/test-runner.js --cleanup          # Clean database only
 

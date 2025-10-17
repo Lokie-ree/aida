@@ -101,7 +101,7 @@ export class ConvexTestClient {
 }
 
 export function generateTestEmail(prefix = "test") {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@example.com`;
+  return `delivered@resend.dev`;
 }
 
 export function generateTestPassword(length = 16) {
@@ -151,17 +151,33 @@ export async function cleanTestData(client) {
   const runner = new TestRunner("Database Cleanup");
   
   try {
-    runner.log("🧹 Starting database cleanup...");
+    runner.log("🧹 Starting comprehensive database cleanup...");
 
-    // Get all records
-    const [betaSignups, userProfiles, betaPrograms] = await Promise.all([
+    // Get all Phase 1 and Phase 2 records
+    const [
+      betaSignups, userProfiles, betaPrograms,
+      frameworks, frameworkUsage, testimonials, innovations, innovationInteractions, timeTracking
+    ] = await Promise.all([
+      // Phase 1 data
       client.query("betaSignup:getAllBetaSignups").catch(() => []),
       client.query("userProfiles:getAllUserProfiles").catch(() => []),
-      client.query("betaProgram:getAllBetaPrograms").catch(() => [])
+      client.query("betaProgram:getAllBetaPrograms").catch(() => []),
+      
+      // Phase 2 data
+      client.query("frameworks:getAllFrameworks").catch(() => []),
+      client.query("frameworks:getAllFrameworkUsage").catch(() => []),
+      client.query("testimonials:getAllTestimonials").catch(() => []),
+      client.query("innovations:getAllInnovations").catch(() => []),
+      client.query("innovations:getAllInnovationInteractions").catch(() => []),
+      client.query("timeTracking:getAllTimeTracking").catch(() => [])
     ]);
 
     const deletePromises = [];
+    let totalDeleted = 0;
 
+    // Delete Phase 1 data
+    runner.log("🧹 Cleaning Phase 1 data...");
+    
     // Delete beta signups
     for (const signup of betaSignups || []) {
       deletePromises.push(
@@ -186,11 +202,62 @@ export async function cleanTestData(client) {
       );
     }
 
+    // Delete Phase 2 data
+    runner.log("🧹 Cleaning Phase 2 data...");
+    
+    // Delete framework usage (must be deleted before frameworks)
+    for (const usage of frameworkUsage || []) {
+      deletePromises.push(
+        client.mutation("frameworks:deleteFrameworkUsage", { usageId: usage._id })
+          .catch(error => runner.log(`Warning: Failed to delete framework usage ${usage._id}: ${error.message}`, "warning"))
+      );
+    }
+
+    // Delete innovation interactions (must be deleted before innovations)
+    for (const interaction of innovationInteractions || []) {
+      deletePromises.push(
+        client.mutation("innovations:deleteInnovationInteraction", { interactionId: interaction._id })
+          .catch(error => runner.log(`Warning: Failed to delete innovation interaction ${interaction._id}: ${error.message}`, "warning"))
+      );
+    }
+
+    // Delete frameworks
+    for (const framework of frameworks || []) {
+      deletePromises.push(
+        client.mutation("frameworks:deleteFramework", { frameworkId: framework._id })
+          .catch(error => runner.log(`Warning: Failed to delete framework ${framework._id}: ${error.message}`, "warning"))
+      );
+    }
+
+    // Delete testimonials
+    for (const testimonial of testimonials || []) {
+      deletePromises.push(
+        client.mutation("testimonials:deleteTestimonial", { testimonialId: testimonial._id })
+          .catch(error => runner.log(`Warning: Failed to delete testimonial ${testimonial._id}: ${error.message}`, "warning"))
+      );
+    }
+
+    // Delete innovations
+    for (const innovation of innovations || []) {
+      deletePromises.push(
+        client.mutation("innovations:deleteInnovation", { innovationId: innovation._id })
+          .catch(error => runner.log(`Warning: Failed to delete innovation ${innovation._id}: ${error.message}`, "warning"))
+      );
+    }
+
+    // Delete time tracking
+    for (const tracking of timeTracking || []) {
+      deletePromises.push(
+        client.mutation("timeTracking:deleteTimeTracking", { trackingId: tracking._id })
+          .catch(error => runner.log(`Warning: Failed to delete time tracking ${tracking._id}: ${error.message}`, "warning"))
+      );
+    }
+
     await Promise.all(deletePromises);
     
-    const totalDeleted = deletePromises.length;
+    totalDeleted = deletePromises.length;
     runner.recordTest("Database Cleanup", true, `${totalDeleted} records deleted`);
-    runner.log(`✅ Database cleanup completed: ${totalDeleted} records deleted`);
+    runner.log(`✅ Comprehensive database cleanup completed: ${totalDeleted} records deleted`);
     
     return true;
   } catch (error) {

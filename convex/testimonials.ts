@@ -6,7 +6,7 @@
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { authComponent } from "./auth";
+import { authComponent, getAuthUserSafe } from "./auth";
 
 // Mutation: Submit testimonial
 export const submitTestimonial = mutation({
@@ -18,7 +18,7 @@ export const submitTestimonial = mutation({
   },
   returns: v.id("testimonials"),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -77,6 +77,39 @@ export const getFeaturedTestimonials = query({
 });
 
 // Query: Get all testimonials (admin only)
+// Query: Get testimonial by ID
+export const getTestimonialById = query({
+  args: { testimonialId: v.id("testimonials") },
+  returns: v.union(
+    v.object({
+      _id: v.id("testimonials"),
+      _creationTime: v.number(),
+      quote: v.string(),
+      userName: v.string(),
+      school: v.string(),
+      subject: v.string(),
+      status: v.union(v.literal("pending"), v.literal("approved"), v.literal("featured")),
+      featured: v.boolean(),
+    }),
+    v.null()
+  ),
+  handler: async (ctx, args) => {
+    const testimonial = await ctx.db.get(args.testimonialId);
+    if (!testimonial) return null;
+
+    return {
+      _id: testimonial._id,
+      _creationTime: testimonial._creationTime,
+      quote: testimonial.quote,
+      userName: testimonial.userName,
+      school: testimonial.school,
+      subject: testimonial.subject,
+      status: testimonial.status,
+      featured: testimonial.featured,
+    };
+  },
+});
+
 export const getAllTestimonials = query({
   args: { status: v.optional(v.union(v.literal("pending"), v.literal("approved"), v.literal("featured"))) },
   returns: v.array(v.object({
@@ -90,7 +123,7 @@ export const getAllTestimonials = query({
     featured: v.boolean(),
   })),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       return [];
     }
@@ -137,7 +170,7 @@ export const approveTestimonial = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
+    const user = await getAuthUserSafe(ctx);
     if (!user) {
       throw new Error("User must be authenticated");
     }

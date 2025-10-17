@@ -384,7 +384,7 @@ async function testDatabasePerformance(runner, client) {
     const writeStartTime = Date.now();
     
     const testUser = {
-      email: `perf-test-${Date.now()}@example.com`,
+      email: `delivered@resend.dev`,
       name: "Performance Test User",
       school: "Performance Test School",
       subject: "Performance Test Subject"
