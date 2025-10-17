@@ -90,7 +90,7 @@ export const emailConfig = {
 // testMode: true = only send to @resend.dev test addresses (for development)
 // testMode: false = send to real addresses (requires verified domain in Resend)
 export const resend: Resend = new Resend(components.resend, {
-  testMode: true, // Set to true for testing with @resend.dev addresses
+  testMode: false, // Set to true for testing with @resend.dev addresses
   onEmailEvent: internal.emailEvents.handleEmailEvent,
 });
 

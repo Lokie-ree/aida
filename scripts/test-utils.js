@@ -101,7 +101,10 @@ export class ConvexTestClient {
 }
 
 export function generateTestEmail(prefix = "test") {
-  return `delivered@resend.dev`;
+  // Use Resend test emails with labeling for better test organization
+  // See: https://resend.com/docs/dashboard/emails/send-test-emails
+  const timestamp = Date.now().toString().slice(-6); // Last 6 digits for uniqueness
+  return `delivered+${prefix}-${timestamp}@resend.dev`;
 }
 
 export function generateTestPassword(length = 16) {
@@ -166,8 +169,8 @@ export async function cleanTestData(client) {
       // Phase 2 data
       client.query("frameworks:getAllFrameworks").catch(() => []),
       client.query("frameworks:getAllFrameworkUsage").catch(() => []),
-      client.query("testimonials:getAllTestimonials").catch(() => []),
-      client.query("innovations:getAllInnovations").catch(() => []),
+      client.query("testimonials:getAllTestimonialsForCleanup").catch(() => []),
+      client.query("innovations:getAllInnovationsForCleanup").catch(() => []),
       client.query("innovations:getAllInnovationInteractions").catch(() => []),
       client.query("timeTracking:getAllTimeTracking").catch(() => [])
     ]);
