@@ -42,7 +42,7 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
             />
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Curated AI Guidance for LA Educators</span>
+              <span className="text-sm font-medium">Beta Program Now Open for Louisiana Educators</span>
             </div>
           </div>
         </motion.div>
@@ -52,7 +52,7 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground leading-tight font-heading"
         >
           Navigate AI with Confidence
           <br />
@@ -74,8 +74,8 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
                 "ChatGPT",
                 "ANY AI Tool"
               ]}
-              className="inline-block text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary"
-              elementLevelClassName="text-primary font-bold"
+              className="inline-block text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary font-heading"
+              elementLevelClassName="text-primary font-bold font-heading"
               rotationInterval={3000}
               staggerDuration={0.03}
             />
@@ -89,7 +89,7 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mb-12 max-w-3xl mx-auto"
         >
-          <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
+          <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-primary">
             Platform-agnostic guidance frameworks for Louisiana educators. 
             <span className="text-foreground font-semibold"> Save 3-5 hours per week</span> with 
             <span className="text-foreground font-semibold"> ethical AI use</span> on any tool your district provides.
@@ -106,7 +106,7 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
           <Button
             size="lg"
             onClick={onBetaSignupClick}
-            className="text-xl px-10 py-7 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto font-semibold"
+            className="text-xl px-10 py-7 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto font-semibold font-primary"
           >
             Join Louisiana Beta Program
             <ArrowRight className="ml-3 h-6 w-6" />

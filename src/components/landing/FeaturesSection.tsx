@@ -36,12 +36,12 @@ export function FeaturesSection() {
             <GradientText 
               as="h2"
               colors={blueGradient}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl md:text-5xl font-bold mb-4 font-heading"
             >
-              Why Louisiana Educators Choose Pelican AI
+              Built by Louisiana Educators, For Louisiana Educators
             </GradientText>
           </motion.div>
-          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-primary">
             We're not another AI tool to learn. We're Louisiana educators helping Louisiana educators 
             <span className="text-foreground font-semibold"> use whatever AI platform you already have {" "}</span> 
             more effectively, ethically, and aligned to our state standards.
@@ -58,7 +58,7 @@ export function FeaturesSection() {
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={fadeInUp}>
-              <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-2 relative overflow-hidden group">
+              <Card className="h-full hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden group">
                 <BorderBeam 
                   size={80} 
                   duration={8} 
@@ -70,10 +70,10 @@ export function FeaturesSection() {
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <feature.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-heading">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <CardDescription className="text-base font-primary">
                     {feature.description}
                   </CardDescription>
                 </CardContent>

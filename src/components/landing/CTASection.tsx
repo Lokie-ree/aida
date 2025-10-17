@@ -35,7 +35,7 @@ export function CTASection({ onBetaSignupClick }: CTASectionProps) {
           variants={staggerChildren}
         >
           <motion.div variants={fadeInUp}>
-            <Card className="text-center relative overflow-hidden bg-background/80 backdrop-blur-sm border-2">
+            <Card className="text-center relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
               <BorderBeam 
                 size={100} 
                 duration={6}
@@ -48,23 +48,23 @@ export function CTASection({ onBetaSignupClick }: CTASectionProps) {
                   <GradientText 
                     as="h2"
                     colors={['#0ea5e9', '#f59e0b', '#1e40af', '#f59e0b', '#0ea5e9']}
-                    className="text-4xl md:text-5xl font-bold"
+                    className="text-4xl md:text-5xl font-bold font-heading"
                     animationSpeed={3}
                     showBorder={false}
                   >
-                    Ready to Lead Louisiana's AI Revolution?
+                    Ready to Shape Louisiana's AI Future?
                   </GradientText>
                 </motion.div>
-                <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground leading-relaxed">
-                  Join Louisiana educators who are <span className="text-foreground font-semibold">reclaiming 3-5 hours per week{ " "}</span> 
-                  and <span className="text-foreground font-semibold">transforming their teaching practice</span> with ethical, 
-                  platform-agnostic AI guidance designed specifically for our state.
+                <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground leading-relaxed font-primary">
+                  Join Louisiana educators who are helping us build <span className="text-foreground font-semibold">platform-agnostic AI guidance</span> that saves 
+                  <span className="text-foreground font-semibold"> 3-5 hours per week</span>. Your feedback will directly shape what we create next. 
+                  <span className="text-foreground font-semibold"> Be part of something special.</span>
                 </motion.p>
                 <motion.div variants={fadeInUp}>
                   <Button
                     size="lg"
                     onClick={onBetaSignupClick}
-                    className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto"
+                    className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto font-primary"
                   >
                     Join Beta Program
                     <ArrowRight className="h-5 w-5 ml-2" />
