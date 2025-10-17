@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { BetaSignupModal } from "@/components/shared/BetaSignupModal";
+import { PrivacyPolicyModal } from "@/components/shared/PrivacyPolicyModal";
+import { TermsOfServiceModal } from "@/components/shared/TermsOfServiceModal";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamplesSection";
@@ -14,6 +16,8 @@ import { Menu, X, Users } from "lucide-react";
 export function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBetaSignupModalOpen, setIsBetaSignupModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
   const handleBetaSignupClick = () => {
     setIsBetaSignupModalOpen(true);
@@ -196,7 +200,7 @@ export function LandingPage() {
                   </button>
                 </li>
                 <li>
-                  <a href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
+                  <a href="mailto:hello@pelicanai.org" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
                     Contact Us
                   </a>
                 </li>
@@ -210,14 +214,22 @@ export function LandingPage() {
               </h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
+                  <button 
+                    onClick={() => setIsPrivacyModalOpen(true)}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center"
+                    aria-label="Open Privacy Policy"
+                  >
                     Privacy Policy
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
+                  <button 
+                    onClick={() => setIsTermsModalOpen(true)}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center"
+                    aria-label="Open Terms of Service"
+                  >
                     Terms of Service
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -225,7 +237,7 @@ export function LandingPage() {
 
           <div className="border-t border-border pt-8 text-center">
             <p className="text-sm text-muted-foreground mb-2">
-              Created with 💙 by an educator for educators
+              Created with 💙 by educators for educators
             </p>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Pelican AI. All rights reserved.
@@ -238,6 +250,18 @@ export function LandingPage() {
       <BetaSignupModal 
         isOpen={isBetaSignupModalOpen} 
         onClose={() => setIsBetaSignupModalOpen(false)} 
+      />
+
+      {/* Privacy Policy Modal */}
+      <PrivacyPolicyModal 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
+
+      {/* Terms of Service Modal */}
+      <TermsOfServiceModal 
+        isOpen={isTermsModalOpen} 
+        onClose={() => setIsTermsModalOpen(false)} 
       />
     </div>
   );
