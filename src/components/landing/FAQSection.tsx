@@ -40,12 +40,12 @@ export function FAQSection() {
             <GradientText 
               as="h2"
               colors={blueGradient}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl md:text-5xl font-bold mb-4 font-heading"
             >
               Questions from Louisiana Educators
             </GradientText>
           </motion.div>
-          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 font-primary">
             Everything you need to know about joining Louisiana's first platform-agnostic AI guidance program.
           </motion.p>
         </motion.div>
@@ -60,7 +60,7 @@ export function FAQSection() {
           {faqs.map((faq, index) => (
             <motion.div key={index} variants={fadeInUp}>
               <Card 
-                className="cursor-pointer hover:shadow-md transition-shadow relative overflow-hidden"
+                className="cursor-pointer hover:shadow-md transition-shadow bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden"
                 onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
                 role="button"
                 tabIndex={0}
@@ -83,7 +83,7 @@ export function FAQSection() {
                 )}
                 <CardHeader>
                   <div className="flex justify-between items-start gap-4">
-                    <CardTitle className="text-lg text-left">{faq.question}</CardTitle>
+                    <CardTitle className="text-lg text-left font-heading">{faq.question}</CardTitle>
                     <ChevronDown 
                       className={`w-5 h-5 shrink-0 transition-transform text-primary ${expandedFaq === index ? 'rotate-180' : ''}`}
                     />
@@ -91,7 +91,7 @@ export function FAQSection() {
                 </CardHeader>
                 {expandedFaq === index && (
                   <CardContent>
-                    <p className="text-muted-foreground">{faq.answer}</p>
+                    <p className="text-muted-foreground font-primary">{faq.answer}</p>
                   </CardContent>
                 )}
               </Card>

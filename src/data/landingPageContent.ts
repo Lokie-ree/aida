@@ -91,29 +91,29 @@ export const louisianaExamples: LouisianaExample[] = [
 
 export const testimonials: Testimonial[] = [
   {
-    quote: "This isn't another tool to learn—it's guidance on using the tools I already have access to. I saved 4 hours last week on lesson planning alone!",
-    author: "Sarah Johnson",
-    title: "High School English Teacher, Jefferson Parish"
+    quote: "Will you be the first to share your success story?",
+    author: "[Your Name Here]",
+    title: "[Your School Here]"
   },
   {
-    quote: "The ethical guardrails give me confidence. I know I'm using AI responsibly while still saving time on administrative tasks.",
-    author: "Michael Chen",
-    title: "Elementary Math Teacher, Lafayette"
+    quote: "Join Louisiana educators shaping the future of AI in education",
+    author: "[Your Name Here]",
+    title: "[Your School Here]"
   },
   {
-    quote: "Finally, AI guidance that understands Louisiana standards! The frameworks are specific, practical, and actually help me teach better.",
-    author: "Dr. Lisa Rodriguez",
-    title: "Middle School Science Teacher, Baton Rouge"
+    quote: "Be part of the movement that's reclaiming time for what matters",
+    author: "[Your Name Here]",
+    title: "[Your School Here]"
   },
   {
-    quote: "Platform-agnostic means I can use whatever my district provides. No subscription fatigue, just better teaching strategies.",
-    author: "James Williams",
-    title: "Elementary Principal, New Orleans"
+    quote: "Help us build the AI guidance Louisiana educators actually need",
+    author: "[Your Name Here]",
+    title: "[Your School Here]"
   },
   {
-    quote: "The community aspect is incredible. I'm learning from other Louisiana educators who face the same challenges I do every day.",
-    author: "Maria Garcia",
-    title: "Special Education Teacher, Shreveport"
+    quote: "Your feedback will directly shape what we create next",
+    author: "[Your Name Here]",
+    title: "[Your School Here]"
   }
 ];
 

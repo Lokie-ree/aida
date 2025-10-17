@@ -37,13 +37,13 @@ export function TestimonialsSection() {
             <GradientText 
               as="h2"
               colors={blueGradient}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl md:text-5xl font-bold mb-4 font-heading"
             >
-              Louisiana Educators Leading the Way
+              Join Louisiana Educators Building the Future
             </GradientText>
           </motion.div>
-          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Real stories from Louisiana educators who are already transforming their teaching with AI guidance.
+          <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 font-primary">
+            Be part of something special. Your feedback will shape the AI guidance Louisiana educators actually need.
           </motion.p>
         </motion.div>
 
@@ -52,10 +52,10 @@ export function TestimonialsSection() {
             <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
               <CardContent className="p-4 sm:p-6">
                 <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-primary/60 mb-3 sm:mb-4" />
-                <p className="text-sm sm:text-base italic mb-4 sm:mb-6">"{testimonial.quote}"</p>
+                <p className="text-sm sm:text-base italic mb-4 sm:mb-6 font-primary">"{testimonial.quote}"</p>
                 <div>
-                  <p className="text-sm sm:text-base font-semibold">{testimonial.author}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.title}</p>
+                  <p className="text-sm sm:text-base font-semibold font-heading">{testimonial.author}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground font-primary">{testimonial.title}</p>
                 </div>
               </CardContent>
             </Card>
