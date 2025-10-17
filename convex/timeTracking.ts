@@ -343,3 +343,31 @@ export const bulkRecordTimeSaved = mutation({
     return entryIds;
   },
 });
+
+// Mutation: Delete time tracking entry (for test cleanup)
+export const deleteTimeTracking = mutation({
+  args: { trackingId: v.id("timeTracking") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.trackingId);
+    return true;
+  },
+});
+
+// Query: Get all time tracking entries (for test cleanup)
+export const getAllTimeTracking = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("timeTracking"),
+    _creationTime: v.number(),
+    userId: v.string(),
+    frameworkId: v.id("frameworks"),
+    timeSaved: v.number(),
+    activity: v.string(),
+    category: v.optional(v.string()),
+    timestamp: v.number(),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("timeTracking").collect();
+  },
+});

@@ -191,3 +191,35 @@ export const approveTestimonial = mutation({
     return null;
   },
 });
+
+// Mutation: Delete testimonial (for test cleanup)
+export const deleteTestimonial = mutation({
+  args: { testimonialId: v.id("testimonials") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.testimonialId);
+    return true;
+  },
+});
+
+// Query: Get all testimonials (for test cleanup)
+export const getAllTestimonialsForCleanup = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("testimonials"),
+    _creationTime: v.number(),
+    userId: v.string(),
+    frameworkId: v.optional(v.id("frameworks")),
+    quote: v.string(),
+    timeSaved: v.optional(v.number()),
+    impact: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("featured")),
+    featured: v.boolean(),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("testimonials").collect();
+  },
+});

@@ -456,3 +456,65 @@ export const getInnovationInteractions = query({
     }));
   },
 });
+
+// Mutation: Delete innovation (for test cleanup)
+export const deleteInnovation = mutation({
+  args: { innovationId: v.id("innovations") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.innovationId);
+    return true;
+  },
+});
+
+// Mutation: Delete innovation interaction (for test cleanup)
+export const deleteInnovationInteraction = mutation({
+  args: { interactionId: v.id("innovationInteractions") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.interactionId);
+    return true;
+  },
+});
+
+// Query: Get all innovations (for test cleanup)
+export const getAllInnovationsForCleanup = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("innovations"),
+    _creationTime: v.number(),
+    userId: v.string(),
+    title: v.string(),
+    description: v.string(),
+    relatedFramework: v.optional(v.id("frameworks")),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    likes: v.number(),
+    triesCount: v.number(),
+    createdAt: v.number(),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("innovations").collect();
+  },
+});
+
+// Query: Get all innovation interactions (for test cleanup)
+export const getAllInnovationInteractions = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("innovationInteractions"),
+    _creationTime: v.number(),
+    innovationId: v.id("innovations"),
+    userId: v.string(),
+    type: v.union(v.literal("like"), v.literal("tried"), v.literal("comment")),
+    rating: v.optional(v.number()),
+    comment: v.optional(v.string()),
+    timestamp: v.number(),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("innovationInteractions").collect();
+  },
+});

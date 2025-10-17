@@ -437,3 +437,39 @@ export const getFrameworkStats = query({
     };
   },
 });
+
+// Mutation: Delete framework (for test cleanup)
+export const deleteFramework = mutation({
+  args: { frameworkId: v.id("frameworks") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.frameworkId);
+    return true;
+  },
+});
+
+// Mutation: Delete framework usage (for test cleanup)
+export const deleteFrameworkUsage = mutation({
+  args: { usageId: v.id("frameworkUsage") },
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.usageId);
+    return true;
+  },
+});
+
+// Query: Get all framework usage (for test cleanup)
+export const getAllFrameworkUsage = query({
+  args: {},
+  returns: v.array(v.object({
+    _id: v.id("frameworkUsage"),
+    _creationTime: v.number(),
+    userId: v.string(),
+    frameworkId: v.id("frameworks"),
+    action: v.string(),
+    timestamp: v.number(),
+  })),
+  handler: async (ctx) => {
+    return await ctx.db.query("frameworkUsage").collect();
+  },
+});

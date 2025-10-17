@@ -28,7 +28,7 @@ export const TEST_USERS = {
     const baseUser = createTestUser("duplicate");
     return {
       ...baseUser,
-      email: "delivered@resend.dev" // Fixed email for duplicate testing
+      email: "delivered+duplicate-test@resend.dev" // Fixed email for duplicate testing
     };
   },
   
