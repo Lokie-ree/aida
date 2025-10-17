@@ -154,7 +154,7 @@ async function testBetterAuthEndpoints(runner, client) {
     
     // Use the correct Better Auth domain (.convex.site) not the Convex API domain (.convex.cloud)
     const betterAuthBaseUrl = process.env.VITE_CONVEX_SITE_URL || 'https://kindly-setter-935.convex.site';
-    const sessionUrl = `${betterAuthBaseUrl}/api/auth/get-session`;
+    const sessionUrl = `${betterAuthBaseUrl}/api/auth/session`;
     
     runner.log(`Testing Better Auth session endpoint: ${sessionUrl}`);
     

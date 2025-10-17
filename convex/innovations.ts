@@ -45,6 +45,197 @@ export const shareInnovation = mutation({
   },
 });
 
+// Query: Get all innovations (for admin/testing)
+export const getAllInnovations = query({
+  args: { limit: v.optional(v.number()) },
+  returns: v.array(v.object({
+    _id: v.id("innovations"),
+    _creationTime: v.number(),
+    title: v.string(),
+    description: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+    likes: v.number(),
+    triesCount: v.number(),
+    createdAt: v.number(),
+  })),
+  handler: async (ctx, args) => {
+    const limit = args.limit || 20;
+    
+    const innovations = await ctx.db
+      .query("innovations")
+      .order("desc")
+      .take(limit);
+
+    return innovations.map(i => ({
+      _id: i._id,
+      _creationTime: i._creationTime,
+      title: i.title,
+      description: i.description,
+      userName: i.userName,
+      school: i.school,
+      subject: i.subject,
+      tags: i.tags,
+      timeSaved: i.timeSaved,
+      likes: i.likes,
+      triesCount: i.triesCount,
+      createdAt: i.createdAt,
+    }));
+  },
+});
+
+// Query: Search innovations
+export const searchInnovations = query({
+  args: { 
+    query: v.string(),
+    limit: v.optional(v.number()) 
+  },
+  returns: v.array(v.object({
+    _id: v.id("innovations"),
+    _creationTime: v.number(),
+    title: v.string(),
+    description: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+    likes: v.number(),
+    triesCount: v.number(),
+    createdAt: v.number(),
+  })),
+  handler: async (ctx, args) => {
+    const limit = args.limit || 20;
+    
+    const innovations = await ctx.db
+      .query("innovations")
+      .withSearchIndex("search_innovations", (q) => q.search("title", args.query))
+      .take(limit);
+
+    return innovations.map(i => ({
+      _id: i._id,
+      _creationTime: i._creationTime,
+      title: i.title,
+      description: i.description,
+      userName: i.userName,
+      school: i.school,
+      subject: i.subject,
+      tags: i.tags,
+      timeSaved: i.timeSaved,
+      likes: i.likes,
+      triesCount: i.triesCount,
+      createdAt: i.createdAt,
+    }));
+  },
+});
+
+// Query: Get innovation by ID
+export const getInnovationById = query({
+  args: { innovationId: v.id("innovations") },
+  returns: v.union(
+    v.object({
+      _id: v.id("innovations"),
+      _creationTime: v.number(),
+      title: v.string(),
+      description: v.string(),
+      userName: v.string(),
+      school: v.string(),
+      subject: v.string(),
+      tags: v.array(v.string()),
+      timeSaved: v.optional(v.number()),
+      likes: v.number(),
+      triesCount: v.number(),
+      createdAt: v.number(),
+    }),
+    v.null()
+  ),
+  handler: async (ctx, args) => {
+    const innovation = await ctx.db.get(args.innovationId);
+    if (!innovation) return null;
+
+    return {
+      _id: innovation._id,
+      _creationTime: innovation._creationTime,
+      title: innovation.title,
+      description: innovation.description,
+      userName: innovation.userName,
+      school: innovation.school,
+      subject: innovation.subject,
+      tags: innovation.tags,
+      timeSaved: innovation.timeSaved,
+      likes: innovation.likes,
+      triesCount: innovation.triesCount,
+      createdAt: innovation.createdAt,
+    };
+  },
+});
+
+// Mutation: Comment on innovation
+export const commentInnovation = mutation({
+  args: { 
+    innovationId: v.id("innovations"),
+    comment: v.string()
+  },
+  returns: v.id("innovationInteractions"),
+  handler: async (ctx, args) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    const interactionId = await ctx.db.insert("innovationInteractions", {
+      innovationId: args.innovationId,
+      userId,
+      type: "comment",
+      comment: args.comment.trim(),
+      timestamp: Date.now(),
+    });
+
+    return interactionId;
+  },
+});
+
+// Mutation: Submit innovation (alias for shareInnovation)
+export const submitInnovation = mutation({
+  args: {
+    title: v.string(),
+    description: v.string(),
+    relatedFramework: v.optional(v.id("frameworks")),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+  },
+  returns: v.id("innovations"),
+  handler: async (ctx, args) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    // Create innovation
+    const innovationId = await ctx.db.insert("innovations", {
+      userId,
+      title: args.title.trim(),
+      description: args.description.trim(),
+      relatedFramework: args.relatedFramework,
+      tags: args.tags,
+      timeSaved: args.timeSaved,
+      userName: user.name || "Anonymous",
+      school: (user as any).school || "Not specified",
+      subject: (user as any).subject || "Not specified",
+      likes: 0,
+      triesCount: 0,
+      createdAt: Date.now(),
+    });
+
+    return innovationId;
+  },
+});
+
 // Query: Get recent innovations
 export const getRecentInnovations = query({
   args: { limit: v.optional(v.number()) },

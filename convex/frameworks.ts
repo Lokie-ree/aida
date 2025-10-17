@@ -358,3 +358,82 @@ export const getUserSavedFrameworks = query({
     return savedUsage.map((u) => u.frameworkId);
   },
 });
+
+// Query: Get framework statistics
+export const getFrameworkStats = query({
+  args: {},
+  returns: v.object({
+    totalFrameworks: v.number(),
+    totalUsage: v.number(),
+    averageRating: v.optional(v.number()),
+    mostPopularFramework: v.optional(v.string()),
+    frameworksByModule: v.object({
+      aiBasicsHub: v.number(),
+      instructionalExpertHub: v.number(),
+    }),
+    frameworksByDifficulty: v.object({
+      beginner: v.number(),
+      intermediate: v.number(),
+      advanced: v.number(),
+    }),
+  }),
+  handler: async (ctx) => {
+    // Get total frameworks
+    const allFrameworks = await ctx.db
+      .query("frameworks")
+      .withIndex("by_status", (q) => q.eq("status", "published"))
+      .collect();
+
+    // Get total usage
+    const allUsage = await ctx.db
+      .query("frameworkUsage")
+      .collect();
+
+    // Calculate statistics
+    const totalFrameworks = allFrameworks.length;
+    const totalUsage = allUsage.length;
+    
+    // Calculate average rating
+    const ratings = allFrameworks
+      .map(f => f.averageRating)
+      .filter(r => r !== undefined) as number[];
+    const averageRating = ratings.length > 0 
+      ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length 
+      : undefined;
+
+    // Find most popular framework
+    const usageCounts = allUsage.reduce((acc, usage) => {
+      acc[usage.frameworkId] = (acc[usage.frameworkId] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const mostPopularFramework = Object.keys(usageCounts).length > 0
+      ? Object.entries(usageCounts).reduce((a, b) => usageCounts[a[0]] > usageCounts[b[0]] ? a : b)[0]
+      : undefined;
+
+    // Count by module
+    const frameworksByModule = allFrameworks.reduce((acc, framework) => {
+      if (framework.module === "ai-basics-hub") {
+        acc.aiBasicsHub++;
+      } else if (framework.module === "instructional-expert-hub") {
+        acc.instructionalExpertHub++;
+      }
+      return acc;
+    }, { aiBasicsHub: 0, instructionalExpertHub: 0 });
+
+    // Count by difficulty
+    const frameworksByDifficulty = allFrameworks.reduce((acc, framework) => {
+      acc[framework.difficultyLevel]++;
+      return acc;
+    }, { beginner: 0, intermediate: 0, advanced: 0 });
+
+    return {
+      totalFrameworks,
+      totalUsage,
+      averageRating,
+      mostPopularFramework,
+      frameworksByModule,
+      frameworksByDifficulty,
+    };
+  },
+});
