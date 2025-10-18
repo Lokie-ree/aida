@@ -2,24 +2,27 @@
 
 ## Overview
 
-This document outlines the comprehensive test data cleanup protocol for Pelican AI's test suite, ensuring clean test environments and preventing data contamination between test runs.
+This document outlines the comprehensive test data cleanup protocol for Pelican AI's test suite, ensuring clean test environments and preventing data contamination between test runs. The system uses a centralized cleanup approach with test data isolation flags for maximum safety.
 
 ## 🧹 Cleanup Strategy
 
 ### 1. Pre-Test Cleanup
 - **When:** Before each test suite execution
-- **What:** Remove all test data from previous runs
-- **How:** Automated cleanup via `test-runner.js`
+- **What:** Remove all test data from previous runs (only records with `isTestData: true`)
+- **How:** Centralized cleanup via `testDataCleanup:deleteAllTestData`
+- **Safety:** Only deletes flagged test data, preserves real user data
 
 ### 2. Post-Test Cleanup
 - **When:** After each test suite completion
 - **What:** Remove test data created during the current run
-- **How:** Individual test cleanup + suite-level cleanup
+- **How:** Centralized cleanup system with safety verification
+- **Safety:** Provides warnings about potential real data
 
 ### 3. Emergency Cleanup
 - **When:** Manual intervention required
-- **What:** Complete database reset
-- **How:** Manual Convex dashboard or CLI commands
+- **What:** Safe cleanup of test data only
+- **How:** Centralized cleanup functions with safety checks
+- **Safety:** Comprehensive safety verification before deletion
 
 ## 📊 Test Data Categories
 
@@ -48,29 +51,62 @@ This document outlines the comprehensive test data cleanup protocol for Pelican 
 
 ## 🔧 Implementation
 
-### Automated Cleanup Functions
+### Centralized Cleanup System
+
+The new cleanup system uses a centralized approach with test data isolation flags for maximum safety:
 
 ```javascript
-// Pre-test cleanup (in test-runner.js)
-async function cleanupDatabase() {
+// Centralized cleanup (in test-runner.js)
+async function runCentralizedCleanup(runner, client) {
   try {
-    // Delete Phase 1 data
-    await convex.mutation(api.betaSignup.deleteAllTestData)();
-    await convex.mutation(api.userProfiles.deleteAllTestData)();
+    runner.log("🧹 Starting centralized test data cleanup...");
     
-    // Delete Phase 2 data
-    await convex.mutation(api.frameworks.deleteAllTestData)();
-    await convex.mutation(api.testimonials.deleteAllTestData)();
-    await convex.mutation(api.innovations.deleteAllTestData)();
-    await convex.mutation(api.betaProgram.deleteAllTestData)();
-    await convex.mutation(api.timeTracking.deleteAllTestData)();
+    // Use new centralized cleanup system
+    const result = await client.mutation("testDataCleanup:deleteAllTestData", {});
     
-    console.log('✅ Database cleanup completed');
+    if (result.success) {
+      runner.log(`✅ Cleanup completed successfully`);
+      runner.log(`📊 Deleted records:`, "info");
+      Object.entries(result.deletedCounts).forEach(([table, count]) => {
+        runner.log(`  ${table}: ${count} records`, "info");
+      });
+      
+      if (result.warnings.length > 0) {
+        runner.log("⚠️ Cleanup warnings:", "warn");
+        result.warnings.forEach(warning => {
+          runner.log(`  ${warning}`, "warn");
+        });
+      }
+      
+      return true;
+    } else {
+      runner.log(`❌ Cleanup failed with warnings:`, "error");
+      result.warnings.forEach(warning => {
+        runner.log(`  ${warning}`, "error");
+      });
+      return false;
+    }
   } catch (error) {
-    console.error('❌ Database cleanup failed:', error);
-    throw error;
+    runner.log(`❌ Cleanup error: ${error.message}`, "error");
+    return false;
   }
 }
+```
+
+### Available Cleanup Functions
+
+```javascript
+// Get test data counts
+const counts = await convex.run("testDataCleanup:getTestDataCounts", {});
+
+// Verify cleanup safety
+const safety = await convex.run("testDataCleanup:verifyCleanupSafety", {});
+
+// Get comprehensive database state
+const state = await convex.run("testDataCleanup:getDatabaseState", {});
+
+// Delete all test data (safe operation)
+const result = await convex.run("testDataCleanup:deleteAllTestData", {});
 ```
 
 ### Test-Specific Cleanup
@@ -91,37 +127,59 @@ async function cleanupTestData() {
 ### Manual Cleanup Commands
 
 ```bash
-# Complete database reset (use with caution)
-npx convex run admin:resetDatabase
+# Safe test data cleanup (recommended)
+node scripts/test-runner.js --cleanup
 
-# Clean specific table
-npx convex run admin:cleanTable --tableName "betaSignups"
+# Check test data counts
+npx convex run testDataCleanup:getTestDataCounts
 
-# View current data counts
-npx convex run admin:getDataCounts
+# Verify cleanup safety
+npx convex run testDataCleanup:verifyCleanupSafety
+
+# Get comprehensive database state
+npx convex run testDataCleanup:getDatabaseState
+
+# Emergency: Clean all test data (safe operation)
+npx convex run testDataCleanup:deleteAllTestData
+```
+
+### Recovery Commands
+
+```bash
+# Recover accidentally deleted user
+npx convex run betaSignup:recoverDeletedUser --email "user@example.com" --userId "user_id" --name "User Name" --school "School" --subject "Subject"
 ```
 
 ## 🚨 Cleanup Rules
 
 ### 1. Test Data Identification
-- All test data must include `isTestData: true` flag
-- Use consistent test email patterns: `*@test.pelicanai.org`
-- Include test timestamps for time-based cleanup
+- **REQUIRED:** All test data must include `isTestData: true` flag
+- **RECOMMENDED:** Use consistent test email patterns: `*@test.pelicanai.org`
+- **OPTIONAL:** Include test timestamps for time-based cleanup
+- **SAFETY:** Records without `isTestData` flag are considered real data
 
 ### 2. Data Isolation
 - Test data must not interfere with production data
-- Use separate test user accounts
+- Use separate test user accounts with proper flagging
 - Isolate test email addresses
+- **CRITICAL:** Only delete records with `isTestData: true`
 
 ### 3. Cleanup Timing
-- **Before tests:** Remove all existing test data
+- **Before tests:** Remove all existing test data (flagged records only)
 - **After tests:** Remove data created during current run
-- **On failure:** Attempt cleanup, log failures
+- **On failure:** Attempt cleanup, log failures, preserve real data
 
-### 4. Error Handling
+### 4. Safety Measures
+- **Safety Verification:** Always check for real data before cleanup
+- **Warning System:** Alert about records without test data flag
+- **Graceful Degradation:** Continue test execution if cleanup fails
+- **Recovery Capability:** Maintain ability to recover accidentally deleted data
+
+### 5. Error Handling
 - Continue test execution if cleanup fails
 - Log cleanup failures for investigation
 - Provide manual cleanup instructions
+- **NEVER** delete records without `isTestData: true` flag
 
 ## 📋 Cleanup Checklist
 

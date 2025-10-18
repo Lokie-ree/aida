@@ -22,7 +22,9 @@ const TEST_SUITES = {
     'unit/test-unit-beta-program.js',
     'unit/test-unit-auth.js',
     'unit/test-unit-frameworks.js',
-    'unit/test-unit-community.js'
+    'unit/test-unit-community.js',
+    'unit/test-unit-dashboard.js',
+    'unit/test-unit-admin.js'
   ],
   integration: [
     'integration/test-integration-signup-flow.js',
@@ -30,7 +32,7 @@ const TEST_SUITES = {
     'integration/test-integration-phase2-features.js'
   ],
   e2e: [
-    'e2e/test-e2e-beta-flow.js'
+    'e2e/test-e2e-phase2-user-journey.js'
   ],
   api: [
     'api/test-api-better-auth.js',
@@ -43,7 +45,10 @@ const TEST_SUITES = {
   phase2: [
     'unit/test-unit-frameworks.js',
     'unit/test-unit-community.js',
+    'unit/test-unit-dashboard.js',
+    'unit/test-unit-admin.js',
     'integration/test-integration-phase2-features.js',
+    'e2e/test-e2e-phase2-user-journey.js',
     'api/test-api-phase2-emails.js'
   ]
 };
@@ -75,7 +80,7 @@ async function runTestRunner() {
     
     // Clean database before starting tests
     runner.log("🧹 Cleaning database before tests...");
-    await cleanTestData(client);
+    await runCentralizedCleanup(runner, client);
     
     if (suite) {
       await runTestSuite(runner, suite);
@@ -225,9 +230,44 @@ async function runSingleTest(testFile) {
   });
 }
 
+async function runCentralizedCleanup(runner, client) {
+  try {
+    runner.log("🧹 Starting centralized test data cleanup...");
+    
+    // Use new centralized cleanup system
+    const result = await client.mutation("testDataCleanup:deleteAllTestData", {});
+    
+    if (result.success) {
+      runner.log(`✅ Cleanup completed successfully`);
+      runner.log(`📊 Deleted records:`, "info");
+      Object.entries(result.deletedCounts).forEach(([table, count]) => {
+        runner.log(`  ${table}: ${count} records`, "info");
+      });
+      
+      if (result.warnings.length > 0) {
+        runner.log("⚠️ Cleanup warnings:", "warn");
+        result.warnings.forEach(warning => {
+          runner.log(`  ${warning}`, "warn");
+        });
+      }
+      
+      return true;
+    } else {
+      runner.log(`❌ Cleanup failed with warnings:`, "error");
+      result.warnings.forEach(warning => {
+        runner.log(`  ${warning}`, "error");
+      });
+      return false;
+    }
+  } catch (error) {
+    runner.log(`❌ Cleanup error: ${error.message}`, "error");
+    return false;
+  }
+}
+
 async function runCleanup(runner, client) {
   try {
-    const result = await cleanTestData(client);
+    const result = await runCentralizedCleanup(runner, client);
     if (result) {
       runner.recordTest("Database Cleanup", true, "Database cleaned successfully");
     } else {

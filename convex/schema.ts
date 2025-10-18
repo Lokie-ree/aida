@@ -22,6 +22,7 @@ const applicationTables = {
     signupDate: v.number(),
     betaProgramId: v.string(),
     notes: v.optional(v.string()),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_email", ["email"])
     .index("by_status", ["status"])
     .index("by_signup_date", ["signupDate"]),
@@ -35,6 +36,7 @@ const applicationTables = {
     gradeLevel: v.optional(v.string()),
     district: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_user", ["userId"]).index("authId", ["authId"]),
 
   // ============================================
@@ -77,6 +79,7 @@ const applicationTables = {
     usageCount: v.number(),
     averageRating: v.optional(v.number()),
     averageTimeSaved: v.optional(v.number()),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_module", ["module"])
     .index("by_category", ["category"])
     .index("by_framework_id", ["frameworkId"])
@@ -100,6 +103,7 @@ const applicationTables = {
     timeSaved: v.optional(v.number()),
     comment: v.optional(v.string()),
     timestamp: v.number(),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_framework", ["frameworkId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
@@ -119,6 +123,7 @@ const applicationTables = {
     approvedAt: v.optional(v.number()),
     featured: v.boolean(),
     displayOrder: v.optional(v.number()),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_status", ["status"])
     .index("by_featured", ["featured"]),
@@ -138,6 +143,7 @@ const applicationTables = {
     officeHoursAttended: v.number(),
     lastWeeklyPromptOpened: v.optional(v.number()),
     weeklyEngagementCount: v.number(),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_status", ["status"]),
 
@@ -155,6 +161,7 @@ const applicationTables = {
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_created_at", ["createdAt"])
     .searchIndex("search_innovations", {
@@ -170,6 +177,7 @@ const applicationTables = {
     rating: v.optional(v.number()),
     comment: v.optional(v.string()),
     timestamp: v.number(),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_innovation", ["innovationId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
@@ -182,6 +190,7 @@ const applicationTables = {
     activity: v.string(), // description of what was done
     category: v.optional(v.string()), // optional categorization
     timestamp: v.number(),
+    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_framework", ["frameworkId"])
     .index("by_timestamp", ["timestamp"])

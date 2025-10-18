@@ -279,6 +279,7 @@ export const createBetaProgramForUserId = mutation({
   args: {
     userId: v.string(),
     invitedAt: v.optional(v.number()),
+    isTestData: v.optional(v.boolean()), // NEW: Optional test data flag
   },
   returns: v.id("betaProgram"),
   handler: async (ctx, args) => {
@@ -305,6 +306,7 @@ export const createBetaProgramForUserId = mutation({
       innovationsShared: 0,
       officeHoursAttended: 0,
       weeklyEngagementCount: 0,
+      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     return betaProgramId;

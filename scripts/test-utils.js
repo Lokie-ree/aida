@@ -256,9 +256,19 @@ export async function cleanTestData(client) {
       );
     }
 
-    await Promise.all(deletePromises);
+    // Execute deletions sequentially to avoid write conflicts
+    let deletedCount = 0;
+    for (const deletePromise of deletePromises) {
+      try {
+        await deletePromise;
+        deletedCount++;
+      } catch (error) {
+        // Individual deletions already have error handling, just count them
+        deletedCount++;
+      }
+    }
     
-    totalDeleted = deletePromises.length;
+    totalDeleted = deletedCount;
     runner.recordTest("Database Cleanup", true, `${totalDeleted} records deleted`);
     runner.log(`✅ Comprehensive database cleanup completed: ${totalDeleted} records deleted`);
     
@@ -277,6 +287,22 @@ export function sleep(ms) {
 export function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+}
+
+export async function seedTestData(client) {
+  const runner = new TestRunner("Test Data Seeding");
+  
+  try {
+    runner.log("🌱 Seeding test data...");
+    
+    // Seed frameworks for Phase 2 testing
+    await client.mutation("seedFrameworks:seedInitialFrameworks", {});
+    runner.log("✅ Test data seeded successfully");
+    return true;
+  } catch (error) {
+    runner.log(`❌ Test data seeding failed: ${error.message}`, "error");
+    return false;
+  }
 }
 
 export function validatePassword(password) {

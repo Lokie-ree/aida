@@ -20,6 +20,7 @@ import type * as innovations from "../innovations.js";
 import type * as rag from "../rag.js";
 import type * as router from "../router.js";
 import type * as seedFrameworks from "../seedFrameworks.js";
+import type * as testDataCleanup from "../testDataCleanup.js";
 import type * as testimonials from "../testimonials.js";
 import type * as timeTracking from "../timeTracking.js";
 import type * as userProfiles from "../userProfiles.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   rag: typeof rag;
   router: typeof router;
   seedFrameworks: typeof seedFrameworks;
+  testDataCleanup: typeof testDataCleanup;
   testimonials: typeof testimonials;
   timeTracking: typeof timeTracking;
   userProfiles: typeof userProfiles;

@@ -12,7 +12,7 @@
  * - Validation and error handling for community features
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
+import { TestRunner, ConvexTestClient, cleanTestData, seedTestData, sleep } from '../test-utils.js';
 import { TEST_USERS, COMMUNITY_TEST_DATA, PHASE2_USER_STORIES } from '../test-fixtures.js';
 
 // Configuration

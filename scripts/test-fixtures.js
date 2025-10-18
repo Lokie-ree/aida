@@ -15,7 +15,8 @@ export const createTestUser = (prefix = "test") => ({
   name: generateTestName(),
   school: generateTestSchool(),
   subject: generateTestSubject(),
-  password: generateTestPassword()
+  password: generateTestPassword(),
+  isTestData: true // NEW: Mark all test data for isolation
 });
 
 // Specific test scenarios
@@ -38,7 +39,8 @@ export const TEST_USERS = {
     name: "",
     school: "",
     subject: "",
-    password: "123" // Too short
+    password: "123", // Too short
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Edge case user with special characters
@@ -47,7 +49,8 @@ export const TEST_USERS = {
     name: "José María O'Connor-Smith",
     school: "St. Mary's High School",
     subject: "English Language Arts",
-    password: generateTestPassword()
+    password: generateTestPassword(),
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Long data user for testing field limits
@@ -56,7 +59,8 @@ export const TEST_USERS = {
     name: "A".repeat(100), // Very long name
     school: "B".repeat(100), // Very long school name
     subject: "C".repeat(50), // Very long subject
-    password: generateTestPassword(50) // Very long password
+    password: generateTestPassword(50), // Very long password
+    isTestData: true // NEW: Mark all test data for isolation
   })
 };
 
@@ -71,7 +75,8 @@ export const BETA_PROGRAM_SCENARIOS = {
     totalTimeSaved: 0,
     innovationsShared: 0,
     officeHoursAttended: 0,
-    weeklyEngagementCount: 0
+    weeklyEngagementCount: 0,
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Active user with some progress
@@ -83,7 +88,8 @@ export const BETA_PROGRAM_SCENARIOS = {
     totalTimeSaved: 45,
     innovationsShared: 1,
     officeHoursAttended: 1,
-    weeklyEngagementCount: 2
+    weeklyEngagementCount: 2,
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Completed user
@@ -95,7 +101,8 @@ export const BETA_PROGRAM_SCENARIOS = {
     totalTimeSaved: 120,
     innovationsShared: 5,
     officeHoursAttended: 3,
-    weeklyEngagementCount: 8
+    weeklyEngagementCount: 8,
+    isTestData: true // NEW: Mark all test data for isolation
   })
 };
 
@@ -494,7 +501,8 @@ export const USER_PROFILE_SCENARIOS = {
     subject: generateTestSubject(),
     gradeLevel: "9-12",
     district: "Lafayette Parish",
-    role: "teacher"
+    role: "teacher",
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Admin profile
@@ -503,7 +511,8 @@ export const USER_PROFILE_SCENARIOS = {
     subject: "Administration",
     gradeLevel: "K-12",
     district: "Lafayette Parish",
-    role: "admin"
+    role: "admin",
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Coach profile
@@ -512,12 +521,14 @@ export const USER_PROFILE_SCENARIOS = {
     subject: "Instructional Coaching",
     gradeLevel: "K-12",
     district: "Lafayette Parish",
-    role: "coach"
+    role: "coach",
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Minimal profile (only required fields)
   minimal: () => ({
-    role: "teacher"
+    role: "teacher",
+    isTestData: true // NEW: Mark all test data for isolation
   })
 };
 
@@ -531,7 +542,8 @@ export const BETA_SIGNUP_SCENARIOS = {
     subject: generateTestSubject(),
     status: "pending",
     signupDate: Date.now(),
-    betaProgramId: "beta-v1"
+    betaProgramId: "beta-v1",
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Approved signup
@@ -542,7 +554,8 @@ export const BETA_SIGNUP_SCENARIOS = {
     subject: generateTestSubject(),
     status: "approved",
     signupDate: Date.now(),
-    betaProgramId: "beta-v1"
+    betaProgramId: "beta-v1",
+    isTestData: true // NEW: Mark all test data for isolation
   }),
   
   // Rejected signup
@@ -554,7 +567,8 @@ export const BETA_SIGNUP_SCENARIOS = {
     status: "rejected",
     signupDate: Date.now(),
     betaProgramId: "beta-v1",
-    notes: "Incomplete application"
+    notes: "Incomplete application",
+    isTestData: true // NEW: Mark all test data for isolation
   })
 };
 

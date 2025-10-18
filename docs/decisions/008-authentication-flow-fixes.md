@@ -449,7 +449,7 @@ if (result.success) {
 ### Documentation Created
 - [Authentication Architecture Guide](../AUTHENTICATION-ARCHITECTURE.md)
 - [Authentication Fixes Summary](../../scripts/AUTH-FIXES-SUMMARY.md)
-- [Phase 1 MVP Fixes Summary](../../scripts/PHASE1-MVP-FIXES-SUMMARY.md)
+- [Phase 1 MVP Fixes Summary](../../scripts/README.md#phase-1-mvp-complete-)
 - [QA Audit Report](../../scripts/QA-AUDIT-REPORT-2025-10-14.md)
 
 ### Related ADRs
