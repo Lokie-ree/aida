@@ -24,12 +24,14 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [006](006-beta-auth-investigation.md) | Beta Authentication Flow Investigation | ✅ Resolved | Oct 10, 2025 |
 | [007](007-email-first-beta-flow.md) | Email-First Beta Signup Flow | ✅ Completed | Oct 11, 2025 |
 | [008](008-authentication-flow-fixes.md) | Authentication Flow Fixes - Auto-Login & Dashboard Access | ✅ Completed | Oct 14, 2025 |
+| [009](009-critical-infrastructure-fixes.md) | Critical Infrastructure Fixes - Database Conflicts & Auth Validation | ✅ Accepted | Oct 17, 2025 |
+| [010](010-test-data-isolation-and-recovery.md) | Test Data Isolation and Recovery System | ✅ Accepted | Oct 18, 2025 |
 
 ## Archived ADRs
 
 | ID | Title | Status | Reason | Location |
 |----|-------|--------|--------|----------|
-| [005](../archive/phase5-implementation/005-phase5-p0-implementation.md) | Phase 5 P0 Implementation | ⚠️ Superseded by ADR-007 | Refocused to Phase 1 MVP email-first approach | `docs/archive/phase5-implementation/` |
+| [005](005-phase5-p0-implementation.md) | Phase 5 P0 Implementation | ⚠️ Superseded by ADR-007 | Refocused to Phase 1 MVP email-first approach | `docs/decisions/` |
 
 ## ADR Lifecycle
 

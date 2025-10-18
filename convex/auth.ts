@@ -101,7 +101,7 @@ export const createBetterAuthUser = mutation({
         body: {
           email: args.email,
           password: args.password,
-          name: args.name || args.email.split('@')[0],
+          name: args.name || args.email.split('@')[0] || "User",
         },
       });
 
@@ -179,7 +179,7 @@ export const createUserDirectly = mutation({
         body: {
           email: args.email,
           password: args.password,
-          name: args.name || args.email.split('@')[0],
+          name: args.name || args.email.split('@')[0] || "User",
         },
       });
 

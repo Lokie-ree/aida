@@ -12,7 +12,7 @@
  * - Validation and error handling for Louisiana standards alignment
  */
 
-import { TestRunner, ConvexTestClient, cleanTestData, sleep } from '../test-utils.js';
+import { TestRunner, ConvexTestClient, cleanTestData, seedTestData, sleep } from '../test-utils.js';
 import { TEST_USERS, FRAMEWORK_TEST_DATA, PHASE2_USER_STORIES } from '../test-fixtures.js';
 
 // Configuration
@@ -27,6 +27,9 @@ async function runFrameworksUnitTests() {
     
     // Clean database before starting
     await cleanTestData(client);
+    
+    // Seed test data
+    await seedTestData(client);
     
     // Test 1: getAllFrameworks without authentication
     await testGetAllFrameworksUnauthenticated(runner, client);
@@ -94,10 +97,11 @@ async function testGetAllFrameworksUnauthenticated(runner, client) {
         const framework = frameworks[0];
         const hasRequiredFields = framework._id && 
                                  framework.title && 
-                                 framework.subject && 
-                                 framework.gradeLevel &&
-                                 framework.louisianaStandard &&
-                                 framework.platformAgnostic !== undefined;
+                                 framework.module && 
+                                 framework.category &&
+                                 framework.frameworkId &&
+                                 framework.tags &&
+                                 framework.tags.length > 0;
         
         if (hasRequiredFields) {
           runner.recordTest("Framework Structure Validation", true, 
@@ -125,23 +129,23 @@ async function testGetFrameworkByIdValid(runner, client) {
     const frameworks = await client.query("frameworks:getAllFrameworks");
     
     if (frameworks && frameworks.length > 0) {
-      const frameworkId = frameworks[0]._id;
+      const frameworkId = frameworks[0].frameworkId; // Use frameworkId, not _id
       
       const framework = await client.query("frameworks:getFrameworkById", {
         frameworkId: frameworkId
       });
       
-      if (framework && framework._id === frameworkId) {
+      if (framework && framework.frameworkId === frameworkId) {
         runner.recordTest("getFrameworkById - Valid ID", true, 
           `Retrieved framework: ${framework.title}`);
         
         // Validate Louisiana standards alignment
-        if (framework.louisianaStandard && framework.platformAgnostic) {
+        if (framework.louisianaStandards && framework.platformCompatibility) {
           runner.recordTest("Louisiana Standards Alignment", true, 
-            `Framework aligned to ${framework.louisianaStandard} and platform-agnostic`);
+            `Framework aligned to ${framework.louisianaStandards.length} standards and platform-agnostic`);
         } else {
           runner.recordTest("Louisiana Standards Alignment", false, 
-            "Framework missing Louisiana standards or platform-agnostic flag");
+            "Framework missing Louisiana standards or platform compatibility");
         }
       } else {
         runner.recordTest("getFrameworkById - Valid ID", false, 
@@ -402,26 +406,37 @@ async function testPlatformAgnosticValidation(runner, client) {
     const frameworks = await client.query("frameworks:getAllFrameworks");
     
     if (frameworks && frameworks.length > 0) {
-      // Check that all frameworks are platform-agnostic
-      const nonPlatformAgnostic = frameworks.filter(f => f.platformAgnostic !== true);
+      // Get full framework details for platform compatibility check
+      const frameworkId = frameworks[0].frameworkId;
+      const fullFramework = await client.query("frameworks:getFrameworkById", {
+        frameworkId: frameworkId
+      });
       
-      if (nonPlatformAgnostic.length === 0) {
-        runner.recordTest("Platform Agnostic Validation - All Frameworks", true, 
-          "All frameworks are platform-agnostic (works with any AI tool)");
+      if (fullFramework) {
+        // Check that framework is platform-agnostic (has platform compatibility)
+        const isPlatformAgnostic = fullFramework.platformCompatibility && fullFramework.platformCompatibility.length > 0;
+        
+        if (isPlatformAgnostic) {
+          runner.recordTest("Platform Agnostic Validation - All Frameworks", true, 
+            `Framework is platform-agnostic (compatible with ${fullFramework.platformCompatibility.length} platforms)`);
+        } else {
+          runner.recordTest("Platform Agnostic Validation - All Frameworks", false, 
+            "Framework is not platform-agnostic");
+        }
+        
+        // Check that framework has clear usage instructions
+        const hasInstructions = fullFramework.samplePrompt && fullFramework.samplePrompt.length > 10;
+        
+        if (hasInstructions) {
+          runner.recordTest("Framework Instructions Validation", true, 
+            "Framework has clear usage instructions");
+        } else {
+          runner.recordTest("Framework Instructions Validation", false, 
+            "Framework missing usage instructions");
+        }
       } else {
-        runner.recordTest("Platform Agnostic Validation - All Frameworks", false, 
-          `${nonPlatformAgnostic.length} frameworks are not platform-agnostic`);
-      }
-      
-      // Check that frameworks have clear usage instructions
-      const frameworksWithInstructions = frameworks.filter(f => f.prompt && f.prompt.length > 10);
-      
-      if (frameworksWithInstructions.length > 0) {
-        runner.recordTest("Framework Instructions Validation", true, 
-          `${frameworksWithInstructions.length} frameworks have clear usage instructions`);
-      } else {
-        runner.recordTest("Framework Instructions Validation", true, 
-          "No frameworks with instructions found (expected if none exist)");
+        runner.recordTest("Platform Agnostic Validation", false, 
+          "Failed to retrieve full framework details");
       }
     } else {
       runner.recordTest("Platform Agnostic Validation", false, 

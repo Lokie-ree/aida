@@ -37,6 +37,7 @@ export const signupForBeta = mutation({
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
+    isTestData: v.optional(v.boolean()), // NEW: Optional test data flag
   },
   returns: v.object({
     success: v.boolean(),
@@ -82,6 +83,7 @@ export const signupForBeta = mutation({
       status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
       betaProgramId: "beta-v1",
+      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     // Schedule user account creation with temporary password
@@ -299,6 +301,7 @@ export const getPendingSignups = query({
     betaProgramId: v.string(),
     status: v.string(),
     notes: v.optional(v.string()),
+    isTestData: v.optional(v.boolean()), // NEW: Added test data flag
   })),
   handler: async (ctx) => {
     return await ctx.db
@@ -322,6 +325,7 @@ export const getBetaSignupById = query({
       signupDate: v.number(),
       betaProgramId: v.string(),
       notes: v.optional(v.string()),
+      isTestData: v.optional(v.boolean()), // NEW: Added test data flag
     }),
     v.null()
   ),
@@ -344,6 +348,7 @@ export const getAllBetaSignups = query({
     signupDate: v.number(),
     betaProgramId: v.string(),
     notes: v.optional(v.string()),
+    isTestData: v.optional(v.boolean()), // NEW: Added test data flag
   })),
   handler: async (ctx) => {
     return await ctx.db.query("betaSignups").collect();
@@ -356,6 +361,101 @@ export const deleteBetaSignup = mutation({
   handler: async (ctx, args) => {
     await ctx.db.delete(args.signupId);
     return true;
+  },
+});
+
+/**
+ * ADMIN RECOVERY MUTATION: Recover deleted user data
+ * 
+ * This mutation is used to recover accidentally deleted user data.
+ * It bypasses normal duplicate checks and creates records directly.
+ * 
+ * **Use with caution:** Only for data recovery scenarios
+ * 
+ * @param {string} args.email - User's email address
+ * @param {string} args.userId - Better Auth user ID
+ * @param {string} [args.name] - User's name (optional)
+ * @param {string} [args.school] - School name
+ * @param {string} [args.subject] - Subject taught
+ * @param {number} [args.originalSignupDate] - Original signup timestamp
+ * 
+ * @returns {Object} Result containing success status and created IDs
+ */
+export const recoverDeletedUser = mutation({
+  args: {
+    email: v.string(),
+    userId: v.string(),
+    name: v.optional(v.string()),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    originalSignupDate: v.optional(v.number()),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+    betaSignupId: v.optional(v.id("betaSignups")),
+    betaProgramId: v.optional(v.id("betaProgram")),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // Check if user already exists (prevent duplicate recovery)
+      const existingSignup = await ctx.db
+        .query("betaSignups")
+        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .unique();
+
+      if (existingSignup) {
+        return {
+          success: false,
+          message: "User already exists in betaSignups table",
+          betaSignupId: undefined,
+          betaProgramId: undefined,
+        };
+      }
+
+      // Create beta signup record
+      const signupDate = args.originalSignupDate || Date.now();
+      const betaSignupId = await ctx.db.insert("betaSignups", {
+        email: args.email,
+        name: args.name || args.email.split('@')[0],
+        school: args.school || "",
+        subject: args.subject || "",
+        status: "approved", // User already has account
+        signupDate: signupDate,
+        betaProgramId: "beta-v1",
+        notes: "Recovered from accidental deletion",
+      });
+
+      // Create beta program record
+      const betaProgramId = await ctx.db.insert("betaProgram", {
+        userId: args.userId,
+        status: "active",
+        invitedAt: signupDate,
+        joinedAt: signupDate,
+        onboardingStep: 0,
+        onboardingCompleted: false,
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        officeHoursAttended: 0,
+        weeklyEngagementCount: 0,
+      });
+
+      return {
+        success: true,
+        message: "User data recovered successfully",
+        betaSignupId,
+        betaProgramId,
+      };
+    } catch (error) {
+      console.error("Error recovering user data:", error);
+      return {
+        success: false,
+        message: `Failed to recover user data: ${error}`,
+        betaSignupId: undefined,
+        betaProgramId: undefined,
+      };
+    }
   },
 });
 
