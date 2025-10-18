@@ -184,5 +184,5 @@ Each agent has a dedicated `.mdc` rule file with role-specific context, responsi
 - **Brand Guidelines:** docs/PELICAN_AI_BRAND_GUIDELINES.md
 - **Testing Suite:** scripts/README.md
 - **Troubleshooting:** scripts/troubleshooting-guide.md
-- **Agent System Migration:** docs/AGENT-SYSTEM-MIGRATION.md
+- **Agent System Integration:** docs/GIT-WORKFLOW.md (Agent Collaboration Patterns)
 
