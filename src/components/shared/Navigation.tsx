@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "convex/react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { 
@@ -15,43 +16,42 @@ import {
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
-  currentView: "dashboard" | "frameworks" | "community" | "profile" | "admin" | "time-tracking";
-  onViewChange: (view: "dashboard" | "frameworks" | "community" | "profile" | "admin" | "time-tracking") => void;
   className?: string;
 }
 
-export function Navigation({ currentView, onViewChange, className }: NavigationProps) {
+export function Navigation({ className }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const navigate = useNavigate();
   const isAdmin = useQuery(api.admin.checkIsAdmin);
   const loggedInUser = useQuery(api.auth.loggedInUser);
 
   const navigationItems = [
     {
-      id: "dashboard" as const,
+      path: "/dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
       description: "Overview and quick start"
     },
     {
-      id: "frameworks" as const,
+      path: "/frameworks",
       label: "Framework Library",
       icon: BookOpen,
       description: "Browse AI guidance frameworks"
     },
     {
-      id: "community" as const,
+      path: "/community",
       label: "Community",
       icon: Users,
       description: "Innovations and testimonials"
     },
     {
-      id: "time-tracking" as const,
+      path: "/time-tracking",
       label: "Time Tracking",
       icon: Clock,
       description: "Track your productivity gains"
     },
     {
-      id: "profile" as const,
+      path: "/profile",
       label: "Profile",
       icon: User,
       description: "Settings and preferences"
@@ -61,7 +61,7 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
   // Admin-only navigation items
   const adminItems = [
     {
-      id: "admin" as const,
+      path: "/admin",
       label: "Admin",
       icon: Shield,
       description: "Manage platform and content",
@@ -83,44 +83,42 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
       <nav className={cn("hidden md:flex items-center gap-1", className)}>
         {navigationItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentView === item.id;
           
           return (
-            <Button
-              key={item.id}
-              variant={isActive ? "default" : "ghost"}
-              size="sm"
-              onClick={() => onViewChange(item.id)}
-              className={cn(
-                "flex items-center gap-2 h-9 px-3",
-                isActive && "bg-primary text-primary-foreground"
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) => cn(
+                "flex items-center gap-2 h-9 px-3 rounded-md text-sm font-medium transition-colors",
+                isActive 
+                  ? "bg-primary text-primary-foreground" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               )}
             >
               <Icon className="h-4 w-4" />
               <span>{item.label}</span>
-            </Button>
+            </NavLink>
           );
         })}
         
         {/* Admin Navigation - Only show for admin users */}
         {isAdmin && adminItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentView === item.id;
           
           return (
-            <Button
-              key={item.id}
-              variant={isActive ? "default" : "ghost"}
-              size="sm"
-              onClick={() => onViewChange(item.id)}
-              className={cn(
-                "flex items-center gap-2 h-9 px-3 border-l ml-2 pl-4",
-                isActive && "bg-primary text-primary-foreground"
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) => cn(
+                "flex items-center gap-2 h-9 px-3 rounded-md text-sm font-medium transition-colors border-l ml-2 pl-4",
+                isActive 
+                  ? "bg-primary text-primary-foreground" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               )}
             >
               <Icon className="h-4 w-4" />
               <span>{item.label}</span>
-            </Button>
+            </NavLink>
           );
         })}
       </nav>
@@ -148,60 +146,54 @@ export function Navigation({ currentView, onViewChange, className }: NavigationP
               <div className="p-4 space-y-2">
                 {navigationItems.map((item) => {
                   const Icon = item.icon;
-                  const isActive = currentView === item.id;
                   
                   return (
-                    <Button
-                      key={item.id}
-                      variant={isActive ? "default" : "ghost"}
-                      size="lg"
-                      onClick={() => {
-                        onViewChange(item.id);
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full justify-start gap-3 h-12",
-                        isActive && "bg-primary text-primary-foreground"
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={({ isActive }) => cn(
+                        "flex items-center gap-3 h-12 w-full rounded-md px-3 text-left transition-colors",
+                        isActive 
+                          ? "bg-primary text-primary-foreground" 
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
                       )}
                     >
                       <Icon className="h-5 w-5" />
-                      <div className="text-left">
+                      <div>
                         <div className="font-medium">{item.label}</div>
                         <div className="text-xs text-muted-foreground">
                           {item.description}
                         </div>
                       </div>
-                    </Button>
+                    </NavLink>
                   );
                 })}
                 
                 {/* Admin Mobile Navigation */}
                 {isAdmin && adminItems.map((item) => {
                   const Icon = item.icon;
-                  const isActive = currentView === item.id;
                   
                   return (
-                    <Button
-                      key={item.id}
-                      variant={isActive ? "default" : "ghost"}
-                      size="lg"
-                      onClick={() => {
-                        onViewChange(item.id);
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className={cn(
-                        "w-full justify-start gap-3 h-12 border-t pt-4 mt-4",
-                        isActive && "bg-primary text-primary-foreground"
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={({ isActive }) => cn(
+                        "flex items-center gap-3 h-12 w-full rounded-md px-3 text-left transition-colors border-t pt-4 mt-4",
+                        isActive 
+                          ? "bg-primary text-primary-foreground" 
+                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
                       )}
                     >
                       <Icon className="h-5 w-5" />
-                      <div className="text-left">
+                      <div>
                         <div className="font-medium">{item.label}</div>
                         <div className="text-xs text-muted-foreground">
                           {item.description}
                         </div>
                       </div>
-                    </Button>
+                    </NavLink>
                   );
                 })}
               </div>

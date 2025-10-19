@@ -50,7 +50,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           // Check if sign-in was successful - Better Auth returns data with user property
           if (result && 'data' in result && result.data && (result.data as any).user) {
             console.log("Sign-in successful for user:", (result.data as any).user.id);
-            toast.success("Welcome back!");
+            toast.success("Welcome back to Pelican AI!");
             onClose();
           } else if (result && 'error' in result) {
             // Better Auth returned an error object
