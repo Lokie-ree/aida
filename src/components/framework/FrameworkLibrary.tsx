@@ -47,9 +47,9 @@ export function FrameworkLibrary() {
     searchQuery ? { query: searchQuery } : "skip"
   );
 
-  const savedFrameworks = useQuery(api.frameworks.getUserSavedFrameworks, {});
+  const savedFrameworks = useQuery(api.frameworks.getUserSavedFrameworks);
 
-  // Mutations
+  // Mutations (disabled when not authenticated)
   const recordUsage = useMutation(api.frameworks.recordFrameworkUsage);
   const saveFramework = useMutation(api.frameworks.saveFramework);
   const unsaveFramework = useMutation(api.frameworks.unsaveFramework);

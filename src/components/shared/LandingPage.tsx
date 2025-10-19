@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { BetaSignupModal } from "@/components/shared/BetaSignupModal";
+import { AuthModal } from "@/components/auth/AuthModal";
 import { PrivacyPolicyModal } from "@/components/shared/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/shared/TermsOfServiceModal";
 import { HeroSection } from "@/components/landing/HeroSection";
@@ -11,11 +12,12 @@ import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamples
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
-import { Menu, X, Users } from "lucide-react";
+import { Menu, X, Users, LogIn } from "lucide-react";
 
 export function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBetaSignupModalOpen, setIsBetaSignupModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
@@ -60,6 +62,14 @@ export function LandingPage() {
           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-2 sm:gap-4">
             <AnimatedThemeToggler />
             <Button 
+              variant="outline"
+              size="sm"
+              onClick={() => setIsAuthModalOpen(true)}
+              className="text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
+            >
+              Sign In
+            </Button>
+            <Button 
               size="sm"
               onClick={handleBetaSignupClick}
               className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
@@ -96,6 +106,23 @@ export function LandingPage() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="p-4 space-y-2">
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={() => {
+                        setIsAuthModalOpen(true);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full justify-start gap-3 h-12"
+                    >
+                      <LogIn className="h-5 w-5" />
+                      <div className="text-left">
+                        <div className="font-medium">Sign In</div>
+                        <div className="text-xs text-muted-foreground">
+                          Access your account
+                        </div>
+                      </div>
+                    </Button>
                     <Button
                       variant="ghost"
                       size="lg"
@@ -262,6 +289,12 @@ export function LandingPage() {
       <TermsOfServiceModal 
         isOpen={isTermsModalOpen} 
         onClose={() => setIsTermsModalOpen(false)} 
+      />
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
       />
     </div>
   );
