@@ -5,9 +5,10 @@ import { DataModel } from "./_generated/dataModel";
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { betterAuth } from "better-auth";
+import { createAuthLogContext } from "../src/lib/secure-logging";
 
 const siteUrl = process.env.SITE_URL || "https://kindly-setter-935.convex.site";
-const frontendUrl = "http://localhost:5175"; // Frontend development URL
+const frontendUrl = "http://localhost:5173"; // Frontend development URL
 
 /** 
  * This configures Better Auth with Convex following the official integration guide.
@@ -18,7 +19,97 @@ const frontendUrl = "http://localhost:5175"; // Frontend development URL
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
-export const authComponent = createClient<DataModel>(components.betterAuth);
+export const authComponent = createClient<DataModel>(components.betterAuth, {
+  triggers: {
+    user: {
+      onCreate: async (ctx, doc) => {
+        const logger = createAuthLogContext("onCreate", doc._id);
+        logger.log("Better Auth onCreate trigger fired");
+        
+        try {
+          // Check if user profile already exists
+          const existingProfile = await ctx.db
+            .query("userProfiles")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .first();
+
+          if (!existingProfile) {
+            // Look up beta signup data by email to populate profile
+            const betaSignup = await ctx.db
+              .query("betaSignups")
+              .withIndex("by_email", (q) => q.eq("email", doc.email))
+              .first();
+
+            // Create user profile
+            await ctx.db.insert("userProfiles", {
+              userId: doc._id,
+              authId: doc._id,
+              school: betaSignup?.school || undefined,
+              subject: betaSignup?.subject || undefined,
+              gradeLevel: undefined,
+              district: undefined,
+              role: "teacher",
+            });
+            logger.log("User profile created via trigger");
+
+            // Create beta program record
+            await ctx.db.insert("betaProgram", {
+              userId: doc._id,
+              status: betaSignup && betaSignup.status === "approved" ? "active" : "invited",
+              invitedAt: betaSignup?.signupDate || Date.now(),
+              joinedAt: Date.now(),
+              onboardingStep: 0,
+              onboardingCompleted: false,
+              frameworksTried: 0,
+              totalTimeSaved: 0,
+              innovationsShared: 0,
+              officeHoursAttended: 0,
+              weeklyEngagementCount: 0,
+            });
+            logger.log("Beta program record created via trigger");
+          }
+        } catch (error) {
+          logger.error("Error in onCreate trigger", error);
+        }
+      },
+      onUpdate: async (ctx, newDoc, oldDoc) => {
+        const logger = createAuthLogContext("onUpdate", newDoc._id);
+        logger.log("Better Auth onUpdate trigger fired");
+        // Handle user updates if needed
+      },
+      onDelete: async (ctx, doc) => {
+        const logger = createAuthLogContext("onDelete", doc._id);
+        logger.log("Better Auth onDelete trigger fired");
+        
+        try {
+          // Clean up user profile
+          const profile = await ctx.db
+            .query("userProfiles")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .first();
+          
+          if (profile) {
+            await ctx.db.delete(profile._id);
+            logger.log("User profile deleted");
+          }
+
+          // Clean up beta program record
+          const betaProgram = await ctx.db
+            .query("betaProgram")
+            .withIndex("by_user", (q) => q.eq("userId", doc._id))
+            .first();
+          
+          if (betaProgram) {
+            await ctx.db.delete(betaProgram._id);
+            logger.log("Beta program record deleted");
+          }
+        } catch (error) {
+          logger.error("Error in onDelete trigger", error);
+        }
+      },
+    },
+  },
+});
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
@@ -92,7 +183,8 @@ export const createBetterAuthUser = mutation({
   }),
   handler: async (ctx, args) => {
     try {
-      console.log("Creating Better Auth user internally");
+      const logger = createAuthLogContext("createBetterAuthUser");
+      logger.log("Creating Better Auth user internally");
       
       const auth = createAuth(ctx);
       
@@ -106,8 +198,7 @@ export const createBetterAuthUser = mutation({
       });
 
       if (result && result.user) {
-        console.log("Successfully created Better Auth user, ID:", result.user.id);
-        console.log(`User ID: ${result.user.id}`);
+        logger.log("Successfully created Better Auth user", { userId: result.user.id });
         
         return {
           success: true,
@@ -115,14 +206,15 @@ export const createBetterAuthUser = mutation({
           message: "User created successfully",
         };
       } else {
-        console.error("No user returned from Better Auth signup");
+        logger.error("No user returned from Better Auth signup");
         return {
           success: false,
           message: "Failed to create user - no user returned",
         };
       }
     } catch (error) {
-      console.error("Error creating Better Auth user:", error);
+      const logger = createAuthLogContext("createBetterAuthUser");
+      logger.error("Error creating Better Auth user", error);
       return {
         success: false,
         message: `Failed to create user: ${error}`,
@@ -170,7 +262,8 @@ export const createUserDirectly = mutation({
   }),
   handler: async (ctx, args) => {
     try {
-      console.log("Creating user directly via internal API");
+      const logger = createAuthLogContext("createUserDirectly");
+      logger.log("Creating user directly via internal API");
       
       const auth = createAuth(ctx);
       
@@ -184,11 +277,10 @@ export const createUserDirectly = mutation({
       });
 
       if (result && result.user) {
-        console.log("Successfully created user, ID:", result.user.id);
-        console.log(`User ID: ${result.user.id}`);
+        logger.log("Successfully created user", { userId: result.user.id });
         
         // Since triggers don't fire with internal API, manually create profile records
-        console.log(`Manually creating profile records for user: ${result.user.id}`);
+        logger.log("Manually creating profile records");
         
         // Look up beta signup data by email to populate profile
         const betaSignup = await ctx.db
@@ -206,7 +298,7 @@ export const createUserDirectly = mutation({
           district: undefined,
           role: "teacher",
         });
-        console.log(`User profile created for user: ${result.user.id}`);
+        logger.log("User profile created");
 
         // Create beta program record for ALL users (not just beta signups)
         await ctx.db.insert("betaProgram", {
@@ -222,7 +314,7 @@ export const createUserDirectly = mutation({
           officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
-        console.log(`Beta program record created for user: ${result.user.id}`);
+        logger.log("Beta program record created");
         
         return {
           success: true,
@@ -230,14 +322,15 @@ export const createUserDirectly = mutation({
           message: "User created successfully",
         };
       } else {
-        console.error("No user returned from Better Auth signup");
+        logger.error("No user returned from Better Auth signup");
         return {
           success: false,
           message: "Failed to create user - no user returned",
         };
       }
     } catch (error) {
-      console.error("Error creating user:", error);
+      const logger = createAuthLogContext("createUserDirectly");
+      logger.error("Error creating user", error);
       return {
         success: false,
         message: `Failed to create user: ${error}`,
@@ -335,5 +428,4 @@ export const loggedInUser = getCurrentUser;
 // Test helper functions removed due to Better Auth integration complexity
 // Use the simplified test script instead
 
-// Export triggers API for external use
-export const { onCreate, onUpdate, onDelete } = authComponent.triggersApi();
+// Better Auth triggers are now configured in the authComponent above

@@ -1,0 +1,392 @@
+rules:
+  - id: ferpa-pii-in-logs
+    message: "FERPA VIOLATION: PII (email) exposed in console.log - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $EMAIL, ...)
+      - pattern: console.error(..., $EMAIL, ...)
+      - pattern: console.warn(..., $EMAIL, ...)
+      - pattern: console.info(..., $EMAIL, ...)
+      - pattern: console.debug(..., $EMAIL, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of email addresses which violates FERPA compliance for Louisiana educator data protection"
+
+  - id: ferpa-pii-in-logs-template-literals
+    message: "FERPA VIOLATION: PII (email) exposed in template literal logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(`...${$EMAIL}...`)
+      - pattern: console.error(`...${$EMAIL}...`)
+      - pattern: console.warn(`...${$EMAIL}...`)
+      - pattern: console.info(`...${$EMAIL}...`)
+      - pattern: console.debug(`...${$EMAIL}...`)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of email addresses in template literals which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-user-object
+    message: "FERPA VIOLATION: User object with PII exposed in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $USER, ...)
+      - pattern: console.error(..., $USER, ...)
+      - pattern: console.warn(..., $USER, ...)
+      - pattern: console.info(..., $USER, ...)
+      - pattern: console.debug(..., $USER, ...)
+    where:
+      - metavariable-pattern:
+          metavariable: $USER
+          pattern: { email: $EMAIL, ... }
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of user objects containing email addresses which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-doc-object
+    message: "FERPA VIOLATION: Document object with PII exposed in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $DOC, ...)
+      - pattern: console.error(..., $DOC, ...)
+      - pattern: console.warn(..., $DOC, ...)
+      - pattern: console.info(..., $DOC, ...)
+      - pattern: console.debug(..., $DOC, ...)
+    where:
+      - metavariable-pattern:
+          metavariable: $DOC
+          pattern: { email: $EMAIL, ... }
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of document objects containing email addresses which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-result-object
+    message: "FERPA VIOLATION: Result object with PII exposed in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $RESULT, ...)
+      - pattern: console.error(..., $RESULT, ...)
+      - pattern: console.warn(..., $RESULT, ...)
+      - pattern: console.info(..., $RESULT, ...)
+      - pattern: console.debug(..., $RESULT, ...)
+    where:
+      - metavariable-pattern:
+          metavariable: $RESULT
+          pattern: { user: { email: $EMAIL, ... }, ... }
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of result objects containing user email addresses which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-args-object
+    message: "FERPA VIOLATION: Args object with PII exposed in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $ARGS, ...)
+      - pattern: console.error(..., $ARGS, ...)
+      - pattern: console.warn(..., $ARGS, ...)
+      - pattern: console.info(..., $ARGS, ...)
+      - pattern: console.debug(..., $ARGS, ...)
+    where:
+      - metavariable-pattern:
+          metavariable: $ARGS
+          pattern: { email: $EMAIL, ... }
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of args objects containing email addresses which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-error-object
+    message: "FERPA VIOLATION: Error object with PII exposed in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $ERROR, ...)
+      - pattern: console.error(..., $ERROR, ...)
+      - pattern: console.warn(..., $ERROR, ...)
+      - pattern: console.info(..., $ERROR, ...)
+      - pattern: console.debug(..., $ERROR, ...)
+    where:
+      - metavariable-pattern:
+          metavariable: $ERROR
+          pattern: { message: "...", ... }
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects logging of error objects that may contain PII in error messages which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-email-access
+    message: "FERPA VIOLATION: Direct email property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.email, ...)
+      - pattern: console.error(..., $OBJ.email, ...)
+      - pattern: console.warn(..., $OBJ.email, ...)
+      - pattern: console.info(..., $OBJ.email, ...)
+      - pattern: console.debug(..., $OBJ.email, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to email property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-name-access
+    message: "FERPA VIOLATION: Direct name property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.name, ...)
+      - pattern: console.error(..., $OBJ.name, ...)
+      - pattern: console.warn(..., $OBJ.name, ...)
+      - pattern: console.info(..., $OBJ.name, ...)
+      - pattern: console.debug(..., $OBJ.name, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to name property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-school-access
+    message: "FERPA VIOLATION: Direct school property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.school, ...)
+      - pattern: console.error(..., $OBJ.school, ...)
+      - pattern: console.warn(..., $OBJ.school, ...)
+      - pattern: console.info(..., $OBJ.school, ...)
+      - pattern: console.debug(..., $OBJ.school, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to school property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-district-access
+    message: "FERPA VIOLATION: Direct district property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.district, ...)
+      - pattern: console.error(..., $OBJ.district, ...)
+      - pattern: console.warn(..., $OBJ.district, ...)
+      - pattern: console.info(..., $OBJ.district, ...)
+      - pattern: console.debug(..., $OBJ.district, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to district property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-subject-access
+    message: "FERPA VIOLATION: Direct subject property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.subject, ...)
+      - pattern: console.error(..., $OBJ.subject, ...)
+      - pattern: console.warn(..., $OBJ.subject, ...)
+      - pattern: console.info(..., $OBJ.subject, ...)
+      - pattern: console.debug(..., $OBJ.subject, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to subject property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-gradelevel-access
+    message: "FERPA VIOLATION: Direct gradeLevel property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.gradeLevel, ...)
+      - pattern: console.error(..., $OBJ.gradeLevel, ...)
+      - pattern: console.warn(..., $OBJ.gradeLevel, ...)
+      - pattern: console.info(..., $OBJ.gradeLevel, ...)
+      - pattern: console.debug(..., $OBJ.gradeLevel, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to gradeLevel property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-role-access
+    message: "FERPA VIOLATION: Direct role property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.role, ...)
+      - pattern: console.error(..., $OBJ.role, ...)
+      - pattern: console.warn(..., $OBJ.role, ...)
+      - pattern: console.info(..., $OBJ.role, ...)
+      - pattern: console.debug(..., $OBJ.role, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to role property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-phone-access
+    message: "FERPA VIOLATION: Direct phone property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.phone, ...)
+      - pattern: console.error(..., $OBJ.phone, ...)
+      - pattern: console.warn(..., $OBJ.phone, ...)
+      - pattern: console.info(..., $OBJ.phone, ...)
+      - pattern: console.debug(..., $OBJ.phone, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to phone property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-address-access
+    message: "FERPA VIOLATION: Direct address property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.address, ...)
+      - pattern: console.error(..., $OBJ.address, ...)
+      - pattern: console.warn(..., $OBJ.address, ...)
+      - pattern: console.info(..., $OBJ.address, ...)
+      - pattern: console.debug(..., $OBJ.address, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to address property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-ssn-access
+    message: "FERPA VIOLATION: Direct SSN property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.ssn, ...)
+      - pattern: console.error(..., $OBJ.ssn, ...)
+      - pattern: console.warn(..., $OBJ.ssn, ...)
+      - pattern: console.info(..., $OBJ.ssn, ...)
+      - pattern: console.debug(..., $OBJ.ssn, ...)
+      - pattern: console.log(..., $OBJ.socialSecurityNumber, ...)
+      - pattern: console.error(..., $OBJ.socialSecurityNumber, ...)
+      - pattern: console.warn(..., $OBJ.socialSecurityNumber, ...)
+      - pattern: console.info(..., $OBJ.socialSecurityNumber, ...)
+      - pattern: console.debug(..., $OBJ.socialSecurityNumber, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to SSN properties in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-dob-access
+    message: "FERPA VIOLATION: Direct date of birth property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.dateOfBirth, ...)
+      - pattern: console.error(..., $OBJ.dateOfBirth, ...)
+      - pattern: console.warn(..., $OBJ.dateOfBirth, ...)
+      - pattern: console.info(..., $OBJ.dateOfBirth, ...)
+      - pattern: console.debug(..., $OBJ.dateOfBirth, ...)
+      - pattern: console.log(..., $OBJ.birthDate, ...)
+      - pattern: console.error(..., $OBJ.birthDate, ...)
+      - pattern: console.warn(..., $OBJ.birthDate, ...)
+      - pattern: console.info(..., $OBJ.birthDate, ...)
+      - pattern: console.debug(..., $OBJ.birthDate, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to date of birth properties in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-studentid-access
+    message: "FERPA VIOLATION: Direct student ID property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.studentId, ...)
+      - pattern: console.error(..., $OBJ.studentId, ...)
+      - pattern: console.warn(..., $OBJ.studentId, ...)
+      - pattern: console.info(..., $OBJ.studentId, ...)
+      - pattern: console.debug(..., $OBJ.studentId, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to student ID property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-mothersmaidenname-access
+    message: "FERPA VIOLATION: Direct mother's maiden name property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.mothersMaidenName, ...)
+      - pattern: console.error(..., $OBJ.mothersMaidenName, ...)
+      - pattern: console.warn(..., $OBJ.mothersMaidenName, ...)
+      - pattern: console.info(..., $OBJ.mothersMaidenName, ...)
+      - pattern: console.debug(..., $OBJ.mothersMaidenName, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to mother's maiden name property in logs which violates FERPA compliance"
+
+  - id: ferpa-pii-in-logs-direct-personalinfo-access
+    message: "FERPA VIOLATION: Direct personal info property access in logs - Louisiana educator data protection violation"
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern: console.log(..., $OBJ.personalInfo, ...)
+      - pattern: console.error(..., $OBJ.personalInfo, ...)
+      - pattern: console.warn(..., $OBJ.personalInfo, ...)
+      - pattern: console.info(..., $OBJ.personalInfo, ...)
+      - pattern: console.debug(..., $OBJ.personalInfo, ...)
+      - pattern: console.log(..., $OBJ.pii, ...)
+      - pattern: console.error(..., $OBJ.pii, ...)
+      - pattern: console.warn(..., $OBJ.pii, ...)
+      - pattern: console.info(..., $OBJ.pii, ...)
+      - pattern: console.debug(..., $OBJ.pii, ...)
+    metadata:
+      category: security
+      cwe: "CWE-200: Information Exposure"
+      owasp: "A01:2021: Broken Access Control"
+      ferpa: "Educational data protection compliance"
+      description: "Detects direct access to personal info properties in logs which violates FERPA compliance"
