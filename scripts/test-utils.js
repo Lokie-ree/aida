@@ -150,134 +150,113 @@ export function generateTestSubject() {
   return subjects[Math.floor(Math.random() * subjects.length)];
 }
 
+/**
+ * SAFE Test Data Cleanup - Only deletes records with isTestData: true
+ * 
+ * This function replaces the old cleanTestData() which was deleting ALL data.
+ * It now uses the safe testDataCleanup system that only deletes test data.
+ */
 export async function cleanTestData(client) {
-  const runner = new TestRunner("Database Cleanup");
+  const runner = new TestRunner("Safe Test Data Cleanup");
   
   try {
-    runner.log("🧹 Starting comprehensive database cleanup...");
+    runner.log("🧹 Starting SAFE test data cleanup (only isTestData: true)...");
 
-    // Get all Phase 1 and Phase 2 records
-    const [
-      betaSignups, userProfiles, betaPrograms,
-      frameworks, frameworkUsage, testimonials, innovations, innovationInteractions, timeTracking
-    ] = await Promise.all([
-      // Phase 1 data
-      client.query("betaSignup:getAllBetaSignups").catch(() => []),
-      client.query("userProfiles:getAllUserProfiles").catch(() => []),
-      client.query("betaProgram:getAllBetaPrograms").catch(() => []),
+    // First, verify cleanup safety
+    runner.log("🔍 Verifying cleanup safety...");
+    const safetyCheck = await client.query("testDataCleanup:verifyCleanupSafety");
+    
+    if (!safetyCheck.safe) {
+      runner.log("⚠️  Safety warnings detected:", "warning");
+      safetyCheck.warnings.forEach(warning => {
+        runner.log(`   - ${warning}`, "warning");
+      });
       
-      // Phase 2 data
-      client.query("frameworks:getAllFrameworks").catch(() => []),
-      client.query("frameworks:getAllFrameworkUsage").catch(() => []),
-      client.query("testimonials:getAllTestimonialsForCleanup").catch(() => []),
-      client.query("innovations:getAllInnovationsForCleanup").catch(() => []),
-      client.query("innovations:getAllInnovationInteractions").catch(() => []),
-      client.query("timeTracking:getAllTimeTracking").catch(() => [])
-    ]);
-
-    const deletePromises = [];
-    let totalDeleted = 0;
-
-    // Delete Phase 1 data
-    runner.log("🧹 Cleaning Phase 1 data...");
-    
-    // Delete beta signups
-    for (const signup of betaSignups || []) {
-      deletePromises.push(
-        client.mutation("betaSignup:deleteBetaSignup", { signupId: signup._id })
-          .catch(error => runner.log(`Warning: Failed to delete beta signup ${signup._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete user profiles
-    for (const profile of userProfiles || []) {
-      deletePromises.push(
-        client.mutation("userProfiles:deleteUserProfile", { profileId: profile._id })
-          .catch(error => runner.log(`Warning: Failed to delete user profile ${profile._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete beta programs
-    for (const program of betaPrograms || []) {
-      deletePromises.push(
-        client.mutation("betaProgram:deleteBetaProgram", { programId: program._id })
-          .catch(error => runner.log(`Warning: Failed to delete beta program ${program._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete Phase 2 data
-    runner.log("🧹 Cleaning Phase 2 data...");
-    
-    // Delete framework usage (must be deleted before frameworks)
-    for (const usage of frameworkUsage || []) {
-      deletePromises.push(
-        client.mutation("frameworks:deleteFrameworkUsage", { usageId: usage._id })
-          .catch(error => runner.log(`Warning: Failed to delete framework usage ${usage._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete innovation interactions (must be deleted before innovations)
-    for (const interaction of innovationInteractions || []) {
-      deletePromises.push(
-        client.mutation("innovations:deleteInnovationInteraction", { interactionId: interaction._id })
-          .catch(error => runner.log(`Warning: Failed to delete innovation interaction ${interaction._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete frameworks
-    for (const framework of frameworks || []) {
-      deletePromises.push(
-        client.mutation("frameworks:deleteFramework", { frameworkId: framework._id })
-          .catch(error => runner.log(`Warning: Failed to delete framework ${framework._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete testimonials
-    for (const testimonial of testimonials || []) {
-      deletePromises.push(
-        client.mutation("testimonials:deleteTestimonial", { testimonialId: testimonial._id })
-          .catch(error => runner.log(`Warning: Failed to delete testimonial ${testimonial._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete innovations
-    for (const innovation of innovations || []) {
-      deletePromises.push(
-        client.mutation("innovations:deleteInnovation", { innovationId: innovation._id })
-          .catch(error => runner.log(`Warning: Failed to delete innovation ${innovation._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Delete time tracking
-    for (const tracking of timeTracking || []) {
-      deletePromises.push(
-        client.mutation("timeTracking:deleteTimeTracking", { trackingId: tracking._id })
-          .catch(error => runner.log(`Warning: Failed to delete time tracking ${tracking._id}: ${error.message}`, "warning"))
-      );
-    }
-
-    // Execute deletions sequentially to avoid write conflicts
-    let deletedCount = 0;
-    for (const deletePromise of deletePromises) {
-      try {
-        await deletePromise;
-        deletedCount++;
-      } catch (error) {
-        // Individual deletions already have error handling, just count them
-        deletedCount++;
+      // Check if there's real data that would be affected
+      const hasRealData = Object.values(safetyCheck.realDataCounts).some(count => count > 0);
+      if (hasRealData) {
+        runner.log("❌ ABORTING: Real data detected that could be affected", "error");
+        runner.log("💡 Use testDataCleanup:deleteAllTestData directly if you're sure", "info");
+        runner.recordTest("Database Cleanup", false, "Aborted due to real data presence");
+        return false;
       }
     }
+
+    // Get current test data counts
+    const testDataCounts = await client.query("testDataCleanup:getTestDataCounts");
+    const totalTestRecords = Object.values(testDataCounts).reduce((sum, count) => sum + count, 0);
     
-    totalDeleted = deletedCount;
-    runner.recordTest("Database Cleanup", true, `${totalDeleted} records deleted`);
-    runner.log(`✅ Comprehensive database cleanup completed: ${totalDeleted} records deleted`);
+    if (totalTestRecords === 0) {
+      runner.log("✅ No test data found to clean");
+      runner.recordTest("Database Cleanup", true, "No test data to clean");
+      return true;
+    }
+
+    runner.log(`📊 Found ${totalTestRecords} test records to clean:`);
+    Object.entries(testDataCounts).forEach(([table, count]) => {
+      if (count > 0) {
+        runner.log(`   - ${table}: ${count} records`);
+      }
+    });
+
+    // Perform safe cleanup using the internal mutation
+    runner.log("🧹 Executing safe test data cleanup...");
+    const cleanupResult = await client.mutation("testDataCleanup:deleteAllTestData");
     
-    return true;
+    if (cleanupResult.success) {
+      const totalDeleted = Object.values(cleanupResult.deletedCounts).reduce((sum, count) => sum + count, 0);
+      runner.log(`✅ Safe test data cleanup completed: ${totalDeleted} test records deleted`);
+      
+      // Log detailed results
+      Object.entries(cleanupResult.deletedCounts).forEach(([table, count]) => {
+        if (count > 0) {
+          runner.log(`   ✅ ${table}: ${count} test records deleted`);
+        }
+      });
+      
+      // Show any warnings
+      if (cleanupResult.warnings.length > 0) {
+        runner.log("⚠️  Cleanup warnings:", "warning");
+        cleanupResult.warnings.forEach(warning => {
+          runner.log(`   - ${warning}`, "warning");
+        });
+      }
+      
+      runner.recordTest("Database Cleanup", true, `${totalDeleted} test records deleted`);
+      return true;
+    } else {
+      runner.log("❌ Test data cleanup failed", "error");
+      cleanupResult.warnings.forEach(warning => {
+        runner.log(`   - ${warning}`, "error");
+      });
+      runner.recordTest("Database Cleanup", false, "Cleanup failed");
+      return false;
+    }
+    
   } catch (error) {
     runner.recordTest("Database Cleanup", false, error.message);
-    runner.log(`❌ Database cleanup failed: ${error.message}`, "error");
+    runner.log(`❌ Safe test data cleanup failed: ${error.message}`, "error");
     return false;
   }
+}
+
+/**
+ * LEGACY UNSAFE CLEANUP - DEPRECATED
+ * 
+ * This function is kept for reference but should NOT be used.
+ * It deletes ALL data including production data.
+ * 
+ * @deprecated Use cleanTestData() instead which only deletes test data
+ */
+export async function cleanAllDataUnsafe(client) {
+  const runner = new TestRunner("UNSAFE Database Cleanup (DEPRECATED)");
+  
+  runner.log("⚠️  WARNING: This function deletes ALL data including production data!", "error");
+  runner.log("⚠️  This function is DEPRECATED and should not be used!", "error");
+  runner.log("💡 Use cleanTestData() instead for safe test-only cleanup", "info");
+  
+  runner.recordTest("Database Cleanup", false, "Deprecated unsafe cleanup function called");
+  return false;
 }
 
 export function sleep(ms) {
