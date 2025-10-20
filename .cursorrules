@@ -165,13 +165,15 @@ Each agent has a dedicated `.mdc` rule file with role-specific context, responsi
 
 - **ADR-001:** Use Convex Backend (docs/decisions/001-use-convex-backend.md)
 - **ADR-002:** Extend A.I.D.A. Codebase (docs/decisions/002-extend-aida-codebase.md)
-- **ADR-003:** Framework-Based Content (docs/decisions/003-framework-based-content.md)
 - **ADR-004:** Migrate to Better Auth (docs/decisions/004-migrate-to-better-auth.md)
-- **ADR-006:** Beta Auth Investigation (docs/decisions/006-beta-auth-investigation.md)
-- **ADR-007:** Email-First Beta Flow (docs/decisions/007-email-first-beta-flow.md)
+- **ADR-008:** Authentication Flow Fixes (docs/decisions/008-authentication-flow-fixes.md)
+- **ADR-009:** Critical Infrastructure Fixes (docs/decisions/009-critical-infrastructure-fixes.md)
+- **ADR-010:** Test Data Isolation and Recovery (docs/decisions/010-test-data-isolation-and-recovery.md)
+- **ADR-011:** CORS Fix and Phase 2 Testing (docs/decisions/011-cors-fix-and-phase2-testing.md)
 
 ## References
 
+- **Project Status:** docs/PROJECT_STATUS.md (single source of truth for current status)
 - **Brand Guidelines:** docs/PELICAN_AI_BRAND_GUIDELINES.md
 - **Testing Suite:** scripts/README.md
 - **Troubleshooting:** scripts/troubleshooting-guide.md
