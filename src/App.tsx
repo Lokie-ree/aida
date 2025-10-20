@@ -52,7 +52,7 @@ export default function App() {
                 </div>
               </header>
 
-              <main id="main-content" className="flex-1" role="main">
+              <main id="main-content" className="flex-1 pt-4" role="main">
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   <Route 

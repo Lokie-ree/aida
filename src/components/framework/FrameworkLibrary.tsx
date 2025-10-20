@@ -256,7 +256,7 @@ export function FrameworkLibrary() {
                     framework={framework}
                     variant={viewMode}
                     isSaved={isFrameworkSaved(framework._id)}
-                    onView={() => handleViewFramework(framework._id)}
+                    onView={() => handleViewFramework(framework.frameworkId)}
                     onSave={() => handleFrameworkAction(framework._id, "save")}
                     onUnsave={() => handleFrameworkAction(framework._id, "unsave")}
                     onCopy={() => handleFrameworkAction(framework._id, "copy")}
