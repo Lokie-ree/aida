@@ -9,82 +9,10 @@ import { components, internal } from "./_generated/api";
 import { api } from "./_generated/api";
 import { Resend } from "@convex-dev/resend";
 
-// Email configuration for Pelican AI
-export const emailConfig = {
-  // Core business operations
-  hello: {
-    from: "Pelican AI <hello@pelicanai.org>",
-    replyTo: ["hello@pelicanai.org"] as string[],
-  },
-  support: {
-    from: "Pelican AI <support@pelicanai.org>",
-    replyTo: ["support@pelicanai.org"] as string[],
-  },
-  legal: {
-    from: "Pelican AI <legal@pelicanai.org>",
-    replyTo: ["legal@pelicanai.org"] as string[],
-  },
-  privacy: {
-    from: "Pelican AI <privacy@pelicanai.org>",
-    replyTo: ["privacy@pelicanai.org"] as string[],
-  },
-  
-  // Beta program & user management
-  beta: {
-    from: "Pelican AI <beta@pelicanai.org>",
-    replyTo: ["hello@pelicanai.org"] as string[],
-  },
-  onboarding: {
-    from: "Pelican AI <onboarding@pelicanai.org>",
-    replyTo: ["support@pelicanai.org"] as string[],
-  },
-  feedback: {
-    from: "Pelican AI <feedback@pelicanai.org>",
-    replyTo: ["feedback@pelicanai.org"] as string[],
-  },
-  
-  // Content & community
-  community: {
-    from: "Pelican AI <community@pelicanai.org>",
-    replyTo: ["community@pelicanai.org"] as string[],
-  },
-  frameworks: {
-    from: "Pelican AI <frameworks@pelicanai.org>",
-    replyTo: ["frameworks@pelicanai.org"] as string[],
-  },
-  testimonials: {
-    from: "Pelican AI <testimonials@pelicanai.org>",
-    replyTo: ["testimonials@pelicanai.org"] as string[],
-  },
-  
-  // Administrative & technical
-  admin: {
-    from: "Pelican AI <admin@pelicanai.org>",
-    replyTo: ["admin@pelicanai.org"] as string[],
-  },
-  analytics: {
-    from: "Pelican AI <analytics@pelicanai.org>",
-    replyTo: ["analytics@pelicanai.org"] as string[],
-  },
-  security: {
-    from: "Pelican AI <security@pelicanai.org>",
-    replyTo: ["security@pelicanai.org"] as string[],
-  },
-  
-  // Louisiana educator focus
-  educators: {
-    from: "Pelican AI <educators@pelicanai.org>",
-    replyTo: ["educators@pelicanai.org"] as string[],
-  },
-  standards: {
-    from: "Pelican AI <standards@pelicanai.org>",
-    replyTo: ["standards@pelicanai.org"] as string[],
-  },
-  training: {
-    from: "Pelican AI <training@pelicanai.org>",
-    replyTo: ["training@pelicanai.org"] as string[],
-  },
-};
+// Simple email configuration - just the essentials
+const SENDER_DOMAIN = "mail.pelicanai.org" as const;
+const FROM_ADDRESS = `Pelican AI <hello@${SENDER_DOMAIN}>`;
+const REPLY_TO = [`hello@${SENDER_DOMAIN}`] as string[];
 
 // Initialize Resend component
 // testMode: true = only send to @resend.dev test addresses (for development)
@@ -142,11 +70,11 @@ export const sendBetaWelcomeEmail = action({
 
       // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
-        from: emailConfig.beta.from,
+        from: FROM_ADDRESS,
         to: args.email,
         subject: "Welcome to Pelican AI Beta Program - Reclaim Your Time!",
         html: emailHtml,
-        replyTo: emailConfig.beta.replyTo,
+        replyTo: REPLY_TO,
       });
 
       console.log("Beta welcome email sent successfully:", emailId);
@@ -181,11 +109,11 @@ export const sendPlatformAccessEmail = action({
 
       // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
-        from: emailConfig.onboarding.from,
+        from: FROM_ADDRESS,
         to: args.email,
         subject: "Your Pelican AI Platform Access is Ready!",
         html: emailHtml,
-        replyTo: emailConfig.onboarding.replyTo,
+        replyTo: REPLY_TO,
       });
 
       console.log("Platform access email sent successfully:", emailId);
@@ -263,11 +191,11 @@ export const sendWeeklyPromptEmail = action({
       );
 
       const emailId = await resend.sendEmail(ctx, {
-        from: emailConfig.frameworks.from,
+        from: FROM_ADDRESS,
         to: args.userEmail,
         subject: `This Week's Productivity Prompt: ${args.frameworkTitle}`,
         html: emailHtml,
-        replyTo: emailConfig.frameworks.replyTo,
+        replyTo: REPLY_TO,
       });
 
       console.log("Weekly prompt email sent successfully:", emailId);
@@ -342,16 +270,3 @@ export const sendWeeklyEmailsToAllUsers = action({
   },
 });
 
-/**
- * Utility function to get email configuration for a specific type
- * 
- * @param {keyof typeof emailConfig} type - The email type (e.g., 'beta', 'support', 'frameworks')
- * @returns {object} Email configuration with from and replyTo fields
- * 
- * @example
- * const config = getEmailConfig('beta');
- * // Returns: { from: "Pelican AI <beta@pelicanai.org>", replyTo: ["hello@pelicanai.org"] }
- */
-export function getEmailConfig(type: keyof typeof emailConfig) {
-  return emailConfig[type];
-}

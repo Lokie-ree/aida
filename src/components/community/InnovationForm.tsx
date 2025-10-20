@@ -29,7 +29,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
     title: "",
     description: "",
     tags: [] as string[],
-    timeSaved: undefined as number | undefined,
+    timeSaved: 0 as number,
     relatedFramework: relatedFrameworkId || "",
   });
   const [newTag, setNewTag] = useState("");
@@ -38,6 +38,31 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   const frameworks = useQuery(api.frameworks.getAllFrameworks, { status: "published" });
   const shareInnovation = useMutation(api.innovations.shareInnovation);
   const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
+
+  // Show loading state if frameworks are still loading
+  if (frameworks === undefined) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Lightbulb className="h-5 w-5 text-primary" />
+            Share Your Innovation
+          </CardTitle>
+          <CardDescription>
+            Help other Louisiana educators by sharing your creative AI use cases and tips
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center items-center h-32">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+              <span>Loading frameworks...</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({
@@ -92,7 +117,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
           title: "",
           description: "",
           tags: [],
-          timeSaved: undefined,
+          timeSaved: 0,
           relatedFramework: "",
         });
 
@@ -165,11 +190,13 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">No related framework</SelectItem>
-                {frameworks?.map((framework) => (
+                {frameworks && frameworks.length > 0 ? frameworks.map((framework) => (
                   <SelectItem key={framework._id} value={framework._id}>
                     {framework.frameworkId}: {framework.title}
                   </SelectItem>
-                ))}
+                )) : (
+                  <SelectItem value="" disabled>No frameworks available</SelectItem>
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -246,7 +273,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                 id="timeSaved"
                 type="number"
                 value={formData.timeSaved || ""}
-                onChange={(e) => handleInputChange("timeSaved", e.target.value ? parseInt(e.target.value) : undefined)}
+                onChange={(e) => handleInputChange("timeSaved", e.target.value ? parseInt(e.target.value) : 0)}
                 placeholder="30"
                 min="0"
               />
