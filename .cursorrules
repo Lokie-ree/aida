@@ -130,45 +130,36 @@ To activate a specific agent's context and role, reference the appropriate rule 
 
 Each agent has a dedicated `.mdc` rule file with role-specific context, responsibilities, MCP tool configurations, and quality standards:
 
-- **@.cursor/rules/pm.mdc** - Product Manager (business strategy, user stories, validation)
-- **@.cursor/rules/ux-designer.mdc** - UX/UI Designer (design system, accessibility, user journeys)
-- **@.cursor/rules/architect.mdc** - System Architect (technical architecture, API contracts, scalability)
-- **@.cursor/rules/engineer.mdc** - Engineer (full-stack implementation, React 19, Convex integration)
+- **@.cursor/rules/product.mdc** - Product & Design (business strategy, user experience, Louisiana educator empowerment)
+- **@.cursor/rules/developer.mdc** - Developer (full-stack implementation, system architecture, technical execution)
 - **@.cursor/rules/security.mdc** - Security Specialist (Semgrep analysis, FERPA compliance, vulnerability detection)
-- **@.cursor/rules/wrecking-ball.mdc** - Wrecking Ball Specialist (simplification, debt removal, refactoring)
 - **@.cursor/rules/qa.mdc** - Quality Assurance (testing, bug reporting, validation)
 
 ### Agent Selection Guidelines
 
 1. **Single Agent Mode:** Reference one agent at a time for focused work
-   - Example: `@.cursor/rules/engineer.mdc Help me implement the auth flow`
+   - Example: `@.cursor/rules/developer.mdc Help me implement the auth flow`
 
 2. **Multi-Agent Mode:** Reference multiple agents when cross-functional perspective needed
-   - Example: `@.cursor/rules/architect.mdc @.cursor/rules/engineer.mdc Design and implement the email API`
+   - Example: `@.cursor/rules/product.mdc @.cursor/rules/developer.mdc Design and implement the email API`
 
 3. **Default Mode:** Without agent reference, use general full-stack development context (this file)
 
 ### Example Usage
 
 ```
-@.cursor/rules/pm.mdc Help me prioritize these features for Phase 1 MVP
-@.cursor/rules/ux-designer.mdc Review this component for accessibility compliance
-@.cursor/rules/architect.mdc Design the API contract for weekly email scheduling
-@.cursor/rules/engineer.mdc Implement the Better Auth integration with user profiles
+@.cursor/rules/product.mdc Help me prioritize these features for Phase 2 transition
+@.cursor/rules/developer.mdc Implement the Better Auth integration with user profiles
 @.cursor/rules/security.mdc Run Semgrep security scan on the authentication flow
-@.cursor/rules/wrecking-ball.mdc Identify and remove unused dependencies from package.json
 @.cursor/rules/qa.mdc Create E2E test plan for beta signup flow
 ```
 
 ### Quick Reference: When to Use Each Agent
 
-- **Product decisions?** → @.cursor/rules/pm.mdc
-- **Design or UX questions?** → @.cursor/rules/ux-designer.mdc
-- **Architecture or system design?** → @.cursor/rules/architect.mdc
-- **Implementation work?** → @.cursor/rules/engineer.mdc
+- **Product decisions or UX questions?** → @.cursor/rules/product.mdc
+- **Architecture, implementation, or technical work?** → @.cursor/rules/developer.mdc
 - **Security or FERPA compliance?** → @.cursor/rules/security.mdc
-- **Simplification or cleanup?** → @.cursor/rules/wrecking-ball.mdc
-- **Testing or quality?** → @.cursor/rules/qa.mdc
+- **Testing or quality assurance?** → @.cursor/rules/qa.mdc
 
 ## Key Decision Records
 
