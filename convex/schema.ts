@@ -12,6 +12,10 @@ import { v } from "convex/values";
  */
 
 const applicationTables = {
+  // ============================================
+  // PHASE 1 TABLES (Active in Production)
+  // ============================================
+  
   // Beta program signups - main table for the landing page
   betaSignups: defineTable({
     email: v.string(),
@@ -22,7 +26,7 @@ const applicationTables = {
     signupDate: v.number(),
     betaProgramId: v.string(),
     notes: v.optional(v.string()),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_email", ["email"])
     .index("by_status", ["status"])
     .index("by_signup_date", ["signupDate"]),
@@ -36,50 +40,39 @@ const applicationTables = {
     gradeLevel: v.optional(v.string()),
     district: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_user", ["userId"]).index("authId", ["authId"]),
 
   // ============================================
-  // PHASE 2 TABLES (defined but not actively used in MVP)
+  // PHASE 2 TABLES (Backend Ready, UI Not Exposed)
   // ============================================
-  // These tables exist for future functionality but are not part of Phase 1 MVP scope.
-  // See phase 2 files: frameworks.ts, innovations.ts, testimonials.ts, timeTracking.ts, admin.ts, betaProgram.ts
-
-  // Frameworks (Atomic Notes)
+  // These tables have full CRUD operations implemented but are not exposed to users yet.
+  // They will be activated when Phase 2 UI is connected to the backend.
+  
+  // AI Guidance Frameworks (Atomic Notes)
   frameworks: defineTable({
-    // Metadata
     frameworkId: v.string(),
     title: v.string(),
     module: v.union(v.literal("ai-basics-hub"), v.literal("instructional-expert-hub")),
     category: v.string(),
     tags: v.array(v.string()),
-    
-    // Content
     challenge: v.string(),
     solution: v.string(),
     samplePrompt: v.string(),
     ethicalGuardrail: v.string(),
     tipsAndVariations: v.optional(v.string()),
-    
-    // Metadata
     timeEstimate: v.number(),
     difficultyLevel: v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced")),
     platformCompatibility: v.array(v.string()),
-    
-    // Louisiana Standards Alignment
     louisianaStandards: v.optional(v.array(v.string())),
     lerDomains: v.optional(v.array(v.string())),
-    
-    // Status
     status: v.union(v.literal("draft"), v.literal("beta"), v.literal("published")),
     createdBy: v.string(),
     publishedAt: v.optional(v.number()),
-    
-    // Analytics
     usageCount: v.number(),
     averageRating: v.optional(v.number()),
     averageTimeSaved: v.optional(v.number()),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_module", ["module"])
     .index("by_category", ["category"])
     .index("by_framework_id", ["frameworkId"])
@@ -103,12 +96,12 @@ const applicationTables = {
     timeSaved: v.optional(v.number()),
     comment: v.optional(v.string()),
     timestamp: v.number(),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_framework", ["frameworkId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
 
-  // Testimonials
+  // User Testimonials
   testimonials: defineTable({
     userId: v.string(),
     frameworkId: v.optional(v.id("frameworks")),
@@ -123,7 +116,7 @@ const applicationTables = {
     approvedAt: v.optional(v.number()),
     featured: v.boolean(),
     displayOrder: v.optional(v.number()),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_status", ["status"])
     .index("by_featured", ["featured"]),
@@ -143,7 +136,7 @@ const applicationTables = {
     officeHoursAttended: v.number(),
     lastWeeklyPromptOpened: v.optional(v.number()),
     weeklyEngagementCount: v.number(),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_status", ["status"]),
 
@@ -161,7 +154,7 @@ const applicationTables = {
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_created_at", ["createdAt"])
     .searchIndex("search_innovations", {
@@ -177,7 +170,7 @@ const applicationTables = {
     rating: v.optional(v.number()),
     comment: v.optional(v.string()),
     timestamp: v.number(),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_innovation", ["innovationId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
@@ -190,14 +183,11 @@ const applicationTables = {
     activity: v.string(), // description of what was done
     category: v.optional(v.string()), // optional categorization
     timestamp: v.number(),
-    isTestData: v.optional(v.boolean()), // NEW: Flag for test data isolation
+    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_framework", ["frameworkId"])
     .index("by_timestamp", ["timestamp"])
     .index("by_category", ["category"]),
-
-  // Note: RAG tables (documents, chatMessages, feedbackSessions, auditLogs) are
-  // automatically managed by the @convex-dev/rag component
 };
 
 export default defineSchema({

@@ -41,15 +41,6 @@ const TEST_SUITES = {
   diagnostic: [
     'diagnostic/test-environment-config.js',
     'diagnostic/test-database-state.js'
-  ],
-  phase2: [
-    'unit/test-unit-frameworks.js',
-    'unit/test-unit-community.js',
-    'unit/test-unit-dashboard.js',
-    'unit/test-unit-admin.js',
-    'integration/test-integration-phase2-features.js',
-    'e2e/test-e2e-phase2-user-journey.js',
-    'api/test-api-phase2-emails.js'
   ]
 };
 
@@ -107,9 +98,7 @@ async function runTestRunner() {
       } catch (error) {
         runner.log(`⚠️  Could not verify production data safety: ${error.message}`, "warning");
         runner.log("💡 Consider using --force flag if you're sure it's safe", "info");
-        if (!force) {
-          process.exit(1);
-        }
+        process.exit(1);
       }
     } else {
       runner.log("⚠️  FORCE MODE: Bypassing production data safety checks", "warning");

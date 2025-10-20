@@ -103,7 +103,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
       description: formData.description,
       tags: formData.tags,
       timeSaved: formData.timeSaved,
-      relatedFramework: formData.relatedFramework ? formData.relatedFramework as any : undefined,
+      relatedFramework: formData.relatedFramework && formData.relatedFramework !== "none" ? formData.relatedFramework as any : undefined,
     })
       .then(() => {
         // Record engagement
@@ -189,13 +189,13 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                 <SelectValue placeholder="Select a framework this innovation relates to" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No related framework</SelectItem>
+                <SelectItem value="none">No related framework</SelectItem>
                 {frameworks && frameworks.length > 0 ? frameworks.map((framework) => (
                   <SelectItem key={framework._id} value={framework._id}>
                     {framework.frameworkId}: {framework.title}
                   </SelectItem>
                 )) : (
-                  <SelectItem value="" disabled>No frameworks available</SelectItem>
+                  <SelectItem value="none" disabled>No frameworks available</SelectItem>
                 )}
               </SelectContent>
             </Select>

@@ -14,4 +14,20 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate vendor chunks for better caching
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
+          'animation-vendor': ['framer-motion'],
+          'convex-vendor': ['convex', '@convex-dev/better-auth'],
+          'auth-vendor': ['better-auth'],
+        },
+      },
+    },
+    // Increase chunk size warning limit since we're using manual chunks
+    chunkSizeWarningLimit: 1000,
+  },
 }));

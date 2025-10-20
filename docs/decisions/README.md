@@ -19,19 +19,20 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 |----|-------|--------|------|
 | [001](001-use-convex-backend.md) | Use Convex for Backend | ✅ Accepted | Oct 5, 2025 |
 | [002](002-extend-aida-codebase.md) | Extend A.I.D.A. Codebase | ✅ Accepted | Oct 5, 2025 |
-| [003](003-framework-based-content.md) | Framework-Based Content | ⚠️ Missing | Oct 5, 2025 |
 | [004](004-migrate-to-better-auth.md) | Migrate to Better Auth | ✅ Completed | Oct 6, 2025 |
-| [006](006-beta-auth-investigation.md) | Beta Authentication Flow Investigation | ⚠️ Missing | Oct 10, 2025 |
-| [007](007-email-first-beta-flow.md) | Email-First Beta Signup Flow | ⚠️ Missing | Oct 11, 2025 |
 | [008](008-authentication-flow-fixes.md) | Authentication Flow Fixes - Auto-Login & Dashboard Access | ✅ Completed | Oct 14, 2025 |
 | [009](009-critical-infrastructure-fixes.md) | Critical Infrastructure Fixes - Database Conflicts & Auth Validation | ✅ Accepted | Oct 17, 2025 |
 | [010](010-test-data-isolation-and-recovery.md) | Test Data Isolation and Recovery System | ✅ Accepted | Oct 18, 2025 |
+| [011](011-cors-fix-and-phase2-testing.md) | CORS Fix and Phase 2 Testing | ✅ Accepted | Oct 19, 2025 |
 
 ## Archived ADRs
 
 | ID | Title | Status | Reason | Location |
 |----|-------|--------|--------|----------|
+| [003](003-framework-based-content.md) | Framework-Based Content | ⚠️ Missing | Refocused to Phase 1 MVP email-first approach | `docs/decisions/` |
 | [005](005-phase5-p0-implementation.md) | Phase 5 P0 Implementation | ⚠️ Missing | Refocused to Phase 1 MVP email-first approach | `docs/decisions/` |
+| [006](006-beta-auth-investigation.md) | Beta Authentication Flow Investigation | ⚠️ Missing | Consolidated into ADR-004 | `docs/decisions/` |
+| [007](007-email-first-beta-flow.md) | Email-First Beta Signup Flow | ⚠️ Missing | Consolidated into ADR-004 | `docs/decisions/` |
 
 ## ADR Lifecycle
 
