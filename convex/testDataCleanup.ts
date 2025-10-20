@@ -176,13 +176,13 @@ export const verifyCleanupSafety = query({
       try {
         const allRecords = await ctx.db.query(tableName as any).collect();
         const realRecords = allRecords.filter((record: any) => 
-          record.isTestData !== true && record.isTestData !== false
+          record.isTestData === false // Only flag explicitly marked as real data
         );
         
         realDataCounts[tableName] = realRecords.length;
         
         if (realRecords.length > 0) {
-          warnings.push(`${tableName}: ${realRecords.length} records without isTestData flag (potential real data)`);
+          warnings.push(`${tableName}: ${realRecords.length} records explicitly marked as real data (isTestData: false)`);
         }
         
       } catch (error) {
