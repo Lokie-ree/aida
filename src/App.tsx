@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
+import { Authenticated, Unauthenticated } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignOutButton } from "./SignOutButton";
-import { authClient } from "./lib/auth-client";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ModeToggle } from "./components/shared/ModeToggle";
@@ -37,7 +36,7 @@ export default function App() {
             </a>
 
             <Authenticated>
-              <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
+              <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
                 <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <Logo className="h-8" />

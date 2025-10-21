@@ -13,11 +13,13 @@
  * - User profile with persona-specific data
  * - Beta program enrollment
  * - Sample beta signup record
+ * 
+ * **Architecture Compliance:** Uses ConvexTestClient methods only, no direct DB access.
  */
 
-import { ConvexHttpClient } from "convex/browser";
+import { ConvexTestClient, TestRunner } from "./test-utils.js";
 
-const client = new ConvexHttpClient(process.env.CONVEX_URL || "https://kindly-setter-935.convex.cloud");
+const client = new ConvexTestClient(process.env.CONVEX_URL || "https://kindly-setter-935.convex.cloud");
 
 const testUsers = [
   {
@@ -65,81 +67,54 @@ const testUsers = [
 ];
 
 async function createTestUsers() {
-  console.log("🚀 Creating test users for Pelican AI personas...\n");
+  const runner = new TestRunner("Test User Creation");
+  runner.log("🚀 Creating test users for Pelican AI personas...\n");
 
   for (const userData of testUsers) {
     try {
-      console.log(`Creating user: ${userData.name} (${userData.email})`);
+      runner.log(`Creating user: ${userData.name} (${userData.email})`);
       
-      // Step 1: Create beta signup record
-      console.log("  📝 Creating beta signup record...");
-      const betaSignupResult = await client.mutation("betaSignup:createBetaSignup", {
-        email: userData.email,
-        name: userData.name,
-        school: userData.school,
-        subject: userData.subject,
-        status: "approved" // Pre-approve for testing
-      });
-      console.log(`  ✅ Beta signup created: ${betaSignupResult.id}`);
-
-      // Step 2: Create Better Auth user and profile
-      console.log("  🔐 Creating Better Auth user...");
-      const authResult = await client.mutation("auth:createUserDirectly", {
-        email: userData.email,
-        password: userData.password,
-        name: userData.name
-      });
+      // Use the new architecture-compliant test user creation method
+      const result = await client.createTestUser(
+        userData.email,
+        userData.password,
+        userData.name,
+        userData.school,
+        userData.subject
+      );
       
-      if (authResult.success) {
-        console.log(`  ✅ User created successfully: ${authResult.userId}`);
-        
-        // Step 3: Update user profile with persona-specific data
-        console.log("  👤 Updating user profile...");
-        await client.mutation("userProfiles:updateUserProfile", {
-          userId: authResult.userId,
-          school: userData.school,
-          subject: userData.subject,
-          gradeLevel: userData.gradeLevel,
-          district: userData.district,
-          role: userData.role
-        });
-        console.log(`  ✅ Profile updated for ${userData.persona}`);
-
-        // Step 4: Update beta program status to active
-        console.log("  🎯 Activating beta program...");
-        await client.mutation("betaProgram:updateBetaStatus", {
-          userId: authResult.userId,
-          status: "active",
-          onboardingStep: 1
-        });
-        console.log(`  ✅ Beta program activated for ${userData.persona}`);
-
-        console.log(`✅ Successfully created test user: ${userData.name}\n`);
+      if (result.success) {
+        runner.log(`✅ Successfully created test user: ${userData.name}`, "success");
+        runner.recordTest(`Create ${userData.persona}`, true, `User ID: ${result.userId}`);
       } else {
-        console.error(`❌ Failed to create user: ${authResult.message}\n`);
+        runner.log(`❌ Failed to create user: ${result.message}`, "error");
+        runner.recordTest(`Create ${userData.persona}`, false, result.message);
       }
       
     } catch (error) {
-      console.error(`❌ Error creating user ${userData.name}:`, error.message);
-      console.log("");
+      runner.log(`❌ Error creating user ${userData.name}: ${error.message}`, "error");
+      runner.recordTest(`Create ${userData.persona}`, false, error.message);
     }
   }
 
-  console.log("🎉 Test user creation complete!");
-  console.log("\n📋 Test User Credentials:");
-  console.log("=" .repeat(50));
+  runner.log("🎉 Test user creation complete!");
+  runner.log("\n📋 Test User Credentials:");
+  runner.log("=" .repeat(50));
   testUsers.forEach(user => {
-    console.log(`👤 ${user.name}`);
-    console.log(`   Email: ${user.email}`);
-    console.log(`   Password: ${user.password}`);
-    console.log(`   Persona: ${user.persona}`);
-    console.log(`   School: ${user.school}`);
-    console.log(`   Subject: ${user.subject}`);
-    console.log("");
+    runner.log(`👤 ${user.name}`);
+    runner.log(`   Email: ${user.email}`);
+    runner.log(`   Password: ${user.password}`);
+    runner.log(`   Persona: ${user.persona}`);
+    runner.log(`   School: ${user.school}`);
+    runner.log(`   Subject: ${user.subject}`);
+    runner.log("");
   });
   
-  console.log("🔗 Login at: http://localhost:5173");
-  console.log("💡 Use these credentials to test different user personas!");
+  runner.log("🔗 Login at: http://localhost:5173");
+  runner.log("💡 Use these credentials to test different user personas!");
+  
+  // Print test results
+  runner.printResults();
 }
 
 // Run the script

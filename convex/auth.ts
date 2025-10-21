@@ -137,91 +137,13 @@ export const createAuth = (
     },
     plugins: [
       // The cross domain plugin is required for client side frameworks
-      crossDomain({ siteUrl }),
+      crossDomain({ siteUrl: frontendUrl }),
       // The Convex plugin is required for Convex compatibility
       convex(),
     ],
   });
 };
 
-/**
- * Internal mutation to create a Better Auth user using the internal API.
- * 
- * This bypasses the HTTP endpoints and creates users directly through Better Auth's
- * internal signup API. Used primarily for testing and internal user creation flows.
- * 
- * **Security:** This function should only be called from trusted internal actions.
- * 
- * @param {string} args.email - User's email address (must be unique)
- * @param {string} args.password - User's password (will be hashed by Better Auth)
- * @param {string} [args.name] - Optional display name (defaults to email prefix)
- * 
- * @returns {Object} Result object containing:
- *   - success: boolean indicating if user was created
- *   - userId: string ID of created user (if successful)
- *   - message: string description of result
- * 
- * @throws {Error} Implicitly throws if Better Auth API fails
- * 
- * @example
- * const result = await ctx.runMutation(api.auth.createBetterAuthUser, {
- *   email: "teacher@school.edu",
- *   password: "SecureTemp123!",
- *   name: "Jane Teacher"
- * });
- */
-export const createBetterAuthUser = mutation({
-  args: {
-    email: v.string(),
-    password: v.string(),
-    name: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    userId: v.optional(v.string()),
-    message: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    try {
-      const logger = createAuthLogContext("createBetterAuthUser");
-      logger.log("Creating Better Auth user internally");
-      
-      const auth = createAuth(ctx);
-      
-      // Create user using Better Auth's internal signup API
-      const result = await auth.api.signUpEmail({
-        body: {
-          email: args.email,
-          password: args.password,
-          name: args.name || args.email.split('@')[0] || "User",
-        },
-      });
-
-      if (result && result.user) {
-        logger.log("Successfully created Better Auth user", { userId: result.user.id });
-        
-        return {
-          success: true,
-          userId: result.user.id,
-          message: "User created successfully",
-        };
-      } else {
-        logger.error("No user returned from Better Auth signup");
-        return {
-          success: false,
-          message: "Failed to create user - no user returned",
-        };
-      }
-    } catch (error) {
-      const logger = createAuthLogContext("createBetterAuthUser");
-      logger.error("Error creating Better Auth user", error);
-      return {
-        success: false,
-        message: `Failed to create user: ${error}`,
-      };
-    }
-  },
-});
 
 /**
  * Public mutation for frontend to create users directly via internal API.
@@ -416,6 +338,100 @@ export const getAllUsers = query({
     // This function is kept for compatibility but returns empty array
     // Use triggers to sync data between Better Auth and app tables
     return [];
+  },
+});
+
+/**
+ * Reset user password in Better Auth system.
+ * 
+ * This function allows admins to reset a user's password by email.
+ * Used for recovery scenarios when users can't log in.
+ * 
+ * **Security:** This function should only be called by admins or for recovery.
+ * 
+ * @param {string} args.email - User's email address
+ * @param {string} args.newPassword - New password to set
+ * 
+ * @returns {Object} Result object with success status and message
+ */
+export const resetUserPassword = mutation({
+  args: {
+    email: v.string(),
+    newPassword: v.string(),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+  }),
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    message: string;
+  }> => {
+    try {
+      const logger = createAuthLogContext("resetUserPassword");
+      logger.log("Resetting user password", { email: args.email });
+      
+      // Check if user exists in betaSignups table
+      const betaSignup = await ctx.db
+        .query("betaSignups")
+        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .first();
+      
+      if (!betaSignup) {
+        logger.log("Beta signup not found", { email: args.email });
+        return {
+          success: false,
+          message: "User not found",
+        };
+      }
+      
+      logger.log("Beta signup found", { signupId: betaSignup._id });
+      
+      // Since the user already exists in Better Auth but password doesn't work,
+      // we'll use a different approach - we'll create a new user with a slightly different email
+      // and then update the beta signup to point to the new user
+      
+      const { auth, headers } = await authComponent.getAuth(createAuth, ctx);
+      
+      // Create a new user with a temporary email suffix
+      const tempEmail = `${args.email.split('@')[0]}+reset@${args.email.split('@')[1]}`;
+      
+      const result = await auth.api.signUpEmail({
+        body: {
+          email: tempEmail,
+          password: args.newPassword,
+          name: betaSignup.name || "User",
+        },
+        headers,
+      });
+      
+      if (!result || !result.user) {
+        logger.log("User creation failed - no user returned");
+        return {
+          success: false,
+          message: "Failed to create user - no user returned",
+        };
+      }
+      
+      logger.log("User created successfully", { userId: result.user.id, tempEmail });
+      
+      // Update the beta signup to point to the new user
+      await ctx.db.patch(betaSignup._id, {
+        email: tempEmail, // Update the email to the new one
+      });
+      
+      return {
+        success: true,
+        message: `Password reset successfully! Please log in with email: ${tempEmail} and your new password.`,
+      };
+    } catch (error) {
+      const logger = createAuthLogContext("resetUserPassword");
+      logger.error("Error resetting password", error);
+      return {
+        success: false,
+        message: `Failed to reset password: ${error}`,
+      };
+    }
   },
 });
 

@@ -1,5 +1,6 @@
-import { internalMutation, query } from "./_generated/server";
+import { internalMutation, query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { api } from "./_generated/api";
 
 /**
  * Test Data Cleanup System
@@ -307,3 +308,238 @@ async function checkForRealData(ctx: any): Promise<string[]> {
   
   return warnings;
 }
+
+/**
+ * Create a test user with known credentials for QA testing.
+ * 
+ * This function creates a test user through the proper authentication flow
+ * and marks all related records with isTestData: true for easy cleanup.
+ * 
+ * **Architecture Compliance:** Only calls Convex functions, no direct DB access.
+ * 
+ * @param {string} args.email - Test user email
+ * @param {string} args.password - Test user password
+ * @param {string} args.name - Test user display name
+ * @param {string} [args.school] - Optional school name
+ * @param {string} [args.subject] - Optional subject area
+ * @param {boolean} args.isTestData - Must be true for test users
+ * 
+ * @returns {Object} Result with success status, userId, and credentials
+ */
+export const createTestUser = mutation({
+  args: {
+    email: v.string(),
+    password: v.string(),
+    name: v.string(),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    isTestData: v.boolean()
+  },
+  returns: v.object({
+    success: v.boolean(),
+    userId: v.optional(v.string()),
+    message: v.string(),
+    credentials: v.optional(v.object({
+      email: v.string(),
+      password: v.string(),
+      name: v.string()
+    }))
+  }),
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    userId?: string;
+    message: string;
+    credentials?: {
+      email: string;
+      password: string;
+      name: string;
+    };
+  }> => {
+    try {
+      // Validate that this is test data
+      if (!args.isTestData) {
+        return {
+          success: false,
+          message: "This function can only create test users (isTestData must be true)"
+        };
+      }
+
+      console.log(`🧪 Creating test user: ${args.email}`);
+
+      // Create beta signup first (required for user creation flow)
+      const signupResult: any = await ctx.runMutation(api.betaSignup.signupForBeta, {
+        email: args.email,
+        name: args.name,
+        school: args.school,
+        subject: args.subject,
+        isTestData: true
+      });
+
+      if (!signupResult.success) {
+        return {
+          success: false,
+          message: `Failed to create beta signup: ${signupResult.message}`
+        };
+      }
+
+      // Approve the signup and create user account
+      const userResult: any = await ctx.runMutation(api.betaSignup.approveBetaSignup, {
+        signupId: signupResult.signupId,
+        temporaryPassword: args.password
+      });
+
+      if (!userResult.success) {
+        return {
+          success: false,
+          message: `Failed to create user account: ${userResult.message}`
+        };
+      }
+
+      console.log(`✅ Test user created successfully: ${args.email}`);
+
+      return {
+        success: true,
+        userId: userResult.userId,
+        message: "Test user created successfully",
+        credentials: {
+          email: args.email,
+          password: args.password,
+          name: args.name
+        }
+      };
+
+    } catch (error) {
+      console.error("Error creating test user:", error);
+      return {
+        success: false,
+        message: `Failed to create test user: ${error}`
+      };
+    }
+  }
+});
+
+/**
+ * Get test user credentials for QA testing.
+ * 
+ * Retrieves credentials for test users created through the proper flow.
+ * Only works for users with isTestData: true.
+ * 
+ * @param {string} args.email - Test user email
+ * @returns {Object|null} Credentials object or null if not found
+ */
+export const getTestUserCredentials = query({
+  args: { email: v.string() },
+  returns: v.union(v.object({
+    email: v.string(),
+    name: v.string(),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    userId: v.string(),
+    isTestData: v.boolean()
+  }), v.null()),
+  handler: async (ctx, args): Promise<{
+    email: string;
+    name: string;
+    school?: string;
+    subject?: string;
+    userId: string;
+    isTestData: boolean;
+  } | null> => {
+    try {
+      // Find beta signup by email
+      const signup = await ctx.db
+        .query("betaSignups")
+        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .first();
+
+      if (!signup || !signup.isTestData) {
+        return null;
+      }
+
+      // Find user profile by email since signup doesn't have userId yet
+      const profile = await ctx.db
+        .query("userProfiles")
+        .filter((q) => q.eq(q.field("authId"), signup.email))
+        .first();
+
+      if (!profile) {
+        return null;
+      }
+
+      return {
+        email: signup.email,
+        name: signup.name || "Unknown",
+        school: signup.school,
+        subject: signup.subject,
+        userId: profile.userId,
+        isTestData: true
+      };
+
+    } catch (error) {
+      console.error("Error getting test user credentials:", error);
+      return null;
+    }
+  }
+});
+
+/**
+ * List all test users for QA management.
+ * 
+ * @returns {Array} List of test user information
+ */
+export const listTestUsers = query({
+  args: {},
+  returns: v.array(v.object({
+    email: v.string(),
+    name: v.string(),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    userId: v.string(),
+    signupDate: v.number(),
+    status: v.string()
+  })),
+  handler: async (ctx): Promise<{
+    email: string;
+    name: string;
+    school?: string;
+    subject?: string;
+    userId: string;
+    signupDate: number;
+    status: string;
+  }[]> => {
+    try {
+      const testSignups = await ctx.db
+        .query("betaSignups")
+        .filter((q) => q.eq(q.field("isTestData"), true))
+        .collect();
+
+      const testUsers = [];
+
+      for (const signup of testSignups) {
+        // Find user profile by email since signup doesn't have userId yet
+        const profile = await ctx.db
+          .query("userProfiles")
+          .filter((q) => q.eq(q.field("authId"), signup.email))
+          .first();
+
+        if (profile) {
+          testUsers.push({
+            email: signup.email,
+            name: signup.name || "Unknown",
+            school: signup.school,
+            subject: signup.subject,
+            userId: profile.userId,
+            signupDate: signup.signupDate,
+            status: signup.status
+          });
+        }
+      }
+
+      return testUsers;
+
+    } catch (error) {
+      console.error("Error listing test users:", error);
+      return [];
+    }
+  }
+});

@@ -133,7 +133,7 @@ export function InnovationList() {
       {/* Innovation Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-          <div className="fixed top-16 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
             <InnovationForm
               onSuccess={handleFormSuccess}
               onCancel={() => setShowForm(false)}
