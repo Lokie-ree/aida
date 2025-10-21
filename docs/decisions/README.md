@@ -97,4 +97,6 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 ## References
 
 - [ADR Process](https://adr.github.io/)
-- [Project Context](../../.cursorrules) - Tech stack, architecture principles, and Phase 1 MVP scope
+- [Project Documentation](../../README.md) - Entry point for all documentation
+- [Architecture](../ARCHITECTURE.md) - Technical architecture and system design
+- [Agent System](../../AGENT.md) - Agent collaboration and system status

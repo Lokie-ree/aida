@@ -8,7 +8,25 @@ import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
 
-// Mutation: Share innovation
+/**
+ * Mutation: Share a community innovation.
+ * 
+ * Allows authenticated users to share their AI innovations with the community.
+ * Creates an innovation record with user information and engagement metrics.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param title - Innovation title
+ * @param description - Detailed description of the innovation
+ * @param relatedFramework - Optional framework ID this innovation relates to
+ * @param tags - Array of tags for categorization
+ * @param timeSaved - Optional minutes saved using this innovation
+ * 
+ * @returns ID of the created innovation record
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see innovations table in schema.ts for data structure
+ */
 export const shareInnovation = mutation({
   args: {
     title: v.string(),
@@ -45,7 +63,17 @@ export const shareInnovation = mutation({
   },
 });
 
-// Query: Get all innovations (for admin/testing)
+/**
+ * Query: Get all innovations with optional limit.
+ * 
+ * Returns all community innovations ordered by creation date.
+ * Used by admin panels and community browsing interfaces.
+ * 
+ * @param limit - Optional limit on number of results (default: 20)
+ * @returns Array of innovation objects with metadata
+ * 
+ * @see innovations table in schema.ts for data structure
+ */
 export const getAllInnovations = query({
   args: { limit: v.optional(v.number()) },
   returns: v.array(v.object({
@@ -87,7 +115,18 @@ export const getAllInnovations = query({
   },
 });
 
-// Query: Search innovations
+/**
+ * Query: Search innovations by title and content.
+ * 
+ * Performs full-text search on innovation titles and descriptions.
+ * Uses Convex search indexes for efficient text searching.
+ * 
+ * @param query - Search query string
+ * @param limit - Optional limit on number of results (default: 20)
+ * @returns Array of matching innovation objects
+ * 
+ * @see search_innovations index in schema.ts
+ */
 export const searchInnovations = query({
   args: { 
     query: v.string(),
@@ -132,7 +171,17 @@ export const searchInnovations = query({
   },
 });
 
-// Query: Get innovation by ID
+/**
+ * Query: Get innovation by ID.
+ * 
+ * Returns detailed information for a specific innovation.
+ * Used by innovation detail pages and modal displays.
+ * 
+ * @param innovationId - ID of the innovation to retrieve
+ * @returns Innovation object or null if not found
+ * 
+ * @see innovations table in schema.ts for data structure
+ */
 export const getInnovationById = query({
   args: { innovationId: v.id("innovations") },
   returns: v.union(
@@ -173,7 +222,22 @@ export const getInnovationById = query({
   },
 });
 
-// Mutation: Comment on innovation
+/**
+ * Mutation: Comment on an innovation.
+ * 
+ * Allows authenticated users to add comments to community innovations.
+ * Creates an interaction record linking the user to the innovation.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param innovationId - ID of the innovation being commented on
+ * @param comment - Comment text content
+ * 
+ * @returns ID of the created interaction record
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see innovationInteractions table in schema.ts for data structure
+ */
 export const commentInnovation = mutation({
   args: { 
     innovationId: v.id("innovations"),
@@ -199,7 +263,25 @@ export const commentInnovation = mutation({
   },
 });
 
-// Mutation: Submit innovation (alias for shareInnovation)
+/**
+ * Mutation: Submit innovation (alias for shareInnovation).
+ * 
+ * Alternative function name for sharing innovations.
+ * Provides the same functionality as shareInnovation with different naming.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param title - Innovation title
+ * @param description - Detailed description of the innovation
+ * @param relatedFramework - Optional framework ID this innovation relates to
+ * @param tags - Array of tags for categorization
+ * @param timeSaved - Optional minutes saved using this innovation
+ * 
+ * @returns ID of the created innovation record
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see shareInnovation for identical functionality
+ */
 export const submitInnovation = mutation({
   args: {
     title: v.string(),
@@ -236,7 +318,17 @@ export const submitInnovation = mutation({
   },
 });
 
-// Query: Get recent innovations
+/**
+ * Query: Get recent innovations.
+ * 
+ * Returns the most recently created innovations ordered by creation date.
+ * Used by community pages to show latest activity.
+ * 
+ * @param limit - Optional limit on number of results (default: 20)
+ * @returns Array of recent innovation objects
+ * 
+ * @see innovations table in schema.ts for data structure
+ */
 export const getRecentInnovations = query({
   args: { limit: v.optional(v.number()) },
   returns: v.array(v.object({
@@ -279,7 +371,18 @@ export const getRecentInnovations = query({
   },
 });
 
-// Query: Get innovations by user
+/**
+ * Query: Get innovations created by current user.
+ * 
+ * Returns innovations created by the authenticated user.
+ * Used by user profile pages to show their contributions.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param limit - Optional limit on number of results (default: 20)
+ * @returns Array of user's innovation objects
+ * 
+ * @see innovations table in schema.ts for data structure
+ */
 export const getUserInnovations = query({
   args: { limit: v.optional(v.number()) },
   returns: v.array(v.object({
@@ -322,7 +425,19 @@ export const getUserInnovations = query({
   },
 });
 
-// Mutation: Like innovation
+/**
+ * Mutation: Like or unlike an innovation.
+ * 
+ * Toggles the like status for an innovation. If already liked, removes the like.
+ * If not liked, adds a like and increments the innovation's like count.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param innovationId - ID of the innovation to like/unlike
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see innovationInteractions table in schema.ts for data structure
+ */
 export const likeInnovation = mutation({
   args: { innovationId: v.id("innovations") },
   returns: v.null(),
@@ -374,7 +489,21 @@ export const likeInnovation = mutation({
   },
 });
 
-// Mutation: Mark innovation as tried
+/**
+ * Mutation: Mark innovation as tried with optional rating and comment.
+ * 
+ * Records that the user has tried an innovation with optional feedback.
+ * Updates the innovation's tries count and stores user rating/comment.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param innovationId - ID of the innovation being tried
+ * @param rating - Optional rating (1-5 scale)
+ * @param comment - Optional comment about the experience
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see innovationInteractions table in schema.ts for data structure
+ */
 export const markInnovationTried = mutation({
   args: {
     innovationId: v.id("innovations"),
@@ -428,7 +557,17 @@ export const markInnovationTried = mutation({
   },
 });
 
-// Query: Get innovation interactions
+/**
+ * Query: Get all interactions for a specific innovation.
+ * 
+ * Returns all likes, comments, and tries for an innovation.
+ * Used by innovation detail pages to show community engagement.
+ * 
+ * @param innovationId - ID of the innovation to get interactions for
+ * @returns Array of interaction objects with user data
+ * 
+ * @see innovationInteractions table in schema.ts for data structure
+ */
 export const getInnovationInteractions = query({
   args: { innovationId: v.id("innovations") },
   returns: v.array(v.object({
@@ -457,7 +596,18 @@ export const getInnovationInteractions = query({
   },
 });
 
-// Mutation: Delete innovation (for test cleanup)
+/**
+ * Mutation: Delete innovation (for test cleanup).
+ * 
+ * Permanently removes an innovation from the system.
+ * Used by test scripts for data cleanup and isolation.
+ * 
+ * @param innovationId - ID of the innovation to delete
+ * @returns true if deletion was successful
+ * 
+ * @warning This action is irreversible
+ * @see testDataCleanup.ts for safe test data management
+ */
 export const deleteInnovation = mutation({
   args: { innovationId: v.id("innovations") },
   returns: v.boolean(),
@@ -467,7 +617,18 @@ export const deleteInnovation = mutation({
   },
 });
 
-// Mutation: Delete innovation interaction (for test cleanup)
+/**
+ * Mutation: Delete innovation interaction (for test cleanup).
+ * 
+ * Permanently removes an innovation interaction from the system.
+ * Used by test scripts for data cleanup and isolation.
+ * 
+ * @param interactionId - ID of the interaction to delete
+ * @returns true if deletion was successful
+ * 
+ * @warning This action is irreversible
+ * @see testDataCleanup.ts for safe test data management
+ */
 export const deleteInnovationInteraction = mutation({
   args: { interactionId: v.id("innovationInteractions") },
   returns: v.boolean(),
@@ -477,7 +638,16 @@ export const deleteInnovationInteraction = mutation({
   },
 });
 
-// Query: Get all innovations (for test cleanup)
+/**
+ * Query: Get all innovations (for test cleanup).
+ * 
+ * Returns all innovation records for test data management and cleanup.
+ * Used by test scripts to identify and clean up test data.
+ * 
+ * @returns Array of all innovation records with full data
+ * 
+ * @see testDataCleanup.ts for safe test data management
+ */
 export const getAllInnovationsForCleanup = query({
   args: {},
   returns: v.array(v.object({
@@ -501,7 +671,16 @@ export const getAllInnovationsForCleanup = query({
   },
 });
 
-// Query: Get all innovation interactions (for test cleanup)
+/**
+ * Query: Get all innovation interactions (for test cleanup).
+ * 
+ * Returns all innovation interaction records for test data management and cleanup.
+ * Used by test scripts to identify and clean up test data.
+ * 
+ * @returns Array of all innovation interaction records
+ * 
+ * @see testDataCleanup.ts for safe test data management
+ */
 export const getAllInnovationInteractions = query({
   args: {},
   returns: v.array(v.object({

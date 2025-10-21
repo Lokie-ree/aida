@@ -9,7 +9,20 @@ import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { getAuthUserSafe } from "./auth";
 
-// Query: Get beta program status
+/**
+ * Query: Get beta program status for current user.
+ * 
+ * Returns the user's beta program participation status, onboarding progress,
+ * and engagement metrics. Used by dashboard to show program status.
+ * 
+ * @returns Beta program status object or null if not enrolled
+ * 
+ * @example
+ * const betaStatus = useQuery(api.betaProgram.getBetaStatus);
+ * if (betaStatus) {
+ *   console.log(`Onboarding step: ${betaStatus.onboardingStep}`);
+ * }
+ */
 export const getBetaStatus = query({
   args: {},
   returns: v.union(v.object({
@@ -51,7 +64,19 @@ export const getBetaStatus = query({
   },
 });
 
-// Mutation: Initialize beta program for user
+/**
+ * Mutation: Initialize beta program for authenticated user.
+ * 
+ * Creates a beta program record for the current user if one doesn't exist.
+ * Used during user onboarding to track program participation.
+ * 
+ * @requires Authentication - Must be logged in
+ * @returns ID of the created or existing beta program record
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see betaProgram table in schema.ts for record structure
+ */
 export const initializeBetaProgram = mutation({
   args: {},
   returns: v.id("betaProgram"),
@@ -91,7 +116,20 @@ export const initializeBetaProgram = mutation({
   },
 });
 
-// Mutation: Update onboarding progress
+/**
+ * Mutation: Update user's onboarding progress.
+ * 
+ * Updates the onboarding step and marks onboarding as completed when
+ * the user reaches the final step (step 4).
+ * 
+ * @requires Authentication - Must be logged in
+ * @param step - New onboarding step number (0-4)
+ * 
+ * @throws "User must be authenticated" if no session
+ * @throws "Beta program not initialized" if no beta program record
+ * 
+ * @see betaProgram table in schema.ts for onboarding fields
+ */
 export const updateOnboardingProgress = mutation({
   args: { step: v.number() },
   returns: v.null(),
@@ -120,7 +158,18 @@ export const updateOnboardingProgress = mutation({
   },
 });
 
-// Mutation: Record weekly engagement
+/**
+ * Mutation: Record weekly engagement for current user.
+ * 
+ * Updates the user's weekly engagement count and last prompt opened timestamp.
+ * Used to track user activity and engagement with weekly email prompts.
+ * 
+ * @requires Authentication - Must be logged in
+ * 
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see betaProgram table in schema.ts for engagement fields
+ */
 export const recordWeeklyEngagement = mutation({
   args: {},
   returns: v.null(),
@@ -149,7 +198,18 @@ export const recordWeeklyEngagement = mutation({
   },
 });
 
-// Query: Get beta stats
+/**
+ * Query: Get beta program statistics for current user.
+ * 
+ * Returns user's engagement metrics including frameworks tried, time saved,
+ * innovations shared, and weekly engagement streak.
+ * 
+ * @returns Object containing user's beta program statistics
+ * 
+ * @example
+ * const stats = useQuery(api.betaProgram.getBetaStats);
+ * console.log(`Time saved: ${stats.totalTimeSaved} minutes`);
+ */
 export const getBetaStats = query({
   args: {},
   returns: v.object({
@@ -205,7 +265,16 @@ export const getBetaStats = query({
   },
 });
 
-// Query: Get all beta users (for email distribution)
+/**
+ * Query: Get all active beta users for email distribution.
+ * 
+ * Returns list of all users with active beta program status.
+ * Used by email automation to send weekly prompts and notifications.
+ * 
+ * @returns Array of user objects with email and name
+ * 
+ * @see email.ts for weekly email automation
+ */
 export const getAllBetaUsers = query({
   args: {},
   returns: v.array(v.object({
@@ -242,7 +311,16 @@ export const getAllBetaUsers = query({
   },
 });
 
-// Test helper functions
+/**
+ * Query: Get all beta programs (for testing and cleanup).
+ * 
+ * Returns all beta program records with basic information.
+ * Used by test scripts and admin tools for data management.
+ * 
+ * @returns Array of beta program records with creation metadata
+ * 
+ * @see testDataCleanup.ts for test data management
+ */
 export const getAllBetaPrograms = query({
   args: {},
   returns: v.array(v.object({
@@ -264,6 +342,18 @@ export const getAllBetaPrograms = query({
   },
 });
 
+/**
+ * Mutation: Delete beta program record (for test cleanup).
+ * 
+ * Permanently removes a beta program record from the system.
+ * Used by test scripts for data cleanup and isolation.
+ * 
+ * @param programId - ID of the beta program record to delete
+ * @returns true if deletion was successful
+ * 
+ * @warning This action is irreversible
+ * @see testDataCleanup.ts for safe test data management
+ */
 export const deleteBetaProgram = mutation({
   args: { programId: v.id("betaProgram") },
   returns: v.boolean(),
@@ -273,8 +363,19 @@ export const deleteBetaProgram = mutation({
   },
 });
 
-// UNAUTHENTICATED VERSION: Create betaProgram for a specific user ID
-// This is used when creating beta programs from actions where the user isn't authenticated yet
+/**
+ * Mutation: Create beta program record for specific user ID.
+ * 
+ * Creates a beta program record for a user without requiring authentication.
+ * Used during user account creation flows where the user isn't authenticated yet.
+ * 
+ * @param userId - Better Auth user ID
+ * @param invitedAt - Optional invitation timestamp (defaults to now)
+ * @param isTestData - Optional test data flag for isolation
+ * @returns ID of the created or existing beta program record
+ * 
+ * @see auth.ts for user creation triggers
+ */
 export const createBetaProgramForUserId = mutation({
   args: {
     userId: v.string(),

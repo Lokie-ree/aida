@@ -1,8 +1,19 @@
 import { internalMutation } from "./_generated/server";
 import { vOnEmailEventArgs } from "@convex-dev/resend";
 
-// Email event handler for webhook delivery status tracking
-// This is an internal mutation (not an action) so it can't be in email.ts which has "use node"
+/**
+ * Internal mutation: Handle email delivery status webhooks.
+ * 
+ * Processes webhook events from Resend for email delivery tracking.
+ * Logs delivery status for monitoring and debugging purposes.
+ * 
+ * **Internal Use:** Called automatically by Resend webhook system.
+ * 
+ * @param args - Email event data from Resend webhook
+ * 
+ * @see Resend webhook documentation for event structure
+ * @see email.ts for email sending functions
+ */
 export const handleEmailEvent = internalMutation({
   args: vOnEmailEventArgs,
   handler: async (ctx, args) => {
