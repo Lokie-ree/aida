@@ -83,7 +83,16 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
   if (framework === undefined) {
     return (
       <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent 
+          className="max-w-4xl max-h-[90vh] overflow-y-auto"
+          aria-describedby="loading-description"
+        >
+          <DialogHeader>
+            <DialogTitle>Loading Framework</DialogTitle>
+            <p id="loading-description" className="sr-only">
+              Loading framework details, please wait
+            </p>
+          </DialogHeader>
           <div className="flex justify-center items-center h-64">
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
@@ -98,7 +107,16 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
   if (!framework) {
     return (
       <Dialog open={true} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent 
+          className="max-w-4xl max-h-[90vh] overflow-y-auto"
+          aria-describedby="error-description"
+        >
+          <DialogHeader>
+            <DialogTitle>Framework Not Found</DialogTitle>
+            <p id="error-description" className="sr-only">
+              The requested framework could not be found
+            </p>
+          </DialogHeader>
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
               <h3 className="text-lg font-semibold mb-2">Framework not found</h3>
@@ -112,13 +130,19 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] overflow-y-auto"
+        aria-describedby="framework-detail-description"
+      >
         <DialogHeader>
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <DialogTitle className="text-2xl font-bold mb-2">
                 {framework.title}
               </DialogTitle>
+              <p id="framework-detail-description" className="sr-only">
+                Framework details including challenge, solution, sample prompt, and usage statistics
+              </p>
               <div className="flex items-center gap-2 mb-4">
                 <Badge variant="outline">
                   {framework.module === "ai-basics-hub" ? "AI Basics Hub" : "Instructional Expert Hub"}

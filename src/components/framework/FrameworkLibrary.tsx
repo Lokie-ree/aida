@@ -64,31 +64,39 @@ export function FrameworkLibrary() {
   const handleFrameworkAction = (frameworkId: string, action: "view" | "copy" | "save" | "unsave" | "tried") => {
     const performAction = async () => {
       try {
+        // Find the framework by _id
+        const framework = frameworks?.find(f => f._id === frameworkId);
+        if (!framework) {
+          console.error("Framework not found:", frameworkId);
+          toast.error("Framework not found. Please try again.");
+          return;
+        }
+
         switch (action) {
           case "view":
             await recordUsage({ 
-              frameworkId: frameworkId as Id<"frameworks">, 
+              frameworkId: framework._id, 
               action: "viewed" 
             });
             break;
           case "copy":
             await recordUsage({ 
-              frameworkId: frameworkId as Id<"frameworks">, 
+              frameworkId: framework._id, 
               action: "copied_prompt" 
             });
             toast.success("Prompt copied to clipboard!");
             break;
           case "save":
-            await saveFramework({ frameworkId: frameworkId as Id<"frameworks"> });
+            await saveFramework({ frameworkId: framework._id });
             toast.success("Framework saved!");
             break;
           case "unsave":
-            await unsaveFramework({ frameworkId: frameworkId as Id<"frameworks"> });
+            await unsaveFramework({ frameworkId: framework._id });
             toast.success("Framework removed from saved!");
             break;
           case "tried":
             await recordUsage({ 
-              frameworkId: frameworkId as Id<"frameworks">, 
+              frameworkId: framework._id, 
               action: "marked_tried" 
             });
             toast.success("Marked as tried!");
@@ -249,7 +257,7 @@ export function FrameworkLibrary() {
                     framework={framework as any}
                     variant={viewMode}
                     isSaved={isFrameworkSaved(framework._id)}
-                    onView={() => handleViewFramework(framework.frameworkId)}
+                    onView={() => handleViewFramework(framework._id)}
                     onSave={() => handleFrameworkAction(framework._id, "save")}
                     onUnsave={() => handleFrameworkAction(framework._id, "unsave")}
                     onCopy={() => handleFrameworkAction(framework._id, "copy")}
