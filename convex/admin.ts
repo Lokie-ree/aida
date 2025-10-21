@@ -30,9 +30,7 @@ const isAdmin = async (ctx: any) => {
   // For now, check if user email is in admin list
   // In production, this would be a proper role-based system
   const adminEmails = [
-    "admin@pelicanai.org",
-    "support@pelicanai.org",
-    "test@example.com" // Temporary for testing
+    "rplapointjr+reset@gmail.com" // Temporary for testing
   ];
   
   if (!adminEmails.includes((user as any).email)) {

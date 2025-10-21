@@ -8,7 +8,7 @@ import { betterAuth } from "better-auth";
 import { createAuthLogContext } from "../src/lib/secure-logging";
 
 const siteUrl = process.env.SITE_URL || "https://kindly-setter-935.convex.site";
-const frontendUrl = "http://localhost:5173"; // Frontend development URL
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; // Frontend URL (localhost for dev, Vercel domain for prod)
 
 /** 
  * This configures Better Auth with Convex following the official integration guide.
