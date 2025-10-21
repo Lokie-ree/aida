@@ -32,68 +32,26 @@ Empower Louisiana educators with practical, ethical, and platform-agnostic AI gu
 
 ## 2. Current System Architecture
 
-### 2.1 Technical Stack
+**For complete technical architecture details, see [ARCHITECTURE.md](ARCHITECTURE.md).**
 
-**Frontend:**
-- React 19 with TypeScript
-- Vite build system
-- Tailwind CSS + shadcn/ui component library
-- Framer Motion for animations
-- Mobile-first responsive design
+### 2.1 System Overview
 
-**Backend:**
-- Convex (real-time database, serverless functions)
-- Better Auth (@convex-dev/better-auth) for authentication
-- Resend for email automation
-- OpenAI API integration (RAG system)
+**Platform:** Platform-agnostic AI guidance system
+**Tech Stack:** React 19 + TypeScript + Convex + Better Auth
+**Design:** Louisiana-branded, WCAG 2.1 AA compliant, mobile-first
 
-**Design System:**
-- **Colors:** Pelican Blue (#0ea5e9), Louisiana Gold (#f59e0b), Deep Blue (#1e40af)
-- **Typography:** Lexend (primary), Poppins (headings), JetBrains Mono (code)
-- **Accessibility:** WCAG 2.1 Level AA compliance
+### 2.2 Current System Status
 
-### 2.2 Database Schema
+**For detailed database schema and implementation status, see [AGENT.md](../AGENT.md#current-system-status) and [ARCHITECTURE.md](ARCHITECTURE.md#database-schema).**
 
-**Phase 1 Tables (Active):**
-- `betaSignups` - Beta tester recruitment and approval
-- `userProfiles` - User extensions (school, subject, gradeLevel, district, role)
-- `user` - Better Auth managed
-- `session` - Better Auth managed
-- `account` - Better Auth managed
-- `verification` - Better Auth managed
+**Phase 1 MVP:** Complete ✅
+- Beta signup, authentication, email automation, user profiles
 
-**Phase 2 Tables (Implemented but UI not exposed):**
-- `frameworks` - AI guidance frameworks with Louisiana standards alignment
-- `frameworkUsage` - User interaction tracking
-- `testimonials` - User feedback and success stories
-- `innovations` - Community-shared innovations
-- `betaProgram` - Beta program tracking and analytics
-- `timeTracking` - Time savings analytics
-- `innovationInteractions` - Community engagement tracking
+**Phase 2 Backend:** Implemented ✅
+- Framework library (80+ operations), community features, admin dashboard, time tracking, RAG system
 
-### 2.3 Current Functionality
-
-**Implemented & Working:**
-- ✅ Beta signup flow with form validation
-- ✅ Better Auth authentication system
-- ✅ User profile management
-- ✅ Email automation (welcome, weekly prompts)
-- ✅ Framework library backend (full CRUD operations)
-- ✅ Community features backend (testimonials, innovations)
-- ✅ Admin dashboard backend
-- ✅ Time tracking system
-- ✅ RAG system for document processing
-- ✅ Voice interface integration (Vapi)
-
-**UI Components Built:**
-- ✅ Landing page with beta signup
-- ✅ Authentication modal
-- ✅ Dashboard (with stats and quick start)
-- ✅ Framework library (search, filters, detail view)
-- ✅ Community features (innovations, testimonials)
-- ✅ Admin dashboard
-- ✅ Time tracking interface
-- ✅ Email templates (React Email)
+**Phase 2 UI:** Built but not exposed ❌
+- All UI components built, routing not fully connected to user flows
 
 ---
 

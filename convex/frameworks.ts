@@ -8,7 +8,20 @@ import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
 
-// Query: Get all frameworks with optional filters
+/**
+ * Query: Get all frameworks with optional filters
+ * 
+ * USER-003: Framework Library Access
+ * Returns frameworks based on module, category, and status filters.
+ * Used by the framework library UI for browsing and searching.
+ * 
+ * @param module - Optional module filter (ai-basics-hub | instructional-expert-hub)
+ * @param category - Optional category filter
+ * @param status - Optional status filter (draft | beta | published)
+ * @returns Array of framework summaries with key fields
+ * 
+ * @see frameworks.ts for related CRUD operations
+ */
 export const getAllFrameworks = query({
   args: {
     module: v.optional(v.union(v.literal("ai-basics-hub"), v.literal("instructional-expert-hub"))),
@@ -171,6 +184,26 @@ export const searchFrameworks = query({
 });
 
 // Mutation: Record framework usage
+/**
+ * Records framework usage and time saved for analytics.
+ * 
+ * USER-003: Framework Library Access
+ * Tracks when educators use frameworks to measure impact and
+ * provide personalized recommendations.
+ * 
+ * @requires Authentication - Must be logged in
+ * @param frameworkId - The framework being used
+ * @param action - Type of interaction ("viewed" | "copied_prompt" | "marked_tried" | "saved")
+ * @param rating - Optional user rating (1-5)
+ * @param timeSaved - Optional minutes saved (educator's estimate)
+ * @param comment - Optional user feedback
+ * 
+ * @throws "Framework not found" if frameworkId invalid
+ * @throws "User must be authenticated" if no session
+ * 
+ * @see frameworkUsage table in schema.ts
+ * @see timeTracking.ts for related time analytics
+ */
 export const recordFrameworkUsage = mutation({
   args: {
     frameworkId: v.id("frameworks"),

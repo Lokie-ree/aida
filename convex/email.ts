@@ -86,6 +86,24 @@ export const sendBetaWelcomeEmail = action({
   },
 });
 
+/**
+ * Action: Send platform access email with credentials.
+ * 
+ * Sends an email containing the user's temporary password and platform
+ * access instructions after their beta signup has been approved.
+ * 
+ * **Phase 1 MVP:** Scheduled automatically after beta approval.
+ * 
+ * @param email - Recipient email address
+ * @param name - Optional recipient name (defaults to "Educator")
+ * @param temporaryPassword - Generated temporary password for platform access
+ * 
+ * @returns Object containing success status and Resend email ID
+ * 
+ * @throws {Error} If email sending fails
+ * 
+ * @see PlatformAccessEmail component for email template
+ */
 export const sendPlatformAccessEmail = action({
   args: {
     email: v.string(),
@@ -208,7 +226,21 @@ export const sendWeeklyPromptEmail = action({
 });
 
 
-// Cron job for weekly email delivery
+/**
+ * Action: Send weekly emails to all active beta users.
+ * 
+ * Automated cron job that sends weekly AI prompt emails to all active
+ * beta users. Selects a random published framework for the week.
+ * 
+ * **Phase 1 MVP:** Scheduled via cron job every Monday 6am CT.
+ * 
+ * @returns Object containing success status and number of emails sent
+ * 
+ * @throws {Error} If email sending fails
+ * 
+ * @see WeeklyPromptEmail component for email template
+ * @see frameworks.ts for framework selection
+ */
 export const sendWeeklyEmailsToAllUsers = action({
   args: {},
   returns: v.object({
