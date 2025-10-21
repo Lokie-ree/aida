@@ -177,6 +177,13 @@ export const createUserAccountFromBetaSignup = action({
           status: "approved",
         });
         
+        // Send platform access email with credentials
+        await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
+          email: signup.email,
+          name: signup.name,
+          temporaryPassword: args.temporaryPassword,
+        });
+        
         return {
           success: true,
           message: "User account created successfully",
@@ -454,6 +461,89 @@ export const recoverDeletedUser = mutation({
         message: `Failed to recover user data: ${error}`,
         betaSignupId: undefined,
         betaProgramId: undefined,
+      };
+    }
+  },
+});
+
+/**
+ * Mutation: Resend platform access email for existing user.
+ * 
+ * Allows admins or users to resend their platform access email with credentials.
+ * Useful for recovery when users don't receive their initial email.
+ * 
+ * @param email - Email address to resend credentials to
+ * @returns Result object with success status and message
+ * 
+ * @throws "User not found" if no user exists with that email
+ * @throws "User not approved" if user exists but signup not approved
+ */
+export const resendPlatformAccessEmail = mutation({
+  args: { email: v.string() },
+  returns: v.object({ 
+    success: v.boolean(), 
+    message: v.string(),
+    temporaryPassword: v.optional(v.string())
+  }),
+  handler: async (ctx, args): Promise<{
+    success: boolean;
+    message: string;
+    temporaryPassword?: string;
+  }> => {
+    try {
+      // Find beta signup by email
+      const signup = await ctx.db
+        .query("betaSignups")
+        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .first();
+      
+      if (!signup) {
+        return { 
+          success: false, 
+          message: "No beta signup found for this email address" 
+        };
+      }
+      
+      if (signup.status !== "approved") {
+        return { 
+          success: false, 
+          message: "Beta signup not approved yet" 
+        };
+      }
+      
+      // Generate new temporary password
+      const temporaryPassword = generateSecurePassword();
+      
+      // Reset the user's password in Better Auth system
+      const passwordResetResult: any = await ctx.runMutation(api.auth.resetUserPassword, {
+        email: signup.email,
+        newPassword: temporaryPassword,
+      });
+      
+      if (!passwordResetResult.success) {
+        return {
+          success: false,
+          message: `Failed to reset password: ${passwordResetResult.message}`
+        };
+      }
+      
+      // Send platform access email
+      await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
+        email: signup.email,
+        name: signup.name,
+        temporaryPassword: temporaryPassword,
+      });
+      
+      return {
+        success: true,
+        message: "Platform access email sent successfully",
+        temporaryPassword: temporaryPassword // For admin use only
+      };
+    } catch (error) {
+      console.error("Error resending platform access email:", error);
+      return {
+        success: false,
+        message: `Failed to resend email: ${error}`
       };
     }
   },

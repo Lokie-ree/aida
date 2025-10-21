@@ -71,14 +71,6 @@ export function Navigation({ className }: NavigationProps) {
 
   return (
     <>
-      {/* Debug Info - Remove in production */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-20 right-4 bg-yellow-100 border border-yellow-300 rounded p-2 text-xs z-50">
-          <div>Email: {loggedInUser?.email || 'Not logged in'}</div>
-          <div>Admin: {isAdmin ? 'Yes' : 'No'}</div>
-        </div>
-      )}
-      
       {/* Desktop Navigation */}
       <nav className={cn("hidden md:flex items-center gap-1", className)}>
         {navigationItems.map((item) => {

@@ -64,8 +64,8 @@ export function FrameworkLibrary() {
   const handleFrameworkAction = (frameworkId: string, action: "view" | "copy" | "save" | "unsave" | "tried") => {
     const performAction = async () => {
       try {
-        // Find the framework by _id
-        const framework = frameworks?.find(f => f._id === frameworkId);
+        // Find the framework by frameworkId (the string ID like "AIB-001")
+        const framework = frameworks?.find(f => f.frameworkId === frameworkId);
         if (!framework) {
           console.error("Framework not found:", frameworkId);
           toast.error("Framework not found. Please try again.");
@@ -257,11 +257,11 @@ export function FrameworkLibrary() {
                     framework={framework as any}
                     variant={viewMode}
                     isSaved={isFrameworkSaved(framework._id)}
-                    onView={() => handleViewFramework(framework._id)}
-                    onSave={() => handleFrameworkAction(framework._id, "save")}
-                    onUnsave={() => handleFrameworkAction(framework._id, "unsave")}
-                    onCopy={() => handleFrameworkAction(framework._id, "copy")}
-                    onTried={() => handleFrameworkAction(framework._id, "tried")}
+                    onView={() => handleViewFramework(framework.frameworkId)}
+                    onSave={() => handleFrameworkAction(framework.frameworkId, "save")}
+                    onUnsave={() => handleFrameworkAction(framework.frameworkId, "unsave")}
+                    onCopy={() => handleFrameworkAction(framework.frameworkId, "copy")}
+                    onTried={() => handleFrameworkAction(framework.frameworkId, "tried")}
                   />
                 ))}
               </div>

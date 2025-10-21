@@ -98,6 +98,64 @@ export class ConvexTestClient {
   getUrl() {
     return this.url;
   }
+
+  // Test User Management Methods (Architecture Compliant)
+  
+  /**
+   * Create a test user with known credentials for QA testing.
+   * Uses the proper authentication flow through Convex functions only.
+   * 
+   * @param {string} email - Test user email
+   * @param {string} password - Test user password  
+   * @param {string} name - Test user display name
+   * @param {string} [school] - Optional school name
+   * @param {string} [subject] - Optional subject area
+   * @returns {Object} Result with success status and credentials
+   */
+  async createTestUser(email, password, name, school, subject) {
+    try {
+      return await this.mutation("testDataCleanup:createTestUser", {
+        email,
+        password,
+        name,
+        school,
+        subject,
+        isTestData: true
+      });
+    } catch (error) {
+      throw new Error(`Failed to create test user: ${error.message}`);
+    }
+  }
+  
+  /**
+   * Get test user credentials for QA testing.
+   * Only works for users with isTestData: true.
+   * 
+   * @param {string} email - Test user email
+   * @returns {Object|null} Credentials object or null if not found
+   */
+  async getTestUserCredentials(email) {
+    try {
+      return await this.query("testDataCleanup:getTestUserCredentials", {
+        email
+      });
+    } catch (error) {
+      throw new Error(`Failed to get test user credentials: ${error.message}`);
+    }
+  }
+  
+  /**
+   * List all test users for QA management.
+   * 
+   * @returns {Array} List of test user information
+   */
+  async listTestUsers() {
+    try {
+      return await this.query("testDataCleanup:listTestUsers", {});
+    } catch (error) {
+      throw new Error(`Failed to list test users: ${error.message}`);
+    }
+  }
 }
 
 export function generateTestEmail(prefix = "test") {
