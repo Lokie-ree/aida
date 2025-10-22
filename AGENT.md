@@ -25,8 +25,8 @@ This document defines how specialized AI agents collaborate on Pelican AI develo
 
 ### Core User Stories
 
-**USER-001: Beta Onboarding Journey**
-As a Louisiana educator, I want a simple signup and approval process with immediate value (welcome email), so that I can start using AI guidance without technical barriers.
+**USER-001: Simple Account Creation**
+As a Louisiana educator, I want to create an account and immediately access AI guidance frameworks, so that I can start using AI tools effectively without barriers.
 
 **USER-002: Weekly Prompt Engagement**
 As a Louisiana educator, I want weekly AI framework prompts delivered via email, so that I can save 10+ minutes per prompt and improve my teaching practice.
@@ -37,11 +37,10 @@ As a Louisiana educator, I want to browse and search AI frameworks by subject an
 ### Current System Status
 
 **Phase 1 MVP (Complete ✅)**
-- ✅ Beta invitation email system
+- ✅ Simplified authentication flow (open access)
 - ✅ Web signup/auth flow (Better Auth)
-- ✅ Automated welcome email
-- ✅ Automated weekly prompt email (cron job)
-- ✅ Database schema: users, userProfiles, betaSignups, sessions
+- ✅ User profile auto-creation with defaults
+- ✅ Database schema: users, userProfiles, betaProgram, sessions
 - ✅ **Test Coverage:** 100% success rate (all Phase 1 tests passing)
 - ✅ **Authentication:** CORS issues resolved, Better Auth fully functional
 

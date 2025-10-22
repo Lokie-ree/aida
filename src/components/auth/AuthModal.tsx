@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,14 +12,18 @@ import { api } from "../../../convex/_generated/api";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialMode?: "signIn" | "signUp";
 }
 
-export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
-  const [submitting, setSubmitting] = useState(false);
+export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModalProps) {
+  const [flow, setFlow] = useState<"signIn" | "signUp">(initialMode);
+  const createUserProfile = useMutation(api.betaSignup.createUserProfileAfterSignup);
   
-  // Use our internal mutation for user creation
-  const createUser = useMutation(api.auth.createUserDirectly);
+  // Update flow when initialMode prop changes
+  useEffect(() => {
+    setFlow(initialMode);
+  }, [initialMode]);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleClose = () => {
     if (!submitting) {
@@ -62,34 +66,51 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             throw new Error("Invalid email or password");
           }
         } else {
-          // Sign up flow
-          const result = await createUser({
+          // Sign up flow - use client-side authentication
+          console.log("Attempting sign-up for:", email);
+          const result = await authClient.signUp.email({
             email,
             password,
             name: name || email.split("@")[0],
           });
           
-          if (result.success) {
-            // Auto-login after successful signup
-            console.log("Account created, auto-logging in user...");
-            const signInResult = await authClient.signIn.email({
-              email,
-              password,
-            });
+          console.log("Sign-up result:", result);
+          
+          // Check if sign-up was successful
+          if (result && 'data' in result && result.data && (result.data as any).user) {
+            console.log("Sign-up successful for user:", (result.data as any).user.id);
             
-            // Check if auto-login was successful
-            if (signInResult && 'data' in signInResult && signInResult.data && (signInResult.data as any).user) {
-              console.log("Auto-login successful");
-              toast.success("Welcome to Pelican AI! Your account has been created.");
-              onClose();
-            } else {
-              // Signup worked but auto-login failed - prompt user to sign in manually
-              console.warn("Auto-login failed, switching to sign-in mode");
-              toast.success("Account created! Please sign in with your credentials.");
-              setFlow("signIn");
+            // Create user profile and beta program record
+            try {
+              const profileResult = await createUserProfile({
+                userId: (result.data as any).user.id,
+                email: email,
+                name: name || email.split("@")[0],
+                school: undefined,
+                subject: undefined,
+              });
+              
+              if (profileResult.success) {
+                console.log("User profile created successfully");
+                toast.success("Welcome to Pelican AI! Your account has been created.");
+              } else {
+                console.warn("Profile creation failed:", profileResult.message);
+                toast.success("Account created! Profile setup will complete shortly.");
+              }
+            } catch (profileError) {
+              console.error("Error creating user profile:", profileError);
+              toast.success("Account created! Profile setup will complete shortly.");
             }
+            
+            onClose();
+          } else if (result && 'error' in result) {
+            // Better Auth returned an error object
+            console.log("Sign-up error:", (result as any).error);
+            throw new Error((result as any).error?.message || "Failed to create account");
           } else {
-            throw new Error(result.message);
+            // No user returned, likely sign-up failed
+            console.log("Sign-up failed - no user returned");
+            throw new Error("Failed to create account");
           }
         }
       } catch (error: any) {
@@ -139,7 +160,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <CardDescription>
               {flow === "signIn" 
                 ? "Sign in to access your AI guidance frameworks" 
-                : "Join Louisiana educators using AI to save time"}
+                : "Create your account to start using AI frameworks"}
             </CardDescription>
           </CardHeader>
           
@@ -147,13 +168,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <form className="space-y-4" onSubmit={handleSubmit}>
               {flow === "signUp" && (
                 <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">Name (optional)</Label>
                   <Input
                     id="name"
                     type="text"
                     name="name"
                     placeholder="Enter your name"
-                    required
                     disabled={submitting}
                   />
                 </div>

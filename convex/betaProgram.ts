@@ -7,7 +7,7 @@
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { getAuthUserSafe } from "./auth";
+import { authComponent } from "./auth";
 
 /**
  * Query: Get beta program status for current user.
@@ -36,7 +36,12 @@ export const getBetaStatus = query({
     weeklyEngagementCount: v.number(),
   }), v.null()),
   handler: async (ctx) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      return null;
+    }
     if (!user) {
       return null;
     }
@@ -81,7 +86,12 @@ export const initializeBetaProgram = mutation({
   args: {},
   returns: v.id("betaProgram"),
   handler: async (ctx) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -134,7 +144,12 @@ export const updateOnboardingProgress = mutation({
   args: { step: v.number() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -174,7 +189,12 @@ export const recordWeeklyEngagement = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -221,7 +241,7 @@ export const getBetaStats = query({
   handler: async (ctx) => {
     let user;
     try {
-      user = await getAuthUserSafe(ctx);
+      user = await authComponent.getAuthUser(ctx);
     } catch (error) {
       // If authentication fails, return default values
       return {

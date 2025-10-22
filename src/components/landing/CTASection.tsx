@@ -6,10 +6,10 @@ import GradientText from "@/components/shared/GradientText";
 import { ArrowRight } from "lucide-react";
 
 interface CTASectionProps {
-  onBetaSignupClick: () => void;
+  onGetStartedClick: () => void;
 }
 
-export function CTASection({ onBetaSignupClick }: CTASectionProps) {
+export function CTASection({ onGetStartedClick }: CTASectionProps) {
   // Animation variants
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -52,21 +52,21 @@ export function CTASection({ onBetaSignupClick }: CTASectionProps) {
                     animationSpeed={3}
                     showBorder={false}
                   >
-                    Ready to Shape Louisiana's AI Future?
+                    Ready to Get Started with AI?
                   </GradientText>
                 </motion.div>
                 <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground leading-relaxed font-primary">
-                  Join Louisiana educators who are helping us build <span className="text-foreground font-semibold">platform-agnostic AI guidance</span> that saves 
-                  <span className="text-foreground font-semibold"> 3-5 hours per week</span>. Your feedback will directly shape what we create next. 
-                  <span className="text-foreground font-semibold"> Be part of something special.</span>
+                  Access <span className="text-foreground font-semibold">platform-agnostic AI guidance frameworks</span> that save 
+                  <span className="text-foreground font-semibold"> 3-5 hours per week</span>. Use with any AI tool your district provides. 
+                  <span className="text-foreground font-semibold"> Start saving time today.</span>
                 </motion.p>
                 <motion.div variants={fadeInUp}>
                   <Button
                     size="lg"
-                    onClick={onBetaSignupClick}
+                    onClick={onGetStartedClick}
                     className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white shadow-xl w-full sm:w-auto font-primary"
                   >
-                    Join Beta Program
+                    Get Started
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </Button>
                 </motion.div>

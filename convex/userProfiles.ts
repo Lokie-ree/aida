@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { getAuthUserSafe } from "./auth";
+import { authComponent } from "./auth";
 import { api } from "./_generated/api";
 
 /**
@@ -32,7 +32,13 @@ export const getUserProfile = query({
   }), v.null()),
   handler: async (ctx) => {
     // Use safe auth getter (returns null if not authenticated, no throw)
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      console.log("getUserProfile: No authenticated user");
+      return null;
+    }
     
     if (!user) {
       console.log("getUserProfile: No authenticated user");
@@ -76,7 +82,7 @@ export const createUserProfile = mutation({
   handler: async (ctx, args) => {
     let user;
     try {
-      user = await getAuthUserSafe(ctx);
+      user = await authComponent.getAuthUser(ctx);
     } catch (error) {
       throw new Error("User must be authenticated");
     }
@@ -149,7 +155,7 @@ export const updateUserProfile = mutation({
   handler: async (ctx, args) => {
     let user;
     try {
-      user = await getAuthUserSafe(ctx);
+      user = await authComponent.getAuthUser(ctx);
     } catch (error) {
       throw new Error("User must be authenticated");
     }
@@ -202,7 +208,12 @@ export const getAllUserProfiles = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   })),
   handler: async (ctx) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      return [];
+    }
     if (!user) {
       return [];
     }
@@ -240,7 +251,7 @@ export const initializeProfileForBeta = mutation({
   handler: async (ctx, args) => {
     let user;
     try {
-      user = await getAuthUserSafe(ctx);
+      user = await authComponent.getAuthUser(ctx);
     } catch (error) {
       throw new Error("User must be authenticated");
     }
@@ -289,7 +300,12 @@ export const initializeNewUser = mutation({
     })
   ),
   handler: async (ctx) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      return { success: false, message: "User must be authenticated" };
+    }
     if (!user) {
       return { success: false, message: "User must be authenticated" };
     }
