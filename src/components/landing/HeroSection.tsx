@@ -5,10 +5,10 @@ import RotatingText from "@/components/shared/RotatingText";
 import { Sparkles, ArrowRight, ChevronDown } from "lucide-react";
 
 interface HeroSectionProps {
-  onBetaSignupClick: () => void;
+  onGetStartedClick: () => void;
 }
 
-export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
+export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
   // Animation variants
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -42,7 +42,7 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
             />
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Beta Program Now Open for Louisiana Educators</span>
+              <span className="text-sm font-medium">AI Guidance for Louisiana Educators</span>
             </div>
           </div>
         </motion.div>
@@ -105,14 +105,14 @@ export function HeroSection({ onBetaSignupClick }: HeroSectionProps) {
         >
           <Button
             size="lg"
-            onClick={onBetaSignupClick}
+            onClick={onGetStartedClick}
             className="text-xl px-10 py-7 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto font-semibold font-primary"
           >
-            Join Louisiana Beta Program
+            Get Started
             <ArrowRight className="ml-3 h-6 w-6" />
           </Button>
           <p className="text-sm text-muted-foreground text-center sm:text-left">
-            Free for Louisiana educators • 8-12 week program
+            Free for Louisiana educators • Start using AI frameworks today
           </p>
         </motion.div>
 

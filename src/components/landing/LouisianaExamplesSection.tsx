@@ -84,51 +84,6 @@ export function LouisianaExamplesSection() {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Co-creation Callout Card */}
-        <motion.div
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-          className="mt-12"
-        >
-          <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden">
-            <BorderBeam 
-              size={100} 
-              duration={8}
-              colorFrom="#0ea5e9"
-              colorTo="#f59e0b"
-              borderWidth={2}
-            />
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary font-heading">
-                <Target className="w-5 h-5" />
-                Beta Testers Drive Development
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 text-base font-primary">
-                <li className="flex items-start gap-2">
-                  <span className="text-xl shrink-0">📅</span>
-                  <span><strong>Week 1-2:</strong> Master the Lesson Objective Unpacker</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl shrink-0">📊</span>
-                  <span><strong>Week 3-4:</strong> Share your biggest pain points</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl shrink-0">🛠️</span>
-                  <span><strong>Week 5-12:</strong> Co-create NEW frameworks together</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl shrink-0">🎯</span>
-                  <span><strong>Your feedback</strong> directly shapes what we build next</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </section>
   );

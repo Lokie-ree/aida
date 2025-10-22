@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { BetaSignupModal } from "@/components/shared/BetaSignupModal";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { PrivacyPolicyModal } from "@/components/shared/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/shared/TermsOfServiceModal";
@@ -16,13 +15,20 @@ import { Menu, X, Users, LogIn } from "lucide-react";
 
 export function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isBetaSignupModalOpen, setIsBetaSignupModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<"signIn" | "signUp">("signUp");
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
 
-  const handleBetaSignupClick = () => {
-    setIsBetaSignupModalOpen(true);
+  const handleGetStartedClick = () => {
+    setAuthModalMode("signUp");
+    setIsAuthModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleSignInClick = () => {
+    setAuthModalMode("signIn");
+    setIsAuthModalOpen(true);
     setIsMobileMenuOpen(false);
   };
 
@@ -64,17 +70,17 @@ export function LandingPage() {
             <Button 
               variant="outline"
               size="sm"
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={handleSignInClick}
               className="text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
             >
               Sign In
             </Button>
             <Button 
               size="sm"
-              onClick={handleBetaSignupClick}
+              onClick={handleGetStartedClick}
               className="bg-primary hover:bg-primary/90 transition-colors text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 h-auto"
             >
-              Join Beta
+              Get Started
             </Button>
           </nav>
 
@@ -109,10 +115,7 @@ export function LandingPage() {
                     <Button
                       variant="ghost"
                       size="lg"
-                      onClick={() => {
-                        setIsAuthModalOpen(true);
-                        setIsMobileMenuOpen(false);
-                      }}
+                      onClick={handleSignInClick}
                       className="w-full justify-start gap-3 h-12"
                     >
                       <LogIn className="h-5 w-5" />
@@ -126,14 +129,14 @@ export function LandingPage() {
                     <Button
                       variant="ghost"
                       size="lg"
-                      onClick={handleBetaSignupClick}
+                      onClick={handleGetStartedClick}
                       className="w-full justify-start gap-3 h-12"
                     >
                       <Users className="h-5 w-5" />
                       <div className="text-left">
-                        <div className="font-medium">Join Beta</div>
+                        <div className="font-medium">Get Started</div>
                         <div className="text-xs text-muted-foreground">
-                          Get early access
+                          Create your account
                         </div>
                       </div>
                     </Button>
@@ -154,12 +157,12 @@ export function LandingPage() {
 
       {/* Main Content */}
       <main>
-        <HeroSection onBetaSignupClick={handleBetaSignupClick} />
+        <HeroSection onGetStartedClick={handleGetStartedClick} />
         <FeaturesSection />
         <LouisianaExamplesSection />
         <TestimonialsSection />
         <FAQSection />
-        <CTASection onBetaSignupClick={handleBetaSignupClick} />
+        <CTASection onGetStartedClick={handleGetStartedClick} />
       </main>
 
       {/* Footer */}
@@ -201,11 +204,11 @@ export function LandingPage() {
                 </li>
                 <li>
                   <button 
-                    onClick={handleBetaSignupClick}
+                    onClick={handleGetStartedClick}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
-                    aria-label="Join Beta Program"
+                    aria-label="Get Started"
                   >
-                    Beta Program
+                    Get Started
                   </button>
                 </li>
               </ul>
@@ -273,12 +276,6 @@ export function LandingPage() {
         </div>
       </footer>
 
-      {/* Beta Signup Modal */}
-      <BetaSignupModal 
-        isOpen={isBetaSignupModalOpen} 
-        onClose={() => setIsBetaSignupModalOpen(false)} 
-      />
-
       {/* Privacy Policy Modal */}
       <PrivacyPolicyModal 
         isOpen={isPrivacyModalOpen} 
@@ -294,7 +291,8 @@ export function LandingPage() {
       {/* Auth Modal */}
       <AuthModal 
         isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authModalMode}
       />
     </div>
   );

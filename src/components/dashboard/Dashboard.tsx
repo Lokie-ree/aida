@@ -18,6 +18,8 @@ import { TestimonialCard } from "../community/TestimonialCard";
 import { TimeSavingsTracker } from "../shared/TimeSavingsTracker";
 import { BetaTesterBadge } from "../shared/BetaTesterBadge";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { User } from "lucide-react";
 
 interface DashboardProps {
   user: {
@@ -93,6 +95,23 @@ export function Dashboard({
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Profile Completion Prompt */}
+        {(!user.school || !user.subject) && (
+          <Alert className="mb-6 border-blue-200 bg-blue-50">
+            <User className="h-4 w-4" />
+            <AlertDescription>
+              <div className="flex items-center justify-between">
+                <span>
+                  Complete your profile to get personalized recommendations and connect with other Louisiana educators.
+                </span>
+                <Button size="sm" variant="outline" className="ml-4">
+                  Complete Profile
+                </Button>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">

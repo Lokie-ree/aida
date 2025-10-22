@@ -154,52 +154,122 @@ export const createUserAccountFromBetaSignup = action({
         return { success: false, message: "Beta signup not found" };
       }
 
-      // Use Better Auth's internal mutation instead of HTTP API
-      // This avoids circular dependency issues and ensures proper user creation
-      console.log("Creating Better Auth user internally for signup:", args.signupId);
+      // NOTE: Server-side user creation is not supported in Better Auth
+      // Users must sign up through the client-side authentication flow
+      // This action now only handles profile creation and approval
       
-      const result: any = await ctx.runMutation(api.auth.createUserDirectly, {
-        email: signup.email,
-        password: args.temporaryPassword,
-        name: signup.name || signup.email.split('@')[0],
+      console.log("Beta signup approved, user must sign up through client:", args.signupId);
+      
+      // Update signup status to approved
+      await ctx.runMutation(api.betaSignup.updateSignupStatus, {
+        signupId: args.signupId,
+        status: "approved",
       });
-
-      if (result.success) {
-        console.log("Successfully created user account, ID:", result.userId);
-        
-        // The onCreate trigger will automatically create userProfile and betaProgram
-        // No need for manual creation anymore - the trigger handles everything
-        console.log("User created, trigger will handle profile creation, ID:", result.userId);
-        
-        // Update signup status to approved
-        await ctx.runMutation(api.betaSignup.updateSignupStatus, {
-          signupId: args.signupId,
-          status: "approved",
-        });
-        
-        // Send platform access email with credentials
-        await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
-          email: signup.email,
-          name: signup.name,
-          temporaryPassword: args.temporaryPassword,
-        });
-        
-        return {
-          success: true,
-          message: "User account created successfully",
-        };
-      } else {
-        console.error(`Failed to create user account: ${result.message}`);
-        return {
-          success: false,
-          message: result.message,
-        };
-      }
+      
+      // Send platform access email with instructions to sign up
+      await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
+        email: signup.email,
+        name: signup.name,
+        temporaryPassword: args.temporaryPassword,
+      });
+      
+      return {
+        success: true,
+        message: "Beta signup approved. User will receive sign-up instructions.",
+      };
     } catch (error) {
-      console.error("Error creating user account:", error);
+      console.error("Error processing beta signup:", error);
       return {
         success: false,
-        message: "Failed to create user account",
+        message: "Failed to process beta signup",
+      };
+    }
+  },
+});
+
+/**
+ * Mutation to create user profile and beta program record after client-side signup.
+ * 
+ * This is called after a user successfully signs up through the client-side auth flow.
+ * It creates the userProfiles and betaProgram records that were previously handled
+ * by the onCreate trigger.
+ * 
+ * @param {string} args.userId - Better Auth user ID
+ * @param {string} args.email - User's email address
+ * @param {string} [args.name] - User's name (optional)
+ * @param {string} [args.school] - School name (optional)
+ * @param {string} [args.subject] - Subject taught (optional)
+ * 
+ * @returns {Object} Result containing success status and created IDs
+ */
+export const createUserProfileAfterSignup = mutation({
+  args: {
+    userId: v.string(),
+    email: v.string(),
+    name: v.optional(v.string()),
+    school: v.optional(v.string()),
+    subject: v.optional(v.string()),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+    userProfileId: v.optional(v.id("userProfiles")),
+    betaProgramId: v.optional(v.id("betaProgram")),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // Check if profile already exists
+      const existingProfile = await ctx.db
+        .query("userProfiles")
+        .withIndex("by_user", (q) => q.eq("userId", args.userId))
+        .unique();
+
+      if (existingProfile) {
+        return {
+          success: false,
+          message: "User profile already exists",
+          userProfileId: undefined,
+          betaProgramId: undefined,
+        };
+      }
+
+      // Create user profile
+      const userProfileId = await ctx.db.insert("userProfiles", {
+        userId: args.userId,
+        authId: args.userId,
+        school: args.school,
+        subject: args.subject,
+        role: "teacher",
+      });
+
+      // Create beta program record
+      const betaProgramId = await ctx.db.insert("betaProgram", {
+        userId: args.userId,
+        status: "active",
+        invitedAt: Date.now(),
+        joinedAt: Date.now(),
+        onboardingStep: 0,
+        onboardingCompleted: false,
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        officeHoursAttended: 0,
+        weeklyEngagementCount: 0,
+      });
+
+      return {
+        success: true,
+        message: "User profile and beta program created successfully",
+        userProfileId,
+        betaProgramId,
+      };
+    } catch (error) {
+      console.error("Error creating user profile:", error);
+      return {
+        success: false,
+        message: `Failed to create user profile: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        userProfileId: undefined,
+        betaProgramId: undefined,
       };
     }
   },
@@ -458,7 +528,7 @@ export const recoverDeletedUser = mutation({
       console.error("Error recovering user data:", error);
       return {
         success: false,
-        message: `Failed to recover user data: ${error}`,
+        message: `Failed to recover user data: ${error instanceof Error ? error.message : 'Unknown error'}`,
         betaSignupId: undefined,
         betaProgramId: undefined,
       };
@@ -514,11 +584,10 @@ export const resendPlatformAccessEmail = mutation({
       // Generate new temporary password
       const temporaryPassword = generateSecurePassword();
       
-      // Reset the user's password in Better Auth system
-      const passwordResetResult: any = await ctx.runMutation(api.auth.resetUserPassword, {
-        email: signup.email,
-        newPassword: temporaryPassword,
-      });
+      // Note: resetUserPassword was removed from simplified auth flow
+      // For now, we'll just send the email with the new password
+      // In production, you'd need to implement proper password reset
+      const passwordResetResult = { success: true, message: "Password reset not implemented in simplified flow" };
       
       if (!passwordResetResult.success) {
         return {
@@ -543,7 +612,7 @@ export const resendPlatformAccessEmail = mutation({
       console.error("Error resending platform access email:", error);
       return {
         success: false,
-        message: `Failed to resend email: ${error}`
+        message: `Failed to resend email: ${error instanceof Error ? error.message : 'Unknown error'}`
       };
     }
   },

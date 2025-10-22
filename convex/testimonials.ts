@@ -6,7 +6,7 @@
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { authComponent, getAuthUserSafe } from "./auth";
+import { authComponent } from "./auth";
 
 // Mutation: Submit testimonial
 export const submitTestimonial = mutation({
@@ -18,7 +18,12 @@ export const submitTestimonial = mutation({
   },
   returns: v.id("testimonials"),
   handler: async (ctx, args) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       throw new Error("User must be authenticated");
     }
@@ -123,7 +128,12 @@ export const getAllTestimonials = query({
     featured: v.boolean(),
   })),
   handler: async (ctx, args) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       return [];
     }
@@ -170,7 +180,12 @@ export const approveTestimonial = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const user = await getAuthUserSafe(ctx);
+    let user;
+    try {
+      user = await authComponent.getAuthUser(ctx);
+    } catch (error) {
+      throw new Error("User must be authenticated");
+    }
     if (!user) {
       throw new Error("User must be authenticated");
     }
