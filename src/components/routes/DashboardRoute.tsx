@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { authClient } from '../../lib/auth-client';
@@ -28,11 +29,15 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
 
   if (session === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined) {
     return (
-      <div className="flex justify-center items-center h-full">
-        <div className="flex items-center gap-3 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
-          <span>Loading...</span>
-        </div>
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center gap-4"
+        >
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+          <p className="text-muted-foreground font-medium">Loading your dashboard...</p>
+        </motion.div>
       </div>
     );
   }
@@ -43,6 +48,7 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   // Use real user profile data
   const user = {
     name: session?.user?.name || "Educator",
+    email: session?.user?.email || "",
     school: userProfile?.school || "Not specified",
     subject: userProfile?.subject || "Not specified"
   };
@@ -59,12 +65,21 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     onShowOnboarding();
   }
 
+  // Mock community stats for now - in production this would come from backend
+  const communityStats = {
+    totalEducators: 247,
+    innovationsThisWeek: 12,
+    averageTimeSaved: 4.2,
+    activeThisWeek: 89
+  };
+
   return (
     <Dashboard 
       user={user}
       stats={stats}
       recentFrameworks={frameworks.slice(0, 4)}
       featuredTestimonials={testimonials}
+      communityStats={communityStats}
       onShowOnboarding={onShowOnboarding}
     />
   );
