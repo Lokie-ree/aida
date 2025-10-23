@@ -36,9 +36,7 @@ export const createAuth = (
     },
     trustedOrigins: [
       siteUrl,
-      "http://localhost:5173",
-      "https://pelicanai.org",
-      "https://www.pelicanai.org"
+      "http://localhost:5174",
     ],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started

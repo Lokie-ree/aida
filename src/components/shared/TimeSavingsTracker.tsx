@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Target, TrendingUp, Award } from "lucide-react";
@@ -49,15 +48,13 @@ export function TimeSavingsTracker({
   };
 
   return (
-    <Card className={cn("w-full", className)}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
+    <div className={cn("w-full space-y-6", className)}>
+        {/* Title */}
+        <div className="flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
-          Time Savings Tracker
-        </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="space-y-6">
+          <h3 className="text-lg font-semibold text-foreground font-heading">Time Savings Tracker</h3>
+        </div>
+
         {/* Progress Bar */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -133,7 +130,6 @@ export function TimeSavingsTracker({
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 }

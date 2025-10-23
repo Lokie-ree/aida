@@ -1,16 +1,13 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Authenticated, Unauthenticated } from "convex/react";
-import { api } from "../convex/_generated/api";
-import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
-import { ModeToggle } from "./components/shared/ModeToggle";
+import { AppHeader } from "./components/shared/AppHeader";
 import { LandingPage } from "./components/shared/LandingPage";
-import { Logo } from "./components/shared/Logo";
-import { Navigation } from "./components/shared/Navigation";
 import { BetaOnboarding } from "./components/dashboard/BetaOnboarding";
 import { ErrorBoundary } from "./components/shared/ErrorBoundary";
+import { authClient } from "./lib/auth-client";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import DashboardRoute from "./components/routes/DashboardRoute";
 import FrameworkRoute from "./components/routes/FrameworkRoute";
@@ -18,6 +15,20 @@ import CommunityRoute from "./components/routes/CommunityRoute";
 import ProfileRoute from "./components/routes/ProfileRoute";
 import AdminRoute from "./components/routes/AdminRoute";
 import TimeTrackingRoute from "./components/routes/TimeTrackingRoute";
+
+// Component to handle authenticated header with navigation
+function AuthenticatedHeader() {
+  const location = useLocation();
+  const { data: session } = authClient.useSession();
+
+  return (
+    <AppHeader
+      showAuthButtons={false}
+      showNavigation={true}
+      currentUser={session?.user}
+    />
+  );
+}
 
 export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -36,22 +47,9 @@ export default function App() {
             </a>
 
             <Authenticated>
-              <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-md h-16 border-b border-border shadow-lg">
-                <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <Logo className="h-8" />
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Navigation />
-                    <div className="flex items-center gap-2">
-                      <ModeToggle />
-                      <SignOutButton />
-                    </div>
-                  </div>
-                </div>
-              </header>
+              <AuthenticatedHeader />
 
-              <main id="main-content" className="flex-1 pt-4" role="main">
+              <main id="main-content" className="flex-1" role="main">
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   <Route 
@@ -64,6 +62,14 @@ export default function App() {
                   />
                   <Route 
                     path="/frameworks" 
+                    element={
+                      <ProtectedRoute>
+                        <FrameworkRoute />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/frameworks/:frameworkId" 
                     element={
                       <ProtectedRoute>
                         <FrameworkRoute />
