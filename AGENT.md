@@ -172,3 +172,11 @@ As a Louisiana educator, I want to browse and search AI frameworks by subject an
 - **[Convex Schema](convex/schema.ts)** - Database schema with JSDoc comments
 - **[Design System](src/lib/design-system.ts)** - Design tokens and utilities
 - **[Test Suite](scripts/README.md)** - Testing documentation and protocols
+
+## Test User Credentials
+
+**Test User for Manual Testing:**
+- Email: rplapointjr@gmail.com
+- Password: Password123!
+
+*Note: This test user has been validated for manual testing of form submissions and UI functionality. Use for testing authentication flows, form submissions, and user-facing features.*

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -18,6 +18,8 @@ import {
   X,
   ExternalLink
 } from "lucide-react";
+import { LoadingSpinner } from "../shared/LoadingStates";
+import { EmptyStateNotFound } from "../shared/EmptyState";
 import { toast } from "sonner";
 
 interface FrameworkDetailProps {
@@ -95,7 +97,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
           </DialogHeader>
           <div className="flex justify-center items-center h-64">
             <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+              <LoadingSpinner size="md" />
               <span>Loading framework...</span>
             </div>
           </div>
@@ -118,10 +120,10 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             </p>
           </DialogHeader>
           <div className="flex justify-center items-center h-64">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Framework not found</h3>
-              <p className="text-muted-foreground">The requested framework could not be found.</p>
-            </div>
+            <EmptyStateNotFound
+              title="Framework not found"
+              description="The requested framework could not be found."
+            />
           </div>
         </DialogContent>
       </Dialog>

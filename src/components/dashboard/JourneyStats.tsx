@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Clock, Lightbulb, TrendingUp } from "lucide-react";
 

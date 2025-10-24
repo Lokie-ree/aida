@@ -77,7 +77,7 @@ export const AnimatedThemeToggler = ({
       aria-label={`Toggle theme. Current theme: ${isDark ? 'dark' : 'light'}`}
       {...props}
     >
-      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </button>
   )
 }

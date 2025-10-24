@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { 
   Users, 
-  CheckCircle, 
-  Clock, 
   Star, 
   Lightbulb, 
   Target, 
@@ -19,6 +18,7 @@ import {
   Mail,
   UserPlus
 } from "lucide-react";
+import { LoadingSpinner } from "../shared/LoadingStates";
 
 export function AdminDashboard() {
   const [selectedSignup, setSelectedSignup] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export function AdminDashboard() {
     return (
       <div className="flex justify-center items-center h-full">
         <div className="flex items-center gap-3 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+          <LoadingSpinner size="md" />
           <span>Loading admin data...</span>
         </div>
       </div>
@@ -290,7 +290,7 @@ export function AdminDashboard() {
               <CardContent className="space-y-4">
                 <div>
                   <Label htmlFor="temp-password">Temporary Password</Label>
-                  <div className="flex gap-2">
+                  <ButtonGroup>
                     <Input
                       id="temp-password"
                       value={temporaryPassword}
@@ -303,7 +303,7 @@ export function AdminDashboard() {
                     >
                       Generate
                     </Button>
-                  </div>
+                  </ButtonGroup>
                 </div>
                 <div>
                   <Label htmlFor="notes">Notes (Optional)</Label>
@@ -314,7 +314,7 @@ export function AdminDashboard() {
                     placeholder="Add any notes about this approval"
                   />
                 </div>
-                <div className="flex gap-2 pt-4">
+                <ButtonGroup className="pt-4">
                   <Button
                     variant="outline"
                     onClick={() => {
@@ -332,7 +332,7 @@ export function AdminDashboard() {
                   >
                     Approve & Send Email
                   </Button>
-                </div>
+                </ButtonGroup>
               </CardContent>
             </Card>
           </div>

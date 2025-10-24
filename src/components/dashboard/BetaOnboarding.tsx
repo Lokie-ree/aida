@@ -3,7 +3,8 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -18,7 +19,6 @@ import {
   Mail,
   Clock
 } from "lucide-react";
-import { ProfileSettings } from "./ProfileSettings";
 import { toast } from "sonner";
 
 interface BetaOnboardingProps {
@@ -466,7 +466,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                 </Button>
               )}
             </div>
-            <div className="flex gap-2">
+            <ButtonGroup>
               {currentStep < steps.length - 1 && (
                 <Button variant="outline" onClick={handleSkip}>
                   Skip
@@ -476,7 +476,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                 {currentStep === steps.length - 1 ? "Complete" : "Next"}
                 {currentStep < steps.length - 1 && <ArrowRight className="h-4 w-4 ml-2" />}
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
         </div>
       </DialogContent>

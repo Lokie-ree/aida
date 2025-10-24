@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { 
   Lightbulb, 
-  Tag, 
-  Clock, 
-  BookOpen,
   X,
   Plus
 } from "lucide-react";
+import { LoadingSpinner } from "../shared/LoadingStates";
 import { toast } from "sonner";
+import { innovationFormSchema, type InnovationFormData } from "@/lib/form-schemas";
 
 interface InnovationFormProps {
   onSuccess?: () => void;
@@ -25,19 +34,24 @@ interface InnovationFormProps {
 }
 
 export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: InnovationFormProps) {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    tags: [] as string[],
-    timeSaved: 0 as number,
-    relatedFramework: relatedFrameworkId || "",
-  });
   const [newTag, setNewTag] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const frameworks = useQuery(api.frameworks.getAllFrameworks, { status: "published" });
   const shareInnovation = useMutation(api.innovations.shareInnovation);
   const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
+
+  const form = useForm<InnovationFormData>({
+    defaultValues: {
+      title: "",
+      description: "",
+      tags: [],
+      timeSaved: undefined,
+      relatedFramework: relatedFrameworkId || "",
+    },
+  });
+
+  const watchedTags = form.watch("tags");
 
   // Show loading state if frameworks are still loading
   if (frameworks === undefined) {
@@ -55,7 +69,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
         <CardContent>
           <div className="flex justify-center items-center h-32">
             <div className="flex items-center gap-3 text-muted-foreground">
-              <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+              <LoadingSpinner size="md" />
               <span>Loading frameworks...</span>
             </div>
           </div>
@@ -64,74 +78,54 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
     );
   }
 
-  const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
   const handleAddTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, newTag.trim()]
-      }));
+    if (newTag.trim() && !watchedTags.includes(newTag.trim())) {
+      const currentTags = form.getValues("tags");
+      form.setValue("tags", [...currentTags, newTag.trim()]);
       setNewTag("");
     }
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
+    const currentTags = form.getValues("tags");
+    form.setValue("tags", currentTags.filter(tag => tag !== tagToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.title.trim() || !formData.description.trim()) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
+  const onSubmit = async (data: InnovationFormData) => {
     setIsSubmitting(true);
 
-    shareInnovation({
-      title: formData.title,
-      description: formData.description,
-      tags: formData.tags,
-      timeSaved: formData.timeSaved,
-      relatedFramework: formData.relatedFramework && formData.relatedFramework !== "none" ? formData.relatedFramework as any : undefined,
-    })
-      .then(() => {
-        // Record engagement
-        return recordWeeklyEngagement();
-      })
-      .then(() => {
-        toast.success("Innovation shared successfully!");
-        
-        // Reset form
-        setFormData({
-          title: "",
-          description: "",
-          tags: [],
-          timeSaved: 0,
-          relatedFramework: "",
-        });
-
-        if (onSuccess) {
-          onSuccess();
-        }
-      })
-      .catch((error) => {
-        console.error("Error sharing innovation:", error);
-        toast.error("Failed to share innovation. Please try again.");
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+    try {
+      await shareInnovation({
+        title: data.title,
+        description: data.description,
+        tags: data.tags,
+        timeSaved: data.timeSaved,
+        relatedFramework: data.relatedFramework && data.relatedFramework !== "none" ? data.relatedFramework as any : undefined,
       });
+
+      // Record engagement
+      await recordWeeklyEngagement();
+      
+      toast.success("Innovation shared successfully!");
+      
+      // Reset form
+      form.reset({
+        title: "",
+        description: "",
+        tags: [],
+        timeSaved: undefined,
+        relatedFramework: "",
+      });
+
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error("Error sharing innovation:", error);
+      toast.error("Failed to share innovation. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const suggestedTags = [
@@ -152,134 +146,159 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title">Innovation Title *</Label>
-            <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => handleInputChange("title", e.target.value)}
-              placeholder="e.g., Using AI to Create Differentiated Reading Passages"
-              required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Title */}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Innovation Title *</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g., Using AI to Create Differentiated Reading Passages"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          {/* Description */}
-          <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => handleInputChange("description", e.target.value)}
-              placeholder="Describe your innovation, how you used AI, and what made it effective..."
-              rows={4}
-              required
+            {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Describe your innovation, how you used AI, and what made it effective..."
+                      rows={4}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          {/* Related Framework */}
-          <div className="space-y-2">
-            <Label htmlFor="relatedFramework">Related Framework (Optional)</Label>
-            <Select
-              value={formData.relatedFramework}
-              onValueChange={(value) => handleInputChange("relatedFramework", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a framework this innovation relates to" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">No related framework</SelectItem>
-                {frameworks && frameworks.length > 0 ? frameworks.map((framework) => (
-                  <SelectItem key={framework._id} value={framework._id}>
-                    {framework.frameworkId}: {framework.title}
-                  </SelectItem>
-                )) : (
-                  <SelectItem value="none" disabled>No frameworks available</SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+            {/* Related Framework */}
+            <FormField
+              control={form.control}
+              name="relatedFramework"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Related Framework (Optional)</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a framework this innovation relates to" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="none">No related framework</SelectItem>
+                      {frameworks && frameworks.length > 0 ? frameworks.map((framework) => (
+                        <SelectItem key={framework._id} value={framework._id}>
+                          {framework.frameworkId}: {framework.title}
+                        </SelectItem>
+                      )) : (
+                        <SelectItem value="none" disabled>No frameworks available</SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Tags */}
-          <div className="space-y-2">
-            <Label>Tags</Label>
-            <div className="flex gap-2">
-              <Input
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Add a tag..."
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddTag();
-                  }
-                }}
-              />
-              <Button type="button" onClick={handleAddTag} size="sm">
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            {/* Current Tags */}
-            {formData.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {formData.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="flex items-center gap-1">
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 hover:text-destructive"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-            )}
-
-            {/* Suggested Tags */}
+            {/* Tags */}
             <div className="space-y-2">
-              <Label className="text-sm text-muted-foreground">Suggested tags:</Label>
-              <div className="flex flex-wrap gap-1">
-                {suggestedTags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      if (!formData.tags.includes(tag)) {
-                        setFormData(prev => ({
-                          ...prev,
-                          tags: [...prev.tags, tag]
-                        }));
-                      }
-                    }}
-                    className="text-xs px-2 py-1 bg-muted hover:bg-muted/80 rounded-md transition-colors"
-                    disabled={formData.tags.includes(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))}
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Tags</label>
+              <div className="flex gap-2">
+                <Input
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  placeholder="Add a tag..."
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                />
+                <Button type="button" onClick={handleAddTag} size="sm">
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              {/* Current Tags */}
+              {watchedTags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {watchedTags.map((tag) => (
+                    <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="ml-1 hover:text-destructive"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* Suggested Tags */}
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">Suggested tags:</label>
+                <div className="flex flex-wrap gap-1">
+                  {suggestedTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        if (!watchedTags.includes(tag)) {
+                          const currentTags = form.getValues("tags");
+                          form.setValue("tags", [...currentTags, tag]);
+                        }
+                      }}
+                      className="text-xs px-2 py-1 bg-muted hover:bg-muted/80 rounded-md transition-colors"
+                      disabled={watchedTags.includes(tag)}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Time Saved */}
-          <div className="space-y-2">
-            <Label htmlFor="timeSaved">Time Saved (Optional)</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="timeSaved"
-                type="number"
-                value={formData.timeSaved || ""}
-                onChange={(e) => handleInputChange("timeSaved", e.target.value ? parseInt(e.target.value) : 0)}
-                placeholder="30"
-                min="0"
-              />
-              <span className="text-sm text-muted-foreground">minutes</span>
-            </div>
-          </div>
+            {/* Time Saved */}
+            <FormField
+              control={form.control}
+              name="timeSaved"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Time Saved (Optional)</FormLabel>
+                  <div className="flex items-center gap-2">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="30"
+                        min="0"
+                        {...field}
+                        onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                      />
+                    </FormControl>
+                    <span className="text-sm text-muted-foreground">minutes</span>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
           {/* Guidelines */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -293,18 +312,19 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
             </ul>
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-3 pt-4">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Sharing..." : "Share Innovation"}
-            </Button>
-            {onCancel && (
-              <Button type="button" variant="outline" onClick={onCancel}>
-                Cancel
+            {/* Actions */}
+            <ButtonGroup spacing="md" className="pt-4">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Sharing..." : "Share Innovation"}
               </Button>
-            )}
-          </div>
-        </form>
+              {onCancel && (
+                <Button type="button" variant="outline" onClick={onCancel}>
+                  Cancel
+                </Button>
+              )}
+            </ButtonGroup>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

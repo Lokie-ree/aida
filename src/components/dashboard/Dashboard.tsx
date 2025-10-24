@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,9 @@ import { JourneyStats } from "./JourneyStats";
 import { FeaturedRecommendation } from "./FeaturedRecommendation";
 import { CommunityInsights } from "./CommunityInsights";
 import { QuickAccessGrid } from "./QuickAccessGrid";
+import { TimeSavingsChart } from "./TimeSavingsChart";
+import { FrameworkUsageChart } from "./FrameworkUsageChart";
+import { ProgressTrackingChart } from "./ProgressTrackingChart";
 
 export interface DashboardProps {
   user: {
@@ -55,6 +57,38 @@ export interface DashboardProps {
   };
   weeklyGoal?: number; // in minutes
   onShowOnboarding?: () => void;
+  // Chart data
+  weeklyTimeData?: Array<{
+    day: string;
+    minutes: number;
+    hours: number;
+  }>;
+  monthlyTimeData?: Array<{
+    week: string;
+    minutes: number;
+    hours: number;
+  }>;
+  frameworkUsageData?: Array<{
+    name: string;
+    count: number;
+    category: string;
+  }>;
+  categoryBreakdownData?: Array<{
+    category: string;
+    count: number;
+    percentage: number;
+  }>;
+  weeklyGoalsData?: Array<{
+    week: string;
+    goal: number;
+    achieved: number;
+    frameworksTried: number;
+  }>;
+  learningStreakData?: Array<{
+    day: string;
+    streak: number;
+    frameworksCompleted: number;
+  }>;
 }
 
 export function Dashboard({ 
@@ -64,7 +98,13 @@ export function Dashboard({
   featuredTestimonials,
   communityStats,
   weeklyGoal = 180, // 3 hours default
-  onShowOnboarding
+  onShowOnboarding,
+  weeklyTimeData,
+  monthlyTimeData,
+  frameworkUsageData,
+  categoryBreakdownData,
+  weeklyGoalsData,
+  learningStreakData
 }: DashboardProps) {
   const navigate = useNavigate();
 
@@ -218,6 +258,52 @@ export function Dashboard({
               </div>
             </div>
           </div>
+
+          {/* Analytics Section */}
+          {(weeklyTimeData || monthlyTimeData || frameworkUsageData || categoryBreakdownData || weeklyGoalsData || learningStreakData) && (
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-foreground font-heading mb-2">
+                  Your Analytics Dashboard
+                </h2>
+                <p className="text-muted-foreground">
+                  Visualize your progress and track your AI learning journey
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Time Savings Charts */}
+                {(weeklyTimeData || monthlyTimeData) && (
+                  <div className="lg:col-span-2">
+                    <TimeSavingsChart
+                      weeklyData={weeklyTimeData || []}
+                      monthlyData={monthlyTimeData || []}
+                    />
+                  </div>
+                )}
+
+                {/* Framework Usage Charts */}
+                {(frameworkUsageData || categoryBreakdownData) && (
+                  <div>
+                    <FrameworkUsageChart
+                      frameworkUsage={frameworkUsageData || []}
+                      categoryBreakdown={categoryBreakdownData || []}
+                    />
+                  </div>
+                )}
+
+                {/* Progress Tracking Charts */}
+                {(weeklyGoalsData || learningStreakData) && (
+                  <div>
+                    <ProgressTrackingChart
+                      weeklyGoals={weeklyGoalsData || []}
+                      learningStreak={learningStreakData || []}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

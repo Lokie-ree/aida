@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -11,11 +12,12 @@ import {
   Filter, 
   Grid, 
   List, 
-  BookOpen, 
 } from "lucide-react";
 import { FrameworkCard } from "./FrameworkCard";
 import { FrameworkFilters } from "./FrameworkFilters";
 import { FrameworkDetail } from "./FrameworkDetail";
+import { LoadingSpinner } from "../shared/LoadingStates";
+import { EmptyStateNoResults } from "../shared/EmptyState";
 import { toast } from "sonner";
 
 type ViewMode = "grid" | "list";
@@ -124,7 +126,7 @@ export function FrameworkLibrary() {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="flex items-center gap-3 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+          <LoadingSpinner size="md" />
           <span>Loading frameworks...</span>
         </div>
       </div>
@@ -210,7 +212,7 @@ export function FrameworkLibrary() {
             </div>
 
             {/* Module Tabs */}
-            <div className="flex gap-2">
+            <ButtonGroup>
               <Button
                 variant={moduleFilter === "all" ? "default" : "outline"}
                 onClick={() => setModuleFilter("all")}
@@ -229,20 +231,20 @@ export function FrameworkLibrary() {
               >
                 Instructional Expert Hub
               </Button>
-            </div>
+            </ButtonGroup>
 
             {/* Results */}
             {filteredFrameworks.length === 0 ? (
               <Card>
-                <CardContent className="flex flex-col items-center justify-center py-12">
-                  <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No frameworks found</h3>
-                  <p className="text-muted-foreground text-center">
-                    {searchQuery 
-                      ? "Try adjusting your search terms or filters"
-                      : "No frameworks match your current filters"
+                <CardContent>
+                  <EmptyStateNoResults
+                    title="No frameworks found"
+                    description={
+                      searchQuery 
+                        ? "Try adjusting your search terms or filters"
+                        : "No frameworks match your current filters"
                     }
-                  </p>
+                  />
                 </CardContent>
               </Card>
             ) : (

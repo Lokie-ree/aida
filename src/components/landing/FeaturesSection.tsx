@@ -68,7 +68,7 @@ export function FeaturesSection() {
                 />
                 <CardHeader>
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <feature.icon className="w-6 h-6 text-primary" />
+                    <feature.icon className="h-6 w-6 text-primary" />
                   </div>
                   <CardTitle className="text-xl font-heading">{feature.title}</CardTitle>
                 </CardHeader>

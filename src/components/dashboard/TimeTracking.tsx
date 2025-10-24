@@ -1,23 +1,33 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { 
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { 
   Clock, 
-  TrendingUp, 
   Target, 
   Plus,
-  BarChart3,
-  Calendar,
   Award
 } from "lucide-react";
+import { LoadingSpinner } from "../shared/LoadingStates";
+import { EmptyStateNoData } from "../shared/EmptyState";
 import { cn } from "@/lib/utils";
+import { timeTrackingFormSchema, type TimeTrackingFormData } from "@/lib/form-schemas";
 
 interface TimeTrackingProps {
   className?: string;
@@ -25,10 +35,6 @@ interface TimeTrackingProps {
 
 export function TimeTracking({ className }: TimeTrackingProps) {
   const [showForm, setShowForm] = useState(false);
-  const [selectedFramework, setSelectedFramework] = useState("");
-  const [timeSaved, setTimeSaved] = useState("");
-  const [activity, setActivity] = useState("");
-  const [category, setCategory] = useState("");
 
   const analytics = useQuery(api.timeTracking.getTimeTrackingAnalytics, { period: "month" });
   const recentEntries = useQuery(api.timeTracking.getUserTimeTracking, { limit: 10 });
@@ -37,23 +43,31 @@ export function TimeTracking({ className }: TimeTrackingProps) {
 
   const recordTime = useMutation(api.timeTracking.recordTimeSaved);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedFramework || !timeSaved || !activity) return;
+  const form = useForm<TimeTrackingFormData>({
+    defaultValues: {
+      selectedFramework: "",
+      timeSaved: "",
+      activity: "",
+      category: "",
+    },
+  });
 
+  const onSubmit = async (data: TimeTrackingFormData) => {
     try {
       await recordTime({
-        frameworkId: selectedFramework as any,
-        timeSaved: parseInt(timeSaved),
-        activity: activity.trim(),
-        category: category || undefined,
+        frameworkId: data.selectedFramework as any,
+        timeSaved: parseInt(data.timeSaved),
+        activity: data.activity.trim(),
+        category: data.category || undefined,
       });
 
       // Reset form
-      setSelectedFramework("");
-      setTimeSaved("");
-      setActivity("");
-      setCategory("");
+      form.reset({
+        selectedFramework: "",
+        timeSaved: "",
+        activity: "",
+        category: "",
+      });
       setShowForm(false);
     } catch (error) {
       console.error("Failed to record time:", error);
@@ -64,7 +78,7 @@ export function TimeTracking({ className }: TimeTrackingProps) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="flex items-center gap-3 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+          <LoadingSpinner size="md" />
           <span>Loading time tracking data...</span>
         </div>
       </div>
@@ -143,72 +157,104 @@ export function TimeTracking({ className }: TimeTrackingProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="framework">Framework</Label>
-                  <Select value={selectedFramework} onValueChange={setSelectedFramework}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a framework" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {frameworks.map((framework) => (
-                        <SelectItem key={framework._id} value={framework._id}>
-                          {framework.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="selectedFramework"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Framework</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a framework" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {frameworks.map((framework) => (
+                              <SelectItem key={framework._id} value={framework._id}>
+                                {framework.title}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <div className="space-y-2">
-                  <Label htmlFor="timeSaved">Time Saved (minutes)</Label>
-                  <Input
-                    id="timeSaved"
-                    type="number"
-                    value={timeSaved}
-                    onChange={(e) => setTimeSaved(e.target.value)}
-                    placeholder="e.g., 15"
-                    min="1"
-                    required
+                  <FormField
+                    control={form.control}
+                    name="timeSaved"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Time Saved (minutes)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="e.g., 15"
+                            min="1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="activity">What did you do?</Label>
-                <Textarea
-                  id="activity"
-                  value={activity}
-                  onChange={(e) => setActivity(e.target.value)}
-                  placeholder="e.g., Drafted parent communication email"
-                  required
+                <FormField
+                  control={form.control}
+                  name="activity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>What did you do?</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="e.g., Drafted parent communication email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="category">Category (optional)</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="communication">Communication</SelectItem>
-                    <SelectItem value="planning">Lesson Planning</SelectItem>
-                    <SelectItem value="assessment">Assessment</SelectItem>
-                    <SelectItem value="administration">Administration</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category (optional)</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="communication">Communication</SelectItem>
+                          <SelectItem value="planning">Lesson Planning</SelectItem>
+                          <SelectItem value="assessment">Assessment</SelectItem>
+                          <SelectItem value="administration">Administration</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <div className="flex gap-2">
-                <Button type="submit">Record Time</Button>
-                <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
+                <ButtonGroup>
+                  <Button type="submit">Record Time</Button>
+                  <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       )}
@@ -264,9 +310,12 @@ export function TimeTracking({ className }: TimeTrackingProps) {
           <CardContent>
             <div className="space-y-3">
               {analytics.mostUsedFrameworks.length === 0 ? (
-                <p className="text-muted-foreground text-center py-4">
-                  No framework usage data yet.
-                </p>
+                <div className="py-4">
+                  <EmptyStateNoData
+                    title="No usage data yet"
+                    description="Start using frameworks to see your usage statistics here."
+                  />
+                </div>
               ) : (
                 analytics.mostUsedFrameworks.map((framework, index) => (
                   <div key={framework.frameworkId} className="flex items-center justify-between p-3 border rounded-lg">

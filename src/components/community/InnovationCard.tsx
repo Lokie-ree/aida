@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useState } from "react";
+import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Badge } from "@/components/ui/badge";
 import { 
   Lightbulb, 
   Heart, 
-  Star, 
   Clock, 
   User, 
   School, 
   BookOpen,
-  ThumbsUp,
   CheckCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -227,7 +226,7 @@ export function InnovationCard({
             )}
           </div>
 
-          <div className="flex gap-2">
+          <ButtonGroup>
             <Button
               size="sm"
               variant={isLiked ? "default" : "outline"}
@@ -246,7 +245,7 @@ export function InnovationCard({
               <CheckCircle className={cn("h-4 w-4", isTried && "fill-current")} />
               {isTried ? "Tried" : "I Tried This"}
             </Button>
-          </div>
+          </ButtonGroup>
         </div>
       </CardContent>
     </Card>

@@ -1,7 +1,7 @@
-import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -242,7 +242,7 @@ export function FrameworkCard({
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <ButtonGroup>
           <Button 
             onClick={onView} 
             className="flex-1"
@@ -285,7 +285,7 @@ export function FrameworkCard({
               <Star className="h-4 w-4" />
             </Button>
           )}
-        </div>
+        </ButtonGroup>
       </CardContent>
     </Card>
   );

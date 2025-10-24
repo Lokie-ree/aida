@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 interface LoadingSpinnerProps {
@@ -10,19 +10,14 @@ interface LoadingSpinnerProps {
 
 export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) {
   const sizeClasses = {
-    sm: "h-4 w-4",
-    md: "h-6 w-6",
-    lg: "h-8 w-8",
+    sm: "size-4",
+    md: "size-6", 
+    lg: "size-8",
   };
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
-      <div
-        className={cn(
-          "animate-spin rounded-full border-2 border-primary border-t-transparent",
-          sizeClasses[size]
-        )}
-      />
+      <Spinner className={cn(sizeClasses[size])} />
     </div>
   );
 }

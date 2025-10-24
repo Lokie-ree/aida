@@ -8,10 +8,18 @@ import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamples
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
+import { AuthModal } from "@/components/auth/AuthModal";
 
 export function LandingPage() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<"signIn" | "signUp">("signUp");
+
+  const handleGetStartedClick = () => {
+    setAuthModalMode("signUp");
+    setIsAuthModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -19,12 +27,12 @@ export function LandingPage() {
 
       {/* Main Content */}
       <main>
-        <HeroSection onGetStartedClick={() => {/* AppHeader handles this internally */}} />
+        <HeroSection onGetStartedClick={handleGetStartedClick} />
         <FeaturesSection />
         <LouisianaExamplesSection />
         <TestimonialsSection />
         <FAQSection />
-        <CTASection onGetStartedClick={() => {/* AppHeader handles this internally */}} />
+        <CTASection onGetStartedClick={handleGetStartedClick} />
       </main>
 
       {/* Footer */}
@@ -66,7 +74,7 @@ export function LandingPage() {
                 </li>
                 <li>
                   <button 
-                    onClick={() => {/* handled by AppHeader */}}
+                    onClick={handleGetStartedClick}
                     className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
                     aria-label="Get Started"
                   >
@@ -148,6 +156,13 @@ export function LandingPage() {
       <TermsOfServiceModal 
         isOpen={isTermsModalOpen} 
         onClose={() => setIsTermsModalOpen(false)} 
+      />
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authModalMode}
       />
     </div>
   );
