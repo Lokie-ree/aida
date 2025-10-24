@@ -1,8 +1,6 @@
-import * as React from "react";
 import {
   Heading,
   Link,
-  Section,
   Text,
 } from "@react-email/components";
 import { BaseEmailTemplate, ActionBox, InfoBox, HighlightBox, CTAButton, textStyles } from "./BaseEmailTemplate";

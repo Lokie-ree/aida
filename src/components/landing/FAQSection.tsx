@@ -85,7 +85,7 @@ export function FAQSection() {
                   <div className="flex justify-between items-start gap-4">
                     <CardTitle className="text-lg text-left font-heading">{faq.question}</CardTitle>
                     <ChevronDown 
-                      className={`w-5 h-5 shrink-0 transition-transform text-primary ${expandedFaq === index ? 'rotate-180' : ''}`}
+                      className={`h-5 w-5 shrink-0 transition-transform text-primary ${expandedFaq === index ? 'rotate-180' : ''}`}
                     />
                   </div>
                 </CardHeader>

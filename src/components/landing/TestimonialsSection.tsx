@@ -51,7 +51,7 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
               <CardContent className="p-4 sm:p-6">
-                <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-primary/60 mb-3 sm:mb-4" />
+                <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/60 mb-3 sm:mb-4" />
                 <p className="text-sm sm:text-base italic mb-4 sm:mb-6 font-primary">"{testimonial.quote}"</p>
                 <div>
                   <p className="text-sm sm:text-base font-semibold font-heading">{testimonial.author}</p>

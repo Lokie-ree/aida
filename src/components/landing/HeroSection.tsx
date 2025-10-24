@@ -41,7 +41,7 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
               duration={6}
             />
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-primary" />
+              <Sparkles className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium">AI Guidance for Louisiana Educators</span>
             </div>
           </div>
@@ -109,7 +109,7 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
             className="text-xl px-10 py-7 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl w-full sm:w-auto font-semibold font-primary"
           >
             Get Started
-            <ArrowRight className="ml-3 h-6 w-6" />
+            <ArrowRight className="ml-3 h-5 w-5" />
           </Button>
           <p className="text-sm text-muted-foreground text-center sm:text-left">
             Free for Louisiana educators • Start using AI frameworks today
@@ -124,7 +124,7 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
           className="mt-16"
         >
           <ChevronDown 
-            className="w-6 h-6 mx-auto text-muted-foreground animate-bounce" 
+            className="h-6 w-6 mx-auto text-muted-foreground animate-bounce" 
             aria-label="Scroll down for more information"
           />
         </motion.div>

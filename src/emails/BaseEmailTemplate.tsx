@@ -4,8 +4,6 @@ import {
   Body,
   Container,
   Head,
-  Heading,
-  Img,
   Link,
   Preview,
   Section,

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { authClient } from '../../lib/auth-client';
 import { api } from '../../../convex/_generated/api';
+import { LoadingSpinner } from '../shared/LoadingStates';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (isLoading || (requireAdmin && isAdmin === undefined)) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <LoadingSpinner size="lg" />
       </div>
     );
   }

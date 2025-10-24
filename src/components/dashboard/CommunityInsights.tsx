@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Users, Quote, MapPin, Clock, TrendingUp, Heart, MessageCircle, Star } from "lucide-react";
+import { Users, Quote, MapPin, Clock, TrendingUp, Heart, MessageCircle } from "lucide-react";
 
 export interface Testimonial {
   _id: string;

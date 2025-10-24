@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { 
   Search, 
-  Filter, 
   Plus, 
   Lightbulb,
   TrendingUp,
@@ -16,7 +15,7 @@ import {
 } from "lucide-react";
 import { InnovationCard } from "./InnovationCard";
 import { InnovationForm } from "./InnovationForm";
-import { cn } from "@/lib/utils";
+import { EmptyStateNoResults } from "../shared/EmptyState";
 
 type FilterType = "all" | "recent" | "popular" | "my-innovations";
 type SortType = "newest" | "oldest" | "most-liked" | "most-tried";
@@ -250,21 +249,23 @@ export function InnovationList() {
       {/* Innovations List */}
       {filteredInnovations.length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Lightbulb className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No innovations found</h3>
-            <p className="text-muted-foreground text-center mb-4">
-              {searchQuery || selectedTag
-                ? "Try adjusting your search terms or filters"
-                : "Be the first to share an innovation with the community!"
+          <CardContent>
+            <EmptyStateNoResults
+              title="No innovations found"
+              description={
+                searchQuery || selectedTag
+                  ? "Try adjusting your search terms or filters"
+                  : "Be the first to share an innovation with the community!"
               }
-            </p>
-            {!searchQuery && !selectedTag && (
-              <Button onClick={() => setShowForm(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Share Your First Innovation
-              </Button>
-            )}
+              action={
+                !searchQuery && !selectedTag ? (
+                  <Button onClick={() => setShowForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Share Your First Innovation
+                  </Button>
+                ) : undefined
+              }
+            />
           </CardContent>
         </Card>
       ) : (

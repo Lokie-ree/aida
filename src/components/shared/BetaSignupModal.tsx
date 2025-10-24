@@ -170,7 +170,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                   />
                   {validationErrors.name && (
                     <p id="modal-name-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
+                      <AlertCircle className="h-4 w-4" />
                       {validationErrors.name}
                     </p>
                   )}
@@ -199,7 +199,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                   />
                   {validationErrors.email && (
                     <p id="modal-email-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
+                      <AlertCircle className="h-4 w-4" />
                       {validationErrors.email}
                     </p>
                   )}
@@ -228,7 +228,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                   />
                   {validationErrors.school && (
                     <p id="modal-school-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
+                      <AlertCircle className="h-4 w-4" />
                       {validationErrors.school}
                     </p>
                   )}
@@ -257,7 +257,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                   />
                   {validationErrors.subject && (
                     <p id="modal-subject-error" className="text-sm text-destructive mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-4 h-4" />
+                      <AlertCircle className="h-4 w-4" />
                       {validationErrors.subject}
                     </p>
                   )}
@@ -272,7 +272,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
                       Joining Beta Program...
                     </>
                   ) : (
@@ -283,7 +283,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
                 {error && (
                   <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
                     <div className="flex items-center gap-2 text-destructive">
-                      <AlertCircle className="w-5 h-5" />
+                      <AlertCircle className="h-5 w-5" />
                       <p className="text-sm font-medium">{error}</p>
                     </div>
                   </div>
@@ -295,7 +295,7 @@ export function BetaSignupModal({ isOpen, onClose }: BetaSignupModalProps) {
               </form>
             ) : (
               <div className="text-center py-8 bg-primary/10 rounded-lg">
-                <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
+                <CheckCircle className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-primary mb-2">
                   Thanks for Signing Up!
                 </h3>

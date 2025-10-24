@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import GradientText from "@/components/shared/GradientText";
-import { Sparkles, Target } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { louisianaExamples } from "@/data/landingPageContent";
 
 export function LouisianaExamplesSection() {
@@ -76,7 +76,7 @@ export function LouisianaExamplesSection() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-start gap-2">
-                    <Sparkles className="w-5 h-5 text-primary shrink-0 mt-1" />
+                    <Sparkles className="h-5 w-5 text-primary shrink-0 mt-1" />
                     <p className="text-sm font-primary">{example.solution}</p>
                   </div>
                 </CardContent>

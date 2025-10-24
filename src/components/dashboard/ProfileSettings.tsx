@@ -3,12 +3,13 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { User, School, BookOpen, GraduationCap, MapPin, Shield } from "lucide-react";
+import { LoadingSpinner } from "../shared/LoadingStates";
 import { toast } from "sonner";
 
 export function ProfileSettings() {
@@ -81,7 +82,7 @@ export function ProfileSettings() {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="flex items-center gap-3 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+          <LoadingSpinner size="md" />
           <span>Loading profile...</span>
         </div>
       </div>
@@ -240,7 +241,7 @@ export function ProfileSettings() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
+              <ButtonGroup spacing="md" className="pt-4">
                 {isEditing ? (
                   <>
                     <Button onClick={handleSave}>
@@ -255,7 +256,7 @@ export function ProfileSettings() {
                     Edit Profile
                   </Button>
                 )}
-              </div>
+              </ButtonGroup>
             </CardContent>
           </Card>
         </div>
