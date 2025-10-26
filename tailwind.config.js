@@ -7,7 +7,14 @@ module.exports = {
     extend: {
       // shadcn/ui theme colors (CSS variables)
       colors: {
+        // Pelican AI Brand Colors
+        "pelican-blue": "hsl(var(--pelican-blue))",
+        "louisiana-gold": "hsl(var(--louisiana-gold))",
+        "deep-blue": "hsl(var(--deep-blue))",
+        
+        // shadcn/ui theme colors
         border: "hsl(var(--border))",
+        "border-border": "hsl(var(--border))", // Add border-border utility
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -48,9 +55,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        primary: ["Lexend", "system-ui", "sans-serif"],
-        heading: ["Poppins", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "Courier New", "monospace"],
+        primary: ["Lexend", "system-ui", "sans-serif"], // Brand primary font
+        heading: ["Poppins", "system-ui", "sans-serif"], // Brand heading font
+        mono: ["JetBrains Mono", "Courier New", "monospace"], // Brand monospace font
       },
     },
   },

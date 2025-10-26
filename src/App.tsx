@@ -10,11 +10,11 @@ import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { authClient } from "./lib/auth-client";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import DashboardRoute from "./components/routes/DashboardRoute";
-import FrameworkRoute from "./components/routes/FrameworkRoute";
-import CommunityRoute from "./components/routes/CommunityRoute";
-import ProfileRoute from "./components/routes/ProfileRoute";
+import { FrameworkLibrary } from "./components/framework/FrameworkLibrary";
+import { InnovationList } from "./components/community/InnovationList";
+import { ProfileSettings } from "./components/dashboard/ProfileSettings";
 import AdminRoute from "./components/routes/AdminRoute";
-import TimeTrackingRoute from "./components/routes/TimeTrackingRoute";
+import { TimeTracking } from "./components/dashboard/TimeTracking";
 
 // Component to handle authenticated header with navigation
 function AuthenticatedHeader() {
@@ -64,7 +64,7 @@ export default function App() {
                     path="/frameworks" 
                     element={
                       <ProtectedRoute>
-                        <FrameworkRoute />
+                        <FrameworkLibrary />
                       </ProtectedRoute>
                     } 
                   />
@@ -72,7 +72,7 @@ export default function App() {
                     path="/frameworks/:frameworkId" 
                     element={
                       <ProtectedRoute>
-                        <FrameworkRoute />
+                        <FrameworkLibrary />
                       </ProtectedRoute>
                     } 
                   />
@@ -80,7 +80,7 @@ export default function App() {
                     path="/community" 
                     element={
                       <ProtectedRoute>
-                        <CommunityRoute />
+                        <InnovationList />
                       </ProtectedRoute>
                     } 
                   />
@@ -88,7 +88,7 @@ export default function App() {
                     path="/profile" 
                     element={
                       <ProtectedRoute>
-                        <ProfileRoute />
+                        <ProfileSettings />
                       </ProtectedRoute>
                     } 
                   />
@@ -104,7 +104,7 @@ export default function App() {
                     path="/time-tracking" 
                     element={
                       <ProtectedRoute>
-                        <TimeTrackingRoute />
+                        <TimeTracking />
                       </ProtectedRoute>
                     } 
                   />

@@ -101,8 +101,8 @@ export function WelcomeHero({
         {/* Left: Personal Welcome */}
         <div className="flex-1 min-w-0">
           <h1 className="text-xl md:text-3xl font-bold text-foreground leading-tight">
-            Welcome back, <span 
-              className="bg-gradient-to-r from-[#0ea5e9] to-[#1e40af] bg-clip-text text-transparent font-bold"
+            Welcome back, {" "}<span 
+              className="font-bold"
             >
               {user.name || "Educator"}
             </span>!
