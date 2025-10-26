@@ -3,6 +3,7 @@ import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Clock, TrendingUp } from "lucide-react";
+import { spacing, chartSizing } from "@/lib/spacing";
 
 interface TimeSavingsChartProps {
   weeklyData: Array<{
@@ -21,24 +22,24 @@ interface TimeSavingsChartProps {
 const chartConfig = {
   minutes: {
     label: "Minutes Saved",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--pelican-blue))",
   },
   hours: {
     label: "Hours Saved", 
-    color: "hsl(var(--secondary))",
+    color: "hsl(var(--louisiana-gold))",
   },
 };
 
 export function TimeSavingsChart({ weeklyData, monthlyData, className }: TimeSavingsChartProps) {
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`${spacing.sectionGapSmall} ${spacing.chartContainer} ${className}`}>
       {/* Weekly Time Savings Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-primary" />
-            Weekly Time Savings
-          </CardTitle>
+          <Card className="shadow-lg border-primary/20 bg-gradient-to-br from-card to-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-primary" />
+                Weekly Time Savings
+              </CardTitle>
           <CardDescription>
             Track your daily time savings progress this week
           </CardDescription>
@@ -47,12 +48,9 @@ export function TimeSavingsChart({ weeklyData, monthlyData, className }: TimeSav
           <ChartContainer config={chartConfig}>
             <AreaChart
               data={weeklyData}
-              margin={{
-                top: 5,
-                right: 10,
-                left: 10,
-                bottom: 0,
-              }}
+              width={800}
+              height={chartSizing.medium}
+              margin={chartSizing.margin}
             >
               <XAxis 
                 dataKey="day" 
@@ -92,12 +90,12 @@ export function TimeSavingsChart({ weeklyData, monthlyData, className }: TimeSav
       </Card>
 
       {/* Monthly Progress Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary" />
-            Monthly Progress
-          </CardTitle>
+          <Card className="shadow-lg border-secondary/20 bg-gradient-to-br from-card to-secondary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-secondary" />
+                Monthly Progress
+              </CardTitle>
           <CardDescription>
             Weekly time savings over the past month
           </CardDescription>
@@ -106,12 +104,9 @@ export function TimeSavingsChart({ weeklyData, monthlyData, className }: TimeSav
           <ChartContainer config={chartConfig}>
             <BarChart
               data={monthlyData}
-              margin={{
-                top: 5,
-                right: 10,
-                left: 10,
-                bottom: 0,
-              }}
+              width={800}
+              height={chartSizing.medium}
+              margin={chartSizing.margin}
             >
               <XAxis 
                 dataKey="week" 

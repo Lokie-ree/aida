@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { BookOpen, BarChart3 } from "lucide-react";
+import { spacing, chartSizing } from "@/lib/spacing";
 
 interface FrameworkUsageChartProps {
   frameworkUsage: Array<{
@@ -19,21 +20,21 @@ interface FrameworkUsageChartProps {
 }
 
 const COLORS = [
+  "hsl(var(--pelican-blue))",
+  "hsl(var(--louisiana-gold))", 
+  "hsl(var(--deep-blue))",
   "hsl(var(--primary))",
   "hsl(var(--secondary))",
-  "hsl(var(--accent))",
-  "hsl(var(--muted))",
-  "hsl(var(--destructive))",
 ];
 
 const chartConfig = {
   count: {
     label: "Usage Count",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--pelican-blue))",
   },
   percentage: {
     label: "Percentage",
-    color: "hsl(var(--secondary))",
+    color: "hsl(var(--louisiana-gold))",
   },
 };
 
@@ -43,28 +44,29 @@ export function FrameworkUsageChart({
   className 
 }: FrameworkUsageChartProps) {
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`${spacing.sectionGapSmall} ${spacing.chartContainer} ${className}`}>
       {/* Framework Usage by Category */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary" />
-            Framework Usage by Category
-          </CardTitle>
+          <Card className="shadow-lg border-primary/20 bg-gradient-to-br from-card to-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Framework Usage by Category
+              </CardTitle>
           <CardDescription>
             See which types of frameworks you use most often
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
-            <PieChart>
+            <PieChart width={chartSizing.large} height={chartSizing.large}>
               <Pie
                 data={categoryBreakdown}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
                 label={({ name, percentage }) => `${name} (${percentage}%)`}
-                outerRadius={80}
+                outerRadius={chartSizing.pieOuterRadius}
+                innerRadius={chartSizing.pieInnerRadius}
                 fill="#8884d8"
                 dataKey="count"
               >
@@ -89,12 +91,12 @@ export function FrameworkUsageChart({
       </Card>
 
       {/* Top Frameworks Used */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
-            Most Used Frameworks
-          </CardTitle>
+          <Card className="shadow-lg border-secondary/20 bg-gradient-to-br from-card to-secondary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5 text-secondary" />
+                Most Used Frameworks
+              </CardTitle>
           <CardDescription>
             Your top 5 most frequently used frameworks
           </CardDescription>
@@ -104,12 +106,9 @@ export function FrameworkUsageChart({
             <BarChart
               data={frameworkUsage.slice(0, 5)}
               layout="horizontal"
-              margin={{
-                top: 5,
-                right: 10,
-                left: 10,
-                bottom: 0,
-              }}
+              width={800}
+              height={chartSizing.medium}
+              margin={chartSizing.margin}
             >
               <XAxis type="number" hide />
               <YAxis 

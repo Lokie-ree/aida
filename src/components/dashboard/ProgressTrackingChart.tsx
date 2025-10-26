@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Target, TrendingUp } from "lucide-react";
+import { spacing, chartSizing } from "@/lib/spacing";
 
 interface ProgressTrackingChartProps {
   weeklyGoals: Array<{
@@ -22,23 +23,23 @@ interface ProgressTrackingChartProps {
 const chartConfig = {
   goal: {
     label: "Weekly Goal",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--pelican-blue))",
   },
   achieved: {
     label: "Achieved",
-    color: "hsl(var(--secondary))",
+    color: "hsl(var(--louisiana-gold))",
   },
   frameworksTried: {
     label: "Frameworks Tried",
-    color: "hsl(var(--accent))",
+    color: "hsl(var(--deep-blue))",
   },
   streak: {
     label: "Learning Streak",
-    color: "hsl(var(--primary))",
+    color: "hsl(var(--pelican-blue))",
   },
   frameworksCompleted: {
     label: "Frameworks Completed",
-    color: "hsl(var(--secondary))",
+    color: "hsl(var(--louisiana-gold))",
   },
 };
 
@@ -48,14 +49,14 @@ export function ProgressTrackingChart({
   className 
 }: ProgressTrackingChartProps) {
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`${spacing.sectionGapSmall} ${spacing.chartContainer} ${className}`}>
       {/* Weekly Goals vs Achieved */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-primary" />
-            Weekly Goals Progress
-          </CardTitle>
+          <Card className="shadow-lg border-primary/20 bg-gradient-to-br from-card to-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                Weekly Goals Progress
+              </CardTitle>
           <CardDescription>
             Track your weekly goals against what you actually achieved
           </CardDescription>
@@ -64,12 +65,9 @@ export function ProgressTrackingChart({
           <ChartContainer config={chartConfig}>
             <LineChart
               data={weeklyGoals}
-              margin={{
-                top: 5,
-                right: 10,
-                left: 10,
-                bottom: 0,
-              }}
+              width={800}
+              height={chartSizing.medium}
+              margin={chartSizing.margin}
             >
               <XAxis 
                 dataKey="week" 
@@ -116,12 +114,12 @@ export function ProgressTrackingChart({
       </Card>
 
       {/* Learning Streak */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary" />
-            Learning Streak
-          </CardTitle>
+          <Card className="shadow-lg border-secondary/20 bg-gradient-to-br from-card to-secondary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-secondary" />
+                Learning Streak
+              </CardTitle>
           <CardDescription>
             Your daily learning streak and framework completion
           </CardDescription>
@@ -130,12 +128,9 @@ export function ProgressTrackingChart({
           <ChartContainer config={chartConfig}>
             <LineChart
               data={learningStreak}
-              margin={{
-                top: 5,
-                right: 10,
-                left: 10,
-                bottom: 0,
-              }}
+              width={800}
+              height={chartSizing.medium}
+              margin={chartSizing.margin}
             >
               <XAxis 
                 dataKey="day" 

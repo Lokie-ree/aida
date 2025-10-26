@@ -22,8 +22,8 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
       <div className="absolute inset-0 bg-background" />
       
       {/* Decorative Elements - Pelican Blue */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#0ea5e9]/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#1e40af]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         {/* Badge */}
@@ -35,8 +35,8 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
         >
           <div className="relative px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
             <BorderBeam 
-              colorFrom="#0ea5e9"
-              colorTo="#1e40af"
+              colorFrom="hsl(var(--primary))"
+              colorTo="hsl(var(--secondary))"
               size={60}
               duration={6}
             />

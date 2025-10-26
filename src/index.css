@@ -5,49 +5,73 @@
 
 @layer base {
   :root {
+    /* Pelican AI Brand Colors */
+    --pelican-blue: 200 100% 50%; /* #0ea5e9 */
+    --louisiana-gold: 38 100% 50%; /* #f59e0b */
+    --deep-blue: 224 71% 40%; /* #1e40af */
+
+    /* Base Colors */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+
+    /* Primary = Pelican Blue */
+    --primary: var(--pelican-blue);
     --primary-foreground: 210 40% 98%;
-    --secondary: 262.1 83.3% 57.8%;
+
+    /* Secondary = Deep Blue */
+    --secondary: var(--deep-blue);
     --secondary-foreground: 210 40% 98%;
+
+    /* Accent = Louisiana Gold */
+    --accent: var(--louisiana-gold);
+    --accent-foreground: 26 83.3% 14.1%;
+
+    /* Neutral Colors */
     --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 45.4 95.7% 47.1%;
-    --accent-foreground: 26 83.3% 14.1%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 262.1 83.3% 57.8%;
+    --ring: var(--pelican-blue);
     --radius: 0.5rem;
   }
 
   .dark {
+    /* Dark mode base colors */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 221.2 83.2% 53.3%;
+
+    /* Primary = Pelican Blue (adjusted for dark mode) */
+    --primary: 200 100% 60%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 262.1 83.3% 57.8%;
+
+    /* Secondary = Deep Blue (adjusted for dark mode) */
+    --secondary: 224 71% 50%;
     --secondary-foreground: 210 40% 98%;
+
+    /* Accent = Louisiana Gold (adjusted for dark mode) */
+    --accent: 38 100% 60%;
+    --accent-foreground: 26 83.3% 14.1%;
+
+    /* Neutral Colors */
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 45.4 95.7% 47.1%;
-    --accent-foreground: 26 83.3% 14.1%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --ring: 200 100% 60%;
   }
+
   body {
     letter-spacing: var(--tracking-normal);
   }
@@ -60,6 +84,41 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+}
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* Chart responsiveness - ensure charts scale properly */
+.recharts-wrapper {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.recharts-surface {
+  width: 100% !important;
+}
+
+/* Prevent chart overflow on large screens */
+@media (min-width: 1536px) {
+  .chart-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Ensure proper chart rendering on mobile */
+@media (max-width: 640px) {
+  .recharts-wrapper {
+    font-size: 12px;
+  }
+
+  .recharts-cartesian-axis-tick {
+    font-size: 11px;
   }
 }
 
@@ -126,63 +185,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --animate-marquee: marquee var(--duration) infinite linear;
-  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
-  @keyframes marquee {
-  from {
-    transform: translateX(0);
-    }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-    }
-  }
-  @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-    }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
-    }
-  }
-  --animate-background-position-spin: background-position-spin 3000ms infinite alternate
-;
-  @keyframes background-position-spin {
-  0% {
-    background-position: top center;
-    }
-  100% {
-    background-position: bottom center;
-    }
-  }
-  --animate-pulse: pulse var(--duration) ease-out infinite;
-  @keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 var(--pulse-color);
-    }
-  50% {
-    box-shadow: 0 0 0 8px var(--pulse-color);
-    }
-  }
-  --animate-gradient: gradient 20s linear infinite;
-  @keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-    }
-  50% {
-    background-position: 100% 50%;
-    }
-  100% {
-    background-position: 0% 50%;
-    }
-  }
-  @keyframes background-position-spin {
-  0% {
-    background-position: top center;
-    }
-  100% {
-    background-position: bottom center;
-    }
-  }}
+}
 
 :root {
   --background: oklch(1.0000 0 0);
@@ -302,25 +305,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-::view-transition-old(root), ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-}
-
-@keyframes background-position-spin {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-background-position-spin {
-  animation: background-position-spin 3s ease-in-out infinite;
 }

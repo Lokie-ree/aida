@@ -4,7 +4,6 @@ import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { authClient } from '../../lib/auth-client';
 import { Dashboard } from '../dashboard/Dashboard';
-import { EnhancedDashboard } from '../dashboard/EnhancedDashboard';
 import { LoadingSpinner } from '../shared/LoadingStates';
 
 interface DashboardRouteProps {
@@ -16,9 +15,7 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   const userProfile = useQuery(api.userProfiles.getUserProfile);
   const betaStatus = useQuery(api.betaProgram.getBetaStatus);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
-  const testimonials = useQuery(api.testimonials.getFeaturedTestimonials, {});
   const betaStats = useQuery(api.betaProgram.getBetaStats, {});
-  const analyticsData = useQuery(api.dashboardAnalytics.getDashboardAnalytics, {});
   
   const initializeUser = useMutation(api.userProfiles.initializeNewUser);
 
@@ -30,7 +27,7 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     }
   }, [session?.user, userProfile, betaStatus, initializeUser]);
 
-  if (session === undefined || frameworks === undefined || testimonials === undefined || betaStats === undefined || analyticsData === undefined) {
+  if (session === undefined || frameworks === undefined || betaStats === undefined) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <motion.div
@@ -68,27 +65,12 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     onShowOnboarding();
   }
 
-  // Mock community stats for now - in production this would come from backend
-  const communityStats = {
-    totalEducators: 247,
-    innovationsThisWeek: 12,
-    averageTimeSaved: 4.2,
-    activeThisWeek: 89
-  };
-
-  // Use real analytics data from Convex backend
-  const {
-    weeklyTimeData,
-    monthlyTimeData,
-    frameworkUsageData,
-    categoryBreakdownData,
-    weeklyGoalsData,
-    learningStreakData,
-  } = analyticsData;
-
   return (
-    <EnhancedDashboard 
-      onShowOnboarding={onShowOnboarding}
+    <Dashboard 
+      user={user}
+      stats={stats}
+      recentFrameworks={frameworks.slice(0, 5)}
+      weeklyGoal={60}
     />
   );
 };
