@@ -32,3 +32,12 @@ export const timeTrackingFormSchema = z.object({
 });
 
 export type TimeTrackingFormData = z.infer<typeof timeTrackingFormSchema>;
+
+// Testimonial Form Schema
+export const testimonialFormSchema = z.object({
+  quote: z.string().min(10, "Quote must be at least 10 characters").max(500, "Quote must be less than 500 characters"),
+  impact: z.string().min(1, "Impact description is required").max(200, "Impact description must be less than 200 characters"),
+  timeSaved: z.number().min(0, "Time saved must be positive").optional(),
+});
+
+export type TestimonialFormData = z.infer<typeof testimonialFormSchema>;

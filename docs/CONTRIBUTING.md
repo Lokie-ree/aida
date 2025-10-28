@@ -106,9 +106,32 @@ git push -u origin feature/WEB-XX-descriptive-name
 
 ### 5. Create Pull Request
 
+#### AI-Assisted PR Generation
+
+After pushing your feature branch, use AI to generate a professional PR title and description:
+
+**Option A: Using Cursor AI**
+1. After pushing, open a chat in Cursor
+2. Use this prompt template:
+```
+Generate a PR title and description for my recent commits. 
+Review the changes in [feature branch name] compared to main.
+
+Include:
+- Clear, descriptive title following the format: [type]: [description] (WEB-XX)
+- Summary of changes
+- Testing performed
+- Linear issue links
+- Any breaking changes or migration notes
+```
+
+3. Copy the generated title and description
+4. Create the PR on GitHub using the AI-generated content
+
+**Option B: Manual PR Creation**
 1. Go to GitHub repository: https://github.com/Lokie-ree/aida
 2. Click "Compare & pull request" (appears after push)
-3. Use clear PR title and description
+3. Use clear PR title and description following the format below
 4. Request review (if working with team)
 5. Link related Linear issues in PR description
 
@@ -116,6 +139,28 @@ git push -u origin feature/WEB-XX-descriptive-name
 - `feat: Add [feature name] (WEB-XX)` (e.g., "feat: Add privacy policy and terms of service modals (WEB-46)")
 - `fix: Fix [issue description] (WEB-XX)` (e.g., "fix: Resolve authentication validation error (WEB-15)")
 - `docs: Update [documentation] (WEB-XX)` (e.g., "docs: Update API guidelines (WEB-46)")
+
+**PR Description Template:**
+```markdown
+## Summary
+[Brief description of what this PR does]
+
+## Changes
+- [ ] Feature X implemented
+- [ ] Bug Y fixed  
+- [ ] Documentation updated
+
+## Testing
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Manual testing completed
+
+## Related Issues
+Closes #WEB-XX
+
+## Deployment Notes
+[N/A or specific deployment instructions]
+```
 
 ### 6. Merge & Cleanup
 
@@ -223,10 +268,10 @@ pnpm test:e2e            # End-to-end tests only
 **Note:** See **[scripts/README.md](../scripts/README.md)** for current test coverage and detailed testing documentation.
 
 ### Test Data Management
-- **Safe Test Data Isolation:** All test data is flagged with `isTestData: true`
-- **Centralized Cleanup:** Automated test data cleanup with safety verification
-- **Data Recovery:** System for recovering accidentally deleted user data
-- **Real Data Protection:** Test cleanup never affects real user data
+- **Deployment Separation:** Tests run against Dev deployment (`kindly-setter.convex.cloud`)
+- **Production Isolation:** Production deployment (`outgoing-parttridge.convex.cloud`) remains clean
+- **Manual Cleanup:** Dev deployment data can be manually cleaned when needed
+- **No Flags Needed:** Environmental separation eliminates need for test data flags
 
 ### Writing Tests
 

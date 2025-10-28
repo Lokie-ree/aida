@@ -1,9 +1,11 @@
 # ADR-010: Test Data Isolation and Recovery System
 
-**Date:** 2025-10-18
-**Status:** ✅ **ACCEPTED**
-**Deciders:** Development Team, Security Team
+**Date:** 2025-10-18  
+**Status:** ✅ **ACCEPTED** (Historical - See superseding approach below)  
+**Deciders:** Development Team, Security Team  
 **Related Issues:** Accidental user data deletion, test data cleanup inconsistencies
+
+> **HISTORICAL NOTE:** This ADR describes the test data isolation approach that was superseded by a simpler deployment-based separation strategy. As of Phase 2 completion (October 26, 2025), we use separate Dev (`kindly-setter.convex.cloud`) and Production (`outgoing-parttridge.convex.cloud`) deployments, eliminating the need for `isTestData` flags. This ADR is preserved for historical context on the evolution of our testing strategy.
 
 ---
 

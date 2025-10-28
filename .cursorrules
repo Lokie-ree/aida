@@ -4,16 +4,17 @@
 
 **Pelican AI** empowers Louisiana educators with platform-agnostic AI guidance. We provide guidance, not tools - helping educators use ANY AI platform effectively while maintaining Louisiana standards alignment.
 
-**Current Phase:** Phase 2 UI Exposure (Backend implemented, UI not exposed to users)
+**Current Phase:** Phase 2 Complete → Beta Launch Ready (30 days until launch)
 
 ## Agent System
 
-This project uses specialized AI agents for different aspects of development:
+This project uses specialized AI agents for different aspects of development. See **[AGENT.md](AGENT.md)** for complete role definitions.
 
-- **Product decisions or UX questions?** → `@.cursor/rules/product.mdc`
-- **Architecture, implementation, or technical work?** → `@.cursor/rules/developer.mdc`
-- **Security or FERPA compliance?** → `@.cursor/rules/security.mdc`
-- **Testing or quality assurance?** → `@.cursor/rules/qa.mdc`
+**Quick Reference:**
+- **Product decisions or UX questions?** → Act as `@product` or refer to AGENT.md
+- **Architecture, implementation, or technical work?** → Act as `@developer` or refer to AGENT.md
+- **Security or FERPA compliance?** → Act as `@security` or refer to AGENT.md
+- **Testing or quality assurance?** → Act as `@qa` or refer to AGENT.md
 
 ## Essential Documentation
 

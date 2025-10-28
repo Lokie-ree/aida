@@ -365,18 +365,69 @@ export const sendWelcomeEmail = action({
 
 ---
 
+## Convex Deployment Configuration
+
+### Deployment Environments
+
+**Development** (`kindly-setter.convex.cloud`):
+- Used for local development and testing
+- All test suites run against this deployment
+- Safe to use for experimental features
+- Auto-sync with local code via `npx convex dev`
+
+**Production** (`outgoing-parttridge.convex.cloud`):
+- Live production environment
+- Only deployed via `npx convex deploy` after thorough testing
+- Protected from test data contamination
+- Monitored for uptime and performance
+
+### Switching Between Deployments
+
+```bash
+# Work with Dev deployment (default for local development)
+npx convex dev                    # Starts with Dev deployment
+
+# Deploy to Production
+npx convex deploy --prod           # Deploy to Production
+```
+
+### Vercel Deployment Configuration
+
+**Preview Environment:**
+- URL: [To be configured]
+- Connected to: Dev Convex deployment (`kindly-setter.convex.cloud`)
+- Used for: Pull request previews and staging
+
+**Production Environment:**
+- URL: [To be configured]
+- Connected to: Production Convex deployment (`outgoing-parttridge.convex.cloud`)
+- Used for: Live beta platform
+
+### Deployment Switching for Testing
+
+```bash
+# Run tests against Dev deployment (default)
+pnpm test:unit
+pnpm test:integration
+pnpm test:e2e
+
+# Switch to production for specific operations
+VITE_CONVEX_URL="https://outgoing-parttridge.convex.cloud" pnpm test:e2e
+```
+
 ## Testing Architecture
 
 **Test Runner:** Custom Node.js suite (`scripts/test-runner.js`)  
 **Test Categories:** Unit, Integration, E2E, API, Diagnostic
+**Deployment:** All tests run against Dev deployment by default
 
 ### Test Data Management
 
-**Safety System** (ADR-010):
-- All test data flagged with `isTestData: true`
-- Centralized cleanup via `testDataCleanup:deleteAllTestData`
-- Safety verification prevents real data deletion
-- Recovery system for accidental deletions
+**Separation Strategy:**
+- Tests run exclusively on Dev deployment (`kindly-setter.convex.cloud`)
+- Production deployment (`outgoing-parttridge.convex.cloud`) remains clean
+- No `isTestData` flags needed - environmental separation
+- Manual data cleanup on Dev deployment when needed
 
 ### Test Structure
 
@@ -660,20 +711,19 @@ npx convex run [function]        # Call a function
 
 # Testing
 node scripts/test-runner.js      # Run all tests
-pnpm test:cleanup                # Clean test data
 ```
 
 ### Useful Queries
 
 ```bash
-# Check database state
-npx convex run testDataCleanup:getDatabaseState
-
-# Verify cleanup safety
-npx convex run testDataCleanup:verifyCleanupSafety
-
 # Get framework stats
 npx convex run frameworks:getFrameworkStats
+
+# List all beta signups
+npx convex run betaSignup:getAllBetaSignups
+
+# View user profiles
+npx convex run userProfiles:getAllUserProfiles
 ```
 
 ---

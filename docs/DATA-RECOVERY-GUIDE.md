@@ -11,12 +11,7 @@ This guide provides procedures for recovering accidentally deleted user data in 
 **Impact:** User loses access to their account and all associated data
 **Recovery Time:** 5-10 minutes
 
-### Scenario 2: Test Data Cleanup Gone Wrong
-**When:** Real user data was deleted during test cleanup operations
-**Impact:** Multiple users may be affected
-**Recovery Time:** 15-30 minutes
-
-### Scenario 3: Database Corruption
+### Scenario 2: Database Corruption
 **When:** Database corruption or system failure causes data loss
 **Impact:** Potentially all user data
 **Recovery Time:** 1-2 hours
@@ -27,8 +22,8 @@ This guide provides procedures for recovering accidentally deleted user data in 
 
 1. **Check Database State**
    ```bash
-   # Run database state check
-   node scripts/test-runner.js --cleanup
+   # Run database state check (check Convex dashboard)
+   npx convex dashboard
    ```
 
 2. **Identify Affected Users**
@@ -37,10 +32,11 @@ This guide provides procedures for recovering accidentally deleted user data in 
    - Use admin dashboard to identify missing users
 
 3. **Verify Data Integrity**
-   ```javascript
-   // Use Convex MCP to check database state
-   const state = await convex.run("testDataCleanup:getDatabaseState", {});
-   console.log("Database state:", state);
+   ```bash
+   # Check database state via Convex dashboard
+   npx convex dashboard
+   # Or query specific tables
+   npx convex run betaSignup:getAllBetaSignups
    ```
 
 ### Step 2: Prepare Recovery Data
