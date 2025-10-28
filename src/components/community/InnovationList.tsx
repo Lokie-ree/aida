@@ -11,10 +11,12 @@ import {
   Lightbulb,
   TrendingUp,
   Clock,
-  Users
+  Users,
+  MessageSquare
 } from "lucide-react";
 import { InnovationCard } from "./InnovationCard";
 import { InnovationForm } from "./InnovationForm";
+import { TestimonialForm } from "./TestimonialForm";
 import { EmptyStateNoResults } from "../shared/EmptyState";
 
 type FilterType = "all" | "recent" | "popular" | "my-innovations";
@@ -25,6 +27,7 @@ export function InnovationList() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [sort, setSort] = useState<SortType>("newest");
   const [showForm, setShowForm] = useState(false);
+  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   // Queries
@@ -123,10 +126,16 @@ export function InnovationList() {
             Discover creative AI use cases shared by Louisiana educators
           </p>
         </div>
-        <Button onClick={() => setShowForm(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Share Innovation
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setShowTestimonialForm(true)} variant="outline" className="flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            Submit Testimonial
+          </Button>
+          <Button onClick={() => setShowForm(true)} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Share Innovation
+          </Button>
+        </div>
       </div>
 
       {/* Innovation Form Modal */}
@@ -136,6 +145,18 @@ export function InnovationList() {
             <InnovationForm
               onSuccess={handleFormSuccess}
               onCancel={() => setShowForm(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Testimonial Form Modal */}
+      {showTestimonialForm && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
+          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
+            <TestimonialForm
+              onSuccess={() => setShowTestimonialForm(false)}
+              onCancel={() => setShowTestimonialForm(false)}
             />
           </div>
         </div>

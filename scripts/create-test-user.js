@@ -9,13 +9,13 @@
 
 import { ConvexHttpClient } from "convex/browser";
 
-const CONVEX_URL = process.env.VITE_CONVEX_SITE_URL || "https://kindly-setter-935.convex.site";
+const CONVEX_URL = process.env.VITE_CONVEX_URL || "https://kindly-setter-935.convex.cloud";
 
 async function createTestUser() {
   const client = new ConvexHttpClient(CONVEX_URL);
   
   const testUser = {
-    email: "qa.test@example.com",
+    email: "delivered@resend.dev",  // Resend test email that always delivers
     password: "TestPassword123!",
     name: "QA Test User"
   };

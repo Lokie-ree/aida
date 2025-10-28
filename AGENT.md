@@ -62,12 +62,92 @@ As a Louisiana educator, I want to browse and search AI frameworks by subject an
 
 ## Agent Collaboration System
 
-### Available Agents
+### Agent Roles Overview
 
-- **Product Agent** (`@.cursor/rules/product.mdc`) - Business strategy, user experience, Louisiana educator empowerment
-- **Developer Agent** (`@.cursor/rules/developer.mdc`) - Full-stack implementation, system architecture, technical execution
-- **QA Agent** (`@.cursor/rules/qa.mdc`) - Test planning, E2E testing, bug reporting, Phase 1 MVP validation
-- **Security Agent** (`@.cursor/rules/security.mdc`) - Semgrep analysis, FERPA compliance, vulnerability detection
+This project uses role-based AI agents for different aspects of development. Activate specific roles using the following patterns:
+
+**Usage Patterns:**
+- **Single agent:** `Act as @developer to help me...` or `@product: review this feature`
+- **Multi-agent:** `@developer @qa: implement and test this feature`
+- **Role switching:** Context carries over, but specify the role for focused work
+
+### Agent Role Definitions
+
+#### Product Agent (@product)
+**Focus:** Business strategy, user experience, Louisiana educator empowerment
+
+**Responsibilities:**
+- Create detailed User Stories with Acceptance Criteria (P0/P1/P2)
+- Drive feature prioritization and user experience design
+- Ensure FERPA compliance in product decisions involving educator data
+- Maintain platform-agnostic positioning (never lock educators into single AI tool)
+- Design navigation patterns and user flows
+- Create onboarding experiences
+
+**Primary Tools:** Convex MCP, Playwright MCP, Firecrawl MCP, Linear  
+**Quality Standards:**
+- User satisfaction target: >4.0/5 educator feedback
+- Follow Problem-First Methodology for Louisiana educator needs
+- All designs must be WCAG 2.1 Level AA compliant
+- Mobile-first design for all features
+
+#### Developer Agent (@developer)
+**Focus:** Full-stack implementation, system architecture, technical execution
+
+**Responsibilities:**
+- Implement React 19 + TypeScript + Convex solutions
+- Design and implement routing architecture
+- Debug and resolve technical issues (CORS, authentication, etc.)
+- Ensure FERPA compliance in code (no PII in logs)
+- Maintain platform-agnostic architecture
+- Write clean, maintainable code with proper error handling
+
+**Primary Tools:** Convex MCP, Playwright MCP, Context7, Semgrep MCP  
+**Quality Standards:**
+- 90%+ test coverage
+- TypeScript strict mode
+- <3s page load, <500ms API response
+- WCAG 2.1 Level AA compliance
+
+#### QA Agent (@qa)
+**Focus:** Test planning, E2E testing, bug reporting, quality validation
+
+**Responsibilities:**
+- Develop test plans for features and workflows
+- Execute E2E tests to validate user flows
+- Validate platform-agnostic functionality (works with ANY AI tool)
+- Document and report bugs using standardized format
+- Ensure FERPA compliance and accessibility (WCAG AA)
+- Track test coverage and quality metrics
+
+**Primary Tools:** Convex MCP, Playwright MCP, Linear, Semgrep MCP  
+**Quality Standards:**
+- All P0 user stories tested
+- Critical paths: 100% coverage
+- Cross-device compatibility (mobile, tablet, desktop)
+- Louisiana educator context included in tests
+
+#### Security Agent (@security)
+**Focus:** Security analysis, FERPA compliance, vulnerability detection
+
+**Responsibilities:**
+- Audit security for Better Auth endpoints (CORS, session management)
+- Validate Phase 2 UI public exposure security (XSS, CSRF)
+- Ensure FERPA compliance for Louisiana educator data
+- Perform Semgrep security scans
+- Validate platform-agnostic security (no vendor lock-in)
+- Monitor community features (innovations, testimonials) for vulnerabilities
+
+**Primary Tools:** Semgrep MCP, Convex MCP, Playwright MCP, Firecrawl MCP  
+**Quality Standards:**
+- Zero critical vulnerabilities
+- FERPA compliance: 100%
+- Secure-by-default configurations
+- Continuous monitoring via Semgrep scans
+
+### Activating Agent Roles
+
+When working on specific aspects of the project, activate the appropriate agent by using their role tag or by explicitly describing the role you want to assume. The agents are designed to work together seamlessly in multi-agent workflows.
 
 ### MCP Tools Available
 
@@ -91,38 +171,38 @@ As a Louisiana educator, I want to browse and search AI frameworks by subject an
 ## Multi-Agent Workflows
 
 ### Feature Development Workflow
-1. **Product Agent** creates user story and acceptance criteria
-2. **Developer Agent** implements technical solution
-3. **QA Agent** creates test cases and validates implementation
-4. **Security Agent** reviews for vulnerabilities and FERPA compliance
+1. **@product** creates user story and acceptance criteria
+2. **@developer** implements technical solution
+3. **@qa** creates test cases and validates implementation
+4. **@security** reviews for vulnerabilities and FERPA compliance
 
 ### Bug Fix Workflow
-1. **QA Agent** reports bug with reproduction steps
-2. **Developer Agent** implements fix
-3. **Security Agent** validates fix doesn't introduce vulnerabilities
-4. **QA Agent** validates fix and regression testing
+1. **@qa** reports bug with reproduction steps
+2. **@developer** implements fix
+3. **@security** validates fix doesn't introduce vulnerabilities
+4. **@qa** validates fix and regression testing
 
 ### Architecture Changes Workflow
-1. **Developer Agent** designs solution and creates ADR
-2. **Developer Agent** implements architecture
-3. **Security Agent** reviews security implications
-4. **QA Agent** validates architecture changes
+1. **@developer** designs solution and creates ADR
+2. **@developer** implements architecture
+3. **@security** reviews security implications
+4. **@qa** validates architecture changes
 
 ## Agent Handoff Checklists
 
-### Product → Developer
+### @product → @developer
 - [ ] User story with clear acceptance criteria
 - [ ] Priority level (P0/P1/P2) assigned
 - [ ] Louisiana educator context included
 - [ ] Platform-agnostic requirements specified
 
-### Developer → QA
+### @developer → @qa
 - [ ] Implementation complete and tested locally
 - [ ] Code follows Pelican AI standards
 - [ ] Error handling implemented
 - [ ] Accessibility considerations addressed
 
-### QA → Security
+### @qa → @security
 - [ ] Test cases pass
 - [ ] No critical bugs identified
 - [ ] User flows validated

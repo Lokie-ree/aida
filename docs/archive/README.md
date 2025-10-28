@@ -2,44 +2,48 @@
 
 **Purpose:** This directory contains historical documentation that is no longer actively maintained but preserved for reference.
 
+**Current Status:** Phase 2 Complete (October 26, 2025) - Beta Launch Ready (30 days until launch)
+
+**Recent Changes (November 2025):**
+- Removed test data cleanup protocol (superseded by deployment-based separation)
+- Consolidated agent documentation into AGENT.md
+- Updated testing strategy to use Dev/Production deployment separation
+
 ---
 
 ## Archive Structure
 
 ### `/milestones/`
-Completed milestone documentation that represents historical achievements:
-- `MILESTONE-INFRASTRUCTURE-STABLE.md` - Infrastructure stabilization milestone
-- `MILESTONE-PHASE2-TESTING.md` - Phase 2 testing milestone
+Completed milestone documentation representing historical achievements:
+- `MILESTONE-INFRASTRUCTURE-STABLE.md` - Infrastructure stabilization (Oct 17, 2025) - **Superseded by Phase 2 completion**
+- `MILESTONE-PHASE2-TESTING.md` - Phase 2 testing milestone (Oct 19, 2025) - **Superseded by Phase 2 completion**
+- **Note:** These milestones documented progress toward Phase 2. Phase 2 is now complete (Oct 26, 2025). See current status in AGENT.md.
 
 ### `/reports/`
 Historical reports and analysis documents:
 - `TESTING-PROTOCOL-SAFETY-FIXES.md` - Testing protocol safety fixes report
+- **Historical Note:** These reports document the test data isolation approach. As of November 2025, we use separate Dev/Production deployments instead of test data flags (see ADR-010 for historical context).
 
 ### `/planning/`
-Historical planning documents (currently empty):
-- Reserved for old planning documents, roadmaps, and strategy documents
-
-### `README-PHASE1-LEGACY.md`
-Archived Phase 1 documentation:
-- Superseded by main README.md
-- Preserved for historical reference
-- Contains outdated Phase 1 status and broken links
+Historical planning documents:
+- Reserved for completed planning cycles and roadmap versions
 
 ---
 
 ## Archive Guidelines
 
 ### What Gets Archived
-- **Completed Milestones:** Documentation of finished phases or major achievements
+- **Completed Milestones:** Documentation of finished phases or major achievements (Phase 2 complete Oct 26, 2025)
 - **Historical Reports:** Analysis documents that were time-specific
 - **Superseded Plans:** Planning documents that have been replaced by newer versions
 - **Old Decision Records:** ADRs that have been superseded or are no longer relevant
 
-### What Stays Active
-- **Current ADRs:** Recent architectural decisions still relevant to current development
-- **Core Documentation:** ARCHITECTURE.md, CONTRIBUTING.md, README.md
-- **Reference Documentation:** Brand guidelines, product requirements, data recovery guides
-- **Operational Documentation:** Current testing protocols, deployment guides
+### What Stays Active (Current Phase: Pre-Beta Launch)
+- **Current ADRs:** Recent architectural decisions still relevant to current development (see `docs/decisions/`)
+- **Core Documentation:** ARCHITECTURE.md, CONTRIBUTING.md, AGENT.md, README.md
+- **Product Requirements:** PRODUCT_REQUIREMENTS_DOCUMENT.md (Version 2.0, Phase 2 complete)
+- **Testing Protocol:** TESTING_PROTOCOL.md (E2E testing protocol for beta launch)
+- **Reference Documentation:** Brand guidelines, deployment guides
 
 ### Archive Maintenance
 - **Read-Only:** Archived documents should not be modified
@@ -63,5 +67,8 @@ For current project information, see:
 
 ---
 
-**Last Updated:** October 20, 2025  
+**Last Updated:** November 2025  
+**Current Platform Status:** Phase 2 Complete (Oct 26, 2025), Pre-Beta Launch  
 **Archive Policy:** Documents archived when superseded or completed, preserved for historical reference
+
+**Note:** Documents from October 2025 documented Phase 2 development progress. Phase 2 MVP is now complete. For current status, see AGENT.md and updated PRODUCT_REQUIREMENTS_DOCUMENT.md (Version 2.0).

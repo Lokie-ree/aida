@@ -22,6 +22,17 @@ const applicationTables = {
    * Flow: User submits form → betaSignup created with "pending" status
    * → Admin approves → User account created → Status becomes "approved"
    * 
+   * @returns {Object} BetaSignup record with:
+   *  - _id: string (Convex ID)
+   *  - email: string
+   *  - name?: string
+   *  - school?: string
+   *  - subject?: string
+   *  - status: "pending" | "approved" | "rejected"
+   *  - signupDate: number (Unix timestamp)
+   *  - betaProgramId: string
+   *  - notes?: string
+   * 
    * @see ADR-004 for Better Auth migration decision
    * @see betaSignup.ts for mutation functions
    */
@@ -38,7 +49,6 @@ const applicationTables = {
     signupDate: v.number(), // Unix timestamp
     betaProgramId: v.string(), // Links to betaProgram entry
     notes: v.optional(v.string()), // Admin notes for approval decisions
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_email", ["email"])
     .index("by_status", ["status"])
     .index("by_signup_date", ["signupDate"]),
@@ -48,6 +58,16 @@ const applicationTables = {
    * 
    * Extends Better Auth user records with Louisiana educator-specific information.
    * Used for personalization, analytics, and Louisiana standards alignment.
+   * 
+   * @returns {Object} UserProfile record with:
+   *  - _id: string (Convex ID)
+   *  - userId: string (Better Auth user ID - legacy)
+   *  - authId?: string (Better Auth user ID - new pattern)
+   *  - school?: string
+   *  - subject?: string
+   *  - gradeLevel?: string
+   *  - district?: string
+   *  - role?: "teacher" | "admin" | "coach"
    * 
    * @see ADR-004 for Better Auth integration details
    * @see userProfiles.ts for mutation functions
@@ -64,7 +84,6 @@ const applicationTables = {
       v.literal("admin"),    // School administrator
       v.literal("coach")     // Instructional coach
     )),
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_user", ["userId"]).index("authId", ["authId"]),
 
   // ============================================
@@ -81,6 +100,30 @@ const applicationTables = {
    * 
    * USER-003: Framework Library Access
    * Educators can browse, search, and use frameworks to save time on AI prompt writing.
+   * 
+   * @returns {Object} Framework record with:
+   *  - _id: Id<"frameworks">
+   *  - frameworkId: string
+   *  - title: string
+   *  - module: "ai-basics-hub" | "instructional-expert-hub"
+   *  - category: string
+   *  - tags: string[]
+   *  - challenge: string
+   *  - solution: string
+   *  - samplePrompt: string
+   *  - ethicalGuardrail: string
+   *  - tipsAndVariations?: string
+   *  - timeEstimate: number
+   *  - difficultyLevel: "beginner" | "intermediate" | "advanced"
+   *  - platformCompatibility: string[]
+   *  - louisianaStandards?: string[]
+   *  - lerDomains?: string[]
+   *  - status: "draft" | "beta" | "published"
+   *  - createdBy: string
+   *  - publishedAt?: number
+   *  - usageCount: number
+   *  - averageRating?: number
+   *  - averageTimeSaved?: number
    * 
    * @see frameworks.ts for CRUD operations (80+ functions implemented)
    * @see seedFrameworks.ts for initial data population
@@ -118,7 +161,6 @@ const applicationTables = {
     usageCount: v.number(), // Number of times used
     averageRating: v.optional(v.number()), // User rating (1-5)
     averageTimeSaved: v.optional(v.number()), // Average time saved per use
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_module", ["module"])
     .index("by_category", ["category"])
     .index("by_framework_id", ["frameworkId"])
@@ -153,7 +195,6 @@ const applicationTables = {
     timeSaved: v.optional(v.number()), // Minutes saved (user's estimate)
     comment: v.optional(v.string()), // User feedback or notes
     timestamp: v.number(), // When the action occurred
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_framework", ["frameworkId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
@@ -184,7 +225,6 @@ const applicationTables = {
     approvedAt: v.optional(v.number()), // Approval timestamp
     featured: v.boolean(), // Whether this is a featured testimonial
     displayOrder: v.optional(v.number()), // Order for display
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_status", ["status"])
     .index("by_featured", ["featured"]),
@@ -204,7 +244,6 @@ const applicationTables = {
     officeHoursAttended: v.number(),
     lastWeeklyPromptOpened: v.optional(v.number()),
     weeklyEngagementCount: v.number(),
-    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_status", ["status"]),
 
@@ -222,7 +261,6 @@ const applicationTables = {
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
-    isTestData: v.optional(v.boolean()),
   }).index("by_user", ["userId"])
     .index("by_created_at", ["createdAt"])
     .searchIndex("search_innovations", {
@@ -238,7 +276,6 @@ const applicationTables = {
     rating: v.optional(v.number()),
     comment: v.optional(v.string()),
     timestamp: v.number(),
-    isTestData: v.optional(v.boolean()),
   }).index("by_innovation", ["innovationId"])
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
@@ -259,7 +296,6 @@ const applicationTables = {
     activity: v.string(), // Description of what was done
     category: v.optional(v.string()), // Optional categorization (e.g., "Lesson Planning", "Assessment")
     timestamp: v.number(), // When the time was saved
-    isTestData: v.optional(v.boolean()), // Flag for test data isolation
   }).index("by_user", ["userId"])
     .index("by_framework", ["frameworkId"])
     .index("by_timestamp", ["timestamp"])
