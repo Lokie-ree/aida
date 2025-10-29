@@ -83,7 +83,6 @@ export const signupForBeta = mutation({
       status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
       betaProgramId: "beta-v1",
-      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     // Schedule user account creation with temporary password

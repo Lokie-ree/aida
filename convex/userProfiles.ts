@@ -110,7 +110,6 @@ export const createUserProfile = mutation({
       gradeLevel: args.gradeLevel,
       district: args.district,
       role: args.role || "teacher",
-      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     return profileId;
@@ -517,7 +516,6 @@ export const createUserProfileForUserId = mutation({
       gradeLevel: args.gradeLevel,
       district: args.district,
       role: args.role || "teacher",
-      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     return profileId;

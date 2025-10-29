@@ -427,7 +427,6 @@ export const createBetaProgramForUserId = mutation({
       innovationsShared: 0,
       officeHoursAttended: 0,
       weeklyEngagementCount: 0,
-      isTestData: args.isTestData || false, // NEW: Set test data flag
     });
 
     return betaProgramId;
