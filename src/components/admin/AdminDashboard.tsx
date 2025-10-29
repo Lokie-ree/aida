@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { 
   Users, 
@@ -19,6 +20,7 @@ import {
   UserPlus
 } from "lucide-react";
 import { LoadingSpinner } from "../shared/LoadingStates";
+import { AdminContentModeration } from "./AdminContentModeration";
 
 export function AdminDashboard() {
   const [selectedSignup, setSelectedSignup] = useState<string | null>(null);
@@ -32,6 +34,7 @@ export function AdminDashboard() {
   const pendingSignups = useQuery(api.betaSignup.getPendingSignups, {});
   
   const approveBetaSignup = useMutation(api.betaSignup.approveBetaSignup);
+  const updateBetaUserStatus = useMutation(api.admin.updateBetaUserStatus);
 
   const generateSecurePassword = () => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
@@ -97,6 +100,30 @@ export function AdminDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Tabs for different admin functions */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="beta-signups">
+              Beta Signups
+              {pendingSignups && pendingSignups.length > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {pendingSignups.length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="content-moderation">
+              Content Moderation
+              {stats.pendingTestimonials > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {stats.pendingTestimonials}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="beta-users">Beta Users</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
@@ -152,89 +179,20 @@ export function AdminDashboard() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-orange-500" />
-                Pending Moderation
-              </CardTitle>
-              <CardDescription>
-                Content waiting for approval
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Testimonials</span>
-                  <Badge variant="outline">{stats.pendingTestimonials}</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  Review Testimonials
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          </TabsContent>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-500" />
-                Beta Management
-              </CardTitle>
-              <CardDescription>
-                Manage beta users and invitations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Active Users</span>
-                  <Badge variant="outline">{stats.activeBetaUsers}</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  Manage Users
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-green-500" />
-                Platform Health
-              </CardTitle>
-              <CardDescription>
-                Monitor engagement and performance
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Avg Engagement</span>
-                  <Badge variant="outline">{stats.averageEngagement}</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  View Analytics
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Beta Signup Management */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5 text-blue-500" />
-              Beta Signup Management
-            </CardTitle>
-            <CardDescription>
-              Review and approve pending beta signups
-            </CardDescription>
-          </CardHeader>
+          <TabsContent value="beta-signups">
+            {/* Beta Signup Management */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UserPlus className="h-5 w-5 text-blue-500" />
+                  Beta Signup Management
+                </CardTitle>
+                <CardDescription>
+                  Review and approve pending beta signups
+                </CardDescription>
+              </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {pendingSignups && pendingSignups.length > 0 ? (
@@ -275,10 +233,10 @@ export function AdminDashboard() {
               )}
             </div>
           </CardContent>
-        </Card>
+            </Card>
 
-        {/* Approval Modal */}
-        {selectedSignup && (
+            {/* Approval Modal */}
+            {selectedSignup && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <Card className="w-full max-w-md mx-4">
               <CardHeader>
@@ -337,68 +295,73 @@ export function AdminDashboard() {
             </Card>
           </div>
         )}
+          </TabsContent>
 
-        {/* Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Beta Users</CardTitle>
-              <CardDescription>
-                Latest beta program participants
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {betaUsers.slice(0, 5).map((user) => (
-                  <div key={user._id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{user.userName || "Unknown"}</p>
-                      <p className="text-sm text-muted-foreground">{user.userEmail}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge 
-                        variant={user.status === "active" ? "default" : user.status === "completed" ? "secondary" : "outline"}
-                      >
-                        {user.status}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {user.frameworksTried} frameworks
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="content-moderation">
+            <AdminContentModeration testimonials={testimonials} innovations={innovations} />
+          </TabsContent>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Testimonials</CardTitle>
-              <CardDescription>
-                Latest user feedback submissions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {testimonials.slice(0, 5).map((testimonial) => (
-                  <div key={testimonial._id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{testimonial.userName}</p>
-                      <p className="text-xs text-muted-foreground truncate">{testimonial.quote}</p>
+          <TabsContent value="beta-users">
+            {/* Beta Users Management */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-blue-500" />
+                  All Beta Users
+                </CardTitle>
+                <CardDescription>
+                  Manage beta program participants and their status
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {betaUsers.map((user) => (
+                    <div key={user._id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium">{user.userName || "Unknown"}</span>
+                          <Badge 
+                            variant={user.status === "active" ? "default" : user.status === "completed" ? "secondary" : "outline"}
+                          >
+                            {user.status}
+                          </Badge>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.userEmail} • {user.userSchool}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {user.frameworksTried} frameworks tried • {user.totalTimeSaved} min saved
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={user.status}
+                          onChange={(e) => {
+                            const newStatus = e.target.value as "invited" | "active" | "completed";
+                            updateBetaUserStatus({
+                              betaUserId: user._id,
+                              status: newStatus
+                            }).then(() => {
+                              toast.success(`User status updated to ${newStatus}`);
+                            }).catch((error) => {
+                              console.error("Error updating user status:", error);
+                              toast.error("Failed to update user status");
+                            });
+                          }}
+                          className="px-3 py-1 border rounded-md text-sm"
+                        >
+                          <option value="invited">Invited</option>
+                          <option value="active">Active</option>
+                          <option value="completed">Completed</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge 
-                        variant={testimonial.status === "approved" ? "default" : testimonial.status === "featured" ? "secondary" : "outline"}
-                      >
-                        {testimonial.status}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

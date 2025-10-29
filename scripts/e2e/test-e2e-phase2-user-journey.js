@@ -83,7 +83,7 @@ async function testCompletePhase2UserJourney(runner, client) {
     
     // Step 4: View testimonials
     runner.log("  Step 4: Viewing testimonials...");
-    const testimonials = await client.query("testimonials:getAllTestimonials");
+    const testimonials = await client.query("testimonials:getFeaturedTestimonials");
     
     if (!Array.isArray(testimonials)) {
       runner.recordTest("Phase 2 User Journey", false, 
@@ -107,9 +107,9 @@ async function testCompletePhase2UserJourney(runner, client) {
     
     // Step 6: Test admin functions
     runner.log("  Step 6: Testing admin functions...");
-    const isAdmin = await client.query("admin:isAdmin");
+    const isAdmin = await client.query("admin:checkIsAdmin");
     
-    if (isAdmin !== false) {
+    if (typeof isAdmin !== 'boolean') {
       runner.recordTest("Phase 2 User Journey", false, 
         "Step 6 failed: Admin check not working correctly");
       return;

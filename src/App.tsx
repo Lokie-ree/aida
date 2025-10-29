@@ -9,6 +9,7 @@ import { BetaOnboarding } from "./components/dashboard/BetaOnboarding";
 import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { authClient } from "./lib/auth-client";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import { SmartRedirect } from "./components/routes/SmartRedirect";
 import DashboardRoute from "./components/routes/DashboardRoute";
 import { FrameworkLibrary } from "./components/framework/FrameworkLibrary";
 import { InnovationList } from "./components/community/InnovationList";
@@ -51,7 +52,7 @@ export default function App() {
 
               <main id="main-content" className="flex-1" role="main">
                 <Routes>
-                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/" element={<SmartRedirect />} />
                   <Route 
                     path="/dashboard" 
                     element={
