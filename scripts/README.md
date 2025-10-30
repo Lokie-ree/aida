@@ -2,6 +2,8 @@
 
 **Phase 1 MVP + Phase 2 Features Testing:** Comprehensive test coverage for beta signup, authentication, email automation, framework library, and community features.
 
+> **🔄 Migration Notice (WEB-44):** We're migrating from JavaScript tests to TypeScript tests using `convex-test` for improved type safety and performance. See **[TESTING_MIGRATION.md](../docs/TESTING_MIGRATION.md)** for the complete migration guide. Legacy tests will remain available via `pnpm test:legacy` during the transition period.
+
 ## 🚀 Quick Start
 
 ```bash
