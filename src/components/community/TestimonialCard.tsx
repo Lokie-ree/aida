@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Quote, Clock, MapPin, GraduationCap } from "lucide-react";
@@ -25,13 +26,17 @@ export function TestimonialCard({
   const isFeatured = variant === "featured" || testimonial.featured;
   
   return (
-    <Card className={cn(
-      "group hover:shadow-lg transition-all duration-200 border-2",
-      isFeatured 
-        ? "border-primary/30 bg-gradient-to-br from-primary/5 to-secondary/5" 
-        : "hover:border-primary/20"
-    )}>
-      <CardContent className="p-6">
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className={cn(
+        "group hover:shadow-lg transition-all duration-300 border-2",
+        isFeatured 
+          ? "border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 shadow-md" 
+          : "hover:border-primary/30 bg-gradient-to-br from-background to-primary/5"
+      )}>
+        <CardContent className="p-6">
         {/* Quote Icon */}
         <div className="flex items-start gap-3 mb-4">
           <div className={cn(
@@ -96,5 +101,6 @@ export function TestimonialCard({
         </div>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }

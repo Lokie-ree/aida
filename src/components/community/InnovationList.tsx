@@ -4,7 +4,6 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -119,32 +118,20 @@ export function InnovationList() {
     // The list will automatically refresh due to Convex reactivity
   };
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  };
-
-  const staggerChildren = {
-    animate: {
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
   return (
-    <div className={`min-h-screen ${spacing.sectionGap}`}>
+    <div className={`min-h-screen bg-background ${spacing.sectionGap}`}>
       {/* Header */}
-      <motion.div 
-        initial="initial"
-        animate="animate"
-        variants={fadeInUp}
-        className="border-b border-border bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      >
-        <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="border-b border-border bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className={`max-w-7xl mx-auto ${spacing.container} py-8`}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          >
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-heading">Community Innovations</h1>
-              <p className="text-muted-foreground mt-1 text-sm sm:text-base">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground font-heading">Community Innovations</h1>
+              <p className="text-muted-foreground mt-2 text-base">
                 Discover creative AI use cases shared by Louisiana educators
               </p>
             </div>
@@ -165,9 +152,11 @@ export function InnovationList() {
                 Share Innovation
               </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
+
+      <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
 
       {/* Innovation Form Modal */}
       {showForm && (
@@ -193,63 +182,62 @@ export function InnovationList() {
         </div>
       )}
 
-      <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
-        {/* Filters and Search */}
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={fadeInUp}
-        >
-          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
-            <CardContent className={spacing.card}>
-              <div className={spacing.sectionGapSmall}>
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
-                  <Input
-                    placeholder="Search innovations..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-11 border-primary/20 focus:border-primary focus:ring-primary/20"
-                  />
-                </div>
+      {/* Filters and Search */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-sm">
+          <CardContent className={spacing.card}>
+            <div className="space-y-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search innovations..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
 
-                {/* Filter Tabs */}
-                <ButtonGroup>
-                  {[
-                    { id: "all", label: "All", icon: Lightbulb },
-                    { id: "recent", label: "Recent", icon: Clock },
-                    { id: "popular", label: "Popular", icon: TrendingUp },
-                    { id: "my-innovations", label: "My Innovations", icon: Users },
-                  ].map(({ id, label, icon: Icon }) => (
-                    <Button
-                      key={id}
-                      variant={filter === id ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFilter(id as FilterType)}
-                      className="flex items-center gap-1"
-                    >
-                      <Icon className="h-4 w-4" />
-                      {label}
-                    </Button>
-                  ))}
-                </ButtonGroup>
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: "all", label: "All", icon: Lightbulb },
+                { id: "recent", label: "Recent", icon: Clock },
+                { id: "popular", label: "Popular", icon: TrendingUp },
+                { id: "my-innovations", label: "My Innovations", icon: Users },
+              ].map(({ id, label, icon: Icon }) => (
+                <Button
+                  key={id}
+                  variant={filter === id ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFilter(id as FilterType)}
+                  className="flex items-center gap-1"
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                </Button>
+              ))}
+            </div>
 
-                {/* Sort and Tag Filters */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">Sort by:</span>
-                    <select
-                      value={sort}
-                      onChange={(e) => setSort(e.target.value as SortType)}
-                      className="px-3 py-2 h-9 border border-input rounded-md text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                    >
-                      <option value="newest">Newest</option>
-                      <option value="oldest">Oldest</option>
-                      <option value="most-liked">Most Liked</option>
-                      <option value="most-tried">Most Tried</option>
-                    </select>
-                  </div>
+            {/* Sort and Tag Filters */}
+            <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Sort by:</span>
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value as SortType)}
+                  className="px-3 py-1 border rounded-md text-sm"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="most-liked">Most Liked</option>
+                  <option value="most-tried">Most Tried</option>
+                </select>
+              </div>
 
               {allTags.length > 0 && (
                 <div className="flex items-center gap-2">
@@ -263,14 +251,14 @@ export function InnovationList() {
                       All
                     </Button>
                     {allTags.slice(0, 8).map((tag) => (
-                      <Badge
+                      <Button
                         key={tag}
-                        variant={selectedTag === tag ? "default" : "secondary"}
-                        className="cursor-pointer hover:bg-primary/10 transition-colors"
+                        variant={selectedTag === tag ? "default" : "outline"}
+                        size="sm"
                         onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
                       >
                         {tag}
-                      </Badge>
+                      </Button>
                     ))}
                     {allTags.length > 8 && (
                       <Badge variant="secondary" className="text-xs">
@@ -280,77 +268,86 @@ export function InnovationList() {
                   </div>
                 </div>
               )}
-                  </div>
             </div>
-          </CardContent>
-        </Card>
-        </motion.div>
+          </div>
+        </CardContent>
+      </Card>
+      </motion.div>
 
-        {/* Results Count */}
-        <motion.div 
-          variants={fadeInUp}
-          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
-        >
-          <p className="text-sm text-muted-foreground font-medium">
-            {filteredInnovations.length} innovation{filteredInnovations.length !== 1 ? 's' : ''} found
-          </p>
-          {(searchQuery || selectedTag) && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedTag(null);
-              }}
-            >
-              Clear Filters
-            </Button>
-          )}
-        </motion.div>
-
-        {/* Innovations List */}
-        {filteredInnovations.length === 0 ? (
-          <motion.div variants={fadeInUp}>
-            <Card className="border-primary/20">
-              <CardContent className={spacing.card}>
-                <EmptyStateNoResults
-                  title="No innovations found"
-                  description={
-                    searchQuery || selectedTag
-                      ? "Try adjusting your search terms or filters"
-                      : "Be the first to share an innovation with the community!"
-                  }
-                  action={
-                    !searchQuery && !selectedTag ? (
-                      <Button onClick={() => setShowForm(true)}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Share Your First Innovation
-                      </Button>
-                    ) : undefined
-                  }
-                />
-              </CardContent>
-            </Card>
-          </motion.div>
-        ) : (
-          <motion.div 
-            variants={staggerChildren}
-            className={`grid grid-cols-1 lg:grid-cols-2 ${spacing.gridGap}`}
+      {/* Results Count */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex items-center justify-between"
+      >
+        <p className="text-sm text-muted-foreground">
+          {filteredInnovations.length} innovation{filteredInnovations.length !== 1 ? 's' : ''} found
+        </p>
+        {(searchQuery || selectedTag) && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedTag(null);
+            }}
+            className="h-9"
           >
-            {filteredInnovations.map((innovation, index) => (
-              <motion.div
-                key={innovation._id}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <InnovationCard
-                  innovation={innovation}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+            Clear Filters
+          </Button>
         )}
+      </motion.div>
+
+      {/* Innovations List */}
+      {filteredInnovations.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <CardContent className={spacing.card}>
+              <EmptyStateNoResults
+                title="No innovations found"
+                description={
+                  searchQuery || selectedTag
+                    ? "Try adjusting your search terms or filters"
+                    : "Be the first to share an innovation with the community!"
+                }
+                action={
+                  !searchQuery && !selectedTag ? (
+                    <Button onClick={() => setShowForm(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Share Your First Innovation
+                    </Button>
+                  ) : undefined
+                }
+              />
+            </CardContent>
+          </Card>
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className={`grid grid-cols-1 lg:grid-cols-2 ${spacing.gridGap}`}
+        >
+          {filteredInnovations.map((innovation, index) => (
+            <motion.div
+              key={innovation._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+            >
+              <InnovationCard
+                innovation={innovation}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
       </div>
     </div>
   );

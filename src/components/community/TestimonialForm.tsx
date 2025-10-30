@@ -72,13 +72,13 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
   };
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-xl">
           <MessageSquare className="h-5 w-5 text-primary" />
           Share Your Success Story
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-base">
           Help other Louisiana educators see the real impact of Pelican AI
         </CardDescription>
       </CardHeader>
