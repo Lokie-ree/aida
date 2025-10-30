@@ -1,0 +1,19 @@
+# Test utilities - moved to tests/ directory to avoid Convex deployment
+# These files are not Convex modules
+
+# Test files - already excluded by default but explicit for clarity
+convex/**/*.test.ts
+
+# Coverage reports
+coverage/
+
+# Build artifacts
+dist/
+node_modules/
+
+# Test utilities directory (outside convex/)
+tests/
+
+# Scripts directory
+scripts/
+

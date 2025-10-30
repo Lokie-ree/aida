@@ -10,6 +10,11 @@
     "dev:backend": "convex dev",
     "build": "vite build",
     "lint": "tsc -p convex -noEmit --pretty false && tsc -p . -noEmit --pretty false && convex dev --once && vite build",
+    "test": "vitest",
+    "test:once": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:beta-auth": "node scripts/test-runner.js",
     "test:unit": "node scripts/test-runner.js --suite unit",
     "test:integration": "node scripts/test-runner.js --suite integration",
@@ -18,6 +23,8 @@
     "test:diagnostic": "node scripts/test-runner.js --suite diagnostic",
     "test:cleanup": "node scripts/test-runner.js --cleanup",
     "test:phase2": "node scripts/test-runner.js --suite phase2",
+    "test:legacy": "node scripts/test-runner.js",
+    "test:legacy:unit": "node scripts/test-runner.js --suite unit",
     "test:unit:beta-signup": "node scripts/unit/test-unit-beta-signup.js",
     "test:unit:user-profiles": "node scripts/unit/test-unit-user-profiles.js",
     "test:unit:beta-program": "node scripts/unit/test-unit-beta-program.js",
@@ -84,6 +91,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@edge-runtime/vm": "^5.0.0",
     "@eslint/js": "^9.37.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@tailwindcss/vite": "^4.1.14",
@@ -92,6 +100,8 @@
     "@types/react-dom": "^19.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^4.0.5",
+    "convex-test": "^0.0.38",
     "dotenv": "^16.6.1",
     "eslint": "^9.37.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -105,6 +115,7 @@
     "terser": "^5.44.0",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.46.0",
-    "vite": "^6.3.6"
+    "vite": "^6.3.6",
+    "vitest": "^4.0.5"
   }
 }

@@ -255,17 +255,55 @@ git commit -m "fix(WEB-49): resolve header z-index issue (@developer.mdc)"
 - **Diagnostic Tests:** Environment and database state
 
 ### Running Tests
-```bash
-# Run all tests
-pnpm test:beta-auth
 
-# Run specific test types
-pnpm test:unit           # Unit tests only
-pnpm test:integration    # Integration tests only
-pnpm test:e2e            # End-to-end tests only
+**New TypeScript Test Suite (Recommended):**
+```bash
+# Run all TypeScript tests
+pnpm test                 # Watch mode
+pnpm test:once           # Run once (CI-friendly)
+pnpm test:watch          # Watch mode with hot reload
+pnpm test:coverage       # Generate coverage report
+pnpm test:debug          # Debug mode with breakpoints
+
+# Run specific test files
+pnpm test:once frameworks       # Test frameworks only
+pnpm test:once auth betaSignup # Test multiple files
 ```
 
-**Note:** See **[scripts/README.md](../scripts/README.md)** for current test coverage and detailed testing documentation.
+**Legacy JavaScript Tests (During Migration):**
+```bash
+# Run legacy JavaScript tests
+pnpm test:legacy          # All legacy tests
+pnpm test:legacy:unit    # Legacy unit tests only
+```
+
+**Note:** 
+- **New tests use TypeScript + Vitest** - See **[TESTING_MIGRATION.md](../docs/TESTING_MIGRATION.md)** for complete migration guide
+- **Legacy tests remain available** - See **[scripts/README.md](../scripts/README.md)** for legacy test documentation
+
+#### Testing patterns and notes
+- Explicit module discovery for convex-test:
+  ```ts
+  // @ts-expect-error - Vite feature not known to TS
+  const modules = import.meta.glob("./**/*.ts", { eager: false });
+  const t = convexTest(schema, modules);
+  ```
+- Better Auth in tests (bridge via mock):
+  ```ts
+  vi.mock("./auth", () => ({
+    authComponent: {
+      getAuthUser: async (ctx: any) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) throw new Error("Unauthenticated");
+        return { _id: identity.subject, email: identity.tokenIdentifier ?? "u@example.com", name: identity.name ?? "User" } as any;
+      },
+    },
+  }));
+  // Use t.withIdentity({ name, email }) to simulate users
+  ```
+- Scheduled functions: use `vi.useFakeTimers()` + `t.finishAllScheduledFunctions()` to await writes.
+- Deployment safety: `.convexignore` excludes `convex/**/*.test.ts`, `tests/`, `scripts/`, `coverage/`.
+- Coverage: `vitest.config.mts` excludes non-runtime/config modules (e.g., `convex/router.ts`, `convex/http.ts`, `convex/auth.ts`, etc.).
 
 ### Test Data Management
 - **Deployment Separation:** Tests run against Dev deployment (`kindly-setter.convex.cloud`)
@@ -275,36 +313,51 @@ pnpm test:e2e            # End-to-end tests only
 
 ### Writing Tests
 
-**Test file naming:**
+**New TypeScript Test Structure (Recommended):**
+
+Test files are located in `convex/[feature].test.ts`:
+
+```typescript
+import { convexTest } from "convex-test";
+import { expect, test, describe, beforeEach } from "vitest";
+import { api } from "./_generated/api";
+import schema from "./schema";
+import { createTestFramework } from "../../tests/test-helpers";
+
+// Explicitly provide modules for convex-test
+// @ts-expect-error - import.meta.glob is a Vite feature
+const modules = import.meta.glob("./**/*.ts", { eager: false });
+
+describe("Feature Name", () => {
+  let t: ReturnType<typeof convexTest>;
+
+  beforeEach(async () => {
+    t = convexTest(schema, modules);
+    // Use test helpers for data setup
+    await createTestFramework(t);
+  });
+
+  test("should do something", async () => {
+    // Arrange
+    const frameworks = await t.query(api.frameworks.getAllFrameworks, {});
+    
+    // Assert
+    expect(frameworks).toBeInstanceOf(Array);
+    expect(frameworks.length).toBeGreaterThan(0);
+  });
+});
+```
+
+**Legacy JavaScript Test Structure:**
+
+Legacy tests remain in `scripts/` directory:
 ```
 scripts/unit/test-unit-[feature].js
 scripts/integration/test-integration-[flow].js
 scripts/e2e/test-e2e-[journey].js
 ```
 
-**Test structure:**
-```javascript
-async function testFeatureName(runner, client) {
-  runner.log("🧪 Testing feature name...");
-  
-  try {
-    // Arrange: Set up test data
-    const testData = { ... };
-    
-    // Act: Perform action
-    const result = await client.mutation("feature:action", testData);
-    
-    // Assert: Verify results
-    if (result.success) {
-      runner.recordTest("Feature Name", true, "Success message");
-    } else {
-      runner.recordTest("Feature Name", false, "Failure message");
-    }
-  } catch (error) {
-    runner.recordTest("Feature Name", false, error.message);
-  }
-}
-```
+See **[TESTING_MIGRATION.md](../docs/TESTING_MIGRATION.md)** for migration guide and **[test-helpers.ts](../tests/test-helpers.ts)** for reusable utilities.
 
 ### Test Coverage Goals
 - **Unit Tests:** 90%+ coverage
@@ -433,72 +486,22 @@ src/components/
 
 ---
 
-## 🏗️ Development Setup
+## 🏗️ Development Setup (Concise)
 
-### Prerequisites
+See archived details at `docs/archive/CONTRIBUTING-dev-setup-2025-10-30.md`.
 
+Quick start:
 ```bash
-Node.js 18+
-pnpm (recommended) or npm
-Convex account (free tier works)
-Git
-```
-
-### Initial Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/Lokie-ree/aida.git
-cd aida
-
-# Install dependencies
 pnpm install
-
-# Set up environment variables
 cp .env.example .env.local
-# Edit .env.local with your credentials:
-# - VITE_CONVEX_URL (from Convex dashboard)
-# - BETTER_AUTH_SECRET (generate with: openssl rand -base64 32)
-# - RESEND_API_KEY (from Resend dashboard)
-
-# Start development servers
 pnpm dev
 ```
 
-### Environment Variables
-- **Convex:** `CONVEX_DEPLOYMENT` and `CONVEX_URL`
-- **Better Auth:** `BETTER_AUTH_SECRET` and `BETTER_AUTH_URL`
-- **Resend:** `RESEND_API_KEY`
-- **OpenAI:** `OPENAI_API_KEY` (Phase 2+)
-
-### Verify Setup
-
+Testing:
 ```bash
-# Run tests to ensure everything works
-pnpm test:unit
-
-# Check that you can access:
-# - Frontend: http://localhost:5173
-# - Convex Dashboard: npx convex dashboard
-```
-
-### Available Scripts
-
-```bash
-# Development
-pnpm dev                 # Start both frontend and backend
-pnpm dev:frontend        # Frontend only (Vite)
-pnpm dev:backend         # Backend only (Convex)
-
-# Building
-pnpm build               # Build for production
-pnpm lint                # Run TypeScript and build checks
-
-# Testing
-pnpm test:beta-auth      # Run all tests (72.7% success rate - auth endpoint issues)
-pnpm test:unit           # Unit tests only
-pnpm test:integration    # Integration tests only
-pnpm test:e2e            # End-to-end tests only
+pnpm test
+pnpm test:once <filter>
+pnpm test:coverage
 ```
 
 ---
@@ -715,7 +718,7 @@ node scripts/unit/test-unit-frameworks.js
 - [ ] Code follows TypeScript strict mode
 - [ ] All functions have validators (args + returns)
 - [ ] No PII in console logs (FERPA compliance)
-- [ ] Tests pass (`pnpm test:unit`)
+- [ ] Tests pass (`pnpm test:once`)
 - [ ] No linter errors (`pnpm lint`)
 - [ ] Commit message follows convention
 

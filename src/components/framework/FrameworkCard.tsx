@@ -66,7 +66,7 @@ export function FrameworkCard({
   // List variant layout
   if (variant === "list") {
     return (
-      <Card className="group hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20">
+      <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10">
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
             <div className="flex-1 min-w-0">
@@ -174,7 +174,7 @@ export function FrameworkCard({
 
   return (
     <Card className={cn(
-      "group hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20",
+      "group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10",
       variant === "expanded" && "h-full"
     )}>
       <CardHeader className="pb-3">

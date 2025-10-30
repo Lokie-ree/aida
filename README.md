@@ -37,16 +37,20 @@ pnpm dev
 
 **Available Scripts:**
 - `pnpm dev` - Start both frontend and backend
-- `pnpm test:beta-auth` - Run all tests
 - `pnpm build` - Build for production
+- Testing (TypeScript + Vitest + convex-test):
+  - `pnpm test` – run tests
+  - `pnpm test:once <filter>` – run subset once (e.g., `pnpm test:once frameworks`)
+  - `pnpm test:watch` – watch mode
+  - `pnpm test:coverage` – coverage report (HTML at `coverage/index.html`)
 
 ## 📊 Current Status
 
-**Phase:** Phase 2 UI Exposure (Backend implemented, UI not exposed to users)
+**Phase:** Phase 2 Complete → Beta Launch Ready
 
-**Test Coverage:** See **[Test Suite Documentation](scripts/README.md)** for complete testing results
+**Test Coverage:** ~88% statements/lines (`pnpm test:coverage` → open `coverage/index.html`)
 
-**Critical Issues:** 3 high-priority bugs identified (see [Linear Issues](https://linear.app/web-agency/team/web-agency/active))
+**Notes:** Tests run in-memory with convex-test; Better Auth is bridged in tests via a mock tied to `t.withIdentity()`. Scheduled functions are tested using `vi.useFakeTimers()` + `t.finishAllScheduledFunctions()`.
 
 ## 📚 Documentation
 
