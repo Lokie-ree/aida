@@ -85,17 +85,17 @@ export function Dashboard({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Alert className="mb-6 border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors">
-              <User className="h-4 w-4" />
+            <Alert className="mb-6 border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:border-primary/50">
+              <User className="h-4 w-4 text-primary" />
               <AlertDescription>
-                <div className="flex items-center justify-between">
-                  <span>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <span className="text-sm sm:text-base">
                     Complete your profile to get personalized recommendations and connect with other Louisiana educators.
                   </span>
                   <Button 
                     size="sm" 
-                    variant="outline" 
-                    className="ml-4"
+                    variant="default"
+                    className="sm:ml-4 bg-primary hover:bg-primary/90"
                     onClick={() => navigate('/profile')}
                   >
                     Complete Profile
@@ -124,14 +124,19 @@ export function Dashboard({
 
             {/* Time Savings Tracker */}
             <div className="flex-[1]">
-              <div className={`border border-muted rounded-lg ${spacing.card} h-full`}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className={`border border-muted rounded-lg ${spacing.card} h-full hover:shadow-lg transition-shadow duration-300`}
+              >
                 <TimeSavingsTracker
                   weeklyMinutes={weeklyMinutes}
                   monthlyMinutes={monthlyMinutes}
                   totalMinutes={totalMinutes}
                   goal={weeklyGoal}
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
 

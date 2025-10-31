@@ -263,6 +263,7 @@ const applicationTables = {
     createdAt: v.number(),
   }).index("by_user", ["userId"])
     .index("by_created_at", ["createdAt"])
+    .index("by_relatedFramework", ["relatedFramework"])
     .searchIndex("search_innovations", {
       searchField: "title",
       filterFields: ["tags", "school", "subject"],

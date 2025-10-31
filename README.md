@@ -63,7 +63,7 @@ pnpm dev
 - **[Product Requirements](docs/PRODUCT_REQUIREMENTS_DOCUMENT.md)** - Complete product specification
 - **[Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
 - **[Decision Records](docs/decisions/)** - Architectural decisions (ADRs)
-- **[Test Suite](scripts/README.md)** - Testing documentation and protocols
+- **[Testing Migration](docs/TESTING_MIGRATION.md)** - Testing documentation and migration guide
 
 ## 🤖 Agent System
 

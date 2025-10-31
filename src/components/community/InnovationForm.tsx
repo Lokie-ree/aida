@@ -135,13 +135,13 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   ];
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-xl">
           <Lightbulb className="h-5 w-5 text-primary" />
           Share Your Innovation
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-base">
           Help other Louisiana educators by sharing your creative AI use cases and tips
         </CardDescription>
       </CardHeader>

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,8 @@ interface FrameworkCardProps {
     averageRating?: number;
   };
   variant?: "compact" | "expanded" | "grid" | "list";
+  userSubject?: string; // User's teaching subject for personalization
+  subjectUsageCount?: number; // Usage count for this subject
   onView: () => void;
   onSave?: () => void;
   onUnsave?: () => void;
@@ -30,7 +33,9 @@ interface FrameworkCardProps {
 
 export function FrameworkCard({ 
   framework, 
-  variant = "compact", 
+  variant = "compact",
+  userSubject,
+  subjectUsageCount,
   onView, 
   onSave,
   onUnsave,
@@ -66,7 +71,7 @@ export function FrameworkCard({
   // List variant layout
   if (variant === "list") {
     return (
-      <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10">
+      <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5">
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
             <div className="flex-1 min-w-0">
@@ -95,6 +100,14 @@ export function FrameworkCard({
                     </>
                   )}
                 </div>
+                {userSubject && subjectUsageCount && subjectUsageCount > 0 && (
+                  <div className="mt-2">
+                    <Badge variant="secondary" className="text-xs">
+                      <Users className="h-3 w-3 mr-1" />
+                      {subjectUsageCount} {userSubject} educators
+                    </Badge>
+                  </div>
+                )}
               </div>
               
               <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
@@ -173,11 +186,15 @@ export function FrameworkCard({
   }
 
   return (
-    <Card className={cn(
-      "group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10",
-      variant === "expanded" && "h-full"
-    )}>
-      <CardHeader className="pb-3">
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className={cn(
+        "group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 h-full",
+        variant === "expanded" && "h-full"
+      )}>
+        <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2 mb-2">
           <Badge 
             variant="outline" 
@@ -208,6 +225,14 @@ export function FrameworkCard({
             </div>
           )}
         </div>
+        {userSubject && subjectUsageCount && subjectUsageCount > 0 && (
+          <div className="mb-2">
+            <Badge variant="secondary" className="text-xs">
+              <Users className="h-3 w-3 mr-1" />
+              {subjectUsageCount} {userSubject} educators
+            </Badge>
+          </div>
+        )}
 
         <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
           {framework.title}
@@ -288,5 +313,6 @@ export function FrameworkCard({
         </ButtonGroup>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }

@@ -4,7 +4,6 @@ import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { authClient } from '../../lib/auth-client';
 import { Dashboard } from '../dashboard/Dashboard';
-import { LoadingSpinner } from '../shared/LoadingStates';
 
 interface DashboardRouteProps {
   onShowOnboarding: () => void;
@@ -33,10 +32,31 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
           className="flex flex-col items-center gap-4"
         >
-          <LoadingSpinner size="lg" />
-          <p className="text-muted-foreground font-medium">Loading your dashboard...</p>
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ 
+              duration: 0.5,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+            className="relative"
+          >
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/20 border-t-primary"></div>
+            <div className="absolute inset-0 animate-ping rounded-full border-2 border-primary/30"></div>
+          </motion.div>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-muted-foreground font-medium"
+          >
+            Loading your dashboard...
+          </motion.p>
         </motion.div>
       </div>
     );

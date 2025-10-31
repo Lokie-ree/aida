@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useMutation } from "convex/react";
+import { motion } from "framer-motion";
+import { useQuery, useMutation } from "convex/react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,7 +14,8 @@ import {
   User, 
   School, 
   BookOpen,
-  CheckCircle
+  CheckCircle,
+  Link as LinkIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -30,6 +33,7 @@ interface InnovationCardProps {
     likes: number;
     triesCount: number;
     createdAt: number;
+    relatedFramework?: string; // Framework ID
   };
   onLike?: () => void;
   onTried?: () => void;
@@ -47,6 +51,13 @@ export function InnovationCard({
   variant = "default"
 }: InnovationCardProps) {
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
+  
+  // Get framework details if relatedFramework exists
+  const framework = useQuery(
+    api.frameworks.getFrameworkByConvexId,
+    innovation.relatedFramework ? { frameworkConvexId: innovation.relatedFramework as any } : "skip"
+  );
   
   const likeInnovation = useMutation(api.innovations.likeInnovation);
   const markTried = useMutation(api.innovations.markInnovationTried);
@@ -92,7 +103,7 @@ export function InnovationCard({
 
   if (variant === "compact") {
     return (
-      <Card className="hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10">
+      <Card className="hover:shadow-md transition-shadow bg-gradient-to-br from-background to-primary/5">
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
@@ -152,8 +163,12 @@ export function InnovationCard({
   }
 
   return (
-    <Card className="hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 hover:from-primary/5 hover:to-primary/10">
-      <CardHeader className="pb-3">
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className="hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5">
+        <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
@@ -207,6 +222,31 @@ export function InnovationCard({
           </div>
         )}
 
+        {/* Framework Connection */}
+        {innovation.relatedFramework && framework && (
+          <div className="mt-3 mb-4 pt-3 border-t border-primary/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <LinkIcon className="h-4 w-4 text-primary" />
+                <span className="text-sm text-muted-foreground">
+                  Based on framework:
+                </span>
+                <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">
+                  {framework.frameworkId}: {framework.title}
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate(`/frameworks?view=${framework.frameworkId}`)}
+                className="text-primary hover:text-primary/80"
+              >
+                View Framework →
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Stats and Actions */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -249,5 +289,6 @@ export function InnovationCard({
         </div>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }

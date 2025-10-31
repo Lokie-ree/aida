@@ -270,16 +270,9 @@ pnpm test:once frameworks       # Test frameworks only
 pnpm test:once auth betaSignup # Test multiple files
 ```
 
-**Legacy JavaScript Tests (During Migration):**
-```bash
-# Run legacy JavaScript tests
-pnpm test:legacy          # All legacy tests
-pnpm test:legacy:unit    # Legacy unit tests only
-```
-
 **Note:** 
-- **New tests use TypeScript + Vitest** - See **[TESTING_MIGRATION.md](../docs/TESTING_MIGRATION.md)** for complete migration guide
-- **Legacy tests remain available** - See **[scripts/README.md](../scripts/README.md)** for legacy test documentation
+- **Tests use TypeScript + Vitest** - See **[TESTING_MIGRATION.md](TESTING_MIGRATION.md)** for complete testing guide
+- All tests are located in `convex/**/*.test.ts` files
 
 #### Testing patterns and notes
 - Explicit module discovery for convex-test:
@@ -302,7 +295,7 @@ pnpm test:legacy:unit    # Legacy unit tests only
   // Use t.withIdentity({ name, email }) to simulate users
   ```
 - Scheduled functions: use `vi.useFakeTimers()` + `t.finishAllScheduledFunctions()` to await writes.
-- Deployment safety: `.convexignore` excludes `convex/**/*.test.ts`, `tests/`, `scripts/`, `coverage/`.
+- Deployment safety: `.convexignore` excludes `convex/**/*.test.ts`, `tests/`, `coverage/`.
 - Coverage: `vitest.config.mts` excludes non-runtime/config modules (e.g., `convex/router.ts`, `convex/http.ts`, `convex/auth.ts`, etc.).
 
 ### Test Data Management
@@ -348,22 +341,13 @@ describe("Feature Name", () => {
 });
 ```
 
-**Legacy JavaScript Test Structure:**
-
-Legacy tests remain in `scripts/` directory:
-```
-scripts/unit/test-unit-[feature].js
-scripts/integration/test-integration-[flow].js
-scripts/e2e/test-e2e-[journey].js
-```
-
-See **[TESTING_MIGRATION.md](../docs/TESTING_MIGRATION.md)** for migration guide and **[test-helpers.ts](../tests/test-helpers.ts)** for reusable utilities.
+See **[TESTING_MIGRATION.md](TESTING_MIGRATION.md)** for migration guide and **[test-helpers.ts](../tests/test-helpers.ts)** for reusable utilities.
 
 ### Test Coverage Goals
 - **Unit Tests:** 90%+ coverage
 - **Integration Tests:** All critical user flows
 - **E2E Tests:** Complete user journeys
-- **Current Status:** See **[Test Suite Documentation](../scripts/README.md)** for complete testing results
+- **Current Status:** All tests run via Vitest - see `pnpm test:coverage` for detailed results
 
 ---
 
@@ -707,7 +691,7 @@ cat .env.local | grep CONVEX
 pnpm test:cleanup
 
 # Run specific test
-node scripts/unit/test-unit-frameworks.js
+pnpm test:once frameworks
 ```
 
 ---
@@ -758,7 +742,7 @@ pelican-ai/
 │   ├── innovations.ts    # Community innovations
 │   └── schema.ts         # Database schema
 ├── docs/                  # Documentation
-├── scripts/               # Testing and utility scripts
+├── tests/                 # Test helpers and fixtures
 └── public/                # Static assets
 ```
 

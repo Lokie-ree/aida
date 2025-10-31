@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useQuery } from "convex/react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -16,11 +18,14 @@ import {
   Shield,
   Lightbulb,
   X,
-  ExternalLink
+  ExternalLink,
+  Users,
+  ArrowRight
 } from "lucide-react";
 import { LoadingSpinner } from "../shared/LoadingStates";
 import { EmptyStateNotFound } from "../shared/EmptyState";
 import { toast } from "sonner";
+import { spacing } from "@/lib/spacing";
 
 interface FrameworkDetailProps {
   frameworkId: string;
@@ -31,8 +36,15 @@ interface FrameworkDetailProps {
 
 export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: FrameworkDetailProps) {
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const navigate = useNavigate();
   
   const framework = useQuery(api.frameworks.getFrameworkById, { frameworkId });
+  
+  // Get related innovations for this framework (using optimized query)
+  const relatedInnovations = useQuery(
+    api.innovations.getInnovationsByFramework,
+    framework ? { frameworkId: framework._id, limit: 3 } : "skip"
+  ) || [];
 
   const handleCopyPrompt = async () => {
     if (!framework) return;
@@ -133,19 +145,24 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-4xl max-h-[90vh] overflow-y-auto"
+        className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-background to-primary/5"
         aria-describedby="framework-detail-description"
       >
         <DialogHeader>
-          <div className="flex items-start justify-between">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-start justify-between"
+          >
             <div className="flex-1">
-              <DialogTitle className="text-2xl font-bold mb-2">
+              <DialogTitle className="text-2xl md:text-3xl font-bold mb-2 font-heading">
                 {framework.title}
               </DialogTitle>
               <p id="framework-detail-description" className="sr-only">
                 Framework details including challenge, solution, sample prompt, and usage statistics
               </p>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Badge variant="outline">
                   {framework.module === "ai-basics-hub" ? "AI Basics Hub" : "Instructional Expert Hub"}
                 </Badge>
@@ -166,14 +183,24 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
-          </div>
+          </motion.div>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="space-y-6"
+        >
           {/* Framework Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardContent className="p-4">
+          <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.gridGapSmall}`}>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                <CardContent className={spacing.card}>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <div>
@@ -183,34 +210,52 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">
-                      {framework.averageRating ? framework.averageRating.toFixed(1) : "N/A"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Average rating</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                <CardContent className={spacing.card}>
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">
+                        {framework.averageRating ? framework.averageRating.toFixed(1) : "N/A"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Average rating</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">{framework.usageCount}</p>
-                    <p className="text-xs text-muted-foreground">Times used</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                <CardContent className={spacing.card}>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <p className="text-sm font-medium">{framework.usageCount}</p>
+                      <p className="text-xs text-muted-foreground">Times used</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
           {/* The Challenge */}
-          <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-primary" />
@@ -223,9 +268,15 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               </p>
             </CardContent>
           </Card>
+          </motion.div>
 
           {/* The Solution */}
-          <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.6 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb className="h-5 w-5 text-primary" />
@@ -240,9 +291,15 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               </div>
             </CardContent>
           </Card>
+          </motion.div>
 
           {/* Sample Prompt */}
-          <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.7 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Copy className="h-5 w-5 text-primary" />
@@ -278,9 +335,15 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               </div>
             </CardContent>
           </Card>
+          </motion.div>
 
           {/* Ethical Guardrail */}
-          <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.8 }}
+          >
+            <Card className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/20 dark:to-amber-900/10 border-amber-200 dark:border-amber-800">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
@@ -295,10 +358,16 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               </div>
             </CardContent>
           </Card>
+          </motion.div>
 
           {/* Tips and Variations */}
           {framework.tipsAndVariations && (
-            <Card>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.9 }}
+            >
+              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lightbulb className="h-5 w-5 text-primary" />
@@ -308,14 +377,20 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
                   {framework.tipsAndVariations}
-                </p>
-              </CardContent>
-            </Card>
+              </p>
+            </CardContent>
+          </Card>
+            </motion.div>
           )}
 
           {/* Louisiana Standards Alignment */}
           {framework.louisianaStandards && framework.louisianaStandards.length > 0 && (
-            <Card>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 1.0 }}
+            >
+              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Star className="h-5 w-5 text-primary" />
@@ -332,11 +407,17 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
           )}
 
           {/* LER Domains */}
           {framework.lerDomains && framework.lerDomains.length > 0 && (
-            <Card>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 1.1 }}
+            >
+              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-primary" />
@@ -353,10 +434,16 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
           )}
 
           {/* Platform Compatibility */}
-          <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1.2 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-primary" />
@@ -373,9 +460,83 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               </div>
             </CardContent>
           </Card>
+          </motion.div>
+
+          {/* In Practice: How Educators Use This */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1.4 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  In Practice: How Educators Use This
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {relatedInnovations.length > 0 ? (
+                  <div className="space-y-3">
+                    {relatedInnovations.map((innovation) => (
+                      <div key={innovation._id} className="border-l-4 border-primary/30 pl-4">
+                        <p className="text-sm font-medium mb-1">{innovation.title}</p>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                          {innovation.description}
+                        </p>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          {innovation.timeSaved && (
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>Saved {innovation.timeSaved} min</span>
+                            </div>
+                          )}
+                          {innovation.triesCount > 0 && (
+                            <div className="flex items-center gap-1">
+                              <Users className="h-3 w-3" />
+                              <span>{innovation.triesCount} educators tried this</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
+                        onClose();
+                        navigate(`/community?framework=${frameworkId}`);
+                      }}
+                      className="mt-3"
+                    >
+                      See more examples →
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Be the first to share how you used this framework!{" "}
+                    <button
+                      onClick={() => {
+                        onClose();
+                        navigate('/community?tab=innovations');
+                      }}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      Share your innovation →
+                    </button>
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap gap-3 pt-4 border-t">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1.5 }}
+            className="flex flex-wrap gap-3 pt-4 border-t border-primary/20"
+          >
             <Button onClick={handleSave} variant={isSaved ? "default" : "outline"}>
               {isSaved ? (
                 <>
@@ -406,8 +567,8 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                 </>
               )}
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );
