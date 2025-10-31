@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Target, TrendingUp, Award } from "lucide-react";
@@ -46,13 +47,33 @@ export function TimeSavingsTracker({
     return "🚀 Every minute saved counts! You've got this!";
   };
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.3 }
+  };
+
+  const staggerChildren = {
+    animate: {
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
   return (
-    <div className={cn("w-full space-y-6", className)}>
+    <motion.div 
+      initial="initial"
+      animate="animate"
+      variants={staggerChildren}
+      className={cn("w-full space-y-6", className)}
+    >
         {/* Title */}
-        <div className="flex items-center gap-2">
+        <motion.div 
+          variants={fadeInUp}
+          className="flex items-center gap-2"
+        >
           <Clock className="h-5 w-5 text-primary" />
           <h3 className="text-lg font-semibold text-foreground font-heading">Time Savings Tracker</h3>
-        </div>
+        </motion.div>
 
         {/* Progress Bar */}
         <div className="space-y-3">
@@ -77,8 +98,14 @@ export function TimeSavingsTracker({
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center space-y-1">
+        <motion.div 
+          variants={staggerChildren}
+          className="grid grid-cols-3 gap-4"
+        >
+          <motion.div 
+            variants={fadeInUp}
+            className="text-center space-y-1"
+          >
             <div className="flex items-center justify-center gap-1">
               <TrendingUp className="h-4 w-4 text-blue-500" />
               <span className="text-2xl font-bold text-blue-600">
@@ -87,9 +114,12 @@ export function TimeSavingsTracker({
             </div>
             <p className="text-xs text-muted-foreground">This Week</p>
             <p className="text-xs font-medium">hours saved</p>
-          </div>
+          </motion.div>
           
-          <div className="text-center space-y-1">
+          <motion.div 
+            variants={fadeInUp}
+            className="text-center space-y-1"
+          >
             <div className="flex items-center justify-center gap-1">
               <Clock className="h-4 w-4 text-green-500" />
               <span className="text-2xl font-bold text-green-600">
@@ -98,9 +128,12 @@ export function TimeSavingsTracker({
             </div>
             <p className="text-xs text-muted-foreground">This Month</p>
             <p className="text-xs font-medium">hours saved</p>
-          </div>
+          </motion.div>
           
-          <div className="text-center space-y-1">
+          <motion.div 
+            variants={fadeInUp}
+            className="text-center space-y-1"
+          >
             <div className="flex items-center justify-center gap-1">
               <Award className="h-4 w-4 text-purple-500" />
               <span className="text-2xl font-bold text-purple-600">
@@ -109,8 +142,8 @@ export function TimeSavingsTracker({
             </div>
             <p className="text-xs text-muted-foreground">Total</p>
             <p className="text-xs font-medium">hours saved</p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Quick Stats */}
         <div className="pt-4 border-t border-border/50">
@@ -129,6 +162,6 @@ export function TimeSavingsTracker({
             </div>
           </div>
         </div>
-    </div>
+    </motion.div>
   );
 }

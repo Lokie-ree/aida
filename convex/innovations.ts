@@ -89,6 +89,7 @@ export const getAllInnovations = query({
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
+    relatedFramework: v.optional(v.id("frameworks")),
   })),
   handler: async (ctx, args) => {
     const limit = args.limit || 20;
@@ -111,6 +112,7 @@ export const getAllInnovations = query({
       likes: i.likes,
       triesCount: i.triesCount,
       createdAt: i.createdAt,
+      relatedFramework: i.relatedFramework,
     }));
   },
 });
@@ -145,6 +147,7 @@ export const searchInnovations = query({
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
+    relatedFramework: v.optional(v.id("frameworks")),
   })),
   handler: async (ctx, args) => {
     const limit = args.limit || 20;
@@ -167,6 +170,7 @@ export const searchInnovations = query({
       likes: i.likes,
       triesCount: i.triesCount,
       createdAt: i.createdAt,
+      relatedFramework: i.relatedFramework,
     }));
   },
 });
@@ -198,6 +202,7 @@ export const getInnovationById = query({
       likes: v.number(),
       triesCount: v.number(),
       createdAt: v.number(),
+      relatedFramework: v.optional(v.id("frameworks")),
     }),
     v.null()
   ),
@@ -218,7 +223,156 @@ export const getInnovationById = query({
       likes: innovation.likes,
       triesCount: innovation.triesCount,
       createdAt: innovation.createdAt,
+      relatedFramework: innovation.relatedFramework,
     };
+  },
+});
+
+/**
+ * Query: Get innovations by related framework.
+ * 
+ * Returns all innovations that are linked to a specific framework.
+ * Used to show real-world usage examples in framework detail views.
+ * 
+ * @param frameworkId - ID of the framework to get innovations for
+ * @param limit - Optional limit on number of results (default: 10)
+ * @returns Array of innovation objects linked to the framework
+ */
+export const getInnovationsByFramework = query({
+  args: { 
+    frameworkId: v.id("frameworks"),
+    limit: v.optional(v.number())
+  },
+  returns: v.array(v.object({
+    _id: v.id("innovations"),
+    _creationTime: v.number(),
+    title: v.string(),
+    description: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+    likes: v.number(),
+    triesCount: v.number(),
+    createdAt: v.number(),
+    relatedFramework: v.optional(v.id("frameworks")),
+  })),
+  handler: async (ctx, args) => {
+    const limit = args.limit || 10;
+    
+    const innovations = await ctx.db
+      .query("innovations")
+      .withIndex("by_relatedFramework", (q) => q.eq("relatedFramework", args.frameworkId))
+      .order("desc")
+      .take(limit);
+
+    return innovations.map(i => ({
+      _id: i._id,
+      _creationTime: i._creationTime,
+      title: i.title,
+      description: i.description,
+      userName: i.userName,
+      school: i.school,
+      subject: i.subject,
+      tags: i.tags,
+      timeSaved: i.timeSaved,
+      likes: i.likes,
+      triesCount: i.triesCount,
+      createdAt: i.createdAt,
+      relatedFramework: i.relatedFramework,
+    }));
+  },
+});
+
+/**
+ * Query: Get similar innovations.
+ * 
+ * Returns innovations similar to a given innovation based on tags, subject, or related framework.
+ * Used to help educators discover related innovations.
+ * 
+ * @param innovationId - ID of the innovation to find similar ones for
+ * @param limit - Optional limit on number of results (default: 4)
+ * @returns Array of similar innovation objects
+ */
+export const getSimilarInnovations = query({
+  args: { 
+    innovationId: v.id("innovations"),
+    limit: v.optional(v.number())
+  },
+  returns: v.array(v.object({
+    _id: v.id("innovations"),
+    _creationTime: v.number(),
+    title: v.string(),
+    description: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    tags: v.array(v.string()),
+    timeSaved: v.optional(v.number()),
+    likes: v.number(),
+    triesCount: v.number(),
+    createdAt: v.number(),
+    relatedFramework: v.optional(v.id("frameworks")),
+  })),
+  handler: async (ctx, args) => {
+    const limit = args.limit || 4;
+    
+    // Get the innovation to find similar ones for
+    const innovation = await ctx.db.get(args.innovationId);
+    if (!innovation) return [];
+    
+    // Get all innovations except the current one
+    const allInnovations = await ctx.db
+      .query("innovations")
+      .collect();
+    
+    // Score similarities based on:
+    // - Same tags (higher weight)
+    // - Same subject (medium weight)
+    // - Same related framework (high weight)
+    const scored = allInnovations
+      .filter(i => i._id !== args.innovationId)
+      .map(inv => {
+        let score = 0;
+        
+        // Tag matches
+        const commonTags = innovation.tags.filter(tag => inv.tags.includes(tag)).length;
+        score += commonTags * 3;
+        
+        // Subject match
+        if (innovation.subject === inv.subject) {
+          score += 2;
+        }
+        
+        // Same framework
+        if (innovation.relatedFramework && inv.relatedFramework && 
+            innovation.relatedFramework === inv.relatedFramework) {
+          score += 5;
+        }
+        
+        return { innovation: inv, score };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit)
+      .map(item => item.innovation);
+    
+    return scored.map(i => ({
+      _id: i._id,
+      _creationTime: i._creationTime,
+      title: i.title,
+      description: i.description,
+      userName: i.userName,
+      school: i.school,
+      subject: i.subject,
+      tags: i.tags,
+      timeSaved: i.timeSaved,
+      likes: i.likes,
+      triesCount: i.triesCount,
+      createdAt: i.createdAt,
+      relatedFramework: i.relatedFramework,
+    }));
   },
 });
 
@@ -344,6 +498,7 @@ export const getRecentInnovations = query({
     likes: v.number(),
     triesCount: v.number(),
     createdAt: v.number(),
+    relatedFramework: v.optional(v.id("frameworks")),
   })),
   handler: async (ctx, args) => {
     const limit = args.limit || 20;
@@ -367,6 +522,7 @@ export const getRecentInnovations = query({
       likes: i.likes,
       triesCount: i.triesCount,
       createdAt: i.createdAt,
+      relatedFramework: i.relatedFramework,
     }));
   },
 });

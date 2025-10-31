@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useMutation } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,8 @@ import {
   User, 
   School, 
   BookOpen,
-  CheckCircle
+  CheckCircle,
+  Link as LinkIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -31,6 +33,7 @@ interface InnovationCardProps {
     likes: number;
     triesCount: number;
     createdAt: number;
+    relatedFramework?: string; // Framework ID
   };
   onLike?: () => void;
   onTried?: () => void;
@@ -48,6 +51,13 @@ export function InnovationCard({
   variant = "default"
 }: InnovationCardProps) {
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
+  
+  // Get framework details if relatedFramework exists
+  const framework = useQuery(
+    api.frameworks.getFrameworkByConvexId,
+    innovation.relatedFramework ? { frameworkConvexId: innovation.relatedFramework as any } : "skip"
+  );
   
   const likeInnovation = useMutation(api.innovations.likeInnovation);
   const markTried = useMutation(api.innovations.markInnovationTried);
@@ -209,6 +219,31 @@ export function InnovationCard({
                 {tag}
               </Badge>
             ))}
+          </div>
+        )}
+
+        {/* Framework Connection */}
+        {innovation.relatedFramework && framework && (
+          <div className="mt-3 mb-4 pt-3 border-t border-primary/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <LinkIcon className="h-4 w-4 text-primary" />
+                <span className="text-sm text-muted-foreground">
+                  Based on framework:
+                </span>
+                <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors">
+                  {framework.frameworkId}: {framework.title}
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate(`/frameworks?view=${framework.frameworkId}`)}
+                className="text-primary hover:text-primary/80"
+              >
+                View Framework →
+              </Button>
+            </div>
           </div>
         )}
 

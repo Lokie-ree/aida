@@ -250,6 +250,6 @@ When working on specific aspects of the project, activate the appropriate agent 
 **Technical References:**
 - **[Decision Records](docs/decisions/)** - Architectural decisions (ADRs)
 - **[Convex Schema](convex/schema.ts)** - Database schema with JSDoc comments
-- **[Test Suite](scripts/README.md)** - Testing documentation and protocols
+- **[Testing Migration](docs/TESTING_MIGRATION.md)** - Testing documentation and migration guide
 
 *Note: This test user has been validated for manual testing of form submissions and UI functionality. Use for testing authentication flows, form submissions, and user-facing features.*

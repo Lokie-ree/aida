@@ -172,11 +172,8 @@ npm run dev
 # Regular user: http://localhost:5173
 # Admin user: http://localhost:5173/admin (auto-redirect)
 
-# Create admin test user (if needed)
-node scripts/create-admin-user.js
-
 # Run tests
-pnpm test:beta-auth
+pnpm test
 ```
 
 ### Admin Credentials

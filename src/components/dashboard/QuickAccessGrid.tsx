@@ -125,15 +125,15 @@ export function QuickAccessGrid({
             key={item.id}
             variants={fadeInUp}
             className="group"
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
           >
             <Button
               variant={item.variant || "outline"}
-              className={`w-full h-auto p-6 sm:p-8 flex items-center gap-4 hover:shadow-lg transition-all duration-300 min-w-0 ${
+              className={`w-full h-auto p-6 sm:p-8 flex items-center gap-4 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-0 ${
                 item.variant === "default" 
-                  ? "bg-primary hover:bg-primary/90 text-white border-primary" 
-                  : "hover:border-primary/50 hover:bg-primary/5"
+                  ? "bg-primary hover:bg-primary/90 text-white border-primary shadow-md" 
+                  : "hover:border-primary/50 hover:bg-primary/5 border-2"
               }`}
               onClick={item.onClick}
             >

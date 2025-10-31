@@ -18,7 +18,6 @@ import {
 import { InnovationCard } from "./InnovationCard";
 import { InnovationForm } from "./InnovationForm";
 import { TestimonialForm } from "./TestimonialForm";
-import { EmptyStateNoResults } from "../shared/EmptyState";
 import { spacing } from "@/lib/spacing";
 
 type FilterType = "all" | "recent" | "popular" | "my-innovations";
@@ -31,10 +30,12 @@ export function InnovationList() {
   const [showForm, setShowForm] = useState(false);
   const [showTestimonialForm, setShowTestimonialForm] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<string>("all");
 
   // Queries
   const innovations = useQuery(api.innovations.getRecentInnovations, { limit: 50 });
   const userInnovations = useQuery(api.innovations.getUserInnovations, { limit: 50 });
+  const userProfile = useQuery(api.userProfiles.getUserProfile);
 
   // Filter and sort innovations
   const filteredInnovations = React.useMemo(() => {
@@ -84,6 +85,13 @@ export function InnovationList() {
       );
     }
 
+    // Apply subject filter
+    if (selectedSubject !== "all") {
+      filtered = filtered.filter((innovation: any) => 
+        innovation.subject.toLowerCase() === selectedSubject.toLowerCase()
+      );
+    }
+
     // Apply sorting
     switch (sort) {
       case "newest":
@@ -101,7 +109,7 @@ export function InnovationList() {
     }
 
     return filtered;
-  }, [innovations, userInnovations, searchQuery, filter, sort, selectedTag]);
+  }, [innovations, userInnovations, searchQuery, filter, sort, selectedTag, selectedSubject]);
 
   // Get all unique tags for filtering
   const allTags = React.useMemo(() => {
@@ -113,22 +121,34 @@ export function InnovationList() {
     return Array.from(tagSet).sort();
   }, [innovations]);
 
+  // Get all unique subjects for filtering
+  const uniqueSubjects = React.useMemo(() => {
+    if (!innovations) return [];
+    const subjectSet = new Set<string>();
+    innovations.forEach((innovation: any) => {
+      if (innovation.subject) {
+        subjectSet.add(innovation.subject);
+      }
+    });
+    return Array.from(subjectSet).sort();
+  }, [innovations]);
+
   const handleFormSuccess = () => {
     setShowForm(false);
     // The list will automatically refresh due to Convex reactivity
   };
 
   return (
-    <div className={`min-h-screen bg-background ${spacing.sectionGap}`}>
-      {/* Header */}
-      <div className="border-b border-border bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className={`max-w-7xl mx-auto ${spacing.container} py-8`}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-          >
+    <div className="min-h-screen bg-background">
+      <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground font-heading">Community Innovations</h1>
               <p className="text-muted-foreground mt-2 text-base">
@@ -152,13 +172,10 @@ export function InnovationList() {
                 Share Innovation
               </Button>
             </div>
-          </motion.div>
-        </div>
-      </div>
+          </div>
+        </motion.div>
 
-      <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
-
-      {/* Innovation Form Modal */}
+        {/* Innovation Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
@@ -191,6 +208,37 @@ export function InnovationList() {
         <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-sm">
           <CardContent className={spacing.card}>
             <div className="space-y-4">
+            {/* Subject Filter Tabs */}
+            <div className="flex flex-wrap gap-2 pb-2 border-b border-primary/20">
+              <Button
+                variant={selectedSubject === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedSubject("all")}
+              >
+                All Subjects
+              </Button>
+              {userProfile?.subject && (
+                <Button
+                  variant={selectedSubject === userProfile.subject ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedSubject(userProfile.subject!)}
+                  className="bg-primary/10 hover:bg-primary/20"
+                >
+                  {userProfile.subject} (My Subject)
+                </Button>
+              )}
+              {uniqueSubjects.map((subject) => (
+                <Button
+                  key={subject}
+                  variant={selectedSubject === subject ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedSubject(subject)}
+                >
+                  {subject}
+                </Button>
+              ))}
+            </div>
+
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -284,13 +332,14 @@ export function InnovationList() {
         <p className="text-sm text-muted-foreground">
           {filteredInnovations.length} innovation{filteredInnovations.length !== 1 ? 's' : ''} found
         </p>
-        {(searchQuery || selectedTag) && (
+        {(searchQuery || selectedTag || selectedSubject !== "all") && (
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
               setSearchQuery("");
               setSelectedTag(null);
+              setSelectedSubject("all");
             }}
             className="h-9"
           >
@@ -299,33 +348,111 @@ export function InnovationList() {
         )}
       </motion.div>
 
+      {/* Success Stories Section */}
+      {innovations && innovations.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mb-8"
+        >
+          {(() => {
+            // Get success stories: innovations with highest triesCount or likes
+            const successStories = [...(innovations || [])]
+              .filter((inv: any) => inv.triesCount >= 3 || inv.likes >= 5)
+              .sort((a: any, b: any) => (b.triesCount + b.likes) - (a.triesCount + a.likes))
+              .slice(0, 3);
+            
+            if (successStories.length === 0) return null;
+            
+            return (
+              <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-semibold text-foreground font-heading">
+                      Success Stories: High-Impact Innovations
+                    </h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    These innovations have helped multiple Louisiana educators save time and improve teaching
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {successStories.map((story: any) => (
+                      <Card key={story._id} className="hover:shadow-lg transition-shadow bg-background">
+                        <CardContent className="p-4">
+                          <h4 className="font-semibold mb-2 line-clamp-1 text-sm">{story.title}</h4>
+                          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+                            {story.description}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Users className="h-3 w-3" />
+                              <span>{story.triesCount} tried</span>
+                            </div>
+                            {story.timeSaved && (
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <span>~{story.timeSaved} min saved</span>
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })()}
+        </motion.div>
+      )}
+
       {/* Innovations List */}
       {filteredInnovations.length === 0 ? (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="text-center py-16"
         >
-          <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className={spacing.card}>
-              <EmptyStateNoResults
-                title="No innovations found"
-                description={
-                  searchQuery || selectedTag
-                    ? "Try adjusting your search terms or filters"
-                    : "Be the first to share an innovation with the community!"
-                }
-                action={
-                  !searchQuery && !selectedTag ? (
-                    <Button onClick={() => setShowForm(true)}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Share Your First Innovation
-                    </Button>
-                  ) : undefined
-                }
-              />
-            </CardContent>
-          </Card>
+          <div className="max-w-md mx-auto">
+            <Lightbulb className="h-16 w-16 text-primary mx-auto mb-4 opacity-50" />
+            {searchQuery || selectedTag || selectedSubject !== "all" ? (
+              <>
+                <h3 className="text-xl font-semibold mb-2">No innovations found</h3>
+                <p className="text-muted-foreground mb-6">
+                  Try adjusting your filters or be the first to share something in this category!
+                </p>
+                <Button 
+                  onClick={() => { 
+                    setSearchQuery(""); 
+                    setSelectedTag(null); 
+                    setSelectedSubject("all");
+                    setShowForm(true); 
+                  }}
+                >
+                  Share an Innovation
+                </Button>
+              </>
+            ) : (
+              <>
+                <h3 className="text-xl font-semibold mb-2">
+                  Help Build the Louisiana Educator Community
+                </h3>
+                <p className="text-muted-foreground mb-2">
+                  Share how you're using AI in your classroom and help fellow educators discover new possibilities.
+                </p>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Your innovation could help hundreds of Louisiana educators save time and improve their teaching.
+                </p>
+                <Button onClick={() => setShowForm(true)} size="lg">
+                  <Plus className="h-5 w-5 mr-2" />
+                  Share Your First Innovation
+                </Button>
+              </>
+            )}
+          </div>
         </motion.div>
       ) : (
         <motion.div

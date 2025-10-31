@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "convex/react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,9 @@ import {
   Shield,
   Lightbulb,
   X,
-  ExternalLink
+  ExternalLink,
+  Users,
+  ArrowRight
 } from "lucide-react";
 import { LoadingSpinner } from "../shared/LoadingStates";
 import { EmptyStateNotFound } from "../shared/EmptyState";
@@ -33,8 +36,15 @@ interface FrameworkDetailProps {
 
 export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: FrameworkDetailProps) {
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+  const navigate = useNavigate();
   
   const framework = useQuery(api.frameworks.getFrameworkById, { frameworkId });
+  
+  // Get related innovations for this framework (using optimized query)
+  const relatedInnovations = useQuery(
+    api.innovations.getInnovationsByFramework,
+    framework ? { frameworkId: framework._id, limit: 3 } : "skip"
+  ) || [];
 
   const handleCopyPrompt = async () => {
     if (!framework) return;
@@ -173,7 +183,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
-          </div>
+          </motion.div>
         </DialogHeader>
 
         <motion.div
@@ -452,11 +462,79 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
           </Card>
           </motion.div>
 
+          {/* In Practice: How Educators Use This */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1.4 }}
+          >
+            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  In Practice: How Educators Use This
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {relatedInnovations.length > 0 ? (
+                  <div className="space-y-3">
+                    {relatedInnovations.map((innovation) => (
+                      <div key={innovation._id} className="border-l-4 border-primary/30 pl-4">
+                        <p className="text-sm font-medium mb-1">{innovation.title}</p>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                          {innovation.description}
+                        </p>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          {innovation.timeSaved && (
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>Saved {innovation.timeSaved} min</span>
+                            </div>
+                          )}
+                          {innovation.triesCount > 0 && (
+                            <div className="flex items-center gap-1">
+                              <Users className="h-3 w-3" />
+                              <span>{innovation.triesCount} educators tried this</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
+                        onClose();
+                        navigate(`/community?framework=${frameworkId}`);
+                      }}
+                      className="mt-3"
+                    >
+                      See more examples →
+                    </Button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Be the first to share how you used this framework!{" "}
+                    <button
+                      onClick={() => {
+                        onClose();
+                        navigate('/community?tab=innovations');
+                      }}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      Share your innovation →
+                    </button>
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+
           {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 1.3 }}
+            transition={{ duration: 0.3, delay: 1.5 }}
             className="flex flex-wrap gap-3 pt-4 border-t border-primary/20"
           >
             <Button onClick={handleSave} variant={isSaved ? "default" : "outline"}>
@@ -489,8 +567,8 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                 </>
               )}
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );

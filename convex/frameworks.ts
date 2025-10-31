@@ -45,27 +45,16 @@ export const getAllFrameworks = query({
   handler: async (ctx, args) => {
     let frameworks;
 
-    if (args.module) {
-      frameworks = await ctx.db
-        .query("frameworks")
-        .withIndex("by_module", (q) => q.eq("module", args.module!))
-        .collect();
-    } else if (args.status) {
-      frameworks = await ctx.db
-        .query("frameworks")
-        .withIndex("by_status", (q) => q.eq("status", args.status!))
-        .collect();
-    } else {
-      // Default to published only
-      frameworks = await ctx.db
-        .query("frameworks")
-        .withIndex("by_status", (q) => q.eq("status", "published"))
-        .collect();
-    }
+    // Use status index as primary filter (default to published)
+    const status = args.status || "published";
+    frameworks = await ctx.db
+      .query("frameworks")
+      .withIndex("by_status", (q) => q.eq("status", status))
+      .collect();
 
-    // Apply additional filters
-    if (args.module && args.status) {
-      frameworks = frameworks.filter(f => f.status === args.status);
+    // Apply additional filters using indexes where possible
+    if (args.module) {
+      frameworks = frameworks.filter(f => f.module === args.module);
     }
 
     if (args.category) {
@@ -87,6 +76,63 @@ export const getAllFrameworks = query({
       usageCount: f.usageCount,
       averageRating: f.averageRating,
     }));
+  },
+});
+
+// Query: Get framework by Convex ID (internal ID)
+export const getFrameworkByConvexId = query({
+  args: { frameworkConvexId: v.id("frameworks") },
+  returns: v.union(v.object({
+    _id: v.id("frameworks"),
+    _creationTime: v.number(),
+    frameworkId: v.string(),
+    title: v.string(),
+    module: v.union(v.literal("ai-basics-hub"), v.literal("instructional-expert-hub")),
+    category: v.string(),
+    tags: v.array(v.string()),
+    challenge: v.string(),
+    solution: v.string(),
+    samplePrompt: v.string(),
+    ethicalGuardrail: v.string(),
+    tipsAndVariations: v.optional(v.string()),
+    timeEstimate: v.number(),
+    difficultyLevel: v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced")),
+    platformCompatibility: v.array(v.string()),
+    louisianaStandards: v.optional(v.array(v.string())),
+    lerDomains: v.optional(v.array(v.string())),
+    usageCount: v.number(),
+    averageRating: v.optional(v.number()),
+    averageTimeSaved: v.optional(v.number()),
+  }), v.null()),
+  handler: async (ctx, args) => {
+    const framework = await ctx.db.get(args.frameworkConvexId);
+    
+    if (!framework || framework.status !== "published") {
+      return null;
+    }
+
+    return {
+      _id: framework._id,
+      _creationTime: framework._creationTime,
+      frameworkId: framework.frameworkId,
+      title: framework.title,
+      module: framework.module,
+      category: framework.category,
+      tags: framework.tags,
+      challenge: framework.challenge,
+      solution: framework.solution,
+      samplePrompt: framework.samplePrompt,
+      ethicalGuardrail: framework.ethicalGuardrail,
+      tipsAndVariations: framework.tipsAndVariations,
+      timeEstimate: framework.timeEstimate,
+      difficultyLevel: framework.difficultyLevel,
+      platformCompatibility: framework.platformCompatibility,
+      louisianaStandards: framework.louisianaStandards,
+      lerDomains: framework.lerDomains,
+      usageCount: framework.usageCount,
+      averageRating: framework.averageRating,
+      averageTimeSaved: framework.averageTimeSaved,
+    };
   },
 });
 
@@ -116,11 +162,16 @@ export const getFrameworkById = query({
     averageTimeSaved: v.optional(v.number()),
   }), v.null()),
   handler: async (ctx, args) => {
+    // First get by frameworkId
     const framework = await ctx.db
       .query("frameworks")
       .withIndex("by_framework_id", (q) => q.eq("frameworkId", args.frameworkId))
-      .filter((q) => q.eq(q.field("status"), "published"))
       .first();
+    
+    // Check status (can't filter by multiple indexes, so check after query)
+    if (!framework || framework.status !== "published") {
+      return null;
+    }
 
     if (!framework) {
       return null;

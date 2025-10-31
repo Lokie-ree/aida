@@ -56,7 +56,7 @@ export function FeaturedRecommendation({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 shadow-sm ${className}`}
+      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
     >
       <div className="flex items-start justify-between mb-6">
         <div className="flex items-center gap-3">

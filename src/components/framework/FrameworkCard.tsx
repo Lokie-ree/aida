@@ -21,6 +21,8 @@ interface FrameworkCardProps {
     averageRating?: number;
   };
   variant?: "compact" | "expanded" | "grid" | "list";
+  userSubject?: string; // User's teaching subject for personalization
+  subjectUsageCount?: number; // Usage count for this subject
   onView: () => void;
   onSave?: () => void;
   onUnsave?: () => void;
@@ -31,7 +33,9 @@ interface FrameworkCardProps {
 
 export function FrameworkCard({ 
   framework, 
-  variant = "compact", 
+  variant = "compact",
+  userSubject,
+  subjectUsageCount,
   onView, 
   onSave,
   onUnsave,
@@ -96,6 +100,14 @@ export function FrameworkCard({
                     </>
                   )}
                 </div>
+                {userSubject && subjectUsageCount && subjectUsageCount > 0 && (
+                  <div className="mt-2">
+                    <Badge variant="secondary" className="text-xs">
+                      <Users className="h-3 w-3 mr-1" />
+                      {subjectUsageCount} {userSubject} educators
+                    </Badge>
+                  </div>
+                )}
               </div>
               
               <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
@@ -213,6 +225,14 @@ export function FrameworkCard({
             </div>
           )}
         </div>
+        {userSubject && subjectUsageCount && subjectUsageCount > 0 && (
+          <div className="mb-2">
+            <Badge variant="secondary" className="text-xs">
+              <Users className="h-3 w-3 mr-1" />
+              {subjectUsageCount} {userSubject} educators
+            </Badge>
+          </div>
+        )}
 
         <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
           {framework.title}
