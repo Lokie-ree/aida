@@ -8,6 +8,10 @@ export default defineConfig({
       deps: { inline: ["convex-test"] } 
     },
     globals: true,
+    // Explicitly include only Convex backend tests
+    include: ["convex/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    // Exclude E2E tests (they use browser environment)
+    exclude: ["tests/e2e/**/*", "node_modules/**/*", "dist/**/*"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "json"],

@@ -46,7 +46,7 @@ pnpm dev
 
 ## 📊 Current Status
 
-**Phase:** Phase 2 Complete → Beta Launch Ready
+**Status:** Beta Launch Ready
 
 **Test Coverage:** ~88% statements/lines (`pnpm test:coverage` → open `coverage/index.html`)
 
@@ -55,26 +55,14 @@ pnpm dev
 ## 📚 Documentation
 
 ### Essential Reading
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical architecture, tech stack, database schema
-- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development workflow, Git practices, testing
-- **[AGENT.md](AGENT.md)** - Agent collaboration patterns, shared context, user personas
+- **[PROJECT.md](PROJECT.md)** - Project vision, current status, and quick reference
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Minimal technical architecture reference
+- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development guidelines and code standards
 
 ### Reference Documentation
-- **[Product Requirements](docs/PRODUCT_REQUIREMENTS_DOCUMENT.md)** - Complete product specification
+- **[TESTING_PROTOCOL.md](docs/TESTING_PROTOCOL.md)** - E2E testing strategy
 - **[Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
 - **[Decision Records](docs/decisions/)** - Architectural decisions (ADRs)
-- **[Testing Migration](docs/TESTING_MIGRATION.md)** - Testing documentation and migration guide
-
-## 🤖 Agent System
-
-This project uses specialized AI agents for different aspects of development:
-
-- **@.cursor/rules/product.mdc** - Product & Design (business strategy, user experience)
-- **@.cursor/rules/developer.mdc** - Developer (full-stack implementation, system architecture)
-- **@.cursor/rules/qa.mdc** - Quality Assurance (test planning, E2E testing, bug reporting)
-- **@.cursor/rules/security.mdc** - Security Specialist (Semgrep analysis, FERPA compliance)
-
-See **[AGENT.md](AGENT.md)** for centralized context and collaboration patterns.
 
 ## 🤝 Contributing
 
@@ -94,4 +82,4 @@ This project is proprietary software. Educational use by Louisiana educators is 
 
 **Pelican AI** - Navigate AI with Confidence 🦅
 
-*Last Updated: October 20, 2025*
+*Last Updated: November 2025*
