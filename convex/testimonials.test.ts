@@ -45,9 +45,14 @@ describe("Testimonials", () => {
   });
 
   describe("getAllTestimonials", () => {
-    test.skip("returns all approved testimonials (requires admin auth)", async () => {
-      // Skipped: getAllTestimonials requires admin authentication
-      // This query is admin-only per the function implementation
+    test("returns all approved testimonials with admin auth", async () => {
+      // Mock authComponent already handles admin role detection based on identity name
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@school.edu" });
+      
+      const approved = await asAdmin.query(api.testimonials.getAllTestimonials, { status: "approved" });
+      expect(Array.isArray(approved)).toBe(true);
+      // Should include the test testimonial we created in beforeEach
+      expect(approved.some(t => t._id === testTestimonialId)).toBe(true);
     });
 
     test("can query testimonials via database directly", async () => {

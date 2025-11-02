@@ -1,15 +1,22 @@
-# Documentation Index (Concise)
+# Documentation Index
 
-Use these primary docs during development:
+## Essential Documentation
 
-- PROJECT_STATUS.md
-- ARCHITECTURE.md
-- CONTRIBUTING.md
-- TESTING_MIGRATION.md
-- TESTING_PROTOCOL.md
-- ADMIN_FEATURES_TEST_PLAN.md
-- PELICAN_AI_BRAND_GUIDELINES.md
-- decisions/ (ADRs)
-- CONVEX_DEPLOYMENTS.md
+- **[PROJECT.md](../PROJECT.md)** - Project vision, current status, and quick reference
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Minimal technical architecture reference
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Development guidelines and code standards
 
-Archived or deprecated content lives in docs/archive/.
+## Reference Documentation
+
+- **[TESTING_PROTOCOL.md](TESTING_PROTOCOL.md)** - E2E testing strategy
+- **[PELICAN_AI_BRAND_GUIDELINES.md](PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
+- **[decisions/](decisions/)** - Architectural decision records (ADRs)
+
+## Archived Documentation
+
+Historical documentation archived to `/docs/archived/pelican-ai/` for learning purposes:
+- `AGENT.md` - Agent system (no longer needed)
+- `PROJECT_STATUS.md` - Historical status (now in PROJECT.md)
+- `PRODUCT_REQUIREMENTS_DOCUMENT.md` - Historical PRD (consolidated into PROJECT.md)
+- `CONTRIBUTING.md` - Previous version (replaced by minimal version)
+- `TESTING_MIGRATION.md` - Historical migration documentation

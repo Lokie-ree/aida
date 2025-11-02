@@ -17,8 +17,10 @@ const REPLY_TO = [`hello@${SENDER_DOMAIN}`] as string[];
 // Initialize Resend component
 // testMode: true = only send to @resend.dev test addresses (for development)
 // testMode: false = send to real addresses (requires verified domain in Resend)
+// Controlled via RESEND_TEST_MODE env var (defaults to true for safety)
+const isTestMode = process.env.RESEND_TEST_MODE !== "false";
 export const resend: Resend = new Resend(components.resend, {
-  testMode: false, // Set to true for testing with @resend.dev addresses
+  testMode: isTestMode, // Defaults to true unless RESEND_TEST_MODE=false is set
   onEmailEvent: internal.emailEvents.handleEmailEvent,
 });
 
