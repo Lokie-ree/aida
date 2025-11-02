@@ -139,14 +139,25 @@ describe("Time Tracking", () => {
       expect(timeEntries.length).toBe(0);
     });
 
-    test.skip("returns time tracking history with authenticated user", async () => {
-      // Skipped: Requires Better Auth component registration
-      // This would test retrieving user's time tracking history
-    });
+    test("returns time tracking history with authenticated user", async () => {
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      const identity = await asUser.run(async (ctx) => await ctx.auth.getUserIdentity());
+      if (!identity) throw new Error("Identity not available");
 
-    test.skip("respects limit parameter", async () => {
-      // Skipped: Requires Better Auth component registration
-      // This would test that limit parameter works correctly
+      // Seed time tracking entries
+      await asUser.run(async (ctx) => {
+        await ctx.db.insert("timeTracking", {
+          userId: identity.subject,
+          frameworkId: testFrameworkId,
+          timeSaved: 30,
+          activity: "lesson planning",
+          timestamp: Date.now(),
+        });
+      });
+
+      const history = await asUser.query(api.timeTracking.getUserTimeTracking, { limit: 10 });
+      expect(Array.isArray(history)).toBe(true);
+      expect(history.length).toBeGreaterThan(0);
     });
 
     test("returns history with authenticated user and respects limit", async () => {
