@@ -145,6 +145,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent 
+        data-testid="framework-detail-dialog"
         className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-background to-primary/5"
         aria-describedby="framework-detail-description"
       >
@@ -315,6 +316,8 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                   {framework.samplePrompt}
                 </pre>
                 <Button
+                  data-testid="framework-detail-copy-prompt"
+                  aria-label="Copy framework prompt"
                   size="sm"
                   onClick={handleCopyPrompt}
                   className="absolute top-2 right-2"
@@ -537,24 +540,40 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             transition={{ duration: 0.3, delay: 1.5 }}
             className="flex flex-wrap gap-3 pt-4 border-t border-primary/20"
           >
-            <Button onClick={handleSave} variant={isSaved ? "default" : "outline"}>
+            <Button 
+              data-testid="framework-detail-save"
+              aria-label={isSaved ? "Unsave framework" : "Save framework"}
+              onClick={handleSave} 
+              variant={isSaved ? "default" : "outline"}
+            >
               {isSaved ? (
                 <>
-                  <BookmarkCheck className="h-4 w-4 mr-2" />
+                  <BookmarkCheck className="h-4 w-4 mr-2" aria-hidden="true" />
                   Saved
                 </>
               ) : (
                 <>
-                  <Bookmark className="h-4 w-4 mr-2" />
+                  <Bookmark className="h-4 w-4 mr-2" aria-hidden="true" />
                   Save Framework
                 </>
               )}
             </Button>
-            <Button onClick={handleTried} variant="outline">
-              <Star className="h-4 w-4 mr-2" />
+            <Button 
+              data-testid="framework-detail-tried"
+              aria-label="Mark framework as tried"
+              onClick={handleTried} 
+              variant="outline"
+            >
+              <Star className="h-4 w-4 mr-2" aria-hidden="true" />
               Mark as Tried
             </Button>
-            <Button onClick={handleCopyPrompt} variant="outline" disabled={copiedPrompt}>
+            <Button 
+              data-testid="framework-detail-copy-prompt"
+              aria-label="Copy framework prompt"
+              onClick={handleCopyPrompt} 
+              variant="outline" 
+              disabled={copiedPrompt}
+            >
               {copiedPrompt ? (
                 <>
                   <Check className="h-4 w-4 mr-2" />

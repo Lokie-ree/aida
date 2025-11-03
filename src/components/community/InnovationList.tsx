@@ -165,6 +165,8 @@ export function InnovationList() {
                 Submit Testimonial
               </Button>
               <Button 
+                data-testid="innovation-list-share-button"
+                aria-label="Share innovation"
                 onClick={() => setShowForm(true)} 
                 className="flex items-center gap-2 h-11"
               >
@@ -177,7 +179,7 @@ export function InnovationList() {
 
         {/* Innovation Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
+        <div data-testid="innovation-form-modal" className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
           <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
             <InnovationForm
               onSuccess={handleFormSuccess}
@@ -209,8 +211,10 @@ export function InnovationList() {
           <CardContent className={spacing.card}>
             <div className="space-y-4">
             {/* Subject Filter Tabs */}
-            <div className="flex flex-wrap gap-2 pb-2 border-b border-primary/20">
+            <div className="flex flex-wrap gap-2 pb-2 border-b border-primary/20" data-testid="innovation-subject-filters">
               <Button
+                data-testid="innovation-filter-all-subjects"
+                aria-label="Filter all subjects"
                 variant={selectedSubject === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedSubject("all")}
@@ -219,6 +223,8 @@ export function InnovationList() {
               </Button>
               {userProfile?.subject && (
                 <Button
+                  data-testid={`innovation-filter-subject-${userProfile.subject.toLowerCase().replace(/\s+/g, '-')}`}
+                  aria-label={`Filter by ${userProfile.subject} (my subject)`}
                   variant={selectedSubject === userProfile.subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(userProfile.subject!)}
@@ -230,6 +236,8 @@ export function InnovationList() {
               {uniqueSubjects.map((subject) => (
                 <Button
                   key={subject}
+                  data-testid={`innovation-filter-subject-${subject.toLowerCase().replace(/\s+/g, '-')}`}
+                  aria-label={`Filter by ${subject}`}
                   variant={selectedSubject === subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(subject)}
@@ -456,6 +464,7 @@ export function InnovationList() {
         </motion.div>
       ) : (
         <motion.div
+          data-testid="innovation-list"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}

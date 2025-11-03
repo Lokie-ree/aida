@@ -72,7 +72,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
   };
 
   return (
-    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
+    <Card data-testid="testimonial-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
           <MessageSquare className="h-5 w-5 text-primary" />
@@ -84,7 +84,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form data-testid="testimonial-form-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Quote */}
             <FormField
               control={form.control}
@@ -94,6 +94,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
                   <FormLabel>Your Testimonial *</FormLabel>
                   <FormControl>
                     <Textarea
+                      data-testid="testimonial-form-quote"
                       placeholder="Tell us how Pelican AI has helped you save time and improve your teaching..."
                       rows={4}
                       {...field}
@@ -116,6 +117,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
                   <FormLabel>Impact *</FormLabel>
                   <FormControl>
                     <Textarea
+                      data-testid="testimonial-form-impact"
                       placeholder="Describe the specific impact (e.g., 'More time for student conferences', 'Better differentiated instruction')..."
                       rows={2}
                       {...field}
@@ -171,11 +173,11 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
 
             {/* Actions */}
             <ButtonGroup spacing="md" className="pt-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button data-testid="testimonial-form-submit" type="submit" disabled={isSubmitting} aria-label="Submit testimonial">
                 {isSubmitting ? "Submitting..." : "Submit Testimonial"}
               </Button>
               {onCancel && (
-                <Button type="button" variant="outline" onClick={onCancel}>
+                <Button data-testid="testimonial-form-cancel" type="button" variant="outline" onClick={onCancel} aria-label="Cancel">
                   Cancel
                 </Button>
               )}

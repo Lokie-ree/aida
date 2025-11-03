@@ -143,38 +143,49 @@ export function FrameworkCard({
             </div>
             
             <div className="flex flex-col gap-2">
-              <Button onClick={onView} size="sm">
+              <Button 
+                data-testid="framework-card-view-details"
+                aria-label="View framework details"
+                onClick={onView} 
+                size="sm"
+              >
                 View Details
               </Button>
               <div className="flex gap-1">
                 <Button 
+                  data-testid="framework-card-copy"
+                  aria-label="Copy framework prompt"
                   variant="outline" 
                   size="sm"
                   onClick={handleCopy}
                   className="px-3"
                 >
-                  <Copy className="h-4 w-4" />
+                  <Copy className="h-4 w-4" aria-hidden="true" />
                 </Button>
                 <Button 
+                  data-testid="framework-card-save"
+                  aria-label={isSaved ? "Unsave framework" : "Save framework"}
                   variant="outline" 
                   size="sm"
                   onClick={handleSave}
                   className="px-3"
                 >
                   {isSaved ? (
-                    <BookmarkCheck className="h-4 w-4 text-primary" />
+                    <BookmarkCheck className="h-4 w-4 text-primary" aria-hidden="true" />
                   ) : (
-                    <Bookmark className="h-4 w-4" />
+                    <Bookmark className="h-4 w-4" aria-hidden="true" />
                   )}
                 </Button>
                 {onTried && (
                   <Button 
+                    data-testid="framework-card-tried"
+                    aria-label="Mark framework as tried"
                     variant="outline" 
                     size="sm"
                     onClick={onTried}
                     className="px-3"
                   >
-                    <Star className="h-4 w-4" />
+                    <Star className="h-4 w-4" aria-hidden="true" />
                   </Button>
                 )}
               </div>
@@ -189,6 +200,7 @@ export function FrameworkCard({
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
+      data-testid="framework-card"
     >
       <Card className={cn(
         "group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 h-full",
@@ -211,7 +223,10 @@ export function FrameworkCard({
         </div>
         
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm font-mono text-muted-foreground">
+          <span 
+            data-testid="framework-card-id"
+            className="text-sm font-mono text-muted-foreground"
+          >
             {framework.frameworkId}
           </span>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -269,6 +284,8 @@ export function FrameworkCard({
 
         <ButtonGroup>
           <Button 
+            data-testid="framework-card-view-details"
+            aria-label="View framework details"
             onClick={onView} 
             className="flex-1"
             size="sm"
@@ -277,37 +294,43 @@ export function FrameworkCard({
           </Button>
           
           <Button 
+            data-testid="framework-card-copy"
+            aria-label="Copy framework prompt"
             variant="outline" 
             size="sm"
             onClick={handleCopy}
             className="px-3"
           >
-            <Copy className="h-4 w-4" />
+            <Copy className="h-4 w-4" aria-hidden="true" />
           </Button>
           
           {(onSave || onUnsave) && (
             <Button 
+              data-testid="framework-card-save"
+              aria-label={isSaved ? "Unsave framework" : "Save framework"}
               variant="outline" 
               size="sm"
               onClick={handleSave}
               className="px-3"
             >
               {isSaved ? (
-                <BookmarkCheck className="h-4 w-4 text-primary" />
+                <BookmarkCheck className="h-4 w-4 text-primary" aria-hidden="true" />
               ) : (
-                <Bookmark className="h-4 w-4" />
+                <Bookmark className="h-4 w-4" aria-hidden="true" />
               )}
             </Button>
           )}
           
           {onTried && (
             <Button 
+              data-testid="framework-card-tried"
+              aria-label="Mark framework as tried"
               variant="outline" 
               size="sm"
               onClick={onTried}
               className="px-3"
             >
-              <Star className="h-4 w-4" />
+              <Star className="h-4 w-4" aria-hidden="true" />
             </Button>
           )}
         </ButtonGroup>

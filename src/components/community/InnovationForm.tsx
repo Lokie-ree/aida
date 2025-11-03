@@ -42,6 +42,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
 
   const form = useForm<InnovationFormData>({
+    resolver: zodResolver(innovationFormSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -135,7 +136,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   ];
 
   return (
-    <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
+    <Card data-testid="innovation-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl">
           <Lightbulb className="h-5 w-5 text-primary" />
@@ -147,7 +148,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form data-testid="innovation-form-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Title */}
             <FormField
               control={form.control}
@@ -157,11 +158,12 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                   <FormLabel>Innovation Title *</FormLabel>
                   <FormControl>
                     <Input
+                      data-testid="innovation-form-title"
                       placeholder="e.g., Using AI to Create Differentiated Reading Passages"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="innovation-form-title-error" />
                 </FormItem>
               )}
             />
@@ -175,12 +177,13 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                   <FormLabel>Description *</FormLabel>
                   <FormControl>
                     <Textarea
+                      data-testid="innovation-form-description"
                       placeholder="Describe your innovation, how you used AI, and what made it effective..."
                       rows={4}
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage data-testid="innovation-form-description-error" />
                 </FormItem>
               )}
             />
@@ -219,6 +222,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Tags</label>
               <div className="flex gap-2">
                 <Input
+                  data-testid="innovation-form-tags-input"
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="Add a tag..."
@@ -229,23 +233,25 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                     }
                   }}
                 />
-                <Button type="button" onClick={handleAddTag} size="sm">
-                  <Plus className="h-4 w-4" />
+                <Button data-testid="innovation-form-add-tag" type="button" onClick={handleAddTag} size="sm" aria-label="Add tag">
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
               
               {/* Current Tags */}
               {watchedTags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 mt-2" data-testid="innovation-form-tags">
                   {watchedTags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                    <Badge key={tag} data-testid="innovation-tag" variant="secondary" className="flex items-center gap-1">
                       {tag}
                       <button
                         type="button"
+                        data-testid="innovation-form-remove-tag"
+                        aria-label={`Remove tag ${tag}`}
                         onClick={() => handleRemoveTag(tag)}
                         className="ml-1 hover:text-destructive"
                       >
-                        <X className="h-3 w-3" />
+                        <X className="h-3 w-3" aria-hidden="true" />
                       </button>
                     </Badge>
                   ))}
@@ -314,11 +320,11 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
 
             {/* Actions */}
             <ButtonGroup spacing="md" className="pt-4">
-              <Button type="submit" disabled={isSubmitting}>
+              <Button data-testid="innovation-form-submit" type="submit" disabled={isSubmitting} aria-label="Submit innovation">
                 {isSubmitting ? "Sharing..." : "Share Innovation"}
               </Button>
               {onCancel && (
-                <Button type="button" variant="outline" onClick={onCancel}>
+                <Button data-testid="innovation-form-cancel" type="button" variant="outline" onClick={onCancel} aria-label="Cancel">
                   Cancel
                 </Button>
               )}

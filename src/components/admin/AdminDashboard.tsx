@@ -103,8 +103,8 @@ export function AdminDashboard() {
         {/* Tabs for different admin functions */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="beta-signups">
+            <TabsTrigger data-testid="admin-tab-overview" value="overview">Overview</TabsTrigger>
+            <TabsTrigger data-testid="admin-tab-beta-signups" value="beta-signups">
               Beta Signups
               {pendingSignups && pendingSignups.length > 0 && (
                 <Badge variant="destructive" className="ml-2">
@@ -112,7 +112,7 @@ export function AdminDashboard() {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="content-moderation">
+            <TabsTrigger data-testid="admin-tab-content-moderation" value="content-moderation">
               Content Moderation
               {stats.pendingTestimonials > 0 && (
                 <Badge variant="destructive" className="ml-2">
@@ -120,7 +120,7 @@ export function AdminDashboard() {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="beta-users">Beta Users</TabsTrigger>
+            <TabsTrigger data-testid="admin-tab-beta-users" value="beta-users">Beta Users</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
