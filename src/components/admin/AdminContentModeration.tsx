@@ -120,9 +120,9 @@ export function AdminContentModeration({ testimonials, innovations }: AdminConte
               <p>No pending testimonials</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3" data-testid="admin-pending-testimonials">
               {pendingTestimonials.map((testimonial) => (
-                <div key={testimonial._id} className="border rounded-lg p-4 space-y-3">
+                <div key={testimonial._id} data-testid="admin-pending-item" className="border rounded-lg p-4 space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -146,23 +146,29 @@ export function AdminContentModeration({ testimonials, innovations }: AdminConte
                   </div>
                   <div className="flex gap-2">
                     <Button
+                      data-testid="admin-approve-button"
+                      aria-label="Approve testimonial"
                       size="sm"
                       variant="default"
                       onClick={() => handleApproveTestimonial(testimonial._id, false)}
                       className="flex-1"
                     >
-                      <CheckCircle2 className="h-4 w-4 mr-2" />
+                      <CheckCircle2 className="h-4 w-4 mr-2" aria-hidden="true" />
                       Approve
                     </Button>
                     <Button
+                      data-testid="admin-feature-button"
+                      aria-label="Feature testimonial"
                       size="sm"
                       variant="secondary"
                       onClick={() => handleApproveTestimonial(testimonial._id, true)}
                     >
-                      <Star className="h-4 w-4 mr-2" />
+                      <Star className="h-4 w-4 mr-2" aria-hidden="true" />
                       Feature
                     </Button>
                     <Button
+                      data-testid="admin-reject-button"
+                      aria-label="Reject testimonial"
                       size="sm"
                       variant="destructive"
                       onClick={() => {
@@ -170,7 +176,7 @@ export function AdminContentModeration({ testimonials, innovations }: AdminConte
                         setRejectionReason("");
                       }}
                     >
-                      <XCircle className="h-4 w-4 mr-2" />
+                      <XCircle className="h-4 w-4 mr-2" aria-hidden="true" />
                       Delete
                     </Button>
                   </div>

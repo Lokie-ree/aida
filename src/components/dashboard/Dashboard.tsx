@@ -7,6 +7,7 @@ import { TimeSavingsTracker } from "../shared/TimeSavingsTracker";
 import { WelcomeHero } from "./WelcomeHero";
 import { FeaturedRecommendation } from "./FeaturedRecommendation";
 import { QuickAccessGrid } from "./QuickAccessGrid";
+import { JourneyStats } from "./JourneyStats";
 import { spacing } from "@/lib/spacing";
 
 export interface DashboardProps {
@@ -105,6 +106,11 @@ export function Dashboard({
             </Alert>
           </motion.div>
         )}
+
+        {/* Journey Stats */}
+        <div className="mb-8">
+          <JourneyStats stats={stats} />
+        </div>
 
         {/* Main Content Area */}
         <div className={spacing.sectionGap}>

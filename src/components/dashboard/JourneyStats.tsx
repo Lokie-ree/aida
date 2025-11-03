@@ -61,6 +61,7 @@ export function JourneyStats({ stats, className = "" }: JourneyStatsProps) {
 
   return (
     <motion.div
+      data-testid="dashboard-journey-stats"
       initial="initial"
       animate="animate"
       variants={staggerChildren}
@@ -68,15 +69,19 @@ export function JourneyStats({ stats, className = "" }: JourneyStatsProps) {
     >
       {statItems.map((item, index) => {
         const IconComponent = item.icon;
+        const testId = item.label.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w-]/g, '');
         return (
           <motion.div 
             key={item.label}
+            data-testid={`dashboard-stat-${testId}`}
             variants={fadeInUp} 
             className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-4 border border-primary/20 hover:shadow-md transition-all duration-300 hover:-translate-y-1"
           >
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-lg ${item.bgColor}`}>
-                <IconComponent className={`h-5 w-5 ${item.color}`} />
+                <IconComponent className={`h-5 w-5 ${item.color}`} aria-hidden="true" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-2xl font-bold text-foreground font-heading">{item.value}</p>

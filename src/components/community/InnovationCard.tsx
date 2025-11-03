@@ -140,20 +140,24 @@ export function InnovationCard({
             
             <div className="flex gap-1">
               <Button
+                data-testid="innovation-card-like"
+                aria-label={isLiked ? "Unlike innovation" : "Like innovation"}
                 size="sm"
                 variant={isLiked ? "default" : "outline"}
                 onClick={handleLike}
                 className="px-2"
               >
-                <Heart className={cn("h-3 w-3", isLiked && "fill-current")} />
+                <Heart className={cn("h-3 w-3", isLiked && "fill-current")} aria-hidden="true" />
               </Button>
               <Button
+                data-testid="innovation-card-tried"
+                aria-label={isTried ? "Mark as not tried" : "Mark as tried"}
                 size="sm"
                 variant={isTried ? "default" : "outline"}
                 onClick={handleTried}
                 className="px-2"
               >
-                <CheckCircle className={cn("h-3 w-3", isTried && "fill-current")} />
+                <CheckCircle className={cn("h-3 w-3", isTried && "fill-current")} aria-hidden="true" />
               </Button>
             </div>
           </div>
@@ -166,6 +170,7 @@ export function InnovationCard({
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
+      data-testid="innovation-card"
     >
       <Card className="hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5">
         <CardHeader className="pb-3">
@@ -213,9 +218,9 @@ export function InnovationCard({
 
         {/* Tags */}
         {innovation.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
+          <div className="flex flex-wrap gap-1 mb-4" data-testid="innovation-card-tags">
             {innovation.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
+              <Badge key={tag} data-testid="innovation-tag" variant="secondary" className="text-xs">
                 {tag}
               </Badge>
             ))}
@@ -268,21 +273,25 @@ export function InnovationCard({
 
           <ButtonGroup>
             <Button
+              data-testid="innovation-card-like"
+              aria-label={isLiked ? "Unlike innovation" : "Like innovation"}
               size="sm"
               variant={isLiked ? "default" : "outline"}
               onClick={handleLike}
               className="flex items-center gap-1"
             >
-              <Heart className={cn("h-4 w-4", isLiked && "fill-current")} />
+              <Heart className={cn("h-4 w-4", isLiked && "fill-current")} aria-hidden="true" />
               {isLiked ? "Liked" : "Like"}
             </Button>
             <Button
+              data-testid="innovation-card-tried"
+              aria-label={isTried ? "Mark as not tried" : "Mark as tried"}
               size="sm"
               variant={isTried ? "default" : "outline"}
               onClick={handleTried}
               className="flex items-center gap-1"
             >
-              <CheckCircle className={cn("h-4 w-4", isTried && "fill-current")} />
+              <CheckCircle className={cn("h-4 w-4", isTried && "fill-current")} aria-hidden="true" />
               {isTried ? "Tried" : "I Tried This"}
             </Button>
           </ButtonGroup>

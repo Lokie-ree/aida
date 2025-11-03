@@ -29,8 +29,9 @@ describe("Admin Features - Core Functionality", () => {
     await navigateTo(page, "/admin");
     
     // Verify admin dashboard loads
-    await expect(page.locator("main")).toBeVisible({ timeout: 3000 });
-    await expect(page.locator("text=/admin|dashboard|moderation/i")).toBeVisible({ timeout: 2000 });
+    await page.locator("main").waitFor({ state: 'visible', timeout: 3000 });
+    // Use more specific selector to avoid matching "Dashboard" button and "Admin User" text
+    await page.getByRole("heading", { name: /admin dashboard/i }).waitFor({ state: 'visible', timeout: 2000 });
     
     // Test non-admin access blocked
     await page.getByRole("button", { name: /sign out|log out/i }).click();
@@ -49,15 +50,16 @@ describe("Admin Features - Core Functionality", () => {
     await loginAsTestUser(page, testUsers.admin.email);
     await navigateTo(page, "/admin");
     
-    // Navigate to pending content section
-    const pendingContentTab = page.getByRole("tab", { name: /pending|content|moderation/i }).or(
-      page.getByRole("link", { name: /pending/i })
-    );
+    // Navigate to pending content section - wait for tabs to be visible first
+    const tabsList = page.getByRole("tablist");
+    await tabsList.waitFor({ state: 'visible', timeout: 5000 });
+    const pendingContentTab = page.getByTestId("admin-tab-content-moderation");
+    await pendingContentTab.waitFor({ state: 'visible', timeout: 5000 });
     await pendingContentTab.click();
     await page.waitForTimeout(500);
     
-    // Verify pending items displayed
-    const pendingItems = page.locator('[data-testid="pending-item"], .pending-item, [role="article"]');
+    // Verify pending items displayed using test ID
+    const pendingItems = page.getByTestId("admin-pending-item");
     const count = await pendingItems.count();
     expect(count).toBeGreaterThanOrEqual(0);
   });
@@ -66,21 +68,23 @@ describe("Admin Features - Core Functionality", () => {
     await loginAsTestUser(page, testUsers.admin.email);
     await navigateTo(page, "/admin");
     
-    // Navigate to pending content
-    const pendingContentTab = page.getByRole("tab", { name: /pending|content|moderation/i }).or(
-      page.getByRole("link", { name: /pending/i })
-    );
+    // Navigate to pending content - wait for tabs to be visible first
+    const tabsList = page.getByRole("tablist");
+    await tabsList.waitFor({ state: 'visible', timeout: 5000 });
+    const pendingContentTab = page.getByTestId("admin-tab-content-moderation");
+    await pendingContentTab.waitFor({ state: 'visible', timeout: 5000 });
     await pendingContentTab.click();
     await page.waitForTimeout(500);
     
-    // Find first pending item
-    const firstItem = page.locator('[data-testid="pending-item"], .pending-item, [role="article"]').first();
+    // Find first pending item using test ID
+    const pendingItems = page.getByTestId("admin-pending-item");
+    const firstItem = pendingItems.first();
     if (await firstItem.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await firstItem.click();
-      await page.waitForTimeout(500);
+      await firstItem.waitFor({ state: 'visible', timeout: 2000 });
       
-      // Click approve button
-      const approveButton = page.getByRole("button", { name: /approve/i });
+      // Click approve button using test ID
+      const approveButton = firstItem.getByTestId("admin-approve-button");
+      await approveButton.waitFor({ state: 'visible', timeout: 2000 });
       await approveButton.click();
       
       // Verify confirmation dialog if present
@@ -90,9 +94,9 @@ describe("Admin Features - Core Functionality", () => {
         await page.waitForTimeout(500);
       }
       
-      // Verify success message
-      const successMessage = page.locator("text=/approved|success/i");
-      await expect(successMessage).toBeVisible({ timeout: 3000 });
+      // Verify success toast notification
+      const successMessage = page.locator('[data-sonner-toast], [role="status"]').filter({ hasText: /approved|success/i }).first();
+      await successMessage.waitFor({ state: 'visible', timeout: 3000 });
     }
   });
 
@@ -100,21 +104,23 @@ describe("Admin Features - Core Functionality", () => {
     await loginAsTestUser(page, testUsers.admin.email);
     await navigateTo(page, "/admin");
     
-    // Navigate to pending content
-    const pendingContentTab = page.getByRole("tab", { name: /pending|content|moderation/i }).or(
-      page.getByRole("link", { name: /pending/i })
-    );
+    // Navigate to pending content - wait for tabs to be visible first
+    const tabsList = page.getByRole("tablist");
+    await tabsList.waitFor({ state: 'visible', timeout: 5000 });
+    const pendingContentTab = page.getByTestId("admin-tab-content-moderation");
+    await pendingContentTab.waitFor({ state: 'visible', timeout: 5000 });
     await pendingContentTab.click();
     await page.waitForTimeout(500);
     
-    // Find first pending item
-    const firstItem = page.locator('[data-testid="pending-item"], .pending-item, [role="article"]').first();
+    // Find first pending item using test ID
+    const pendingItems = page.getByTestId("admin-pending-item");
+    const firstItem = pendingItems.first();
     if (await firstItem.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await firstItem.click();
-      await page.waitForTimeout(500);
+      await firstItem.waitFor({ state: 'visible', timeout: 2000 });
       
-      // Click reject button
-      const rejectButton = page.getByRole("button", { name: /reject/i });
+      // Click reject button using test ID
+      const rejectButton = firstItem.getByTestId("admin-reject-button");
+      await rejectButton.waitFor({ state: 'visible', timeout: 2000 });
       await rejectButton.click();
       
       // Enter rejection reason
@@ -128,9 +134,9 @@ describe("Admin Features - Core Functionality", () => {
       await confirmButton.click();
       await page.waitForTimeout(500);
       
-      // Verify rejection message
-      const rejectionMessage = page.locator("text=/rejected|success/i");
-      await expect(rejectionMessage).toBeVisible({ timeout: 3000 });
+      // Verify rejection toast notification
+      const rejectionMessage = page.locator('[data-sonner-toast], [role="status"]').filter({ hasText: /rejected|deleted|removed/i }).first();
+      await rejectionMessage.waitFor({ state: 'visible', timeout: 3000 });
     }
   });
 
@@ -164,10 +170,11 @@ describe("Admin Features - Core Functionality", () => {
     await loginAsTestUser(page, testUsers.admin.email);
     await navigateTo(page, "/admin");
     
-    // Navigate to beta program section
-    const betaTab = page.getByRole("tab", { name: /beta|signups/i }).or(
-      page.getByRole("link", { name: /beta/i })
-    );
+    // Navigate to beta program section - wait for tabs to be visible first
+    const tabsList = page.getByRole("tablist");
+    await tabsList.waitFor({ state: 'visible', timeout: 5000 });
+    const betaTab = page.getByTestId("admin-tab-beta-signups");
+    await betaTab.waitFor({ state: 'visible', timeout: 5000 });
     await betaTab.click();
     await page.waitForTimeout(500);
     
@@ -176,21 +183,22 @@ describe("Admin Features - Core Functionality", () => {
     const count = await signups.count();
     expect(count).toBeGreaterThanOrEqual(0);
     
-    // Verify signup details are visible
-    if (count > 0) {
-      const firstSignup = signups.first();
-      await expect(firstSignup.locator("text=/email|name|school|subject/i")).toBeVisible({ timeout: 2000 });
-    }
+      // Verify signup details are visible
+      if (count > 0) {
+        const firstSignup = signups.first();
+        await firstSignup.locator("text=/email|name|school|subject/i").waitFor({ state: 'visible', timeout: 2000 });
+      }
   });
 
   test("TC-ADMIN-007: Approve Beta Signup", async () => {
     await loginAsTestUser(page, testUsers.admin.email);
     await navigateTo(page, "/admin");
     
-    // Navigate to beta program section
-    const betaTab = page.getByRole("tab", { name: /beta|signups/i }).or(
-      page.getByRole("link", { name: /beta/i })
-    );
+    // Navigate to beta program section - wait for tabs to be visible first
+    const tabsList = page.getByRole("tablist");
+    await tabsList.waitFor({ state: 'visible', timeout: 5000 });
+    const betaTab = page.getByTestId("admin-tab-beta-signups");
+    await betaTab.waitFor({ state: 'visible', timeout: 5000 });
     await betaTab.click();
     await page.waitForTimeout(500);
     
@@ -201,7 +209,7 @@ describe("Admin Features - Core Functionality", () => {
       await page.waitForTimeout(500);
       
       // Review signup details
-      await expect(page.locator("text=/email|name|school|subject/i")).toBeVisible({ timeout: 2000 });
+      await page.locator("text=/email|name|school|subject/i").waitFor({ state: 'visible', timeout: 2000 });
       
       // Click approve
       const approveButton = page.getByRole("button", { name: /approve/i });
@@ -216,7 +224,7 @@ describe("Admin Features - Core Functionality", () => {
       
       // Verify success message
       const successMessage = page.locator("text=/approved|welcome email sent|success/i");
-      await expect(successMessage).toBeVisible({ timeout: 3000 });
+      await successMessage.waitFor({ state: 'visible', timeout: 3000 });
     }
   });
 
@@ -234,7 +242,7 @@ describe("Admin Features - Core Functionality", () => {
       
       // View engagement metrics
       const metrics = page.locator("text=/engagement|active users|frameworks tried|time saved/i");
-      await expect(metrics.first()).toBeVisible({ timeout: 2000 });
+      await metrics.first().waitFor({ state: 'visible', timeout: 2000 });
       
       // Check individual user details if available
       const userList = page.locator('[data-testid="user-item"], .user-item, [role="row"]');
@@ -257,7 +265,7 @@ describe("Admin Features - Core Functionality", () => {
       
       // Check system metrics
       const metrics = page.locator("text=/health|status|uptime|performance/i");
-      await expect(metrics.first()).toBeVisible({ timeout: 2000 });
+      await metrics.first().waitFor({ state: 'visible', timeout: 2000 });
       
       // Verify alerts functional if present
       const alerts = page.locator('[data-testid="alert"], .alert, [role="alert"]');
