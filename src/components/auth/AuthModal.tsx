@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { 
   Form,
   FormControl,
@@ -28,6 +29,7 @@ interface AuthModalProps {
 export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModalProps) {
   const [flow, setFlow] = useState<"signIn" | "signUp">(initialMode);
   const createUserProfile = useMutation(api.betaSignup.createUserProfileAfterSignup);
+  const navigate = useNavigate();
   
   // Update flow when initialMode prop changes
   useEffect(() => {
@@ -68,6 +70,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
           console.log("Sign-in successful for user:", (result.data as any).user.id);
           toast.success("Welcome back to Pelican AI!");
           onClose();
+          // Navigate to root so SmartRedirect can handle role-based redirects
+          // (admin users go to /admin, regular users go to /dashboard)
+          navigate("/", { replace: true });
         } else if (result && 'error' in result) {
           // Better Auth returned an error object
           console.log("Sign-in error:", (result as any).error);
@@ -115,6 +120,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
           }
           
           onClose();
+          // Navigate to root so SmartRedirect can handle role-based redirects
+          // (admin users go to /admin, regular users go to /dashboard)
+          navigate("/", { replace: true });
         } else if (result && 'error' in result) {
           // Better Auth returned an error object
           console.log("Sign-up error:", (result as any).error);
@@ -159,6 +167,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
               </span>
             </div>
           </DialogTitle>
+          <DialogDescription className="text-center">
+            {flow === "signIn" 
+              ? "Sign in to access your AI guidance frameworks" 
+              : "Create your account to start using AI frameworks"}
+          </DialogDescription>
         </DialogHeader>
 
         <Card className="border-0 shadow-none">
@@ -202,14 +215,15 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="Enter your email"
-                          disabled={submitting}
-                          {...field}
-                        />
-                      </FormControl>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="Enter your email"
+                            disabled={submitting}
+                            autoComplete="email"
+                            {...field}
+                          />
+                        </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -225,6 +239,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
                           type="password"
                           placeholder="Enter your password"
                           disabled={submitting}
+                          autoComplete={flow === "signIn" ? "current-password" : "new-password"}
                           {...field}
                         />
                       </FormControl>
