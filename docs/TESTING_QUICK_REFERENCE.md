@@ -133,8 +133,9 @@ npx convex run seedFrameworks:seedInitialFrameworks
 
 ## Getting Help
 
+- **Current Test Status:** See summary at top of [E2E_TEST_RESULTS.md](./E2E_TEST_RESULTS.md)
 - **Detailed Test Results:** [E2E_TEST_RESULTS.md](./E2E_TEST_RESULTS.md)
-- **Full Testing Protocol:** [TESTING_PROTOCOL.md](./TESTING_PROTOCOL.md)
+- **Full Testing Protocol & Best Practices:** [TESTING_PROTOCOL.md](./TESTING_PROTOCOL.md) (includes best practices section)
 - **E2E Test README:** [tests/e2e/README.md](../tests/e2e/README.md)
 
 ---

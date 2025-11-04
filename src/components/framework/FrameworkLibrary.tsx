@@ -34,6 +34,8 @@ export function FrameworkLibrary() {
   const [moduleFilter, setModuleFilter] = useState<ModuleFilter>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+  const [lerDomainFilter, setLerDomainFilter] = useState<string>("all");
+  const [louisianaStandardsFilter, setLouisianaStandardsFilter] = useState<string>("all");
   const [selectedFramework, setSelectedFramework] = useState<string | null>(null);
 
   // Queries
@@ -62,12 +64,35 @@ export function FrameworkLibrary() {
   const filteredFrameworks = displayFrameworks.filter((framework) => {
     if (categoryFilter !== "all" && framework.category !== categoryFilter) return false;
     if (difficultyFilter !== "all" && (framework as any).difficultyLevel !== difficultyFilter) return false;
+    
+    // Filter by LER domain
+    if (lerDomainFilter !== "all") {
+      const frameworkLerDomains = (framework as any).lerDomains || [];
+      if (!frameworkLerDomains.includes(lerDomainFilter)) return false;
+    }
+    
+    // Filter by Louisiana Standards alignment
+    if (louisianaStandardsFilter === "aligned") {
+      const frameworkStandards = (framework as any).louisianaStandards || [];
+      if (!frameworkStandards || frameworkStandards.length === 0) return false;
+    }
+    
     return true;
   });
 
   // Get unique categories and difficulties for filter options
   const categories = Array.from(new Set(frameworks?.map(f => f.category) || []));
   const difficulties = Array.from(new Set(frameworks?.map(f => f.difficultyLevel) || []));
+  
+  // Get unique LER domains from all frameworks
+  const lerDomains = Array.from(new Set(
+    frameworks?.flatMap(f => (f as any).lerDomains || []) || []
+  )).sort();
+  
+  // Check if any frameworks have Louisiana Standards
+  const hasLouisianaStandards = frameworks?.some(
+    f => (f as any).louisianaStandards && (f as any).louisianaStandards.length > 0
+  ) || false;
 
   const handleFrameworkAction = (frameworkId: string, action: "view" | "copy" | "save" | "unsave" | "tried") => {
     const performAction = async () => {
@@ -263,9 +288,9 @@ export function FrameworkLibrary() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleViewFramework(fw.frameworkId)}
-                          className="hover:bg-primary hover:text-primary-foreground transition-colors"
+                          className="hover:bg-primary hover:text-primary-foreground transition-colors min-w-0 max-w-full"
                         >
-                          {fw.title}
+                          <span className="truncate">{fw.title}</span>
                         </Button>
                       ))}
                     </div>
@@ -299,10 +324,10 @@ export function FrameworkLibrary() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleViewFrameworkWithTracking(fw.frameworkId)}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 min-w-0 max-w-full"
                     >
-                      {fw.title}
-                      <ArrowRight className="h-3 w-3" />
+                      <span className="truncate">{fw.title}</span>
+                      <ArrowRight className="h-3 w-3 shrink-0" />
                     </Button>
                   ))}
                 </div>
@@ -379,10 +404,10 @@ export function FrameworkLibrary() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleViewFramework(fw.frameworkId)}
-                            className="flex items-center gap-1"
+                            className="flex items-center gap-1 min-w-0 max-w-full"
                           >
-                            {fw.title}
-                            <ArrowRight className="h-3 w-3" />
+                            <span className="truncate">{fw.title}</span>
+                            <ArrowRight className="h-3 w-3 shrink-0" />
                           </Button>
                         ))}
                       </div>
@@ -414,11 +439,17 @@ export function FrameworkLibrary() {
                     moduleFilter={moduleFilter}
                     categoryFilter={categoryFilter}
                     difficultyFilter={difficultyFilter}
+                    lerDomainFilter={lerDomainFilter}
+                    louisianaStandardsFilter={louisianaStandardsFilter}
                     onModuleChange={(value) => setModuleFilter(value as ModuleFilter)}
                     onCategoryChange={setCategoryFilter}
                     onDifficultyChange={setDifficultyFilter}
+                    onLerDomainChange={setLerDomainFilter}
+                    onLouisianaStandardsChange={setLouisianaStandardsFilter}
                     categories={categories}
                     difficulties={difficulties}
+                    lerDomains={lerDomains}
+                    hasLouisianaStandards={hasLouisianaStandards}
                   />
                 </CardContent>
               </Card>

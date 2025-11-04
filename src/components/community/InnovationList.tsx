@@ -155,23 +155,23 @@ export function InnovationList() {
                 Discover creative AI use cases shared by Louisiana educators
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <Button 
                 onClick={() => setShowTestimonialForm(true)} 
                 variant="outline" 
-                className="flex items-center gap-2 h-11"
+                className="flex items-center gap-2 h-11 flex-1 sm:flex-initial min-w-0"
               >
-                <MessageSquare className="h-4 w-4" />
-                Submit Testimonial
+                <MessageSquare className="h-4 w-4 shrink-0" />
+                <span className="truncate">Submit Testimonial</span>
               </Button>
               <Button 
                 data-testid="innovation-list-share-button"
                 aria-label="Share innovation"
                 onClick={() => setShowForm(true)} 
-                className="flex items-center gap-2 h-11"
+                className="flex items-center gap-2 h-11 flex-1 sm:flex-initial min-w-0"
               >
-                <Plus className="h-4 w-4" />
-                Share Innovation
+                <Plus className="h-4 w-4 shrink-0" />
+                <span className="truncate">Share Innovation</span>
               </Button>
             </div>
           </div>

@@ -46,7 +46,7 @@ export function FAQSection() {
             </GradientText>
           </motion.div>
           <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 font-primary">
-            Everything you need to know about joining Louisiana's first platform-agnostic AI guidance program.
+            Everything you need to know about Pelican AI and how it helps Louisiana educators use AI effectively.
           </motion.p>
         </motion.div>
 

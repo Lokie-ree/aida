@@ -8,22 +8,34 @@ interface FrameworkFiltersProps {
   moduleFilter: string;
   categoryFilter: string;
   difficultyFilter: string;
+  lerDomainFilter: string;
+  louisianaStandardsFilter: string;
   onModuleChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onDifficultyChange: (value: string) => void;
+  onLerDomainChange: (value: string) => void;
+  onLouisianaStandardsChange: (value: string) => void;
   categories: string[];
   difficulties: string[];
+  lerDomains: string[];
+  hasLouisianaStandards: boolean;
 }
 
 export function FrameworkFilters({
   moduleFilter,
   categoryFilter,
   difficultyFilter,
+  lerDomainFilter,
+  louisianaStandardsFilter,
   onModuleChange,
   onCategoryChange,
   onDifficultyChange,
+  onLerDomainChange,
+  onLouisianaStandardsChange,
   categories,
-  difficulties
+  difficulties,
+  lerDomains,
+  hasLouisianaStandards
 }: FrameworkFiltersProps) {
   const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty) {
@@ -109,8 +121,50 @@ export function FrameworkFilters({
         </Select>
       </div>
 
+      {/* LER Domain Filter */}
+      {lerDomains.length > 0 && (
+        <div className="space-y-2">
+          <Label>LER Domain</Label>
+          <Select value={lerDomainFilter} onValueChange={onLerDomainChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select LER domain" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Domains</SelectItem>
+              {lerDomains.map((domain) => (
+                <SelectItem key={domain} value={domain}>
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-3 w-3" />
+                    <span>{domain}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {/* Louisiana Standards Filter */}
+      <div className="space-y-2">
+        <Label>Louisiana Standards</Label>
+        <Select value={louisianaStandardsFilter} onValueChange={onLouisianaStandardsChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filter by standards alignment" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Frameworks</SelectItem>
+            <SelectItem value="aligned">
+              <div className="flex items-center gap-2">
+                <Target className="h-3 w-3" />
+                <span>Louisiana Standards Aligned</span>
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Active Filters Display */}
-      {(moduleFilter !== "all" || categoryFilter !== "all" || difficultyFilter !== "all") && (
+      {(moduleFilter !== "all" || categoryFilter !== "all" || difficultyFilter !== "all" || lerDomainFilter !== "all" || louisianaStandardsFilter !== "all") && (
         <div className="space-y-2">
           <Label className="text-sm font-medium">Active Filters</Label>
           <div className="flex flex-wrap gap-2">
@@ -136,18 +190,32 @@ export function FrameworkFilters({
                 <span className="capitalize">{difficultyFilter}</span>
               </Badge>
             )}
+            {lerDomainFilter !== "all" && (
+              <Badge variant="outline" className="flex items-center gap-1 bg-blue-50 text-blue-700 border-blue-200">
+                <GraduationCap className="h-3 w-3" />
+                {lerDomainFilter}
+              </Badge>
+            )}
+            {louisianaStandardsFilter !== "all" && (
+              <Badge variant="outline" className="flex items-center gap-1 bg-purple-50 text-purple-700 border-purple-200">
+                <Target className="h-3 w-3" />
+                LA Standards Aligned
+              </Badge>
+            )}
           </div>
         </div>
       )}
 
       {/* Clear Filters */}
-      {(moduleFilter !== "all" || categoryFilter !== "all" || difficultyFilter !== "all") && (
+      {(moduleFilter !== "all" || categoryFilter !== "all" || difficultyFilter !== "all" || lerDomainFilter !== "all" || louisianaStandardsFilter !== "all") && (
         <div className="pt-2">
           <button
             onClick={() => {
               onModuleChange("all");
               onCategoryChange("all");
               onDifficultyChange("all");
+              onLerDomainChange("all");
+              onLouisianaStandardsChange("all");
             }}
             className="text-sm text-muted-foreground hover:text-foreground underline"
           >

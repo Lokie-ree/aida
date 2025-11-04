@@ -96,22 +96,22 @@ export const testimonials: Testimonial[] = [
     title: "[Your School Here]"
   },
   {
-    quote: "Join Louisiana educators shaping the future of AI in education",
+    quote: "Louisiana educators using AI with confidence every day",
     author: "[Your Name Here]",
     title: "[Your School Here]"
   },
   {
-    quote: "Be part of the movement that's reclaiming time for what matters",
+    quote: "Reclaiming 3-5 hours per week with practical AI frameworks",
     author: "[Your Name Here]",
     title: "[Your School Here]"
   },
   {
-    quote: "Help us build the AI guidance Louisiana educators actually need",
+    quote: "Finally, AI guidance that understands Louisiana standards",
     author: "[Your Name Here]",
     title: "[Your School Here]"
   },
   {
-    quote: "Your feedback will directly shape what we create next",
+    quote: "Using frameworks that save real time on lesson planning and admin tasks",
     author: "[Your Name Here]",
     title: "[Your School Here]"
   }
@@ -132,15 +132,15 @@ export const faqs: FAQ[] = [
   },
   {
     question: "How much time will this actually save me?",
-    answer: "Our Lesson Objective Unpacker saves 7-12 minutes per lesson planned. With 5-10 lessons planned weekly, that's 35-120 minutes saved just on objective unpacking and success criteria creation. As we co-create additional frameworks based on YOUR pain points, time savings compound."
+    answer: "Our Lesson Objective Unpacker saves 7-12 minutes per lesson planned. With 5-10 lessons planned weekly, that's 35-120 minutes saved just on objective unpacking and success criteria creation. As we add more frameworks based on feedback from Louisiana educators, time savings compound."
   },
   {
-    question: "What's the beta program timeline?",
-    answer: "The beta program runs for 8-12 weeks. You'll start with our Lesson Objective Unpacker framework (saves 7-12 minutes per lesson), then co-create additional frameworks based on YOUR pain points. Weekly check-ins and bi-weekly office hours ensure we're building what Louisiana educators actually need."
+    question: "How often are new frameworks added?",
+    answer: "You get immediate platform access and can start using frameworks right away. We continuously add new frameworks based on feedback from Louisiana educators. Use the platform at your own pace—all frameworks are available now. Through optional feedback surveys and office hours, you can help us prioritize which frameworks to add next based on YOUR needs."
   },
   {
-    question: "What's included in the beta program?",
-    answer: "Beta testers start with our AI-assisted lesson planning framework, then co-create additional frameworks with us. You get weekly prompts via email, feedback surveys, bi-weekly office hours, and direct influence on what we build next. This isn't just testing—it's collaborative development based on YOUR needs. Platform access comes in Phase 2."
+    question: "What's included when I sign up?",
+    answer: "You get immediate platform access with 10+ foundational frameworks designed for Louisiana educators. Start with our Lesson Objective Unpacker (saves 7-12 minutes per lesson), then explore other frameworks for email drafting, differentiation, parent communication, and more. All frameworks are ready to use now. Through optional feedback surveys and office hours, you can help us prioritize which new frameworks to add next based on YOUR pain points."
   },
   {
     question: "Do I need to be tech-savvy to benefit?",
