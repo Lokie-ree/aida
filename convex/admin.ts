@@ -30,8 +30,7 @@ const isAdmin = async (ctx: any) => {
   // For now, check if user email is in admin list
   // In production, this would be a proper role-based system
   const adminEmails = [
-    "rplapointjr+reset@gmail.com", // Temporary for testing
-    "delivered@resend.dev" // Test admin user
+    "admin@resend.dev" // Test admin user
   ];
   
   if (!adminEmails.includes((user as any).email)) {
@@ -206,6 +205,7 @@ export const getAllInnovationsAdmin = query({
   returns: v.array(v.object({
     _id: v.id("innovations"),
     _creationTime: v.number(),
+    userId: v.string(),
     title: v.string(),
     description: v.string(),
     userName: v.string(),
