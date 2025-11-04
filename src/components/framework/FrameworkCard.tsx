@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck } from "lucide-react";
+import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck, Target, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FrameworkCardProps {
@@ -19,6 +19,8 @@ interface FrameworkCardProps {
     difficultyLevel: "beginner" | "intermediate" | "advanced";
     usageCount: number;
     averageRating?: number;
+    lerDomains?: string[];
+    louisianaStandards?: string[];
   };
   variant?: "compact" | "expanded" | "grid" | "list";
   userSubject?: string; // User's teaching subject for personalization
@@ -110,6 +112,33 @@ export function FrameworkCard({
                 )}
               </div>
               
+              {/* LER Domains and Louisiana Standards Badges */}
+              {(framework.lerDomains && framework.lerDomains.length > 0) || (framework.louisianaStandards && framework.louisianaStandards.length > 0) ? (
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {framework.lerDomains && framework.lerDomains.length > 0 && (
+                    <Badge 
+                      variant="outline" 
+                      className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                      title="Louisiana Educator Rubric Domain"
+                    >
+                      <GraduationCap className="h-3 w-3 mr-1" />
+                      {framework.lerDomains[0].replace("Domain ", "LER ")}
+                      {framework.lerDomains.length > 1 && ` +${framework.lerDomains.length - 1}`}
+                    </Badge>
+                  )}
+                  {framework.louisianaStandards && framework.louisianaStandards.length > 0 && (
+                    <Badge 
+                      variant="outline" 
+                      className="text-xs bg-purple-50 text-purple-700 border-purple-200"
+                      title="Louisiana Standards Aligned"
+                    >
+                      <Target className="h-3 w-3 mr-1" />
+                      LA Standards
+                    </Badge>
+                  )}
+                </div>
+              ) : null}
+
               <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
                 {framework.title}
               </h3>
@@ -221,6 +250,33 @@ export function FrameworkCard({
             {framework.difficultyLevel}
           </Badge>
         </div>
+
+        {/* LER Domains and Louisiana Standards Badges */}
+        {(framework.lerDomains && framework.lerDomains.length > 0) || (framework.louisianaStandards && framework.louisianaStandards.length > 0) ? (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {framework.lerDomains && framework.lerDomains.length > 0 && (
+              <Badge 
+                variant="outline" 
+                className="text-xs bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 cursor-pointer"
+                title="Louisiana Educator Rubric Domain"
+              >
+                <GraduationCap className="h-3 w-3 mr-1" />
+                {framework.lerDomains[0].replace("Domain ", "LER ")}
+                {framework.lerDomains.length > 1 && ` +${framework.lerDomains.length - 1}`}
+              </Badge>
+            )}
+            {framework.louisianaStandards && framework.louisianaStandards.length > 0 && (
+              <Badge 
+                variant="outline" 
+                className="text-xs bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 cursor-pointer"
+                title="Louisiana Standards Aligned"
+              >
+                <Target className="h-3 w-3 mr-1" />
+                LA Standards
+              </Badge>
+            )}
+          </div>
+        ) : null}
         
         <div className="flex items-center gap-2 mb-2">
           <span 

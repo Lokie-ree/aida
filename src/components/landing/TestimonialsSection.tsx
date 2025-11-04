@@ -39,11 +39,11 @@ export function TestimonialsSection() {
               colors={blueGradient}
               className="text-4xl md:text-5xl font-bold mb-4 font-heading"
             >
-              Join Louisiana Educators Building the Future
+              Join Louisiana Educators Using AI with Confidence
             </GradientText>
           </motion.div>
           <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 font-primary">
-            Be part of something special. Your feedback will shape the AI guidance Louisiana educators actually need.
+            Join Louisiana educators who are saving time and using AI with confidence every day.
           </motion.p>
         </motion.div>
 

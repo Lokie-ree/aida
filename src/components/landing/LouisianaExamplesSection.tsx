@@ -44,9 +44,9 @@ export function LouisianaExamplesSection() {
             </GradientText>
           </motion.div>
           <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-primary">
-            We start with the <span className="text-foreground font-semibold">Lesson Objective Unpacker</span>—saving you 7-12 minutes per lesson. 
-            Then <span className="text-foreground font-semibold">YOU tell us what to build next</span> based on your biggest challenges. 
-            This is collaborative development, not just testing.
+            Start with the <span className="text-foreground font-semibold">Lesson Objective Unpacker</span>—saving you 7-12 minutes per lesson. 
+            Then explore <span className="text-foreground font-semibold">frameworks for email drafting, differentiation, parent communication, and more</span>. 
+            We continuously add new frameworks based on feedback from Louisiana educators.
           </motion.p>
         </motion.div>
 

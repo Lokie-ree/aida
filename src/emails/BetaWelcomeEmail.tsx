@@ -66,22 +66,22 @@ export function BetaWelcomeEmail({
       <InfoBox>
         <Heading style={textStyles.h2}>What Happens Next?</Heading>
         <Text style={listItem}>
-          • <strong>Immediately:</strong> Access the Lesson Objective Unpacker framework and start saving time today
+          • <strong>Immediately:</strong> Your platform access will be ready shortly! You'll receive an email with your login credentials once your account is set up.
         </Text>
         <Text style={listItem}>
-          • <strong>Weeks 1-2:</strong> Master the Lesson Objective Unpacker with multiple lessons
+          • <strong>Right Now:</strong> Start using frameworks through the links below—no need to wait for platform access
         </Text>
         <Text style={listItem}>
-          • <strong>Weeks 3-4:</strong> Share your biggest pain points through weekly check-ins—this drives what we build next
+          • <strong>At Your Own Pace:</strong> Explore 10+ foundational frameworks designed for Louisiana educators—use them when and how you need them
         </Text>
         <Text style={listItem}>
-          • <strong>Weeks 5-12:</strong> We co-create NEW frameworks based on YOUR needs, you test prototypes, and we refine together
+          • <strong>Ongoing:</strong> We continuously add new frameworks based on feedback from Louisiana educators. Optional feedback surveys and office hours help shape what we build next
         </Text>
         <Text style={listItem}>
-          • <strong>Ongoing:</strong> Weekly feedback surveys, office hours support, and collaborative framework development
+          • <strong>Collaborative Development:</strong> Your pain points and feedback directly influence new frameworks we create. This isn't just testing—it's co-creating solutions that save you time
         </Text>
         <Text style={textStyles.paragraph}>
-          <strong>Platform access coming soon in Phase 2!</strong> For now, you'll receive weekly prompts via email and can access all frameworks through the links below.
+          <strong>There's no structured timeline.</strong> Use the platform when it helps you, provide feedback when you can, and let us know what would save you the most time.
         </Text>
       </InfoBox>
 
@@ -107,7 +107,7 @@ export function BetaWelcomeEmail({
           ✓ <strong>Beta Overview Podcast</strong> - Listen to the full vision and approach
         </Text>
         <Text style={listItem}>
-          ✓ <strong>Weekly Check-in Survey</strong> - Share your progress and feedback
+          ✓ <strong>Optional Feedback Surveys</strong> - Share your progress and feedback when convenient
         </Text>
         <Text style={listItem}>
           ✓ <strong>Post-Framework Survey</strong> - Help us improve each framework
@@ -124,7 +124,7 @@ export function BetaWelcomeEmail({
         </Text>
         <Text style={textStyles.paragraph}>
           <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdZxABU24KLmaUs0J9OrWqdUuhVV_zEQ5RjU6ttIHgTIR3OWw/viewform?usp=sharing&ouid=110279044776974210923" style={ctaLink}>
-            <strong>→ Weekly Check-in Survey</strong>
+            <strong>→ Optional Feedback Survey</strong>
           </Link>
         </Text>
         <Text style={textStyles.paragraph}>
@@ -136,9 +136,7 @@ export function BetaWelcomeEmail({
 
       {/* Time Commitment */}
       <Text style={textStyles.paragraph}>
-        <strong>Your Time Commitment:</strong> About 1 hour per week for 8-12 weeks—
-        try frameworks (~15 min), provide feedback (~5 min), and optionally join 
-        office hours. In return, you'll save 3-5 hours per week.
+        <strong>Your Time Commitment:</strong> Use the platform at your own pace. Try frameworks when you need them (~15 min each), optionally provide feedback (~5 min), and join office hours if helpful. In return, you'll save 3-5 hours per week on planning and prep tasks.
       </Text>
 
       <Text style={textStyles.paragraph}>

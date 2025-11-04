@@ -56,7 +56,7 @@ Empower Louisiana educators with practical, ethical, and platform-agnostic AI gu
 
 ### Key Features Operational
 - ✅ **Authentication:** Better Auth integration with email/password
-- ✅ **Framework Library:** 80+ AI guidance frameworks with search, filter, copy functionality
+- ✅ **Framework Library:** 10+ foundational AI guidance frameworks with search, filter, copy functionality (growing weekly)
 - ✅ **Community Features:** Innovation sharing and testimonials
 - ✅ **Dashboard:** Personalized dashboard with stats and quick start
 - ✅ **Admin Dashboard:** Content moderation and beta program management

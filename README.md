@@ -60,9 +60,12 @@ pnpm dev
 - **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development guidelines and code standards
 
 ### Reference Documentation
-- **[TESTING_PROTOCOL.md](docs/TESTING_PROTOCOL.md)** - E2E testing strategy
+- **[QA_AUDIT.md](docs/QA_AUDIT.md)** - Comprehensive QA audit (responsiveness, accessibility, performance, edge cases)
+- **[TESTING_PROTOCOL.md](docs/TESTING_PROTOCOL.md)** - E2E testing strategy, procedures, and best practices
+- **[E2E_TEST_RESULTS.md](docs/E2E_TEST_RESULTS.md)** - Complete E2E test results and history
 - **[Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
 - **[Decision Records](docs/decisions/)** - Architectural decisions (ADRs)
+- **[Full Documentation Index](docs/README.md)** - Complete documentation index
 
 ## 🤝 Contributing
 
@@ -82,4 +85,4 @@ This project is proprietary software. Educational use by Louisiana educators is 
 
 **Pelican AI** - Navigate AI with Confidence 🦅
 
-*Last Updated: November 2025*
+*Last Updated: November 3, 2025*
