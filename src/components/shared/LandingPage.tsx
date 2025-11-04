@@ -26,7 +26,7 @@ export function LandingPage() {
       <AppHeader />
 
       {/* Main Content */}
-      <main>
+      <main id="main-content">
         <HeroSection onGetStartedClick={handleGetStartedClick} />
         <FeaturesSection />
         <LouisianaExamplesSection />
@@ -59,9 +59,9 @@ export function LandingPage() {
 
             {/* Product Links */}
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">
+              <h3 className="font-semibold mb-4 text-foreground">
                 Product
-              </h4>
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <button 
@@ -86,9 +86,9 @@ export function LandingPage() {
 
             {/* Resources Links */}
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">
+              <h3 className="font-semibold mb-4 text-foreground">
                 Resources
-              </h4>
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <button 
@@ -109,9 +109,9 @@ export function LandingPage() {
 
             {/* Legal Links */}
             <div>
-              <h4 className="font-semibold mb-4 text-foreground">
+              <h3 className="font-semibold mb-4 text-foreground">
                 Legal
-              </h4>
+              </h3>
               <ul className="space-y-2">
                 <li>
                   <button 
