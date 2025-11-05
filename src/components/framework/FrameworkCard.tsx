@@ -178,12 +178,12 @@ export function FrameworkCard({
                 onClick={onView} 
                 size="sm"
               >
-                View Details
+                Details
               </Button>
               <div className="flex gap-1">
                 <Button 
                   data-testid="framework-card-copy"
-                  aria-label="Copy framework prompt"
+                  aria-label={`Copy prompt for ${framework.title}`}
                   variant="outline" 
                   size="sm"
                   onClick={handleCopy}
@@ -193,7 +193,7 @@ export function FrameworkCard({
                 </Button>
                 <Button 
                   data-testid="framework-card-save"
-                  aria-label={isSaved ? "Unsave framework" : "Save framework"}
+                  aria-label={isSaved ? `Remove ${framework.title} from saved frameworks` : `Save ${framework.title} to saved frameworks`}
                   variant="outline" 
                   size="sm"
                   onClick={handleSave}
@@ -208,7 +208,7 @@ export function FrameworkCard({
                 {onTried && (
                   <Button 
                     data-testid="framework-card-tried"
-                    aria-label="Mark framework as tried"
+                    aria-label={`Mark ${framework.title} as tried`}
                     variant="outline" 
                     size="sm"
                     onClick={onTried}
@@ -346,12 +346,12 @@ export function FrameworkCard({
             className="flex-1"
             size="sm"
           >
-            View Details
+            Details
           </Button>
           
           <Button 
             data-testid="framework-card-copy"
-            aria-label="Copy framework prompt"
+            aria-label={`Copy prompt for ${framework.title}`}
             variant="outline" 
             size="sm"
             onClick={handleCopy}
@@ -363,7 +363,7 @@ export function FrameworkCard({
           {(onSave || onUnsave) && (
             <Button 
               data-testid="framework-card-save"
-              aria-label={isSaved ? "Unsave framework" : "Save framework"}
+              aria-label={isSaved ? `Remove ${framework.title} from saved frameworks` : `Save ${framework.title} to saved frameworks`}
               variant="outline" 
               size="sm"
               onClick={handleSave}
@@ -380,7 +380,7 @@ export function FrameworkCard({
           {onTried && (
             <Button 
               data-testid="framework-card-tried"
-              aria-label="Mark framework as tried"
+              aria-label={`Mark ${framework.title} as tried`}
               variant="outline" 
               size="sm"
               onClick={onTried}

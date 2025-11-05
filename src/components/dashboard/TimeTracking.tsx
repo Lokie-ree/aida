@@ -33,7 +33,7 @@ interface TimeTrackingProps {
   className?: string;
 }
 
-export function TimeTracking({ className }: TimeTrackingProps) {
+function TimeTracking({ className }: TimeTrackingProps) {
   const [showForm, setShowForm] = useState(false);
 
   const analytics = useQuery(api.timeTracking.getTimeTrackingAnalytics, { period: "month" });
@@ -379,3 +379,5 @@ export function TimeTracking({ className }: TimeTrackingProps) {
     </div>
   );
 }
+
+export default TimeTracking;
