@@ -87,7 +87,7 @@ export function AppHeader({
           {/* Left: Logo and app name */}
           <button 
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity durat    ion-200 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-lg p-1 -m-1"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-lg min-h-[44px] min-w-[44px] px-2 py-1" // Added min-h and min-w for WCAG AA compliance
             aria-label="Go to dashboard"
           >
             <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
