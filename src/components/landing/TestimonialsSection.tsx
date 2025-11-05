@@ -24,7 +24,7 @@ export function TestimonialsSection() {
   const blueGradient = ['#0ea5e9', '#1e40af', '#0ea5e9'];
 
   return (
-    <section className="py-20 px-6 bg-background overflow-hidden">
+    <section className="py-20 px-4 sm:px-6 bg-background overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial="initial"
@@ -47,9 +47,9 @@ export function TestimonialsSection() {
           </motion.p>
         </motion.div>
 
-        <Marquee pauseOnHover className="[--duration:90s] [--gap:0.5rem]" repeat={2}>
+        <Marquee pauseOnHover className="[--duration:60s] [--gap:0.5rem]" repeat={2}>
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-2">
+            <Card key={index} className="w-[280px] sm:w-[300px] h-full bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 mx-1 sm:mx-2 flex-shrink-0">
               <CardContent className="p-4 sm:p-6">
                 <Quote className="h-6 w-6 sm:h-8 sm:w-8 text-primary/60 mb-3 sm:mb-4" />
                 <p className="text-sm sm:text-base italic mb-4 sm:mb-6 font-primary">"{testimonial.quote}"</p>

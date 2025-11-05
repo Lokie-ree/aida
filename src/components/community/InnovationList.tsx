@@ -23,7 +23,7 @@ import { spacing } from "@/lib/spacing";
 type FilterType = "all" | "recent" | "popular" | "my-innovations";
 type SortType = "newest" | "oldest" | "most-liked" | "most-tried";
 
-export function InnovationList() {
+function InnovationList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [sort, setSort] = useState<SortType>("newest");
@@ -139,7 +139,7 @@ export function InnovationList() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
         {/* Header */}
         <motion.div
@@ -218,6 +218,7 @@ export function InnovationList() {
                 variant={selectedSubject === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedSubject("all")}
+                className="whitespace-nowrap flex-shrink-0"
               >
                 All Subjects
               </Button>
@@ -228,9 +229,10 @@ export function InnovationList() {
                   variant={selectedSubject === userProfile.subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(userProfile.subject!)}
-                  className="bg-primary/10 hover:bg-primary/20"
+                  className="bg-primary/10 hover:bg-primary/20 whitespace-nowrap flex-shrink-0"
                 >
-                  {userProfile.subject} (My Subject)
+                  <span className="hidden sm:inline">{userProfile.subject} (My Subject)</span>
+                  <span className="sm:hidden">{userProfile.subject}</span>
                 </Button>
               )}
               {uniqueSubjects.map((subject) => (
@@ -241,6 +243,7 @@ export function InnovationList() {
                   variant={selectedSubject === subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(subject)}
+                  className="whitespace-nowrap flex-shrink-0"
                 >
                   {subject}
                 </Button>
@@ -271,10 +274,11 @@ export function InnovationList() {
                   variant={filter === id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setFilter(id as FilterType)}
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 whitespace-nowrap flex-shrink-0"
                 >
-                  <Icon className="h-4 w-4" />
-                  {label}
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="hidden sm:inline">{label}</span>
+                  <span className="sm:hidden">{id === "my-innovations" ? "Mine" : label}</span>
                 </Button>
               ))}
             </div>
@@ -488,3 +492,5 @@ export function InnovationList() {
     </div>
   );
 }
+
+export default InnovationList;

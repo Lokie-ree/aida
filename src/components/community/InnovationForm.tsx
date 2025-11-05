@@ -220,12 +220,13 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
             {/* Tags */}
             <div className="space-y-2">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Tags</label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap sm:flex-nowrap">
                 <Input
                   data-testid="innovation-form-tags-input"
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="Add a tag..."
+                  className="flex-1 min-w-0"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
@@ -233,7 +234,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                     }
                   }}
                 />
-                <Button data-testid="innovation-form-add-tag" type="button" onClick={handleAddTag} size="sm" aria-label="Add tag">
+                <Button data-testid="innovation-form-add-tag" type="button" onClick={handleAddTag} size="sm" aria-label="Add tag" className="flex-shrink-0">
                   <Plus className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
@@ -307,9 +308,9 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
             />
 
           {/* Guidelines */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-900 mb-2">Sharing Guidelines</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
+          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6">
+            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Sharing Guidelines</h4>
+            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
               <li>• Be specific about how you used AI and what made it effective</li>
               <li>• Include any ethical considerations or guardrails you used</li>
               <li>• Mention the AI platform you used (MagicSchool AI, Brisk, etc.)</li>
@@ -319,12 +320,12 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
           </div>
 
             {/* Actions */}
-            <ButtonGroup spacing="md" className="pt-4">
-              <Button data-testid="innovation-form-submit" type="submit" disabled={isSubmitting} aria-label="Submit innovation">
+            <ButtonGroup spacing="md" className="pt-4 flex-col sm:flex-row">
+              <Button data-testid="innovation-form-submit" type="submit" disabled={isSubmitting} aria-label="Submit innovation" className="w-full sm:w-auto">
                 {isSubmitting ? "Sharing..." : "Share Innovation"}
               </Button>
               {onCancel && (
-                <Button data-testid="innovation-form-cancel" type="button" variant="outline" onClick={onCancel} aria-label="Cancel">
+                <Button data-testid="innovation-form-cancel" type="button" variant="outline" onClick={onCancel} aria-label="Cancel" className="w-full sm:w-auto">
                   Cancel
                 </Button>
               )}

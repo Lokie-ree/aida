@@ -63,11 +63,49 @@
     transition-duration: 0.3s !important;
   }
   
-  /* Ensure proper spacing between touch targets */
+  /* Ensure proper spacing between touch targets (8px minimum per WCAG) */
   button + button, 
   [role="button"] + [role="button"],
-  a + a {
+  a + a,
+  [role="menuitem"] + [role="menuitem"],
+  .nav-link + .nav-link {
     margin-left: 8px;
+    margin-top: 8px;
+  }
+  
+  /* Ensure navigation menu items meet 44px minimum */
+  [role="navigation"] a,
+  [role="navigation"] button,
+  nav a,
+  nav button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Ensure all clickable elements have adequate spacing */
+  button:not(:last-child),
+  [role="button"]:not(:last-child),
+  a:not(:last-child) {
+    margin-bottom: 8px;
+  }
+  
+  /* Ensure checkbox and radio labels have adequate touch target (44px minimum) */
+  label:has(input[type="checkbox"]),
+  label:has(input[type="radio"]) {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  /* Ensure toggle switches meet minimum size on mobile */
+  [role="switch"],
+  [data-state] {
+    min-height: 44px;
+    min-width: 44px;
   }
   
   /* Brand-specific mobile optimizations */

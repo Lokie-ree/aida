@@ -91,7 +91,7 @@ export function Navigation({ className }: NavigationProps) {
                     to={item.path}
                     className={({ isActive }) => cn(
                       navigationMenuTriggerStyle(),
-                      "flex items-center gap-2 h-9 px-3",
+                      "flex items-center gap-2 min-h-[44px] h-11 px-3", // Changed from h-9 to h-11 for WCAG AA compliance
                       isActive 
                         ? "bg-primary text-primary-foreground" 
                         : ""
@@ -116,7 +116,7 @@ export function Navigation({ className }: NavigationProps) {
                     to={item.path}
                     className={({ isActive }) => cn(
                       navigationMenuTriggerStyle(),
-                      "flex items-center gap-2 h-9 px-3 border-l ml-2 pl-4",
+                      "flex items-center gap-2 min-h-[44px] h-11 px-3 border-l ml-2 pl-4", // Changed from h-9 to h-11 for WCAG AA compliance
                       isActive 
                         ? "bg-primary text-primary-foreground" 
                         : ""

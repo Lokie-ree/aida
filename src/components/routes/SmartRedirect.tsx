@@ -13,7 +13,7 @@ import { LoadingSpinner } from '../shared/LoadingStates';
  * This ensures admins land on the admin dashboard after login
  * instead of being redirected to the regular dashboard.
  */
-export function SmartRedirect() {
+function SmartRedirect() {
   const isAdmin = useQuery(api.admin.checkIsAdmin);
 
   // Show loading while checking admin status
@@ -28,4 +28,6 @@ export function SmartRedirect() {
   // Redirect based on admin status
   return <Navigate to={isAdmin ? "/admin" : "/dashboard"} replace />;
 }
+
+export default SmartRedirect;
 

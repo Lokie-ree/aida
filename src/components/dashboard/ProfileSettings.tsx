@@ -12,7 +12,7 @@ import { User, School, BookOpen, GraduationCap, MapPin, Shield } from "lucide-re
 import { LoadingSpinner } from "../shared/LoadingStates";
 import { toast } from "sonner";
 
-export function ProfileSettings() {
+function ProfileSettings() {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     school: "",
@@ -305,3 +305,5 @@ export function ProfileSettings() {
     </div>
   );
 }
+
+export default ProfileSettings;
