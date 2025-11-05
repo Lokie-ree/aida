@@ -66,7 +66,7 @@ export function Dashboard({
   const featuredFramework = recentFrameworks[0];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
         {/* Welcome Hero Section */}
         <div className="mb-8">

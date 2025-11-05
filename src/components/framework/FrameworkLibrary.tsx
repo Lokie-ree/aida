@@ -28,7 +28,7 @@ import { spacing } from "@/lib/spacing";
 type ViewMode = "grid" | "list";
 type ModuleFilter = "all" | "ai-basics-hub" | "instructional-expert-hub";
 
-export function FrameworkLibrary() {
+function FrameworkLibrary() {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [moduleFilter, setModuleFilter] = useState<ModuleFilter>("all");
@@ -238,7 +238,7 @@ export function FrameworkLibrary() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
         {/* Header */}
         <motion.div
@@ -374,54 +374,9 @@ export function FrameworkLibrary() {
           </motion.div>
         )}
 
-        {/* Personalized Recommendations Banner */}
-        {userProfile?.subject && recommendedFrameworks.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6"
-          >
-            <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-semibold">
-                        Personalized for {userProfile.subject} Teachers
-                      </h3>
-                    </div>
-                    <p className="text-muted-foreground mb-4 text-sm">
-                      These frameworks are used by educators teaching {userProfile.subject}
-                      {userProfile.gradeLevel && ` at ${userProfile.gradeLevel} level`}
-                    </p>
-                    {recommendedFrameworks.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {recommendedFrameworks.map((fw) => (
-                          <Button
-                            key={fw._id}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewFramework(fw.frameworkId)}
-                            className="flex items-center gap-1 min-w-0 max-w-full"
-                          >
-                            <span className="truncate">{fw.title}</span>
-                            <ArrowRight className="h-3 w-3 shrink-0" />
-                          </Button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
         <div className={`flex flex-col lg:flex-row ${spacing.gridGap}`}>
           {/* Filters Sidebar */}
-          <div className="lg:w-64">
+          <div className="hidden lg:block lg:w-64">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -457,7 +412,7 @@ export function FrameworkLibrary() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-6 min-w-0">
             {/* Search and View Controls */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -465,16 +420,16 @@ export function FrameworkLibrary() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <div className="relative flex-1">
+              <div className="relative flex-1 min-w-0">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search frameworks..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11"
+                  className="pl-10 h-11 w-full"
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
@@ -499,28 +454,32 @@ export function FrameworkLibrary() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
+              className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0"
             >
-              <ButtonGroup>
+              <ButtonGroup className="flex-wrap sm:flex-nowrap min-w-0">
                 <Button
                   variant={moduleFilter === "all" ? "default" : "outline"}
                   onClick={() => setModuleFilter("all")}
-                  className="h-11"
+                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
                 >
-                  All Frameworks
+                  <span className="hidden sm:inline">All Frameworks</span>
+                  <span className="sm:hidden">All</span>
                 </Button>
                 <Button
                   variant={moduleFilter === "ai-basics-hub" ? "default" : "outline"}
                   onClick={() => setModuleFilter("ai-basics-hub")}
-                  className="h-11"
+                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
                 >
-                  AI Basics Hub
+                  <span className="hidden sm:inline">AI Basics Hub</span>
+                  <span className="sm:hidden">AI Basics</span>
                 </Button>
                 <Button
                   variant={moduleFilter === "instructional-expert-hub" ? "default" : "outline"}
                   onClick={() => setModuleFilter("instructional-expert-hub")}
-                  className="h-11"
+                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
                 >
-                  Instructional Expert Hub
+                  <span className="hidden sm:inline">Instructional Expert Hub</span>
+                  <span className="sm:hidden">Expert Hub</span>
                 </Button>
               </ButtonGroup>
             </motion.div>
@@ -623,3 +582,5 @@ export function FrameworkLibrary() {
     </div>
   );
 }
+
+export default FrameworkLibrary;

@@ -10,7 +10,7 @@ import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { AuthModal } from "@/components/auth/AuthModal";
 
-export function LandingPage() {
+function LandingPage() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -22,7 +22,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <AppHeader />
 
       {/* Main Content */}
@@ -36,7 +36,7 @@ export function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-background border-t border-border py-12 px-6">
+      <footer className="bg-background border-t border-border py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Brand Column */}
@@ -167,3 +167,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+export default LandingPage;
