@@ -31,10 +31,10 @@ export function TestimonialCard({
       transition={{ duration: 0.2 }}
     >
       <Card className={cn(
-        "group hover:shadow-lg transition-all duration-300 border-2",
+        "group hover:shadow-lg transition-all duration-300 border shadow-sm",
         isFeatured 
           ? "border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 shadow-md" 
-          : "hover:border-primary/30 bg-gradient-to-br from-background to-primary/5"
+          : "border-primary/20 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5"
       )}>
         <CardContent className="p-6">
         {/* Quote Icon */}

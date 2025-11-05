@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Target, ArrowRight, Clock, Star } from "lucide-react";
+import { spacing } from "@/lib/spacing";
 
 export interface Framework {
   _id: string;
@@ -56,9 +57,9 @@ export function FeaturedRecommendation({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
+      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
     >
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/20">
             <Target className="h-6 w-6 text-primary" />
@@ -70,8 +71,8 @@ export function FeaturedRecommendation({
         </div>
       </div>
 
-        <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
-        <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+        <div className={`bg-gradient-to-br from-background to-primary/5 rounded-xl ${spacing.card} border border-primary/10 shadow-sm`}>
+        <div className={`flex flex-col lg:flex-row lg:items-start ${spacing.gridGap}`}>
           {/* Framework Info */}
           <div className="flex-1">
             <div className="flex items-start justify-between mb-3">

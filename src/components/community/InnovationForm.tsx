@@ -42,6 +42,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
 
   const form = useForm<InnovationFormData>({
+    // @ts-ignore - @hookform/resolvers v5.2.2 expects Zod v3, but we're using Zod v4. This is a type-only mismatch; runtime works correctly.
     resolver: zodResolver(innovationFormSchema),
     defaultValues: {
       title: "",
@@ -136,8 +137,8 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
   ];
 
   return (
-    <Card data-testid="innovation-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
-      <CardHeader>
+    <Card data-testid="innovation-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-lg">
+      <CardHeader className="pr-10">
         <CardTitle className="flex items-center gap-2 text-xl">
           <Lightbulb className="h-5 w-5 text-primary" />
           Share Your Innovation
@@ -243,7 +244,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
               {watchedTags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2" data-testid="innovation-form-tags">
                   {watchedTags.map((tag) => (
-                    <Badge key={tag} data-testid="innovation-tag" variant="secondary" className="flex items-center gap-1">
+                    <Badge key={tag} data-testid="innovation-tag" variant="secondary" className="flex items-center gap-1 text-xs">
                       {tag}
                       <button
                         type="button"

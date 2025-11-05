@@ -18,6 +18,7 @@ import {
   Link as LinkIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { spacing } from "@/lib/spacing";
 import { toast } from "sonner";
 
 interface InnovationCardProps {
@@ -103,8 +104,8 @@ export function InnovationCard({
 
   if (variant === "compact") {
     return (
-      <Card className="hover:shadow-md transition-shadow bg-gradient-to-br from-background to-primary/5">
-        <CardContent className="p-4">
+      <Card className="hover:shadow-md transition-shadow bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
+        <CardContent className={spacing.card}>
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-2">
@@ -172,7 +173,7 @@ export function InnovationCard({
       transition={{ duration: 0.2 }}
       data-testid="innovation-card"
     >
-      <Card className="hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5">
+      <Card className="hover:shadow-lg transition-all duration-300 border border-primary/20 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5 shadow-sm">
         <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">

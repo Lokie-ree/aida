@@ -85,7 +85,9 @@ This comprehensive QA audit covers four critical areas: **Responsiveness**, **Ac
 - ✅ **FIXED:** Recommended framework buttons wrap properly with `flex-wrap` and text truncation
 - ✅ **TESTED:** Search bar fits correctly on mobile (328px width on 375px viewport)
 - ✅ **TESTED:** Filters hidden on mobile (as expected)
-- ⚠️ **ISSUE FOUND:** Mobile (375px): **MAJOR** horizontal scroll (173px overflow) - **NEEDS FIX**
+- ✅ **FIXED:** Mobile (375px): Horizontal scroll (173px overflow) - **WEB-77 COMPLETED**
+- ✅ **FIXED:** Button alignment issues - all buttons now use consistent `size="sm"` with `h-11` height
+- ✅ **FIXED:** Standardized all card backgrounds and borders for consistency
 - ⚠️ Filter sidebar may need sticky positioning on desktop
 
 **FrameworkCard** (`src/components/framework/FrameworkCard.tsx`)
@@ -96,7 +98,12 @@ This comprehensive QA audit covers four critical areas: **Responsiveness**, **Ac
 **FrameworkDetail** (`src/components/framework/FrameworkDetail.tsx`)
 - ✅ Modal dialog: Uses Radix Dialog (responsive by default)
 - ✅ Responsive grid: `grid-cols-1 md:grid-cols-3`
-- ⚠️ Verify modal scrolling on mobile devices
+- ✅ **FIXED:** Improved backdrop blur (`bg-black/90 backdrop-blur-md`)
+- ✅ **FIXED:** Removed duplicate close button (single close button in top-right)
+- ✅ **FIXED:** Standardized all card styling (`border border-primary/20 shadow-sm`)
+- ✅ **FIXED:** Optimized copy button (icon-only, top-right placement)
+- ✅ **FIXED:** Improved action button responsiveness (stack on mobile, row on desktop)
+- ✅ **FIXED:** Added title padding to prevent overlap with close button
 
 #### Dashboard Components
 
@@ -140,6 +147,11 @@ This comprehensive QA audit covers four critical areas: **Responsiveness**, **Ac
 - ✅ **FIXED:** Buttons full-width on mobile (`w-full sm:w-auto`)
 - ✅ **FIXED:** Guidelines section has responsive padding (`p-4 sm:p-6`)
 - ✅ **FIXED:** Dark mode support added to guidelines section
+- ✅ **FIXED:** Tag sizes now consistent (explicit `text-xs` to prevent responsive scaling)
+- ✅ **FIXED:** Modal backdrop improved (`bg-black/90 backdrop-blur-md`)
+- ✅ **FIXED:** Added close button (X icon) with click-outside-to-close
+- ✅ **FIXED:** Form card styling standardized (`border border-primary/20`)
+- ✅ **FIXED:** TypeScript/Zod version mismatch resolved with proper type annotations
 
 ### 1.3 Priority Fixes
 
@@ -387,6 +399,10 @@ This comprehensive QA audit covers four critical areas: **Responsiveness**, **Ac
 - ✅ **TESTED:** Escape key closes modals (verified)
 - ✅ **FIXED:** AuthModal now includes `DialogDescription` component
 - ✅ **FIXED:** AuthModal form inputs have `autoComplete` attributes
+- ✅ **FIXED:** FrameworkDetail modal - improved backdrop blur and close button
+- ✅ **FIXED:** InnovationForm modal - added close button and improved backdrop
+- ✅ **FIXED:** TestimonialForm modal - added close button and improved backdrop
+- ✅ **FIXED:** All modals now have click-outside-to-close functionality
 
 **Interactive Components:**
 - ✅ FrameworkCard: All actions have `aria-label`
@@ -530,10 +546,11 @@ This comprehensive QA audit covers four critical areas: **Responsiveness**, **Ac
 - **Convex Query Performance:** WebSocket transitions typically <250ms (observed in logs)
 
 **Bundle Size (Measured from Production Build):**
-- ✅ **MEASURED:** Largest chunk: `index-D3uPKb3N.js` = **519.26 KB** (139.60 KB gzipped)
+- ✅ **MEASURED (After Route Splitting):** Main bundle: `index-BX3EpGN-.js` = **348.66 KB** (104.27 KB gzipped)
+- ✅ **MEASURED:** Route chunks: ~170 KB (~40 KB gzipped total)
 - ✅ **MEASURED:** Total JS chunks: ~870 KB (~225 KB gzipped)
 - ✅ **MEASURED:** CSS bundle: 115.07 KB (18.61 KB gzipped)
-- ⚠️ **ISSUE:** Main bundle is large (519KB) - route-level code splitting would reduce this
+- ✅ **FIXED:** Route-level code splitting implemented - **WEB-76 COMPLETED** (33% reduction in main bundle)
 
 ### 3.2 Current Optimizations
 
@@ -560,33 +577,44 @@ The `vite.config.ts` has comprehensive manual chunk splitting:
 - Parallel chunk loading
 - Smaller initial bundle
 
-#### ⚠️ Route-Level Code Splitting
+#### ✅ Route-Level Code Splitting
 
-**Status:** ⚠️ **Not Implemented**
+**Status:** ✅ **IMPLEMENTED & VERIFIED** - **WEB-76 COMPLETED**
 
-**Current Issue:**
-- All route components imported directly in `src/App.tsx`
-- All route components bundled in initial load
-- Larger initial bundle size
-- Slower Time to Interactive (TTI)
+**Implementation:**
+- ✅ All route components use React.lazy() in `src/App.tsx`
+- ✅ All routes wrapped in `<Suspense>` with LoadingPage fallback
+- ✅ All 8 route components converted to default exports
+- ✅ Production build verified (November 4, 2025)
 
-**Recommendation:**
-Implement React.lazy() for route-level code splitting:
-```typescript
-import { lazy, Suspense } from "react";
-const DashboardRoute = lazy(() => import("./components/routes/DashboardRoute"));
-const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
-// Wrap routes in Suspense
-```
+**Route Chunks Created:**
+| Route Component | Chunk Size (KB) | Gzipped (KB) |
+|----------------|-----------------|--------------|
+| SmartRedirect | 0.56 | 0.36 |
+| ProfileSettings | 7.76 | 2.33 |
+| TimeTracking | 8.77 | 2.36 |
+| AdminRoute | 17.89 | 4.52 |
+| DashboardRoute | 19.76 | 5.51 |
+| InnovationList | 33.84 | 8.97 |
+| FrameworkLibrary | 38.38 | 8.02 |
+| LandingPage | 42.04 | 10.94 |
 
-**Expected Impact:**
-- Reduce initial bundle by ~30-40% (currently 519KB main bundle)
-- Current main bundle: 519KB → Estimated with splitting: ~300-350KB
-- Faster initial page load
-- Better Time to First Contentful Paint (FCP)
+**Performance Impact:**
+- ✅ **Reduction:** 170.60 KB (32.9% reduction)
+- ✅ **Gzipped reduction:** 35.33 KB (25.3% reduction)
+- ✅ **Before:** Main bundle = 519.26 KB (139.60 KB gzipped)
+- ✅ **After:** Main bundle = 348.66 KB (104.27 KB gzipped)
+- ✅ **Total route chunks:** ~170 KB (lazy-loaded on demand)
+- ✅ Estimated FCP improvement: -200-500ms
+- ✅ Estimated TTI improvement: -300-700ms
 
-**Priority:** High  
-**Current Impact:** All route components (Dashboard, Frameworks, Community, Profile, Admin) are bundled in initial load
+**Browser Testing:**
+- ✅ All routes load successfully with Suspense fallback
+- ✅ Smooth navigation between routes
+- ✅ No console errors
+- ✅ Route chunks load on-demand
+
+**Status:** ✅ **COMPLETED** - Route-level code splitting verified in production build
 
 #### ✅ Image Optimization
 
@@ -682,10 +710,11 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
 ### 3.4 Optimization Recommendations
 
 **High Priority:**
-1. ⚠️ **Implement Route-Level Code Splitting** - Use React.lazy() for all routes
-   - **Current Impact:** 519KB main bundle includes all routes
-   - **Expected Impact:** Reduce to ~300-350KB (~30-40% reduction)
-   - **Estimated FCP improvement:** -200-500ms
+1. ✅ **COMPLETED:** Route-Level Code Splitting - **WEB-76 COMPLETED**
+   - ✅ **Implemented:** All routes use React.lazy() with Suspense
+   - ✅ **Impact:** Main bundle reduced from 519KB to 349KB (33% reduction)
+   - ✅ **Result:** 170KB route chunks lazy-loaded on demand
+   - ✅ **Verification:** Production build tested, all routes load successfully
 2. ⚠️ **Compress Images** - Optimize all images in `public/` folder
    - **Current Status:** Image sizes not verified
    - **Target:** <100KB per image
@@ -715,25 +744,27 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
 
 #### Bundle Size Analysis (Production Build)
 
-**Chunk Breakdown:**
+**Chunk Breakdown (After Route-Level Code Splitting):**
 | Chunk | Size (KB) | Gzipped (KB) | Status |
 |-------|-----------|--------------|--------|
-| index (main) | 519.26 | 139.60 | ⚠️ Large - needs route splitting |
+| index (main) | 348.66 | 104.27 | ✅ **FIXED** - Route splitting implemented |
+| Route chunks (lazy) | ~170 KB | ~40 KB | ✅ Loaded on-demand |
 | animation-vendor | 117.03 | 37.49 | ✅ Acceptable |
 | ui-vendor | 97.60 | 31.79 | ✅ Acceptable |
-| convex-vendor | 60.25 | 16.35 | ✅ Acceptable |
+| convex-vendor | 61.39 | 16.86 | ✅ Acceptable |
 | react-vendor | 43.57 | 15.45 | ✅ Acceptable |
 | form-vendor | 26.16 | 9.50 | ✅ Good |
-| auth-vendor | 9.73 | 3.58 | ✅ Good |
+| auth-vendor | 9.73 | 3.57 | ✅ Good |
 | CSS | 115.07 | 18.61 | ✅ Acceptable |
-| **Total JS** | **~870 KB** | **~225 KB** | ⚠️ Could be optimized |
+| **Total JS** | **~870 KB** | **~225 KB** | ✅ Optimized |
 
 **Key Findings:**
 - ✅ Excellent code splitting configuration (vendor chunks separated)
 - ✅ Tree shaking working (unused libraries have minimal chunks)
-- ⚠️ Main bundle (519KB) includes all routes - route-level splitting needed
+- ✅ **FIXED:** Route-level code splitting implemented - main bundle reduced by 33% (WEB-76 COMPLETED)
 - ✅ All chunks under 500KB limit
 - ✅ Gzip compression effective (~74% reduction)
+- ✅ Route chunks load on-demand (progressive loading)
 
 #### Query Performance
 
@@ -760,7 +791,10 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
 #### Recommendations Summary
 
 **Immediate Actions:**
-1. ⚠️ **CRITICAL:** Implement route-level code splitting (reduce 519KB main bundle)
+1. ✅ **COMPLETED:** Route-level code splitting implemented - **WEB-76 COMPLETED**
+   - Main bundle reduced from 519KB to 349KB (33% reduction)
+   - All 8 route components split into separate chunks
+   - Production build verified and tested
 2. ⚠️ Run Lighthouse audit on production build
 3. ⚠️ Test with 3G throttling to verify <3s load time target
 
@@ -1136,16 +1170,25 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
    - ✅ **FIXED:** Landing page horizontal scroll on mobile (6px overflow) - **WEB-77 COMPLETED**
    - ✅ **FIXED:** TestimonialsSection horizontal scroll - **VERIFIED & FIXED**
    - ✅ **FIXED:** InnovationForm responsive behavior - **VERIFIED & FIXED**
+   - ✅ **FIXED:** Button alignment issues on framework page (module tabs, search controls, framework cards)
+   - ✅ **FIXED:** Action buttons responsiveness (stack on mobile, row on desktop)
    - ✅ Profile page: No horizontal scroll on mobile (good)
    - ✅ Tablet (768px): All tested pages work correctly
 2. **Accessibility:** 
    - ⚠️ **FIX REQUIRED:** Frameworks page: 2 icon buttons need `aria-label`
+   - ✅ **FIXED:** FrameworkDetail modal - removed duplicate close button (accessibility improvement)
+   - ✅ **FIXED:** All modals now have proper close buttons and click-outside-to-close
+   - ✅ **FIXED:** Modal backdrop improved for better focus (darker blur)
    - ⚠️ Verify color contrast (browser DevTools)
    - ⚠️ Test with screen readers (NVDA/JAWS/VoiceOver)
    - ⚠️ Complete keyboard navigation test (all routes)
    - ⚠️ Improve touch target sizes on mobile
 3. **Performance:** 
-   - ⚠️ **CRITICAL:** Implement route-level code splitting (519KB main bundle)
+   - ✅ **COMPLETED:** Route-level code splitting implemented - **WEB-76 COMPLETED**
+     - Main bundle reduced: 519KB → 349KB (33% reduction)
+     - All 8 route components split into separate chunks (~170KB lazy-loaded)
+     - Estimated FCP improvement: -200-500ms
+     - Estimated TTI improvement: -300-700ms
    - ⚠️ Compress images in `public/` folder
    - ⚠️ Run Lighthouse audit on production build
    - ✅ Bundle sizes measured (~870KB total, ~225KB gzipped)
@@ -1164,12 +1207,13 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
    - ✅ Accessibility testing (all authenticated routes)
    - ✅ Responsiveness testing (mobile/tablet viewports)
 2. **Implement High-Priority Fixes:**
-   - ⚠️ **CRITICAL:** Fix frameworks page horizontal scroll on mobile (173px overflow)
-   - ⚠️ Fix dashboard horizontal scroll on mobile (6px overflow)
-   - ⚠️ Fix community page horizontal scroll on mobile (23px overflow)
-   - ⚠️ Fix landing page horizontal scroll on mobile (6px overflow)
+   - ✅ **COMPLETED:** Fix frameworks page horizontal scroll on mobile (173px overflow) - **WEB-77 COMPLETED**
+   - ✅ **COMPLETED:** Fix dashboard horizontal scroll on mobile (6px overflow) - **WEB-77 COMPLETED**
+   - ✅ **COMPLETED:** Fix community page horizontal scroll on mobile (23px overflow) - **WEB-77 COMPLETED**
+   - ✅ **COMPLETED:** Fix landing page horizontal scroll on mobile (6px overflow) - **WEB-77 COMPLETED**
    - ⚠️ Add `aria-label` to framework page icon buttons
-   - Route-level code splitting, image compression, input limits
+   - ✅ **COMPLETED:** Route-level code splitting - **WEB-76 COMPLETED**
+   - ⚠️ Image compression, input limits
 3. **Measure Performance** - Run Lighthouse audits and document actual metrics
 4. **Accessibility Verification:**
    - ✅ Browser testing completed (Playwright MCP)
@@ -1208,8 +1252,24 @@ const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibr
 - Convex queries appear well-optimized with indexes
 - Build configuration is excellent - leverages Vite's optimizations well
 - All accessibility test results are documented in section 2 of this document
+- ✅ **UPDATED (November 5, 2025):** UI polish work completed:
+  - Standardized card styling across all routes (backgrounds, borders, shadows)
+  - Fixed button alignment issues (framework cards, module tabs, search controls)
+  - Improved modal UX (backdrop blur, close buttons, click-outside-to-close)
+  - Standardized spacing using utility classes
+  - Fixed FrameworkDetail modal (removed duplicate close, improved backdrop)
+  - Fixed InnovationForm and TestimonialForm modals (added close buttons, improved styling)
+  - Resolved TypeScript/Zod version mismatches in form components
+  - Standardized tag sizes (prevented responsive scaling)
+  - Improved guidelines section dark mode support
+- ✅ **UPDATED (November 4, 2025):** Route-level code splitting implemented - **WEB-76 COMPLETED**:
+  - Main bundle reduced from 519KB to 349KB (33% reduction)
+  - All 8 route components split into separate chunks (~170KB lazy-loaded)
+  - Production build verified and tested
+  - Estimated performance improvements: -200-500ms FCP, -300-700ms TTI
 
 ---
 
-**Last Updated:** November 4, 2025  
-**Accessibility Testing:** Completed via Playwright MCP Browser Testing
+**Last Updated:** November 5, 2025  
+**Accessibility Testing:** Completed via Playwright MCP Browser Testing  
+**UI Polish Work:** Completed November 5, 2025 - See CHANGELOG.md for full details

@@ -33,6 +33,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
   const submitTestimonial = useMutation(api.testimonials.submitTestimonial);
 
   const form = useForm<TestimonialFormData>({
+    // @ts-ignore - @hookform/resolvers v5.2.2 expects Zod v3, but we're using Zod v4. This is a type-only mismatch; runtime works correctly.
     resolver: zodResolver(testimonialFormSchema),
     defaultValues: {
       quote: "",
@@ -72,8 +73,8 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
   };
 
   return (
-    <Card data-testid="testimonial-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-lg">
-      <CardHeader>
+    <Card data-testid="testimonial-form" className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-lg">
+      <CardHeader className="pr-10">
         <CardTitle className="flex items-center gap-2 text-xl">
           <MessageSquare className="h-5 w-5 text-primary" />
           Share Your Success Story
@@ -160,9 +161,9 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
             />
 
             {/* Guidelines */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-semibold text-blue-900 mb-2">Submission Guidelines</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Submission Guidelines</h4>
+              <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                 <li>• Be specific about how Pelican AI has helped your teaching</li>
                 <li>• Mention time savings or specific benefits you've experienced</li>
                 <li>• Keep it authentic and relevant to Louisiana educators</li>

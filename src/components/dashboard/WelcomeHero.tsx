@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BookOpen } from "lucide-react";
 import GradientText from "@/components/shared/GradientText";
+import { spacing } from "@/lib/spacing";
 
 export interface WelcomeHeroProps {
   user: {
@@ -102,7 +103,7 @@ export function WelcomeHero({
       initial="initial"
       animate="animate"
       variants={staggerChildren}
-      className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300"
+      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300`}
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Left: Personal Welcome */}
@@ -127,7 +128,7 @@ export function WelcomeHero({
             </motion.span>!
           </h1>
           <div className="mt-1 max-w-2xl">
-            <p className="text-muted-foreground text-sm sm:text-base">
+            <p className="text-muted-foreground text-base">
               {getPersonalizedMessage()}
             </p>
             {getMotivationalSubtext() && (

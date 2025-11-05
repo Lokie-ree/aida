@@ -69,7 +69,7 @@ export function Dashboard({
     <div className="min-h-screen bg-background overflow-x-hidden">
       <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
         {/* Welcome Hero Section */}
-        <div className="mb-8">
+        <div className="mb-6">
           <WelcomeHero
             user={user}
             userProgress={stats}
@@ -86,7 +86,7 @@ export function Dashboard({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Alert className="mb-6 border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:border-primary/50">
+            <Alert className="mb-6 border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:border-primary/30">
               <User className="h-4 w-4 text-primary" />
               <AlertDescription>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -108,7 +108,7 @@ export function Dashboard({
         )}
 
         {/* Journey Stats */}
-        <div className="mb-8">
+        <div className="mb-6">
           <JourneyStats stats={stats} />
         </div>
 
@@ -134,7 +134,7 @@ export function Dashboard({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className={`border border-muted rounded-lg ${spacing.card} h-full hover:shadow-lg transition-shadow duration-300`}
+                className={`bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl ${spacing.card} h-full hover:shadow-lg transition-shadow duration-300`}
               >
                 <TimeSavingsTracker
                   weeklyMinutes={weeklyMinutes}

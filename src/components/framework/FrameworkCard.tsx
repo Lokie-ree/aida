@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck, Target, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { spacing } from "@/lib/spacing";
 
 interface FrameworkCardProps {
   framework: {
@@ -74,7 +75,7 @@ export function FrameworkCard({
   if (variant === "list") {
     return (
       <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30 bg-gradient-to-br from-background to-primary/5">
-        <CardContent className="p-4">
+        <CardContent className={spacing.card}>
           <div className="flex items-start gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-2">
@@ -338,7 +339,7 @@ export function FrameworkCard({
           </div>
         </div>
 
-        <ButtonGroup>
+        <ButtonGroup className="items-center">
           <Button 
             data-testid="framework-card-view-details"
             aria-label="View framework details"

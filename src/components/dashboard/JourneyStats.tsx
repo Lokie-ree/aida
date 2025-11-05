@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BookOpen, Clock, Lightbulb, TrendingUp } from "lucide-react";
+import { spacing } from "@/lib/spacing";
 
 export interface JourneyStatsProps {
   stats: {
@@ -65,7 +66,7 @@ export function JourneyStats({ stats, className = "" }: JourneyStatsProps) {
       initial="initial"
       animate="animate"
       variants={staggerChildren}
-      className={`grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 ${className}`}
+      className={`grid grid-cols-2 lg:grid-cols-4 ${spacing.gridGap} ${className}`}
     >
       {statItems.map((item, index) => {
         const IconComponent = item.icon;
