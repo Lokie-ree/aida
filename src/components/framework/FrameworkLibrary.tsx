@@ -245,9 +245,9 @@ function FrameworkLibrary() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-6"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between ${spacing.gridGap}`}>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground font-heading">Framework Library</h1>
               <p className="text-muted-foreground mt-2 text-base">
@@ -270,9 +270,9 @@ function FrameworkLibrary() {
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <CardContent className="p-6">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <CardContent className={spacing.card}>
+                <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between ${spacing.gridGap}`}>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold mb-2 text-foreground font-heading">
                       Personalized for {userProfile.subject} Teachers
@@ -309,7 +309,7 @@ function FrameworkLibrary() {
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <Card className="bg-gradient-to-r from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800">
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Clock className="h-4 w-4 text-primary" />
@@ -344,7 +344,7 @@ function FrameworkLibrary() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-6"
           >
-            <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-sm">
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Sparkles className="h-4 w-4 text-primary" />
@@ -382,7 +382,7 @@ function FrameworkLibrary() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-sm">
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Filter className="h-5 w-5 text-primary" />
@@ -412,13 +412,13 @@ function FrameworkLibrary() {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 space-y-6 min-w-0">
+          <div className={`flex-1 ${spacing.sectionGapSmall} min-w-0`}>
             {/* Search and View Controls */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className={`flex flex-col sm:flex-row ${spacing.gridGap}`}
             >
               <div className="relative flex-1 min-w-0">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -456,11 +456,12 @@ function FrameworkLibrary() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0"
             >
-              <ButtonGroup className="flex-wrap sm:flex-nowrap min-w-0">
+              <ButtonGroup className="flex-wrap sm:flex-nowrap min-w-0 items-center">
                 <Button
                   variant={moduleFilter === "all" ? "default" : "outline"}
                   onClick={() => setModuleFilter("all")}
-                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
+                  size="sm"
+                  className="whitespace-nowrap min-w-0 flex-shrink-0"
                 >
                   <span className="hidden sm:inline">All Frameworks</span>
                   <span className="sm:hidden">All</span>
@@ -468,7 +469,8 @@ function FrameworkLibrary() {
                 <Button
                   variant={moduleFilter === "ai-basics-hub" ? "default" : "outline"}
                   onClick={() => setModuleFilter("ai-basics-hub")}
-                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
+                  size="sm"
+                  className="whitespace-nowrap min-w-0 flex-shrink-0"
                 >
                   <span className="hidden sm:inline">AI Basics Hub</span>
                   <span className="sm:hidden">AI Basics</span>
@@ -476,7 +478,8 @@ function FrameworkLibrary() {
                 <Button
                   variant={moduleFilter === "instructional-expert-hub" ? "default" : "outline"}
                   onClick={() => setModuleFilter("instructional-expert-hub")}
-                  className="h-11 whitespace-nowrap min-w-0 flex-shrink-0"
+                  size="sm"
+                  className="whitespace-nowrap min-w-0 flex-shrink-0"
                 >
                   <span className="hidden sm:inline">Instructional Expert Hub</span>
                   <span className="sm:hidden">Expert Hub</span>
@@ -540,7 +543,7 @@ function FrameworkLibrary() {
                 className={
                   viewMode === "grid" 
                     ? `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${spacing.gridGap}`
-                    : "space-y-4"
+                    : spacing.sectionGapSmall
                 }
               >
                 {filteredFrameworks.map((framework, index) => (

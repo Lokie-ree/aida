@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Clock,
   Users,
-  MessageSquare
+  MessageSquare,
+  X
 } from "lucide-react";
 import { InnovationCard } from "./InnovationCard";
 import { InnovationForm } from "./InnovationForm";
@@ -179,24 +180,59 @@ function InnovationList() {
 
         {/* Innovation Form Modal */}
       {showForm && (
-        <div data-testid="innovation-form-modal" className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
-            <InnovationForm
-              onSuccess={handleFormSuccess}
-              onCancel={() => setShowForm(false)}
-            />
+        <div 
+          data-testid="innovation-form-modal" 
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md"
+          onClick={() => setShowForm(false)}
+        >
+          <div 
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50 px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowForm(false)}
+                className="absolute right-2 top-2 z-10 h-8 w-8"
+                aria-label="Close modal"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <InnovationForm
+                onSuccess={handleFormSuccess}
+                onCancel={() => setShowForm(false)}
+              />
+            </div>
           </div>
         </div>
       )}
 
       {/* Testimonial Form Modal */}
       {showTestimonialForm && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50">
-            <TestimonialForm
-              onSuccess={() => setShowTestimonialForm(false)}
-              onCancel={() => setShowTestimonialForm(false)}
-            />
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md"
+          onClick={() => setShowTestimonialForm(false)}
+        >
+          <div 
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-50 px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowTestimonialForm(false)}
+                className="absolute right-2 top-2 z-10 h-8 w-8"
+                aria-label="Close modal"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <TestimonialForm
+                onSuccess={() => setShowTestimonialForm(false)}
+                onCancel={() => setShowTestimonialForm(false)}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -207,7 +243,7 @@ function InnovationList() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 shadow-sm">
+        <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
           <CardContent className={spacing.card}>
             <div className="space-y-4">
             {/* Subject Filter Tabs */}
@@ -257,7 +293,7 @@ function InnovationList() {
                 placeholder="Search innovations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-11 w-full"
               />
             </div>
 
@@ -366,7 +402,7 @@ function InnovationList() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mb-8"
+          className="mb-6"
         >
           {(() => {
             // Get success stories: innovations with highest triesCount or likes
@@ -378,8 +414,8 @@ function InnovationList() {
             if (successStories.length === 0) return null;
             
             return (
-              <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 shadow-sm">
-                <CardContent className="p-6">
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <CardContent className={spacing.card}>
                   <div className="flex items-center gap-2 mb-4">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-semibold text-foreground font-heading">
@@ -391,8 +427,8 @@ function InnovationList() {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {successStories.map((story: any) => (
-                      <Card key={story._id} className="hover:shadow-lg transition-shadow bg-background">
-                        <CardContent className="p-4">
+                      <Card key={story._id} className="hover:shadow-lg transition-shadow bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
+                        <CardContent className={spacing.card}>
                           <h4 className="font-semibold mb-2 line-clamp-1 text-sm">{story.title}</h4>
                           <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
                             {story.description}

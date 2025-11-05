@@ -8,6 +8,7 @@ import {
   TrendingUp,
   ArrowRight
 } from "lucide-react";
+import { spacing } from "@/lib/spacing";
 
 export interface QuickAccessItem {
   id: string;
@@ -112,14 +113,14 @@ export function QuickAccessGrid({
       initial="initial"
       animate="animate"
       variants={staggerChildren}
-      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 sm:p-8 lg:p-10 border border-primary/20 shadow-sm ${className}`}
+      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
     >
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-foreground font-heading mb-3">Navigate AI with Confidence</h2>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-foreground font-heading mb-2">Navigate AI with Confidence</h2>
         <p className="text-muted-foreground text-base leading-relaxed">Your platform-agnostic AI guidance hub - works with ANY tool you use</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${spacing.gridGap}`}>
         {finalItems.map((item) => (
           <motion.div
             key={item.id}
@@ -130,7 +131,7 @@ export function QuickAccessGrid({
           >
             <Button
               variant={item.variant || "outline"}
-              className={`w-full h-auto p-6 sm:p-8 flex items-center gap-4 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-0 ${
+              className={`w-full h-auto ${spacing.card} flex items-center gap-4 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-0 ${
                 item.variant === "default" 
                   ? "bg-primary hover:bg-primary/90 text-white border-primary shadow-md" 
                   : "hover:border-primary/50 hover:bg-primary/5 border-2"

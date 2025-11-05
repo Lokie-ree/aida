@@ -17,7 +17,6 @@ import {
   Star,
   Shield,
   Lightbulb,
-  X,
   ExternalLink,
   Users,
   ArrowRight
@@ -154,36 +153,31 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex items-start justify-between"
+            className="pr-10"
           >
-            <div className="flex-1">
-              <DialogTitle className="text-2xl md:text-3xl font-bold mb-2 font-heading">
-                {framework.title}
-              </DialogTitle>
-              <p id="framework-detail-description" className="sr-only">
-                Framework details including challenge, solution, sample prompt, and usage statistics
-              </p>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <Badge variant="outline">
-                  {framework.module === "ai-basics-hub" ? "AI Basics Hub" : "Instructional Expert Hub"}
-                </Badge>
-                <Badge variant="outline">
-                  {framework.category.split('-').map(word => 
-                    word.charAt(0).toUpperCase() + word.slice(1)
-                  ).join(' ')}
-                </Badge>
-                <Badge 
-                  variant="outline" 
-                  className={`flex items-center gap-1 ${getDifficultyColor(framework.difficultyLevel)}`}
-                >
-                  {getDifficultyIcon(framework.difficultyLevel)}
-                  <span className="capitalize">{framework.difficultyLevel}</span>
-                </Badge>
-              </div>
+            <DialogTitle className="text-2xl md:text-3xl font-bold mb-2 font-heading">
+              {framework.title}
+            </DialogTitle>
+            <p id="framework-detail-description" className="sr-only">
+              Framework details including challenge, solution, sample prompt, and usage statistics
+            </p>
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <Badge variant="outline">
+                {framework.module === "ai-basics-hub" ? "AI Basics Hub" : "Instructional Expert Hub"}
+              </Badge>
+              <Badge variant="outline">
+                {framework.category.split('-').map(word => 
+                  word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ')}
+              </Badge>
+              <Badge 
+                variant="outline" 
+                className={`flex items-center gap-1 ${getDifficultyColor(framework.difficultyLevel)}`}
+              >
+                {getDifficultyIcon(framework.difficultyLevel)}
+                <span className="capitalize">{framework.difficultyLevel}</span>
+              </Badge>
             </div>
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="h-4 w-4" />
-            </Button>
           </motion.div>
         </DialogHeader>
 
@@ -200,7 +194,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
                 <CardContent className={spacing.card}>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
@@ -217,7 +211,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.3 }}
             >
-              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
                 <CardContent className={spacing.card}>
                   <div className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-muted-foreground" />
@@ -236,7 +230,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.4 }}
             >
-              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
                 <CardContent className={spacing.card}>
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-muted-foreground" />
@@ -256,7 +250,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.5 }}
           >
-            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-primary" />
@@ -277,7 +271,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.6 }}
           >
-            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb className="h-5 w-5 text-primary" />
@@ -300,7 +294,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.7 }}
           >
-            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Copy className="h-5 w-5 text-primary" />
@@ -312,27 +306,22 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             </CardHeader>
             <CardContent>
               <div className="relative">
-                <pre className="bg-muted p-4 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap">
+                <pre className="bg-muted p-4 pr-12 rounded-lg text-sm overflow-x-auto whitespace-pre-wrap">
                   {framework.samplePrompt}
                 </pre>
                 <Button
                   data-testid="framework-detail-copy-prompt"
                   aria-label="Copy framework prompt"
-                  size="sm"
+                  size="icon"
                   onClick={handleCopyPrompt}
-                  className="absolute top-2 right-2"
+                  className="absolute top-2 right-2 h-8 w-8"
                   disabled={copiedPrompt}
+                  variant="outline"
                 >
                   {copiedPrompt ? (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      Copied!
-                    </>
+                    <Check className="h-3.5 w-3.5" />
                   ) : (
-                    <>
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy
-                    </>
+                    <Copy className="h-3.5 w-3.5" />
                   )}
                 </Button>
               </div>
@@ -346,7 +335,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.8 }}
           >
-            <Card className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/20 dark:to-amber-900/10 border-amber-200 dark:border-amber-800">
+            <Card className="bg-gradient-to-br from-amber-50/90 to-amber-100/70 dark:from-amber-950/40 dark:to-amber-900/30 border border-amber-200 dark:border-amber-800 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
@@ -370,7 +359,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.9 }}
             >
-              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+              <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lightbulb className="h-5 w-5 text-primary" />
@@ -393,7 +382,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 1.0 }}
             >
-              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+              <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Star className="h-5 w-5 text-primary" />
@@ -420,7 +409,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 1.1 }}
             >
-              <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+              <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-primary" />
@@ -446,7 +435,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 1.2 }}
           >
-            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-primary" />
@@ -471,7 +460,7 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 1.4 }}
           >
-            <Card className="bg-gradient-to-br from-background to-primary/5 border-primary/20">
+            <Card className="bg-gradient-to-br from-background to-primary/5 border border-primary/20 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-primary" />
@@ -538,13 +527,15 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 1.5 }}
-            className="flex flex-wrap gap-3 pt-4 border-t border-primary/20"
+            className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4 border-t border-primary/20"
           >
             <Button 
               data-testid="framework-detail-save"
               aria-label={isSaved ? "Unsave framework" : "Save framework"}
               onClick={handleSave} 
               variant={isSaved ? "default" : "outline"}
+              className="flex-1 sm:flex-initial"
+              size="sm"
             >
               {isSaved ? (
                 <>
@@ -554,7 +545,8 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               ) : (
                 <>
                   <Bookmark className="h-4 w-4 mr-2" aria-hidden="true" />
-                  Save Framework
+                  <span className="hidden sm:inline">Save Framework</span>
+                  <span className="sm:hidden">Save</span>
                 </>
               )}
             </Button>
@@ -563,26 +555,33 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               aria-label="Mark framework as tried"
               onClick={handleTried} 
               variant="outline"
+              className="flex-1 sm:flex-initial"
+              size="sm"
             >
               <Star className="h-4 w-4 mr-2" aria-hidden="true" />
-              Mark as Tried
+              <span className="hidden sm:inline">Mark as Tried</span>
+              <span className="sm:hidden">Tried</span>
             </Button>
             <Button 
-              data-testid="framework-detail-copy-prompt"
+              data-testid="framework-detail-copy-prompt-bottom"
               aria-label="Copy framework prompt"
               onClick={handleCopyPrompt} 
               variant="outline" 
               disabled={copiedPrompt}
+              className="flex-1 sm:flex-initial"
+              size="sm"
             >
               {copiedPrompt ? (
                 <>
                   <Check className="h-4 w-4 mr-2" />
-                  Copied!
+                  <span className="hidden sm:inline">Copied!</span>
+                  <span className="sm:hidden">Copied</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4 mr-2" />
-                  Copy Prompt
+                  <span className="hidden sm:inline">Copy Prompt</span>
+                  <span className="sm:hidden">Copy</span>
                 </>
               )}
             </Button>
