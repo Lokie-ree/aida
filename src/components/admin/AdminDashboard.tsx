@@ -24,7 +24,6 @@ import { AdminContentModeration } from "./AdminContentModeration";
 
 export function AdminDashboard() {
   const [selectedSignup, setSelectedSignup] = useState<string | null>(null);
-  const [temporaryPassword, setTemporaryPassword] = useState("");
   const [notes, setNotes] = useState("");
   
   const stats = useQuery(api.admin.getAdminStats, {});
@@ -36,30 +35,14 @@ export function AdminDashboard() {
   const approveBetaSignup = useMutation(api.betaSignup.approveBetaSignup);
   const updateBetaUserStatus = useMutation(api.admin.updateBetaUserStatus);
 
-  const generateSecurePassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-    let password = '';
-    for (let i = 0; i < 12; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
-  };
-
   const handleApprove = async (signupId: string) => {
-    if (!temporaryPassword) {
-      toast.error("Please generate a temporary password");
-      return;
-    }
-    
     try {
       await approveBetaSignup({ 
         signupId: signupId as any, 
-        temporaryPassword,
         notes: notes || undefined
       });
-      toast.success("Beta signup approved!");
+      toast.success("Beta signup approved! User will receive a magic link to access the platform.");
       setSelectedSignup(null);
-      setTemporaryPassword("");
       setNotes("");
     } catch (error) {
       console.error("Error approving signup:", error);
@@ -242,27 +225,10 @@ export function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Approve Beta Signup</CardTitle>
                 <CardDescription>
-                  Generate credentials and approve this beta signup
+                  Approve this beta signup. The user will receive a magic link to access the platform.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="temp-password">Temporary Password</Label>
-                  <ButtonGroup>
-                    <Input
-                      id="temp-password"
-                      value={temporaryPassword}
-                      onChange={(e) => setTemporaryPassword(e.target.value)}
-                      placeholder="Generate secure password"
-                    />
-                    <Button
-                      variant="outline"
-                      onClick={() => setTemporaryPassword(generateSecurePassword())}
-                    >
-                      Generate
-                    </Button>
-                  </ButtonGroup>
-                </div>
                 <div>
                   <Label htmlFor="notes">Notes (Optional)</Label>
                   <Input
@@ -277,7 +243,6 @@ export function AdminDashboard() {
                     variant="outline"
                     onClick={() => {
                       setSelectedSignup(null);
-                      setTemporaryPassword("");
                       setNotes("");
                     }}
                     className="flex-1"
@@ -288,7 +253,7 @@ export function AdminDashboard() {
                     onClick={() => handleApprove(selectedSignup)}
                     className="flex-1"
                   >
-                    Approve & Send Email
+                    Approve & Send Magic Link
                   </Button>
                 </ButtonGroup>
               </CardContent>

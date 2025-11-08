@@ -56,9 +56,7 @@ describe("Beta Signup", () => {
       expect(result.success).toBe(true);
       expect(result).toHaveProperty("message");
       expect(result).toHaveProperty("signupId");
-      expect(result).toHaveProperty("temporaryPassword");
       expect(result.signupId).toBeDefined();
-      expect(result.temporaryPassword).toBeDefined();
 
       // Store signupId for later tests
       if (result.signupId) {
@@ -228,7 +226,6 @@ describe("Beta Signup", () => {
 
       const result = await t.mutation(api.betaSignup.approveBetaSignup, {
         signupId: signupResult.signupId,
-        temporaryPassword: "TempPass123!",
         notes: "Approved for testing",
       });
 
@@ -257,7 +254,6 @@ describe("Beta Signup", () => {
 
       const result = await t.mutation(api.betaSignup.approveBetaSignup, {
         signupId: nonExistentId,
-        temporaryPassword: "TempPass123!",
       });
 
       expect(result.success).toBe(false);
@@ -300,36 +296,6 @@ describe("Beta Signup", () => {
     });
   });
 
-  describe("createUserAccountFromBetaSignup", () => {
-    test("creates user account from signup (scheduled)", async () => {
-      vi.useFakeTimers();
-
-      // perform signup, which schedules account creation + welcome email
-      const signupResult = await t.mutation(api.betaSignup.signupForBeta, {
-        email: `scheduled-${Date.now()}@example.com`,
-        name: "Scheduled Test",
-        school: "Test School",
-        subject: "Math",
-      });
-
-      expect(signupResult.success).toBe(true);
-      expect(signupResult.signupId).toBeDefined();
-
-      // run all timers and finish scheduled functions
-      vi.runAllTimers();
-      await t.finishAllScheduledFunctions(vi.runAllTimers);
-
-      // verify the signup was approved by the scheduled action
-      const updated = await t.query(api.betaSignup.getBetaSignupById, {
-        signupId: signupResult.signupId!,
-      });
-
-      expect(updated).not.toBeNull();
-      expect(updated?.status).toBe("approved");
-
-      vi.useRealTimers();
-    });
-  });
 
   describe("updateSignupStatus", () => {
     test("updates signup status", async () => {
@@ -360,20 +326,6 @@ describe("Beta Signup", () => {
     });
   });
 
-  describe("createUserProfileAfterSignup", () => {
-    test("creates userProfile and betaProgram records", async () => {
-      const res = await t.mutation(api.betaSignup.createUserProfileAfterSignup, {
-        userId: `user-${Date.now()}`,
-        email: `user-${Date.now()}@example.com`,
-        name: "User Name",
-        school: "School X",
-        subject: "Science",
-      });
-      expect(res.success).toBe(true);
-      expect(res.userProfileId).toBeDefined();
-      expect(res.betaProgramId).toBeDefined();
-    });
-  });
 
   describe("deleteBetaSignup", () => {
     test("deletes an existing signup", async () => {

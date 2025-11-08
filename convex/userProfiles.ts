@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
 import { api } from "./_generated/api";
+import type { Id } from "./_generated/dataModel";
 
 /**
  * Query to get the current user's profile.
@@ -329,7 +330,40 @@ export const initializeNewUser = mutation({
       return { success: false, message: "No approved beta signup found" };
     }
 
-    // Create user profile
+    // Check if betaProgram already exists for this user
+    let betaProgram = await ctx.db
+      .query("betaProgram")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .first();
+
+    // Create betaProgram record if it doesn't exist
+    // This happens when user clicks magic link after approval
+    let betaProgramId: Id<"betaProgram">;
+    if (!betaProgram) {
+      betaProgramId = await ctx.db.insert("betaProgram", {
+        userId: user._id,
+        status: "invited",
+        invitedAt: betaSignup.signupDate || Date.now(),
+        joinedAt: undefined, // Set when onboarding completes
+        onboardingStep: 0,
+        onboardingCompleted: false,
+        frameworksTried: 0,
+        totalTimeSaved: 0,
+        innovationsShared: 0,
+        officeHoursAttended: 0,
+        weeklyEngagementCount: 0,
+      });
+    } else {
+      betaProgramId = betaProgram._id;
+      // Update status to "invited" if it was in a different state
+      if (betaProgram.status !== "invited") {
+        await ctx.db.patch(betaProgram._id, {
+          status: "invited",
+        });
+      }
+    }
+
+    // Create user profile with data from betaSignup
     const profileId = await ctx.db.insert("userProfiles", {
       userId: user._id,
       school: betaSignup.school,
@@ -337,21 +371,6 @@ export const initializeNewUser = mutation({
       gradeLevel: undefined,
       district: undefined,
       role: "teacher",
-    });
-
-    // Initialize beta program
-    const betaProgramId = await ctx.db.insert("betaProgram", {
-      userId: user._id,
-      status: "active",
-      invitedAt: betaSignup.signupDate,
-      joinedAt: Date.now(),
-      onboardingStep: 0,
-      onboardingCompleted: false,
-      frameworksTried: 0,
-      totalTimeSaved: 0,
-      innovationsShared: 0,
-      officeHoursAttended: 0,
-      weeklyEngagementCount: 0,
     });
 
     return { 

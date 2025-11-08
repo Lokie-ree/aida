@@ -11,10 +11,9 @@ export const innovationFormSchema = z.object({
 
 export type InnovationFormData = z.infer<typeof innovationFormSchema>;
 
-// Auth Form Schema
+// Auth Form Schema (passwordless)
 export const authFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
   name: z.string().optional(),
 });
 

@@ -16,7 +16,7 @@ export const seedInitialFrameworks = mutation({
         module: "ai-basics-hub" as const,
         category: "teacher-productivity",
         tags: ["email", "parent-communication", "productivity"],
-        challenge: "Drafting a sensitive email to a parent about a student's struggles can be time-consuming and emotionally taxing.",
+        challenge: "Drafting a sensitive email to a parent about a student's struggles can be time-consuming and emotionally taxing. LER Domain 4: PROFESSIONALISM includes school involvement and communication responsibilities, making efficient parent communication essential for evaluation readiness.",
         solution: `1. Open your preferred AI platform (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
 2. Use the prompt template below, filling in the specific details
 3. Review the AI-generated draft carefully
@@ -32,12 +32,12 @@ export const seedInitialFrameworks = mutation({
 
 Please provide a subject line and the body of the email.`,
         ethicalGuardrail: "AI is a drafting assistant. The final message, professional judgment, and accountability are always yours. Never send an AI-generated email without ensuring it reflects your voice and the specific student's context.",
-        tipsAndVariations: "For urgent situations, start with a phone call. For positive news, consider adding a specific example of recent success.",
+        tipsAndVariations: "For urgent situations, start with a phone call. For positive news, consider adding a specific example of recent success. This addresses Pain Point #5: Communication and Administrative Tasks by saving time on professional communication while maintaining quality.",
         timeEstimate: 10,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -51,7 +51,7 @@ Please provide a subject line and the body of the email.`,
         module: "ai-basics-hub" as const,
         category: "teacher-productivity",
         tags: ["newsletter", "communication", "productivity"],
-        challenge: "Creating engaging weekly or monthly newsletters takes valuable planning time away from instruction.",
+        challenge: "Creating engaging weekly or monthly newsletters takes valuable planning time away from instruction. LER Domain 4: PROFESSIONALISM emphasizes communication with families, making newsletters an important but time-consuming professional responsibility.",
         solution: `1. Gather key information: upcoming events, student achievements, curriculum focus
 2. Open your AI platform
 3. Use the newsletter prompt template
@@ -70,12 +70,12 @@ Please provide a subject line and the body of the email.`,
 
 Create an engaging, positive newsletter (300-400 words) with clear sections and a warm, professional tone.`,
         ethicalGuardrail: "Always review AI-generated content for accuracy. Ensure all dates, events, and student information are correct before sending. Never include student names without permission.",
-        tipsAndVariations: "Save successful prompts as templates. Adjust tone for different grade levels. Consider adding a 'Student Spotlight' section.",
+        tipsAndVariations: "Save successful prompts as templates. Adjust tone for different grade levels. Consider adding a 'Student Spotlight' section. This addresses Pain Point #5: Communication and Administrative Tasks by reducing time spent on routine communication tasks.",
         timeEstimate: 15,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -87,7 +87,7 @@ Create an engaging, positive newsletter (300-400 words) with clear sections and 
         module: "ai-basics-hub" as const,
         category: "teacher-productivity",
         tags: ["summarization", "professional-development", "reading"],
-        challenge: "Keeping up with educational research and policy documents is essential but time-consuming.",
+        challenge: "Keeping up with educational research and policy documents is essential but time-consuming. LER Domain 4: PROFESSIONALISM - Growing and Developing Professionally requires participating in professional learning and implementing new learning in the classroom, making efficient document review essential.",
         solution: `1. Upload or paste the document into your AI platform
 2. Use the summarization prompt below
 3. Review the key points and action items
@@ -112,12 +112,12 @@ Create an engaging, positive newsletter (300-400 words) with clear sections and 
 
 Document: [Paste document text here]`,
         ethicalGuardrail: "AI summaries are starting points for understanding. Always verify important information by reading the original source, especially for policy or legal matters.",
-        tipsAndVariations: "Use this for curriculum guides, research papers, and district memos. Create a personal knowledge base by saving summaries.",
+        tipsAndVariations: "Use this for curriculum guides, research papers, and district memos. Create a personal knowledge base by saving summaries. This addresses Pain Point #5: Communication and Administrative Tasks by efficiently processing professional reading requirements.",
         timeEstimate: 8,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -164,7 +164,7 @@ Meeting Notes: [Paste notes here]`,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -203,7 +203,7 @@ Meeting Notes: [Paste notes here]`,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -219,14 +219,15 @@ Meeting Notes: [Paste notes here]`,
         module: "instructional-expert-hub" as const,
         category: "louisiana-framework",
         tags: ["standards", "lesson-planning", "louisiana"],
-        challenge: "Breaking down complex Louisiana state standards into clear, measurable learning objectives takes significant time and expertise.",
+        challenge: "Breaking down complex Louisiana state standards into clear, measurable learning objectives takes significant time and expertise. LER Domain 1: INSTRUCTION - Standards and Objectives (SO) requires all learning objectives and state content standards to be explicitly communicated and understood by students, with objectives aligned to the depth and rigor of state standards.",
         solution: `1. Identify the specific Louisiana standard you're addressing
 2. Open your AI platform
 3. Use the standards unpacking prompt
 4. Review the generated objectives and success criteria
 5. Align with your curriculum and student needs
-6. Refine based on your professional judgment`,
-        samplePrompt: `Act as a Louisiana curriculum specialist. Analyze this Louisiana state standard and help me unpack it for lesson planning:
+6. Refine based on your professional judgment
+7. Ensure alignment with LER Domain 1: INSTRUCTION - Standards and Objectives (SO)`,
+        samplePrompt: `Act as a Louisiana curriculum specialist with expertise in the Louisiana Educator Rubric (LER). Analyze this Louisiana state standard and help me unpack it for lesson planning, ensuring alignment with LER Domain 1: INSTRUCTION - Standards and Objectives (SO).
 
 **Standard:** [Paste full standard here]
 **Grade Level:** [Grade]
@@ -234,17 +235,24 @@ Meeting Notes: [Paste notes here]`,
 
 Please provide:
 1. A clear explanation of what this standard means in student-friendly language
-2. Three differentiated "I can" statements (approaching, meeting, exceeding)
+2. Three differentiated "I can" statements (approaching, meeting, exceeding) that students can articulate
 3. Key vocabulary students need to understand
 4. Potential misconceptions students might have
-5. Suggested formative assessment strategies`,
-        ethicalGuardrail: "AI can help unpack standards, but your professional judgment determines how to teach them. Always verify alignment with Louisiana's official curriculum documents and your district's scope and sequence.",
-        tipsAndVariations: "Use this for unit planning. Create anchor charts from the 'I can' statements. Share unpacked standards with students at the start of units.",
+5. Suggested formative assessment strategies
+
+**LER Domain 1: INSTRUCTION - Standards and Objectives (SO) Alignment:**
+- Ensure objectives are explicitly communicated and understood by students
+- Align objectives to the depth and rigor of the state standards
+- Connect objectives to prior learning and life experiences (for Exemplary rating)
+- Create clear, demanding, and high expectations for each student's performance
+- Ensure student work is aligned to state content standards and learning objectives`,
+        ethicalGuardrail: "AI can help unpack standards, but your professional judgment determines how to teach them. Always verify alignment with Louisiana's official curriculum documents and your district's scope and sequence. LER alignment supports evaluation but should reflect authentic teaching practice.",
+        tipsAndVariations: "Use this for unit planning. Create anchor charts from the 'I can' statements. Share unpacked standards with students at the start of units. Display objectives and reference throughout the lesson per LER expectations. This directly addresses Pain Point #3: Standards Unpacking and Alignment.",
         timeEstimate: 20,
         difficultyLevel: "intermediate" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 1: Planning and Preparation"],
+        lerDomains: ["Domain 1: INSTRUCTION", "Domain 2: PLANNING"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -256,13 +264,14 @@ Please provide:
         module: "instructional-expert-hub" as const,
         category: "louisiana-framework",
         tags: ["standards", "i-can-statements", "student-friendly"],
-        challenge: "Translating complex standards into student-friendly 'I can' statements that guide learning and assessment.",
+        challenge: "Translating complex standards into student-friendly 'I can' statements that guide learning and assessment. LER Domain 1: INSTRUCTION - Standards and Objectives (SO) requires learning objectives to be displayed and referenced throughout the lesson, with students able to articulate what they are learning and why.",
         solution: `1. Start with your unpacked Louisiana standard
 2. Use the 'I can' statement prompt
 3. Generate multiple levels of complexity
 4. Review for clarity and age-appropriateness
-5. Create visual displays for your classroom`,
-        samplePrompt: `Create student-friendly "I can" statements for this Louisiana standard:
+5. Create visual displays for your classroom
+6. Plan how students will articulate these statements during lessons`,
+        samplePrompt: `Create student-friendly "I can" statements for this Louisiana standard, aligned with LER Domain 1: INSTRUCTION - Standards and Objectives (SO):
 
 **Standard:** [Paste standard here]
 **Grade Level:** [Grade]
@@ -274,18 +283,24 @@ Please provide:
 - Include three levels: approaching, meeting, exceeding
 - Focus on what students will DO, not what they will know
 - Keep it specific and measurable
+- Ensure students can articulate what they are learning and why (LER alignment)
 
 **Format:**
 - Approaching: I can [basic skill/understanding]
 - Meeting: I can [grade-level expectation]
-- Exceeding: I can [advanced application/analysis]`,
-        ethicalGuardrail: "These statements guide student learning and assessment. Ensure they accurately reflect the standard and are appropriate for your students' developmental level.",
-        tipsAndVariations: "Use these for lesson objectives, exit tickets, and student self-assessment. Display them prominently in your classroom.",
+- Exceeding: I can [advanced application/analysis]
+
+**LER Alignment:**
+- Create statements students can explain to their peers
+- Connect to what students have previously learned
+- Include clear expectations for student performance`,
+        ethicalGuardrail: "These statements guide student learning and assessment. Ensure they accurately reflect the standard and are appropriate for your students' developmental level. LER alignment supports evaluation readiness.",
+        tipsAndVariations: "Use these for lesson objectives, exit tickets, and student self-assessment. Display them prominently in your classroom. Have students reference them throughout lessons per LER expectations. This supports Pain Point #3: Standards Unpacking and Alignment.",
         timeEstimate: 15,
         difficultyLevel: "intermediate" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 1: Planning and Preparation"],
+        lerDomains: ["Domain 1: INSTRUCTION", "Domain 2: PLANNING"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -322,7 +337,7 @@ Please provide:
         difficultyLevel: "intermediate" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 1: Planning and Preparation", "Domain 3: Instruction"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -359,7 +374,7 @@ Please provide:
         difficultyLevel: "intermediate" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 1: Planning and Preparation", "Domain 2: Classroom Environment"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 3: ENVIRONMENT"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -396,7 +411,7 @@ Please provide:
         difficultyLevel: "intermediate" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 1: Planning and Preparation", "Domain 3: Instruction"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -408,7 +423,7 @@ Please provide:
         module: "instructional-expert-hub" as const,
         category: "louisiana-framework",
         tags: ["unit-planning", "standards", "differentiation", "ler-alignment", "time-saving"],
-        challenge: "Planning a comprehensive unit aligned to multiple Louisiana standards while differentiating for diverse learners and meeting LER rubric expectations is an overwhelming task that can take hours. Between unpacking standards, creating objectives, planning differentiation, and aligning assessments, unit planning becomes a weekend-consuming burden that steals time from actual instruction.",
+        challenge: "Planning a comprehensive unit aligned to multiple Louisiana standards while differentiating for diverse learners and meeting LER rubric expectations is an overwhelming task that can take hours. Between unpacking standards, creating objectives, planning differentiation, and aligning assessments, unit planning becomes a weekend-consuming burden that steals time from actual instruction. LER Domain 2: PLANNING - Instructional Plans (IP) requires evidence of internalization of high-quality curriculum, measurable objectives aligned to state standards, and activities aligned to standards, content, and success criteria. This directly addresses Pain Point #1: Lesson Planning Burdens and Pain Point #2: Planning Time Constraints.",
         solution: `1. Gather your standards: Identify 3-5 Louisiana standards for the unit
 2. Open your preferred AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, etc.)
 3. Use this comprehensive unit planning prompt (copy complete prompt below)
@@ -417,7 +432,7 @@ Please provide:
 6. Break down into daily lesson plans using the unit framework as your guide
 7. Align each lesson to specific LER domains for evaluation readiness
 
-This framework saves 30-45 minutes per unit by consolidating multiple planning tasks into one structured AI session.`,
+This framework saves 30-45 minutes per unit by consolidating multiple planning tasks into one structured AI session, addressing the critical planning time constraints identified in Louisiana teacher research.`,
         samplePrompt: `Act as an expert Louisiana curriculum specialist and instructional designer. I'm planning a comprehensive unit and need your guidance to create a complete unit framework aligned to Louisiana standards and the Louisiana Educator Rubric.
 
 **UNIT CONTEXT:**
@@ -442,7 +457,7 @@ For each standard, provide:
 2. Three differentiated "I can" statements (approaching grade level, meeting grade level, exceeding grade level)
 3. Key vocabulary students must master
 4. Prerequisite skills/concepts
-5. Connection to LER Domain 1 (Planning and Preparation)
+5. Connection to LER Domain 1: INSTRUCTION - Standards and Objectives (SO): Ensure objectives are explicitly communicated, aligned to depth and rigor of standards, and students can articulate what they are learning
 
 **PART 2: UNIT STRUCTURE & PACING**
 Create:
@@ -479,9 +494,11 @@ Identify:
 
 **PART 6: LER RUBRIC ALIGNMENT**
 Demonstrate alignment to:
-- **Domain 1 (Planning and Preparation):** Standards alignment, knowledge of students, instructional outcomes
-- **Domain 3 (Instruction):** Questioning techniques, engagement strategies, assessment integration
-- **Domain 4 (Professional Responsibilities):** Communication with families, professional development connections
+- **Domain 1: INSTRUCTION - Standards and Objectives (SO):** All learning objectives and state content standards explicitly communicated; objectives aligned to depth and rigor of state standards
+- **Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS):** Understanding of each student's learning abilities and needs; differentiated supports to ensure mastery of grade-level standards
+- **Domain 2: PLANNING - Instructional Plans (IP):** Evidence of internalization of high-quality curriculum; measurable objectives aligned to state standards; activities aligned to standards, content, and success criteria; regular opportunities to accommodate individual student needs
+- **Domain 2: PLANNING - Assessment (AS):** Aligned with depth and rigor of state standards; variety of question types; multiple measures; extended written tasks as appropriate
+- **Domain 4: PROFESSIONALISM:** Communication with families, professional growth connections
 
 **OUTPUT FORMAT:**
 Present this as a comprehensive, usable unit planning document that I can immediately reference for lesson planning, parent communication, and evaluation readiness.
@@ -500,7 +517,7 @@ Please create this complete unit framework now.`,
         difficultyLevel: "advanced" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 1: Planning and Preparation", "Domain 3: Instruction", "Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION", "Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -512,7 +529,7 @@ Please create this complete unit framework now.`,
         module: "instructional-expert-hub" as const,
         category: "louisiana-framework",
         tags: ["assessment", "leads", "differentiation", "evaluation", "louisiana"],
-        challenge: "Creating differentiated assessments that align with Louisiana LEADS framework expectations, meet diverse learner needs, and demonstrate educator effectiveness for evaluation is complex and time-consuming. Teachers need assessments that simultaneously assess student learning, provide differentiation pathways, and showcase instructional quality for LEADS evaluation purposes.",
+        challenge: "Creating differentiated assessments that align with Louisiana LEADS framework expectations, meet diverse learner needs, and demonstrate educator effectiveness for evaluation is complex and time-consuming. Teachers need assessments that simultaneously assess student learning, provide differentiation pathways, and showcase instructional quality for LEADS evaluation purposes. LER Domain 2: PLANNING - Assessment (AS) requires assessments aligned with depth and rigor of state standards, variety of question types and formats, measuring student performance in more than three ways, and requiring extended written tasks as appropriate. This addresses Pain Point #4: Differentiation Challenges.",
         solution: `1. Identify your assessment goals: What standards are you assessing? What LEADS elements do you want to demonstrate?
 2. Gather student context: Reading levels, learning needs, prior assessment data
 3. Open your AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, etc.)
@@ -533,13 +550,12 @@ This framework saves 25-35 minutes per assessment while ensuring LEADS alignment
 - **Duration:** [Time students will have]
 - **Standards Being Assessed:** [Paste Louisiana state standards being assessed]
 
-**LEADS FRAMEWORK ALIGNMENT:**
-I need this assessment to demonstrate effectiveness in these LEADS components:
-- **Component 1.2:** Knowledge of students (differentiated assessment design)
-- **Component 3.1:** Classroom environment (supportive assessment culture)
-- **Component 3.2:** Questioning and discussion (assessment includes higher-order questions)
-- **Component 3.3:** Engagement (assessment engages diverse learners)
-- **Component 3.4:** Assessment of learning (multiple assessment strategies)
+**LER & LEADS FRAMEWORK ALIGNMENT:**
+I need this assessment to demonstrate effectiveness in these LER domains and indicators:
+- **Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS):** Understanding of each student's learning abilities and needs; differentiated supports
+- **Domain 2: PLANNING - Assessment (AS):** Aligned with depth and rigor of state standards; variety of question types and formats; measuring student performance in more than three ways; extended written tasks as appropriate; clear illustrations of student progress toward standards
+- **Domain 1: INSTRUCTION - Questioning (QU):** High-quality questions with appropriate mix of question types
+- **Domain 1: INSTRUCTION - Activities and Materials (ACT):** Student-centered activities that engage diverse learners
 
 **STUDENT DIVERSITY:**
 - **Approaching Grade Level:** [Number/description]
@@ -600,22 +616,22 @@ Create rubrics that:
 1. Align with Louisiana grade-level expectations
 2. Show clear progression from approaching → meeting → exceeding
 3. Provide actionable feedback language
-4. Connect to LEADS evaluation criteria
-5. Support student self-assessment
+4. Align with LER Domain 2: PLANNING - Assessment (AS) requirements
+5. Support student self-assessment and monitoring of progress toward state standards (LER Domain 2: PLANNING - Assessment (AS))
 
-**PART 6: EVIDENCE COLLECTION FOR LEADS**
+**PART 6: EVIDENCE COLLECTION FOR LEADS & LER**
 Document:
-1. How assessment data informs instruction (LEADS Component 3.4)
-2. Differentiation strategies showcased
-3. Student engagement evidence
-4. Question quality demonstration (Component 3.2)
+1. How assessment data informs instruction (LER Domain 2: PLANNING - Assessment (AS): descriptions of how assessment results will be used by teachers and students to inform future instruction)
+2. Differentiation strategies showcased (LER Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS))
+3. Student engagement evidence (LER Domain 1: INSTRUCTION - Activities and Materials (ACT))
+4. Question quality demonstration (LER Domain 1: INSTRUCTION - Questioning (QU))
 5. Connection to ongoing assessment practices
 
-**LOUISIANA LEADS FRAMEWORK NOTES:**
-- Ensure assessment demonstrates "effectiveness" level expectations
-- Show evidence of "knowledge of students" through differentiation
-- Reflect "assessment of learning" with varied strategies
-- Connect to "professional growth" through reflection opportunities
+**LER & LEADS FRAMEWORK NOTES:**
+- Ensure assessment demonstrates Proficient (3) or Exemplary (5) level expectations
+- Show evidence of "knowledge of students" through differentiation (TKS)
+- Reflect "assessment of learning" with varied strategies aligned to LER Domain 2: PLANNING - Assessment (AS)
+- Connect to "professional growth" through reflection opportunities (Domain 4: PROFESSIONALISM)
 
 **OUTPUT REQUIREMENTS:**
 1. Complete tiered assessment ready to use
@@ -632,13 +648,13 @@ Document:
 - Must demonstrate Louisiana educator expertise
 
 Please create this comprehensive LEADS-aligned assessment now.`,
-        ethicalGuardrail: "This framework helps create differentiated assessments efficiently, but you must ensure assessments are fair, accessible, and accurately measure what you intend. Always review AI-generated assessments for bias, cultural sensitivity, and alignment with your students' actual needs. Use your professional judgment to modify AI suggestions. LEADS evaluation should showcase your authentic teaching, not just follow templates.",
-        tipsAndVariations: "Use this for major assessments that will be part of your LEADS portfolio. Save templates for different assessment types. Share with colleagues for collaborative assessment design. Use tiered versions to track student growth over time. Document assessment modifications for LEADS evidence collection. Connect assessment data to instructional planning for maximum LEADS alignment.",
+        ethicalGuardrail: "This framework helps create differentiated assessments efficiently, but you must ensure assessments are fair, accessible, and accurately measure what you intend. Always review AI-generated assessments for bias, cultural sensitivity, and alignment with your students' actual needs. Use your professional judgment to modify AI suggestions. LEADS evaluation should showcase your authentic teaching, not just follow templates. LER alignment supports evaluation readiness but should reflect genuine instructional practice.",
+        tipsAndVariations: "Use this for major assessments that will be part of your LEADS portfolio. Save templates for different assessment types. Share with colleagues for collaborative assessment design. Use tiered versions to track student growth over time. Document assessment modifications for LEADS evidence collection. Connect assessment data to instructional planning for maximum LEADS alignment. This directly addresses Pain Point #4: Differentiation Challenges by providing explicit differentiation frameworks aligned to LER expectations.",
         timeEstimate: 30,
         difficultyLevel: "advanced" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 1: Planning and Preparation", "Domain 3: Instruction", "Domain 4: Professional Responsibilities"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION", "Domain 4: PROFESSIONALISM"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),

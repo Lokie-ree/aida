@@ -58,6 +58,14 @@ export default function App() {
                   <Routes>
                     <Route path="/" element={<SmartRedirect />} />
                     <Route 
+                      path="/onboarding" 
+                      element={
+                        <ProtectedRoute>
+                          <DashboardRoute onShowOnboarding={() => setShowOnboarding(true)} />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
                       path="/dashboard" 
                       element={
                         <ProtectedRoute>

@@ -1,9 +1,12 @@
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
+import { magicLink } from "better-auth/plugins";
 import { components } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import { betterAuth } from "better-auth";
+import { requireActionCtx } from "@convex-dev/better-auth/utils";
+import { api } from "./_generated/api";
 
 const siteUrl = process.env.SITE_URL!;
 
@@ -35,7 +38,8 @@ export const createAuth = (
     },
     trustedOrigins: [
       siteUrl,
-      "http://localhost:5174",
+      "http://localhost:5173", // Frontend dev server
+      "http://localhost:5174", // Alternative port
     ],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started
@@ -48,6 +52,24 @@ export const createAuth = (
       crossDomain({ siteUrl }),
       // The Convex plugin is required for Convex compatibility
       convex(),
+      // Magic Link plugin for passwordless authentication
+      magicLink({
+        sendMagicLink: async ({ email, url, token }, request) => {
+          // Use centralized email action from email.ts
+          const actionCtx = requireActionCtx(ctx);
+          try {
+            await actionCtx.runAction(api.email.sendMagicLinkEmail, {
+              email,
+              url,
+            });
+          } catch (error) {
+            console.error("Error sending magic link email:", error);
+            // Don't throw - Better Auth will handle the error
+          }
+        },
+        expiresIn: 300, // 5 minutes for regular sign-in requests
+        disableSignUp: false, // Allow account creation on first magic link click
+      }),
     ],
   });
 };
