@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { authFormSchema, type AuthFormData } from "@/lib/form-schemas";
 
@@ -28,8 +28,15 @@ interface AuthModalProps {
 
 export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModalProps) {
   const [flow, setFlow] = useState<"signIn" | "signUp">(initialMode);
-  const createUserProfile = useMutation(api.betaSignup.createUserProfileAfterSignup);
+  const [emailValue, setEmailValue] = useState("");
+  const signupForBeta = useMutation(api.betaSignup.signupForBeta);
   const navigate = useNavigate();
+  
+  // Query beta signup status when email is entered (for sign-up mode)
+  const betaSignup = useQuery(
+    api.betaSignup.getBetaSignupByEmail,
+    flow === "signUp" && emailValue.trim() ? { email: emailValue.trim() } : "skip"
+  );
   
   // Update flow when initialMode prop changes
   useEffect(() => {
@@ -37,9 +44,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
   }, [initialMode]);
 
   const form = useForm<AuthFormData>({
+    resolver: zodResolver(authFormSchema),
     defaultValues: {
       email: "",
-      password: "",
       name: "",
     },
   });
@@ -49,6 +56,8 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
   const handleClose = () => {
     if (!submitting) {
       onClose();
+      form.reset();
+      setEmailValue("");
     }
   };
 
@@ -57,101 +66,106 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
 
     try {
       if (flow === "signIn") {
-        console.log("Attempting sign-in for:", data.email);
-        const result = await authClient.signIn.email({
+        // Sign-in mode: Send magic link
+        console.log("Sending magic link for:", data.email);
+        const result = await authClient.signIn.magicLink({
           email: data.email,
-          password: data.password,
+          callbackURL: "/dashboard",
         });
         
-        console.log("Sign-in result:", result);
+        console.log("Magic link result:", result);
         
-        // Check if sign-in was successful - Better Auth returns data with user property
-        if (result && 'data' in result && result.data && (result.data as any).user) {
-          console.log("Sign-in successful for user:", (result.data as any).user.id);
-          toast.success("Welcome back to Pelican AI!");
+        if (result && 'data' in result && result.data) {
+          console.log("Magic link sent successfully");
+          toast.success("Check your email for a magic link to sign in");
           onClose();
-          // Navigate to root so SmartRedirect can handle role-based redirects
-          // (admin users go to /admin, regular users go to /dashboard)
-          navigate("/", { replace: true });
+          form.reset();
+          setEmailValue("");
         } else if (result && 'error' in result) {
-          // Better Auth returned an error object
-          console.log("Sign-in error:", (result as any).error);
-          throw new Error((result as any).error?.message || "Invalid email or password");
+          console.log("Magic link error:", (result as any).error);
+          throw new Error((result as any).error?.message || "Failed to send magic link");
         } else {
-          // No user returned, likely authentication failed
-          console.log("Sign-in failed - no user returned");
-          throw new Error("Invalid email or password");
+          throw new Error("Failed to send magic link");
         }
       } else {
-        // Sign up flow - use client-side authentication
-        console.log("Attempting sign-up for:", data.email);
-        const result = await authClient.signUp.email({
-          email: data.email,
-          password: data.password,
-          name: data.name || data.email.split("@")[0],
-        });
+        // Sign-up mode: Check beta signup status and handle accordingly
+        if (betaSignup) {
+          // Email already exists in betaSignups
+          if (betaSignup.status === "pending") {
+            toast.info("Your application is pending approval. We'll notify you via email once approved.");
+            onClose();
+            form.reset();
+            setEmailValue("");
+            return;
+          } else if (betaSignup.status === "approved") {
+            toast.info("You've been approved! Check your email for a magic link to access the platform.");
+            setFlow("signIn");
+            return;
+          } else if (betaSignup.status === "rejected") {
+            toast.error("Your application was not approved. Please contact support if you believe this is an error.");
+            return;
+          }
+        }
         
-        console.log("Sign-up result:", result);
-        
-        // Check if sign-up was successful
-        if (result && 'data' in result && result.data && (result.data as any).user) {
-          console.log("Sign-up successful for user:", (result.data as any).user.id);
+        // Email doesn't exist or status is unknown - create new beta signup        
+        try {
+          // Add timeout to prevent hanging
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("Request timed out. Please check your connection and try again.")), 15000);
+          });
           
-          // Create user profile and beta program record
-          try {
-            const profileResult = await createUserProfile({
-              userId: (result.data as any).user.id,
+          const result = await Promise.race([
+            signupForBeta({
               email: data.email,
-              name: data.name || data.email.split("@")[0],
+              name: data.name || undefined,
               school: undefined,
               subject: undefined,
-            });
-            
-            if (profileResult.success) {
-              console.log("User profile created successfully");
-              toast.success("Welcome to Pelican AI! Your account has been created.");
-            } else {
-              console.warn("Profile creation failed:", profileResult.message);
-              toast.success("Account created! Profile setup will complete shortly.");
-            }
-          } catch (profileError) {
-            console.error("Error creating user profile:", profileError);
-            toast.success("Account created! Profile setup will complete shortly.");
-          }
+            }),
+            timeoutPromise,
+          ]) as any;
           
-          onClose();
-          // Navigate to root so SmartRedirect can handle role-based redirects
-          // (admin users go to /admin, regular users go to /dashboard)
-          navigate("/", { replace: true });
-        } else if (result && 'error' in result) {
-          // Better Auth returned an error object
-          console.log("Sign-up error:", (result as any).error);
-          throw new Error((result as any).error?.message || "Failed to create account");
-        } else {
-          // No user returned, likely sign-up failed
-          console.log("Sign-up failed - no user returned");
-          throw new Error("Failed to create account");
+          if (result.success) {
+            console.log("Beta signup created successfully");
+            toast.success(result.message);
+            onClose();
+            form.reset();
+            setEmailValue("");
+          } else {
+            throw new Error(result.message);
+          }
+        } catch (mutationError: any) {
+          console.error("Signup mutation error:", mutationError);
+          // Re-throw to be caught by outer catch block
+          throw mutationError;
         }
       }
     } catch (error: any) {
       console.error("Auth error:", error);
       
       let toastTitle = "";
-      if (error.message?.includes("Invalid") || error.message?.includes("password")) {
-        toastTitle = "Invalid email or password. Please try again.";
-      } else if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
-        toastTitle = "An account with this email already exists. Try signing in instead.";
-        setFlow("signIn");
+      if (error.message?.includes("already exists") || error.message?.includes("already registered")) {
+        toastTitle = error.message;
+        if (flow === "signUp") {
+          setFlow("signIn");
+        }
+      } else if (error.message?.includes("magic link")) {
+        toastTitle = "Failed to send magic link. Please try again.";
       } else {
         toastTitle = flow === "signIn"
-          ? "Could not sign in. Please check your credentials."
-          : "Could not create account. Please try again.";
+          ? "Could not send magic link. Please try again."
+          : "Could not create signup. Please try again.";
       }
       toast.error(toastTitle);
     } finally {
       setSubmitting(false);
     }
   };
+
+  // Watch email field to update emailValue for query
+  const watchedEmail = form.watch("email");
+  useEffect(() => {
+    setEmailValue(watchedEmail || "");
+  }, [watchedEmail]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -169,20 +183,20 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
           </DialogTitle>
           <DialogDescription className="text-center">
             {flow === "signIn" 
-              ? "Sign in to access your AI guidance frameworks" 
-              : "Create your account to start using AI frameworks"}
+              ? "Sign in with a magic link sent to your email" 
+              : "Sign up for the beta program"}
           </DialogDescription>
         </DialogHeader>
 
         <Card className="border-0 shadow-none">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-lg text-foreground">
-              {flow === "signIn" ? "Welcome Back" : "Create Your Account"}
+              {flow === "signIn" ? "Welcome Back" : "Join the Beta Program"}
             </CardTitle>
             <CardDescription>
               {flow === "signIn" 
-                ? "Sign in to access your AI guidance frameworks" 
-                : "Create your account to start using AI frameworks"}
+                ? "Enter your email and we'll send you a magic link to sign in" 
+                : "Enter your details to apply for beta access"}
             </CardDescription>
           </CardHeader>
           
@@ -215,39 +229,15 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="Enter your email"
-                            disabled={submitting}
-                            autoComplete="email"
-                            {...field}
-                          />
-                        </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                          type="password"
-                          placeholder="Enter your password"
+                          type="email"
+                          placeholder="Enter your email"
                           disabled={submitting}
-                          autoComplete={flow === "signIn" ? "current-password" : "new-password"}
+                          autoComplete="email"
                           {...field}
                         />
                       </FormControl>
-                      {flow === "signUp" && (
-                        <p className="text-xs text-muted-foreground">
-                          Password must be at least 8 characters
-                        </p>
-                      )}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -257,7 +247,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
                   className="w-full"
                   disabled={submitting}
                 >
-                  {submitting ? "Please wait..." : flow === "signIn" ? "Sign in" : "Sign up"}
+                  {submitting 
+                    ? "Please wait..." 
+                    : flow === "signIn" 
+                      ? "Send Magic Link" 
+                      : "Sign Up for Beta"}
                 </Button>
                 <div className="text-center text-sm text-muted-foreground">
                   <span>
@@ -269,7 +263,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
                     type="button"
                     variant="link"
                     className="p-0 h-auto font-normal"
-                    onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
+                    onClick={() => {
+                      setFlow(flow === "signIn" ? "signUp" : "signIn");
+                      form.reset();
+                      setEmailValue("");
+                    }}
                     disabled={submitting}
                   >
                     {flow === "signIn" ? "Sign up instead" : "Sign in instead"}

@@ -15,16 +15,38 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   const betaStatus = useQuery(api.betaProgram.getBetaStatus);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
   const betaStats = useQuery(api.betaProgram.getBetaStats, {});
+  const betaSignup = useQuery(
+    api.betaSignup.getBetaSignupByEmail,
+    session?.user?.email ? { email: session.user.email } : "skip"
+  );
   
   const initializeUser = useMutation(api.userProfiles.initializeNewUser);
 
-  // Auto-initialize new users
+  // Auto-initialize new users (first login after approval)
+  // Only initialize if: user is authenticated, no profile exists, and beta signup is approved
   React.useEffect(() => {
-    if (session?.user && userProfile === null && betaStatus === null) {
-      console.log("Auto-initializing new user:", session.user.email);
+    if (
+      session?.user && 
+      userProfile === null && 
+      betaSignup?.status === "approved"
+    ) {
+      console.log("Auto-initializing new user after approval:", session.user.email);
       initializeUser().catch(console.error);
     }
-  }, [session?.user, userProfile, betaStatus, initializeUser]);
+  }, [session?.user, userProfile, betaSignup, initializeUser]);
+
+  // Auto-show onboarding modal when on /onboarding route, but only if onboarding isn't completed
+  React.useEffect(() => {
+    if (window.location.pathname === "/onboarding") {
+      // Only show onboarding if it's not completed
+      if (betaStatus && !betaStatus.onboardingCompleted) {
+        onShowOnboarding();
+      } else if (betaStatus && betaStatus.onboardingCompleted) {
+        // Redirect to dashboard if onboarding is already completed
+        window.history.replaceState({}, "", "/dashboard");
+      }
+    }
+  }, [onShowOnboarding, betaStatus]);
 
   if (session === undefined || frameworks === undefined || betaStats === undefined) {
     return (
@@ -62,8 +84,13 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     );
   }
 
-  // Check if user needs onboarding (no profile or incomplete onboarding)
-  const needsOnboarding = !userProfile || (betaStats && betaStats.weeklyEngagementStreak === 0);
+  // Check if user needs onboarding
+  // Show onboarding if:
+  // 1. User has profile but onboarding not completed (betaStatus exists but onboardingCompleted is false)
+  // 2. User just initialized (profile exists but onboarding hasn't started)
+  const needsOnboarding = 
+    (userProfile && betaStatus && !betaStatus.onboardingCompleted) ||
+    (userProfile && betaStatus && betaStatus.status === "invited");
 
   // Use real user profile data
   const user = {

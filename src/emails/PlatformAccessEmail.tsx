@@ -8,17 +8,17 @@ import { BaseEmailTemplate, CredentialsBox, InfoBox, CTAButton, SecondaryButton,
 interface PlatformAccessEmailProps {
   email: string;
   name?: string;
-  temporaryPassword: string;
+  magicLinkUrl?: string;
 }
 
 export function PlatformAccessEmail({
   email,
   name = "Educator",
-  temporaryPassword,
+  magicLinkUrl,
 }: PlatformAccessEmailProps) {
   return (
     <BaseEmailTemplate
-      previewText={`Your Pelican AI Platform Access is Ready - ${temporaryPassword}`}
+      previewText="Your Pelican AI Platform Access is Ready"
       headerTitle={`Welcome ${name}!`}
       headerSubtitle="Your Platform Access is Ready!"
     >
@@ -27,27 +27,25 @@ export function PlatformAccessEmail({
         access to the Pelican AI platform.
       </Text>
 
-      {/* Credentials Section */}
-      <CredentialsBox>
-        <Heading style={textStyles.h2}>Your Login Credentials</Heading>
-        <Text style={credentialLabel}>Email:</Text>
-        <Text style={credentialValue}>{email}</Text>
-        <Text style={credentialLabel}>Temporary Password:</Text>
-        <Text style={credentialValue}>{temporaryPassword}</Text>
-        <Text style={securityWarning}>
-          ⚠️ Please change your password after your first login.
-        </Text>
-      </CredentialsBox>
+      {/* Magic Link CTA */}
+      {magicLinkUrl && (
+        <Section style={ctaSection}>
+          <CTAButton href={magicLinkUrl}>
+            Access Platform
+          </CTAButton>
+        </Section>
+      )}
 
-      {/* CTA Button */}
-      <Section style={ctaSection}>
-        <CTAButton href="https://pelicanai.org">
-          Access Platform
-        </CTAButton>
-      </Section>
+      {!magicLinkUrl && (
+        <Section style={ctaSection}>
+          <CTAButton href="https://pelicanai.org">
+            Access Platform
+          </CTAButton>
+        </Section>
+      )}
 
       <Text style={textStyles.paragraph}>
-        Once you log in, you'll complete a brief onboarding to personalize
+        Once you access the platform, you'll complete a brief onboarding to personalize
         your experience.
       </Text>
 
@@ -55,20 +53,19 @@ export function PlatformAccessEmail({
       <InfoBox>
         <Heading style={textStyles.h2}>Getting Started</Heading>
         <Text style={listItem}>
-          1. Click the button above to access the platform
+          1. Click the magic link above to access the platform
         </Text>
         <Text style={listItem}>
-          2. Log in with your email and temporary password
+          2. Complete your profile setup during onboarding
         </Text>
         <Text style={listItem}>
-          3. Change your password for security
+          3. Explore our AI guidance frameworks
         </Text>
-        <Text style={listItem}>
-          4. Complete your profile setup
-        </Text>
-        <Text style={listItem}>
-          5. Explore our AI guidance frameworks
-        </Text>
+        {magicLinkUrl && (
+          <Text style={listItem}>
+            4. If the link expires, you can request a new one from the sign-in page
+          </Text>
+        )}
       </InfoBox>
 
       {/* Beta Program Overview */}

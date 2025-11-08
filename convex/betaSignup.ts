@@ -1,12 +1,14 @@
 import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
+import { createAuth, authComponent } from "./auth";
+import { requireActionCtx } from "@convex-dev/better-auth/utils";
 
 /**
  * Public mutation for beta program signup.
  * 
- * Creates a beta signup record, generates a temporary password, and schedules
- * user account creation and welcome email delivery (email-first approach).
+ * Creates a beta signup record with "pending" status and sends welcome email.
+ * User will receive a magic link after admin approval.
  * 
  * **Phase 1 MVP:** Primary entry point for beta tester recruitment.
  * 
@@ -19,7 +21,6 @@ import { api } from "./_generated/api";
  *   - success: boolean indicating signup status
  *   - message: string description for user
  *   - signupId: ID of created signup record (if successful)
- *   - temporaryPassword: generated password (for internal use, not sent to user yet)
  * 
  * @throws {Error} Implicitly throws if database operations fail
  * 
@@ -43,7 +44,6 @@ export const signupForBeta = mutation({
     success: v.boolean(),
     message: v.string(),
     signupId: v.optional(v.id("betaSignups")),
-    temporaryPassword: v.optional(v.string()),
   }),
   handler: async (ctx, args) => {
     // Validate email is not null or empty
@@ -52,7 +52,6 @@ export const signupForBeta = mutation({
         success: false,
         message: "Email is required.",
         signupId: undefined,
-        temporaryPassword: undefined,
       };
     }
 
@@ -67,12 +66,8 @@ export const signupForBeta = mutation({
         success: false,
         message: "This email is already registered for the beta program.",
         signupId: undefined,
-        temporaryPassword: undefined,
       };
     }
-
-    // Generate secure temporary password for the user
-    const temporaryPassword = generateSecurePassword();
 
     // Create new beta signup
     const signupId = await ctx.db.insert("betaSignups", {
@@ -85,17 +80,7 @@ export const signupForBeta = mutation({
       betaProgramId: "beta-v1",
     });
 
-    // Schedule user account creation with temporary password
-    await ctx.scheduler.runAfter(
-      1000,
-      api.betaSignup.createUserAccountFromBetaSignup,
-      {
-        signupId,
-        temporaryPassword,
-      }
-    );
-
-    // Send welcome email (no platform credentials yet)
+    // Send welcome email (no platform credentials yet - user will receive magic link after approval)
     await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
       email: args.email,
       name: args.name,
@@ -104,175 +89,12 @@ export const signupForBeta = mutation({
 
     return {
       success: true,
-      message: "Successfully signed up for the beta program! Check your email for next steps.",
+      message: "Successfully signed up for the beta program! Your application is pending approval. We'll notify you via email once approved.",
       signupId,
-      temporaryPassword,
     };
   },
 });
 
-/**
- * Internal action to create Better Auth user account from beta signup.
- * 
- * This action runs asynchronously after beta signup to create the actual user account,
- * sync their profile, and approve their signup status.
- * 
- * **Phase 1 MVP:** Scheduled automatically 1 second after beta signup.
- * 
- * @param {Id<"betaSignups">} args.signupId - ID of the beta signup record
- * @param {string} args.temporaryPassword - Generated temporary password for user
- * 
- * @returns {Object} Result containing:
- *   - success: boolean indicating account creation status
- *   - message: string description of result
- * 
- * @example
- * // Automatically scheduled in signupForBeta
- * await ctx.scheduler.runAfter(1000, api.betaSignup.createUserAccountFromBetaSignup, {
- *   signupId,
- *   temporaryPassword
- * });
- */
-export const createUserAccountFromBetaSignup = action({
-  args: {
-    signupId: v.id("betaSignups"),
-    temporaryPassword: v.string(),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    message: v.string(),
-  }),
-  handler: async (ctx, args): Promise<{ success: boolean; message: string }> => {
-    try {
-      // Get beta signup data
-      const signup: any = await ctx.runQuery(api.betaSignup.getBetaSignupById, { 
-        signupId: args.signupId 
-      });
-      
-      if (!signup) {
-        return { success: false, message: "Beta signup not found" };
-      }
-
-      // NOTE: Server-side user creation is not supported in Better Auth
-      // Users must sign up through the client-side authentication flow
-      // This action now only handles profile creation and approval
-      
-      console.log("Beta signup approved, user must sign up through client:", args.signupId);
-      
-      // Update signup status to approved
-      await ctx.runMutation(api.betaSignup.updateSignupStatus, {
-        signupId: args.signupId,
-        status: "approved",
-      });
-      
-      // Send platform access email with instructions to sign up
-      await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
-        email: signup.email,
-        name: signup.name,
-        temporaryPassword: args.temporaryPassword,
-      });
-      
-      return {
-        success: true,
-        message: "Beta signup approved. User will receive sign-up instructions.",
-      };
-    } catch (error) {
-      console.error("Error processing beta signup:", error);
-      return {
-        success: false,
-        message: "Failed to process beta signup",
-      };
-    }
-  },
-});
-
-/**
- * Mutation to create user profile and beta program record after client-side signup.
- * 
- * This is called after a user successfully signs up through the client-side auth flow.
- * It creates the userProfiles and betaProgram records that were previously handled
- * by the onCreate trigger.
- * 
- * @param {string} args.userId - Better Auth user ID
- * @param {string} args.email - User's email address
- * @param {string} [args.name] - User's name (optional)
- * @param {string} [args.school] - School name (optional)
- * @param {string} [args.subject] - Subject taught (optional)
- * 
- * @returns {Object} Result containing success status and created IDs
- */
-export const createUserProfileAfterSignup = mutation({
-  args: {
-    userId: v.string(),
-    email: v.string(),
-    name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    message: v.string(),
-    userProfileId: v.optional(v.id("userProfiles")),
-    betaProgramId: v.optional(v.id("betaProgram")),
-  }),
-  handler: async (ctx, args) => {
-    try {
-      // Check if profile already exists
-      const existingProfile = await ctx.db
-        .query("userProfiles")
-        .withIndex("by_user", (q) => q.eq("userId", args.userId))
-        .unique();
-
-      if (existingProfile) {
-        return {
-          success: false,
-          message: "User profile already exists",
-          userProfileId: undefined,
-          betaProgramId: undefined,
-        };
-      }
-
-      // Create user profile
-      const userProfileId = await ctx.db.insert("userProfiles", {
-        userId: args.userId,
-        authId: args.userId,
-        school: args.school,
-        subject: args.subject,
-        role: "teacher",
-      });
-
-      // Create beta program record
-      const betaProgramId = await ctx.db.insert("betaProgram", {
-        userId: args.userId,
-        status: "active",
-        invitedAt: Date.now(),
-        joinedAt: Date.now(),
-        onboardingStep: 0,
-        onboardingCompleted: false,
-        frameworksTried: 0,
-        totalTimeSaved: 0,
-        innovationsShared: 0,
-        officeHoursAttended: 0,
-        weeklyEngagementCount: 0,
-      });
-
-      return {
-        success: true,
-        message: "User profile and beta program created successfully",
-        userProfileId,
-        betaProgramId,
-      };
-    } catch (error) {
-      console.error("Error creating user profile:", error);
-      return {
-        success: false,
-        message: `Failed to create user profile: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        userProfileId: undefined,
-        betaProgramId: undefined,
-      };
-    }
-  },
-});
 
 export const getBetaSignupStats = mutation({
   args: {},
@@ -300,36 +122,191 @@ export const updateSignupStatus = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
+    
     // Check if document exists before updating
     const existingDoc = await ctx.db.get(args.signupId);
     if (!existingDoc) {
+      console.error(`[updateSignupStatus] Beta signup not found: ${args.signupId}`);
       throw new Error(`Beta signup with ID ${args.signupId} not found`);
     }
+    
+    const previousStatus = existingDoc.status;
     
     await ctx.db.patch(args.signupId, {
       status: args.status,
       ...(args.notes && { notes: args.notes }),
     });
+
+
+    // If status is being changed to "approved", trigger magic link sending
+    if (args.status === "approved" && previousStatus !== "approved") {
+      console.log(`[updateSignupStatus] Status changed to approved, scheduling magic link for: ${existingDoc.email}`);
+      await ctx.scheduler.runAfter(100, api.betaSignup.sendMagicLinkForApproval, {
+        email: existingDoc.email,
+        name: existingDoc.name,
+      });
+    }
+    
     return null;
+  },
+});
+
+/**
+ * Action to send magic link via Convex HTTP endpoint
+ * 
+ * Calls the Better Auth HTTP endpoint registered in http.ts.
+ * This is the proper way to trigger Better Auth from Convex actions.
+ */
+export const sendMagicLinkForApproval = action({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    
+    try {
+      // Get the Convex site URL - this is where the HTTP endpoints are registered
+      // In production: https://xxx.convex.site
+      // In local dev: http://localhost:5174 (or check CONVEX_SITE_URL)
+      // SITE_URL is the frontend URL, we need the Convex site URL
+      let convexSiteUrl = process.env.CONVEX_SITE_URL || process.env.VITE_CONVEX_SITE_URL;
+      if (!convexSiteUrl) {
+        // Fallback: try to construct from CONVEX_URL if available
+        const convexUrl = process.env.CONVEX_URL;
+        if (convexUrl) {
+          // Convert https://xxx.convex.cloud to https://xxx.convex.site
+          convexSiteUrl = convexUrl.replace(/\.convex\.cloud/, ".convex.site");
+        } else {
+          throw new Error("CONVEX_SITE_URL or VITE_CONVEX_SITE_URL environment variable not set. Set it with: npx convex env set CONVEX_SITE_URL <your-site-url>");
+        }
+      }
+
+      // The HTTP endpoint is at /api/auth/sign-in/magic-link
+      // This endpoint is registered in http.ts via authComponent.registerRoutes
+      const betterAuthEndpoint = `${convexSiteUrl}/api/auth/sign-in/magic-link`;
+      
+
+      // Get the frontend URL for callback URLs
+      // Better Auth will use this to construct the full redirect URL
+      const frontendUrl = process.env.SITE_URL || "http://localhost:5173";
+      
+      const response = await fetch(betterAuthEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add origin header to match trusted origins in auth.ts
+          "Origin": frontendUrl,
+        },
+        body: JSON.stringify({
+          email: args.email,
+          name: args.name,
+          // Use full URLs for callbacks to ensure proper redirection
+          callbackURL: `${frontendUrl}/dashboard`,
+          newUserCallbackURL: `${frontendUrl}/onboarding`,
+        }),
+      });
+
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        let errorMessage = response.statusText;
+        try {
+          const errorJson = JSON.parse(responseText);
+          errorMessage = errorJson.message || errorJson.error || errorMessage;
+        } catch {
+          errorMessage = responseText || errorMessage;
+        }
+        
+        console.error(`[sendMagicLinkForApproval] HTTP error: ${response.status} - ${errorMessage}`);
+        return {
+          success: false,
+          message: `Failed to send magic link: ${errorMessage}`,
+        };
+      }
+
+      return {
+        success: true,
+        message: "Magic link sent successfully",
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : undefined;
+      console.error(`[sendMagicLinkForApproval] Exception: ${errorMessage}`);
+      if (errorStack) {
+        console.error(`[sendMagicLinkForApproval] Stack: ${errorStack.substring(0, 500)}`);
+      }
+      
+      return {
+        success: false,
+        message: `Failed to send magic link: ${errorMessage}`,
+      };
+    }
+  },
+});
+
+/**
+ * TEST ACTION: Manually trigger magic link for a beta signup
+ * 
+ * This can be called directly from the Convex dashboard function runner
+ * to test the magic link flow without needing admin UI access.
+ * 
+ * Usage in Convex dashboard:
+ * 1. Go to Functions tab
+ * 2. Select "betaSignup:testSendMagicLink"
+ * 3. Enter: { "email": "user@example.com" }
+ * 4. Run
+ */
+export const testSendMagicLink = action({
+  args: {
+    email: v.string(),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+  }),
+  handler: async (ctx, args): Promise<{ success: boolean; message: string }> => {    
+    // Find the beta signup by email
+    const signup: { _id: string; email: string; name?: string; status: string } | null = await ctx.runQuery(api.betaSignup.getBetaSignupByEmail, {
+      email: args.email,
+    });
+    
+    if (!signup) {
+      return {
+        success: false,
+        message: `No beta signup found for email: ${args.email}`,
+      };
+    }
+        
+    // Send the magic link
+    const result: { success: boolean; message: string } = await ctx.runAction(api.betaSignup.sendMagicLinkForApproval, {
+      email: args.email,
+      name: signup.name,
+    });
+    
+    return result;
   },
 });
 
 export const approveBetaSignup = mutation({
   args: { 
     signupId: v.id("betaSignups"),
-    temporaryPassword: v.string(),
     notes: v.optional(v.string())
   },
   returns: v.object({ 
     success: v.boolean(), 
     message: v.string()
   }),
-  handler: async (ctx, args) => {
+  handler: async (ctx, args) => {    
     // Get beta signup
     const signup = await ctx.db.get(args.signupId);
     if (!signup) {
       return { success: false, message: "Beta signup not found" };
     }
+
 
     // Update beta signup status
     await ctx.db.patch(args.signupId, { 
@@ -337,16 +314,25 @@ export const approveBetaSignup = mutation({
       notes: args.notes 
     });
 
-    // Schedule platform access email
-    await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
+    console.log(`[approveBetaSignup] Status updated to approved`);
+
+    // Note: We don't create betaProgram here because the user doesn't exist yet.
+    // betaProgram will be created in initializeNewUser when the user clicks the magic link
+    // and Better Auth creates their account.
+
+    // Send magic link email via Better Auth API
+    // Use runAfter with a small delay to ensure the mutation completes first
+    console.log(`[approveBetaSignup] Scheduling sendMagicLinkForApproval for email: ${signup.email}`);
+    await ctx.scheduler.runAfter(100, api.betaSignup.sendMagicLinkForApproval, {
       email: signup.email,
       name: signup.name,
-      temporaryPassword: args.temporaryPassword,
     });
+
+    console.log(`[approveBetaSignup] Scheduled action completed, returning success`);
 
     return {
       success: true,
-      message: "Beta signup approved. User will receive platform access instructions."
+      message: "Beta signup approved. User will receive a magic link to access the platform."
     };
   },
 });
@@ -407,6 +393,32 @@ export const getBetaSignupById = query({
   ),
   handler: async (ctx, args) => {
     return await ctx.db.get(args.signupId);
+  },
+});
+
+export const getBetaSignupByEmail = query({
+  args: { email: v.string() },
+  returns: v.union(
+    v.object({
+      _id: v.id("betaSignups"),
+      _creationTime: v.number(),
+      email: v.string(),
+      name: v.optional(v.string()),
+      school: v.optional(v.string()),
+      subject: v.optional(v.string()),
+      status: v.string(),
+      signupDate: v.number(),
+      betaProgramId: v.string(),
+      notes: v.optional(v.string()),
+      isTestData: v.optional(v.boolean()),
+    }),
+    v.null()
+  ),
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("betaSignups")
+      .withIndex("by_email", (q) => q.eq("email", args.email.trim()))
+      .unique();
   },
 });
 
@@ -552,12 +564,10 @@ export const resendPlatformAccessEmail = mutation({
   returns: v.object({ 
     success: v.boolean(), 
     message: v.string(),
-    temporaryPassword: v.optional(v.string())
   }),
   handler: async (ctx, args): Promise<{
     success: boolean;
     message: string;
-    temporaryPassword?: string;
   }> => {
     try {
       // Find beta signup by email
@@ -580,32 +590,15 @@ export const resendPlatformAccessEmail = mutation({
         };
       }
       
-      // Generate new temporary password
-      const temporaryPassword = generateSecurePassword();
-      
-      // Note: resetUserPassword was removed from simplified auth flow
-      // For now, we'll just send the email with the new password
-      // In production, you'd need to implement proper password reset
-      const passwordResetResult = { success: true, message: "Password reset not implemented in simplified flow" };
-      
-      if (!passwordResetResult.success) {
-        return {
-          success: false,
-          message: `Failed to reset password: ${passwordResetResult.message}`
-        };
-      }
-      
-      // Send platform access email
-      await ctx.scheduler.runAfter(0, api.email.sendPlatformAccessEmail, {
+      // Send magic link via Better Auth API
+      await ctx.scheduler.runAfter(0, api.betaSignup.sendMagicLinkForApproval, {
         email: signup.email,
         name: signup.name,
-        temporaryPassword: temporaryPassword,
       });
       
       return {
         success: true,
-        message: "Platform access email sent successfully",
-        temporaryPassword: temporaryPassword // For admin use only
+        message: "Magic link sent successfully. Check your email for the access link.",
       };
     } catch (error) {
       console.error("Error resending platform access email:", error);
@@ -616,19 +609,3 @@ export const resendPlatformAccessEmail = mutation({
     }
   },
 });
-
-/**
- * Generate a secure temporary password for beta testers
- * Password includes uppercase, lowercase, numbers, and special characters
- * Default length: 16 characters
- */
-function generateSecurePassword(length = 16): string {
-  const charset = 
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    password += charset[randomIndex];
-  }
-  return password;
-}

@@ -10,17 +10,18 @@ import { api } from "./_generated/api";
 import { Resend } from "@convex-dev/resend";
 
 // Simple email configuration - just the essentials
-const SENDER_DOMAIN = "mail.pelicanai.org" as const;
-const FROM_ADDRESS = `Pelican AI <hello@${SENDER_DOMAIN}>`;
-const REPLY_TO = [`hello@${SENDER_DOMAIN}`] as string[];
+export const SENDER_DOMAIN = "mail.pelicanai.org" as const;
+export const FROM_ADDRESS = `Pelican AI <hello@${SENDER_DOMAIN}>`;
+export const REPLY_TO = [`hello@${SENDER_DOMAIN}`] as string[];
 
 // Initialize Resend component
 // testMode: true = only send to @resend.dev test addresses (for development)
 // testMode: false = send to real addresses (requires verified domain in Resend)
-// Controlled via RESEND_TEST_MODE env var (defaults to true for safety)
-const isTestMode = process.env.RESEND_TEST_MODE !== "false";
+// Check Convex env var - defaults to true (test mode) for safety
+// Set via: npx convex env set RESEND_TEST_MODE false
+export const isTestMode = (process.env.RESEND_TEST_MODE ?? "true") !== "false";
 export const resend: Resend = new Resend(components.resend, {
-  testMode: isTestMode, // Defaults to true unless RESEND_TEST_MODE=false is set
+  testMode: isTestMode,
   onEmailEvent: internal.emailEvents.handleEmailEvent,
 });
 
@@ -62,6 +63,12 @@ export const sendBetaWelcomeEmail = action({
   }),
   handler: async (ctx, args) => {
     try {
+      // In test mode, only allow @resend.dev addresses
+      if (isTestMode && !args.email.endsWith("@resend.dev")) {
+        console.warn(`Test mode: Skipping email to ${args.email} (not a @resend.dev test address)`);
+        return { success: true, emailId: "test-mode-skipped" };
+      }
+
       // Render the React email component to HTML
       const emailHtml = await render(
         BetaWelcomeEmail({
@@ -79,10 +86,14 @@ export const sendBetaWelcomeEmail = action({
         replyTo: REPLY_TO,
       });
 
-      console.log("Beta welcome email sent successfully:", emailId);
       return { success: true, emailId };
     } catch (error) {
       console.error("Error sending beta welcome email:", error);
+      // In test mode, don't throw - just log and continue
+      if (isTestMode) {
+        console.warn("Test mode: Email sending failed, but continuing execution");
+        return { success: false, emailId: "test-mode-error" };
+      }
       throw new Error("Failed to send beta welcome email");
     }
   },
@@ -110,7 +121,7 @@ export const sendPlatformAccessEmail = action({
   args: {
     email: v.string(),
     name: v.optional(v.string()),
-    temporaryPassword: v.string(),
+    magicLinkUrl: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -118,12 +129,18 @@ export const sendPlatformAccessEmail = action({
   }),
   handler: async (ctx, args) => {
     try {
+      // In test mode, only allow @resend.dev addresses
+      if (isTestMode && !args.email.endsWith("@resend.dev")) {
+        console.warn(`Test mode: Skipping email to ${args.email} (not a @resend.dev test address)`);
+        return { success: true, emailId: "test-mode-skipped" };
+      }
+
       // Render the React email component to HTML
       const emailHtml = await render(
         PlatformAccessEmail({
           email: args.email,
           name: args.name || "Educator",
-          temporaryPassword: args.temporaryPassword,
+          magicLinkUrl: args.magicLinkUrl,
         })
       );
 
@@ -136,10 +153,14 @@ export const sendPlatformAccessEmail = action({
         replyTo: REPLY_TO,
       });
 
-      console.log("Platform access email sent successfully:", emailId);
       return { success: true, emailId };
     } catch (error) {
       console.error("Error sending platform access email:", error);
+      // In test mode, don't throw - just log and continue
+      if (isTestMode) {
+        console.warn("Test mode: Email sending failed, but continuing execution");
+        return { success: false, emailId: "test-mode-error" };
+      }
       throw new Error("Failed to send platform access email");
     }
   },
@@ -300,6 +321,64 @@ export const sendWeeklyEmailsToAllUsers = action({
     } catch (error) {
       console.error("Error sending weekly emails:", error);
       throw new Error("Failed to send weekly emails");
+    }
+  },
+});
+
+/**
+ * Action: Send magic link email.
+ * 
+ * Sends a magic link email for authentication. Used by Better Auth magic link plugin.
+ * 
+ * @param email - Recipient email address
+ * @param url - Magic link URL
+ * 
+ * @returns Object containing success status and email ID
+ */
+export const sendMagicLinkEmail = action({
+  args: {
+    email: v.string(),
+    url: v.string(),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    emailId: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // In test mode, only allow @resend.dev addresses
+      if (isTestMode && !args.email.endsWith("@resend.dev")) {
+        console.warn(`Test mode: Skipping magic link email to ${args.email} (not a @resend.dev test address)`);
+        return { success: true, emailId: "test-mode-skipped" };
+      }
+
+      // Send magic link email using Resend
+      const emailId = await resend.sendEmail(ctx, {
+        from: FROM_ADDRESS,
+        to: args.email,
+        subject: "Your Pelican AI Magic Link",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #1e40af;">Pelican AI</h1>
+            <p>Click the link below to sign in to your account:</p>
+            <p><a href="${args.url}" style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Sign In</a></p>
+            <p style="color: #6b7280; font-size: 14px;">This link will expire in 5 minutes.</p>
+            <p style="color: #6b7280; font-size: 14px;">If you didn't request this link, you can safely ignore this email.</p>
+          </div>
+        `,
+        replyTo: REPLY_TO,
+      });
+
+      console.log("Magic link email sent successfully to:", args.email);
+      return { success: true, emailId };
+    } catch (error) {
+      console.error("Error sending magic link email:", error);
+      // In test mode, don't throw - just log and continue
+      if (isTestMode) {
+        console.warn("Test mode: Magic link email sending failed, but continuing execution");
+        return { success: false, emailId: "test-mode-error" };
+      }
+      throw new Error("Failed to send magic link email");
     }
   },
 });

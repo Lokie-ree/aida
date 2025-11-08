@@ -7,8 +7,8 @@ import {ConvexBetterAuthProvider} from "@convex-dev/better-auth/react";
 import {authClient} from "@/lib/auth-client";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, {
-  // Optionally pause queries until the user is authenticated
-  expectAuth: true,
+  // Allow unauthenticated mutations (like beta signup) while still requiring auth for protected queries
+  expectAuth: false,
   verbose: true,
 });
 

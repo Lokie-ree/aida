@@ -164,10 +164,21 @@ export const updateOnboardingProgress = mutation({
       throw new Error("Beta program not initialized");
     }
 
-    await ctx.db.patch(betaStatus._id, {
+    // Update onboarding progress
+    const updates: any = {
       onboardingStep: args.step,
       onboardingCompleted: args.step >= 4,
-    });
+    };
+
+    // When onboarding is completed (step 4), update status to "active" and set joinedAt
+    if (args.step >= 4) {
+      updates.status = "active";
+      if (!betaStatus.joinedAt) {
+        updates.joinedAt = Date.now();
+      }
+    }
+
+    await ctx.db.patch(betaStatus._id, updates);
 
     return null;
   },

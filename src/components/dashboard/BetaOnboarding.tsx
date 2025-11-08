@@ -131,7 +131,12 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
         await updateOnboardingProgress({ step: 4 });
         await recordWeeklyEngagement();
         toast.success("Onboarding complete! Welcome to Pelican AI!");
+        // Close modal and redirect to dashboard
         onComplete();
+        // Redirect to dashboard if currently on /onboarding route
+        if (window.location.pathname === "/onboarding") {
+          window.location.href = "/dashboard";
+        }
         return;
       } catch (error) {
         console.error("Error completing onboarding:", error);

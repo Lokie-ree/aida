@@ -51,7 +51,7 @@ describe("Email actions", () => {
     const result = await t.action(api.email.sendPlatformAccessEmail, {
       email: "teacher@school.edu",
       name: "Test Teacher",
-      temporaryPassword: "TempPass123!",
+      magicLinkUrl: "https://example.com/magic-link",
     });
 
     expect(result.success).toBe(true);
@@ -130,7 +130,7 @@ describe("Email actions", () => {
       throw new Error("send fail");
     });
     await expect(
-      t.action(api.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", temporaryPassword: "X" })
+      t.action(api.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
     ).rejects.toThrow(/Failed to send platform access email/);
     sendSpy.mockRestore();
   });
