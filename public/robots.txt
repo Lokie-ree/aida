@@ -1,0 +1,9 @@
+# Pelican AI - Educational Resource for Louisiana Educators
+# This site provides AI guidance frameworks for K-12 educators
+
+User-agent: *
+Allow: /
+
+# Educational content categorization signals
+# This site is designed for educational use by teachers and administrators
+

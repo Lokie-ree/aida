@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "convex/react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ type FilterType = "all" | "recent" | "popular" | "my-innovations";
 type SortType = "newest" | "oldest" | "most-liked" | "most-tried";
 
 function InnovationList() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [sort, setSort] = useState<SortType>("newest");
@@ -32,6 +34,7 @@ function InnovationList() {
   const [showTestimonialForm, setShowTestimonialForm] = useState(false);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>("all");
+  const [selectedFramework, setSelectedFramework] = useState<string | null>(null);
 
   // Queries
   const innovations = useQuery(api.innovations.getRecentInnovations, { limit: 50 });
@@ -93,6 +96,13 @@ function InnovationList() {
       );
     }
 
+    // Apply framework filter
+    if (selectedFramework) {
+      filtered = filtered.filter((innovation: any) => 
+        innovation.relatedFramework === selectedFramework
+      );
+    }
+
     // Apply sorting
     switch (sort) {
       case "newest":
@@ -110,7 +120,7 @@ function InnovationList() {
     }
 
     return filtered;
-  }, [innovations, userInnovations, searchQuery, filter, sort, selectedTag, selectedSubject]);
+  }, [innovations, userInnovations, searchQuery, filter, sort, selectedTag, selectedSubject, selectedFramework]);
 
   // Get all unique tags for filtering
   const allTags = React.useMemo(() => {
@@ -139,6 +149,21 @@ function InnovationList() {
     // The list will automatically refresh due to Convex reactivity
   };
 
+  // Handle query parameters
+  useEffect(() => {
+    const frameworkParam = searchParams.get("framework");
+    if (frameworkParam) {
+      setSelectedFramework(frameworkParam);
+      // Clear the query parameter after applying filter
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.delete("framework");
+        return newParams;
+      });
+    }
+    // Note: tab=innovations parameter is handled by parent routing if needed
+  }, [searchParams, setSearchParams]);
+
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <div className={`max-w-7xl mx-auto ${spacing.container} ${spacing.containerY}`}>
@@ -160,7 +185,8 @@ function InnovationList() {
               <Button 
                 onClick={() => setShowTestimonialForm(true)} 
                 variant="outline" 
-                className="flex items-center gap-2 h-11 flex-1 sm:flex-initial min-w-0"
+                size="default"
+                className="h-11 min-h-[44px] max-h-[44px] flex-1 sm:flex-initial min-w-0 m-0"
               >
                 <MessageSquare className="h-4 w-4 shrink-0" />
                 <span className="truncate">Submit Testimonial</span>
@@ -169,7 +195,8 @@ function InnovationList() {
                 data-testid="innovation-list-share-button"
                 aria-label="Share innovation"
                 onClick={() => setShowForm(true)} 
-                className="flex items-center gap-2 h-11 flex-1 sm:flex-initial min-w-0"
+                size="default"
+                className="h-11 min-h-[44px] max-h-[44px] flex-1 sm:flex-initial min-w-0 m-0"
               >
                 <Plus className="h-4 w-4 shrink-0" />
                 <span className="truncate">Share Innovation</span>
@@ -247,14 +274,14 @@ function InnovationList() {
           <CardContent className={spacing.card}>
             <div className="space-y-4">
             {/* Subject Filter Tabs */}
-            <div className="flex flex-wrap gap-2 pb-2 border-b border-primary/20" data-testid="innovation-subject-filters">
+            <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-primary/20" data-testid="innovation-subject-filters">
               <Button
                 data-testid="innovation-filter-all-subjects"
                 aria-label="Filter all subjects"
                 variant={selectedSubject === "all" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedSubject("all")}
-                className="whitespace-nowrap flex-shrink-0"
+                className="whitespace-nowrap flex-shrink-0 h-9"
               >
                 All Subjects
               </Button>
@@ -265,7 +292,7 @@ function InnovationList() {
                   variant={selectedSubject === userProfile.subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(userProfile.subject!)}
-                  className="bg-primary/10 hover:bg-primary/20 whitespace-nowrap flex-shrink-0"
+                  className="bg-primary/10 hover:bg-primary/20 whitespace-nowrap flex-shrink-0 h-9"
                 >
                   <span className="hidden sm:inline">{userProfile.subject} (My Subject)</span>
                   <span className="sm:hidden">{userProfile.subject}</span>
@@ -279,7 +306,7 @@ function InnovationList() {
                   variant={selectedSubject === subject ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedSubject(subject)}
-                  className="whitespace-nowrap flex-shrink-0"
+                  className="whitespace-nowrap flex-shrink-0 h-9"
                 >
                   {subject}
                 </Button>
@@ -298,7 +325,7 @@ function InnovationList() {
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {[
                 { id: "all", label: "All", icon: Lightbulb },
                 { id: "recent", label: "Recent", icon: Clock },
@@ -310,7 +337,7 @@ function InnovationList() {
                   variant={filter === id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setFilter(id as FilterType)}
-                  className="flex items-center gap-1 whitespace-nowrap flex-shrink-0"
+                  className="flex items-center gap-1 whitespace-nowrap flex-shrink-0 h-9"
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span className="hidden sm:inline">{label}</span>
@@ -326,7 +353,7 @@ function InnovationList() {
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value as SortType)}
-                  className="px-3 py-1 border rounded-md text-sm"
+                  className="px-3 py-1.5 border rounded-md text-sm h-9"
                 >
                   <option value="newest">Newest</option>
                   <option value="oldest">Oldest</option>
@@ -338,11 +365,12 @@ function InnovationList() {
               {allTags.length > 0 && (
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Filter by tag:</span>
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap items-center gap-1">
                     <Button
                       variant={selectedTag === null ? "default" : "outline"}
                       size="sm"
                       onClick={() => setSelectedTag(null)}
+                      className="h-9"
                     >
                       All
                     </Button>
@@ -352,12 +380,13 @@ function InnovationList() {
                         variant={selectedTag === tag ? "default" : "outline"}
                         size="sm"
                         onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
+                        className="h-9"
                       >
                         {tag}
                       </Button>
                     ))}
                     {allTags.length > 8 && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs h-9 flex items-center">
                         +{allTags.length - 8} more
                       </Badge>
                     )}

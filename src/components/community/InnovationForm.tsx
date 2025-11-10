@@ -161,6 +161,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                     <Input
                       data-testid="innovation-form-title"
                       placeholder="e.g., Using AI to Create Differentiated Reading Passages"
+                      maxLength={100}
                       {...field}
                     />
                   </FormControl>
@@ -181,6 +182,7 @@ export function InnovationForm({ onSuccess, onCancel, relatedFrameworkId }: Inno
                       data-testid="innovation-form-description"
                       placeholder="Describe your innovation, how you used AI, and what made it effective..."
                       rows={4}
+                      maxLength={1000}
                       {...field}
                     />
                   </FormControl>

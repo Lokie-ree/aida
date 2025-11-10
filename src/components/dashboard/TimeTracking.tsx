@@ -214,6 +214,7 @@ function TimeTracking({ className }: TimeTrackingProps) {
                       <FormControl>
                         <Textarea
                           placeholder="e.g., Drafted parent communication email"
+                          maxLength={500}
                           {...field}
                         />
                       </FormControl>

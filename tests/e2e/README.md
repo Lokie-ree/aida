@@ -264,7 +264,7 @@ pnpm exec playwright install
 - Verify Convex deployment is accessible
 - Check network tab in browser for failed requests
 
-**For detailed test results and more error patterns, see [docs/E2E_TEST_RESULTS.md](../../docs/E2E_TEST_RESULTS.md)**
+**For detailed test results and more error patterns, see [docs/TESTING.md](../../docs/TESTING.md)**
 
 ## Best Practices
 
@@ -280,4 +280,4 @@ pnpm exec playwright install
 
 - [Vitest Documentation](https://vitest.dev/guide/)
 - [Playwright API](https://playwright.dev/docs/api/class-playwright)
-- [Testing Protocol](../docs/TESTING_PROTOCOL.md)
+- [Complete Testing Documentation](../docs/TESTING.md) - Protocol, results, quick reference, and best practices
