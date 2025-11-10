@@ -188,38 +188,40 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
           className="space-y-6"
         >
           {/* Framework Stats */}
-          <div className={`grid grid-cols-1 md:grid-cols-3 ${spacing.gridGapSmall}`}>
+          <div className="flex flex-wrap gap-2 md:gap-3">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.2 }}
+              className="flex-1 min-w-[120px]"
             >
               <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
-                <CardContent className={spacing.card}>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">{framework.timeEstimate} min</p>
-                    <p className="text-xs text-muted-foreground">Time estimate</p>
+                <CardContent className="py-3 px-4">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{framework.timeEstimate} min</p>
+                      <p className="text-xs text-muted-foreground truncate">Time estimate</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.3 }}
+              className="flex-1 min-w-[120px]"
             >
               <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
-                <CardContent className={spacing.card}>
+                <CardContent className="py-3 px-4">
                   <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">
+                    <Star className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">
                         {framework.averageRating ? framework.averageRating.toFixed(1) : "N/A"}
                       </p>
-                      <p className="text-xs text-muted-foreground">Average rating</p>
+                      <p className="text-xs text-muted-foreground truncate">Average rating</p>
                     </div>
                   </div>
                 </CardContent>
@@ -229,14 +231,15 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.4 }}
+              className="flex-1 min-w-[120px]"
             >
               <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-sm">
-                <CardContent className={spacing.card}>
+                <CardContent className="py-3 px-4">
                   <div className="flex items-center gap-2">
-                    <Target className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">{framework.usageCount}</p>
-                      <p className="text-xs text-muted-foreground">Times used</p>
+                    <Target className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{framework.usageCount}</p>
+                      <p className="text-xs text-muted-foreground truncate">Times used</p>
                     </div>
                   </div>
                 </CardContent>
@@ -497,7 +500,8 @@ export function FrameworkDetail({ frameworkId, onClose, onAction, isSaved }: Fra
                       size="sm" 
                       onClick={() => {
                         onClose();
-                        navigate(`/community?framework=${frameworkId}`);
+                        // Navigate with framework._id since relatedFramework stores Convex _id
+                        navigate(`/community?framework=${framework._id}`);
                       }}
                       className="mt-3"
                     >

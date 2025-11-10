@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery, useMutation } from "convex/react";
+import { useSearchParams } from "react-router-dom";
 import { Id } from "../../../convex/_generated/dataModel";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,6 +30,7 @@ type ViewMode = "grid" | "list";
 type ModuleFilter = "all" | "ai-basics-hub" | "instructional-expert-hub";
 
 function FrameworkLibrary() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [moduleFilter, setModuleFilter] = useState<ModuleFilter>("all");
@@ -36,7 +38,7 @@ function FrameworkLibrary() {
   const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
   const [lerDomainFilter, setLerDomainFilter] = useState<string>("all");
   const [louisianaStandardsFilter, setLouisianaStandardsFilter] = useState<string>("all");
-  const [selectedFramework, setSelectedFramework] = useState<string | null>(null);
+  const [selectedFramework, setSelectedFramework] = useState<string | null>(null); // Stores frameworkId string (e.g., "AIB-001")
 
   // Queries
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {
@@ -97,8 +99,12 @@ function FrameworkLibrary() {
   const handleFrameworkAction = (frameworkId: string, action: "view" | "copy" | "save" | "unsave" | "tried") => {
     const performAction = async () => {
       try {
-        // Find the framework by frameworkId (the string ID like "AIB-001")
-        const framework = frameworks?.find(f => f.frameworkId === frameworkId);
+        // Find the framework by frameworkId string (e.g., "AIB-001") or by Convex _id
+        let framework = frameworks?.find(f => f.frameworkId === frameworkId);
+        // If not found by frameworkId string, try finding by Convex _id
+        if (!framework) {
+          framework = frameworks?.find(f => f._id === frameworkId);
+        }
         if (!framework) {
           console.error("Framework not found:", frameworkId);
           toast.error("Framework not found. Please try again.");
@@ -145,12 +151,26 @@ function FrameworkLibrary() {
   };
 
   const handleViewFramework = (frameworkId: string) => {
-    setSelectedFramework(frameworkId);
-    handleFrameworkAction(frameworkId, "view");
+    // Find framework by frameworkId string (e.g., "AIB-001") or by Convex _id
+    const framework = frameworks?.find(f => f.frameworkId === frameworkId) || 
+                      frameworks?.find(f => f._id === frameworkId);
+    if (framework) {
+      setSelectedFramework(framework.frameworkId); // Store the string frameworkId
+      handleFrameworkAction(framework.frameworkId, "view");
+    } else {
+      // If not found, still try to set it (might be a valid frameworkId that's not loaded yet)
+      setSelectedFramework(frameworkId);
+      handleFrameworkAction(frameworkId, "view");
+    }
   };
 
   const isFrameworkSaved = (frameworkId: string) => {
-    return savedFrameworks?.includes(frameworkId as any) || false;
+    // frameworkId can be either the string ID (e.g., "AIB-001") or Convex _id
+    // savedFrameworks contains Convex _ids, so we need to find the framework first
+    if (!frameworks) return false;
+    const framework = frameworks.find(f => f.frameworkId === frameworkId) || 
+                      frameworks.find(f => f._id === frameworkId);
+    return framework ? savedFrameworks?.includes(framework._id as any) || false : false;
   };
 
   // Track recently viewed frameworks in localStorage
@@ -166,6 +186,29 @@ function FrameworkLibrary() {
       }
     }
   }, []);
+
+  // Handle query parameter for viewing a specific framework
+  useEffect(() => {
+    const viewParam = searchParams.get("view");
+    if (viewParam && frameworks) {
+      // Find framework by frameworkId (e.g., "AIB-001")
+      const framework = frameworks.find(f => f.frameworkId === viewParam);
+      if (framework) {
+        setSelectedFramework(framework.frameworkId); // Store the string frameworkId
+        // Record usage
+        recordUsage({ 
+          frameworkId: framework._id, 
+          action: "viewed" 
+        }).catch(console.error);
+        // Clear the query parameter after opening
+        setSearchParams((prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.delete("view");
+          return newParams;
+        });
+      }
+    }
+  }, [searchParams, frameworks, recordUsage, setSearchParams]);
 
   const handleViewFrameworkWithTracking = (frameworkId: string) => {
     // Add to recently viewed
@@ -558,7 +601,7 @@ function FrameworkLibrary() {
                       variant={viewMode}
                       userSubject={userProfile?.subject}
                       subjectUsageCount={undefined} // TODO: Add backend query for usage by subject
-                      isSaved={isFrameworkSaved(framework._id)}
+                      isSaved={isFrameworkSaved(framework.frameworkId)}
                       onView={() => handleViewFrameworkWithTracking(framework.frameworkId)}
                       onSave={() => handleFrameworkAction(framework.frameworkId, "save")}
                       onUnsave={() => handleFrameworkAction(framework.frameworkId, "unsave")}

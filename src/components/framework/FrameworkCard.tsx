@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck, Target, GraduationCap } from "lucide-react";
+import { Clock, Star, Users, Copy, Bookmark, BookmarkCheck, Target, GraduationCap, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { spacing } from "@/lib/spacing";
 
@@ -178,8 +178,10 @@ export function FrameworkCard({
                 aria-label="View framework details"
                 onClick={onView} 
                 size="sm"
+                variant="outline"
+                className="px-3"
               >
-                Details
+                <Eye className="h-4 w-4" aria-hidden="true" />
               </Button>
               <div className="flex gap-1">
                 <Button 
@@ -344,10 +346,11 @@ export function FrameworkCard({
             data-testid="framework-card-view-details"
             aria-label="View framework details"
             onClick={onView} 
-            className="flex-1"
+            variant="outline"
             size="sm"
+            className="px-3"
           >
-            Details
+            <Eye className="h-4 w-4" aria-hidden="true" />
           </Button>
           
           <Button 

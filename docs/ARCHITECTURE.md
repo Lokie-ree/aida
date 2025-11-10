@@ -100,4 +100,4 @@ Convex automatically generates API contracts from the schema. See the schema fil
 
 ---
 
-*This document provides minimal architecture reference. For detailed API contracts, see `convex/schema.ts`. For testing, see `docs/TESTING_PROTOCOL.md`.*
+*This document provides minimal architecture reference. For detailed API contracts, see `convex/schema.ts`. For testing, see `docs/TESTING.md`.*

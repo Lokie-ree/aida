@@ -96,7 +96,7 @@ npx convex dashboard        # Open Convex dashboard
 
 - **[PROJECT.md](../PROJECT.md)** - Project vision and current status
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical architecture reference
-- **[TESTING_PROTOCOL.md](TESTING_PROTOCOL.md)** - E2E testing guide
+- **[TESTING.md](TESTING.md)** - Complete testing documentation
 
 ---
 

@@ -98,6 +98,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
                       data-testid="testimonial-form-quote"
                       placeholder="Tell us how Pelican AI has helped you save time and improve your teaching..."
                       rows={4}
+                      maxLength={500}
                       {...field}
                     />
                   </FormControl>
@@ -121,6 +122,7 @@ export function TestimonialForm({ onSuccess, onCancel }: TestimonialFormProps) {
                       data-testid="testimonial-form-impact"
                       placeholder="Describe the specific impact (e.g., 'More time for student conferences', 'Better differentiated instruction')..."
                       rows={2}
+                      maxLength={200}
                       {...field}
                     />
                   </FormControl>
