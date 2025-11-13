@@ -84,7 +84,9 @@ const applicationTables = {
       v.literal("admin"),    // School administrator
       v.literal("coach")     // Instructional coach
     )),
-  }).index("by_user", ["userId"]).index("authId", ["authId"]),
+  }).index("by_user", ["userId"])
+    .index("authId", ["authId"])
+    .index("by_role", ["role"]), // Index for efficient role-based queries
 
   // ============================================
   // PHASE 2 TABLES (Backend Ready, UI Not Exposed)
@@ -301,6 +303,32 @@ const applicationTables = {
     .index("by_framework", ["frameworkId"])
     .index("by_timestamp", ["timestamp"])
     .index("by_category", ["category"]),
+
+  /**
+   * Alignment Analyses
+   * 
+   * Stores results from Alignment Scorecard workflow analysis.
+   * Tracks how well AI-generated content aligns with Louisiana Student Standards.
+   * 
+   * @see alignmentSteps.ts for saveAnalysis mutation
+   * @see workflows/alignmentScorecard.ts for workflow definition
+   */
+  alignmentAnalyses: defineTable({
+    userId: v.string(), // User who submitted content for analysis
+    content: v.string(), // The AI-generated content that was analyzed
+    gradeLevel: v.string(), // Grade level of the content
+    subject: v.string(), // Subject area (ela, math, science, social_studies)
+    alignmentScore: v.number(), // Overall alignment score (0-100)
+    scorecard: v.object({
+      overallScore: v.number(),
+      breakdown: v.array(v.any()), // Breakdown by standard
+      gaps: v.array(v.string()), // Specific gaps identified
+      recommendations: v.array(v.string()), // Actionable recommendations
+    }),
+    analyzedAt: v.number(), // Timestamp when analysis completed
+  })
+    .index("by_user", ["userId"])
+    .index("by_score", ["alignmentScore"]),
 };
 
 export default defineSchema({

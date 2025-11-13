@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
+import { requireAdmin } from "./authorization";
 import { api } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 
@@ -32,17 +33,18 @@ export const getUserProfile = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   }), v.null()),
   handler: async (ctx) => {
-    // Use safe auth getter (returns null if not authenticated, no throw)
+    // ConvexBetterAuthProvider handles token sync automatically
+    // If called before token sync, getAuthUser may throw - handle gracefully
     let user;
     try {
       user = await authComponent.getAuthUser(ctx);
     } catch (error) {
-      console.log("getUserProfile: No authenticated user");
+      // Expected during initial token sync - return null gracefully
+      // ConvexBetterAuthProvider ensures queries inside <Authenticated> wait for auth
       return null;
     }
     
     if (!user) {
-      console.log("getUserProfile: No authenticated user");
       return null;
     }
     const userId = user._id;
@@ -208,20 +210,7 @@ export const getAllUserProfiles = query({
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
   })),
   handler: async (ctx) => {
-    let user;
-    try {
-      user = await authComponent.getAuthUser(ctx);
-    } catch (error) {
-      return [];
-    }
-    if (!user) {
-      return [];
-    }
-
-    // TODO: Add admin role check
-    if ((user as any).role !== "admin") {
-      throw new Error("Admin access required");
-    }
+    await requireAdmin(ctx);
 
     const profiles = await ctx.db
       .query("userProfiles")
