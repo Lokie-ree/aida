@@ -6,40 +6,7 @@
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-import { authComponent } from "./auth";
-
-/**
- * Helper function to check if current user has admin privileges.
- * 
- * Checks user authentication and validates against admin email list.
- * Used by all admin-only functions for access control.
- * 
- * @param ctx - Convex context object
- * @returns Better Auth user object if admin
- * @throws "User must be authenticated" if no session
- * @throws "Admin access required" if user not in admin list
- * 
- * @see adminEmails array in auth.config.ts for admin configuration
- */
-const isAdmin = async (ctx: any) => {
-  const user = await authComponent.getAuthUser(ctx);
-  if (!user) {
-    throw new Error("User must be authenticated");
-  }
-  
-  // For now, check if user email is in admin list
-  // In production, this would be a proper role-based system
-  const adminEmails = [
-    "admin@resend.dev", // Test admin user
-    "rplapointjr@gmail.com"
-  ];
-  
-  if (!adminEmails.includes((user as any).email)) {
-    throw new Error("Admin access required");
-  }
-  
-  return user;
-};
+import { requireAdmin, checkIsAdmin as checkIsAdminHelper } from "./authorization";
 
 /**
  * Query: Check if current user has admin privileges.
@@ -59,12 +26,7 @@ export const checkIsAdmin = query({
   args: {},
   returns: v.boolean(),
   handler: async (ctx) => {
-    try {
-      await isAdmin(ctx);
-      return true;
-    } catch {
-      return false;
-    }
+    return await checkIsAdminHelper(ctx);
   },
 });
 
@@ -105,7 +67,7 @@ export const getAllBetaUsersAdmin = query({
     userSubject: v.optional(v.string()),
   })),
   handler: async (ctx) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     const betaUsers = await ctx.db
       .query("betaProgram")
@@ -176,7 +138,7 @@ export const getAllTestimonialsAdmin = query({
     impact: v.string(),
   })),
   handler: async (ctx) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     const testimonials = await ctx.db
       .query("testimonials")
@@ -220,7 +182,7 @@ export const getAllInnovationsAdmin = query({
     relatedFramework: v.optional(v.id("frameworks")),
   })),
   handler: async (ctx) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     const innovations = await ctx.db
       .query("innovations")
@@ -262,7 +224,7 @@ export const getAdminStats = query({
     averageEngagement: v.number(),
   }),
   handler: async (ctx) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     const betaUsers = await ctx.db.query("betaProgram").collect();
     const testimonials = await ctx.db.query("testimonials").collect();
@@ -316,7 +278,7 @@ export const updateBetaUserStatus = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     await ctx.db.patch(args.betaUserId, {
       status: args.status,
@@ -349,7 +311,7 @@ export const approveTestimonialAdmin = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     await ctx.db.patch(args.testimonialId, {
       status: args.status,
@@ -380,7 +342,7 @@ export const deleteTestimonialAdmin = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     await ctx.db.delete(args.testimonialId);
     
@@ -408,7 +370,7 @@ export const deleteInnovationAdmin = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     await ctx.db.delete(args.innovationId);
     
@@ -439,7 +401,7 @@ export const sendBetaInviteAdmin = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    await isAdmin(ctx);
+    await requireAdmin(ctx);
     
     // Create beta program entry
     await ctx.db.insert("betaProgram", {

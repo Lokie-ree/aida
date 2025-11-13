@@ -1,87 +1,8 @@
-// ============================================
-// PHASE 2: Out of scope for MVP
-// ============================================
-// This file contains testimonial functionality which is not part of Phase 1 MVP.
-// Uncomment and refactor when Phase 2 development begins.
-
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
+import { requireAdmin } from "./authorization";
 
-// Mutation: Submit testimonial
-export const submitTestimonial = mutation({
-  args: {
-    frameworkId: v.optional(v.id("frameworks")),
-    quote: v.string(),
-    timeSaved: v.optional(v.number()),
-    impact: v.string(),
-  },
-  returns: v.id("testimonials"),
-  handler: async (ctx, args) => {
-    let user;
-    try {
-      user = await authComponent.getAuthUser(ctx);
-    } catch (error) {
-      throw new Error("User must be authenticated");
-    }
-    if (!user) {
-      throw new Error("User must be authenticated");
-    }
-    const userId = user._id;
-
-    // Create testimonial (pending approval)
-    const testimonialId = await ctx.db.insert("testimonials", {
-      userId,
-      frameworkId: args.frameworkId,
-      quote: args.quote.trim(),
-      timeSaved: args.timeSaved,
-      impact: args.impact.trim(),
-      userName: user.name || "Anonymous",
-      school: (user as any).school || "Not specified",
-      subject: (user as any).subject || "Not specified",
-      status: "pending",
-      featured: false,
-    });
-
-    return testimonialId;
-  },
-});
-
-// Query: Get featured testimonials
-export const getFeaturedTestimonials = query({
-  args: { limit: v.optional(v.number()) },
-  returns: v.array(v.object({
-    _id: v.id("testimonials"),
-    quote: v.string(),
-    timeSaved: v.optional(v.number()),
-    impact: v.string(),
-    userName: v.string(),
-    school: v.string(),
-    subject: v.string(),
-    frameworkId: v.optional(v.id("frameworks")),
-  })),
-  handler: async (ctx, args) => {
-    const testimonials = await ctx.db
-      .query("testimonials")
-      .withIndex("by_featured", (q) => q.eq("featured", true))
-      .filter((q) => q.eq(q.field("status"), "approved"))
-      .order("desc")
-      .take(args.limit || 10);
-
-    return testimonials.map((t) => ({
-      _id: t._id,
-      quote: t.quote,
-      timeSaved: t.timeSaved,
-      impact: t.impact,
-      userName: t.userName,
-      school: t.school,
-      subject: t.subject,
-      frameworkId: t.frameworkId,
-    }));
-  },
-});
-
-// Query: Get all testimonials (admin only)
 // Query: Get testimonial by ID
 export const getTestimonialById = query({
   args: { testimonialId: v.id("testimonials") },
@@ -115,6 +36,7 @@ export const getTestimonialById = query({
   },
 });
 
+// Query: Get all testimonials (admin only)
 export const getAllTestimonials = query({
   args: { status: v.optional(v.union(v.literal("pending"), v.literal("approved"), v.literal("featured"))) },
   returns: v.array(v.object({
@@ -128,20 +50,7 @@ export const getAllTestimonials = query({
     featured: v.boolean(),
   })),
   handler: async (ctx, args) => {
-    let user;
-    try {
-      user = await authComponent.getAuthUser(ctx);
-    } catch (error) {
-      throw new Error("User must be authenticated");
-    }
-    if (!user) {
-      return [];
-    }
-
-    // TODO: Add admin role check
-    if ((user as any).role !== "admin") {
-      throw new Error("Admin access required");
-    }
+    await requireAdmin(ctx);
 
     let testimonials;
 
@@ -180,20 +89,7 @@ export const approveTestimonial = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    let user;
-    try {
-      user = await authComponent.getAuthUser(ctx);
-    } catch (error) {
-      throw new Error("User must be authenticated");
-    }
-    if (!user) {
-      throw new Error("User must be authenticated");
-    }
-
-    // TODO: Add admin role check
-    if ((user as any).role !== "admin") {
-      throw new Error("Admin access required");
-    }
+    const { user } = await requireAdmin(ctx);
     const userId = user._id;
 
     await ctx.db.patch(args.testimonialId, {
@@ -207,6 +103,102 @@ export const approveTestimonial = mutation({
   },
 });
 
+// Query: Get featured testimonials
+export const getFeaturedTestimonials = query({
+  args: {
+    limit: v.optional(v.number()),
+  },
+  returns: v.array(v.object({
+    _id: v.id("testimonials"),
+    _creationTime: v.number(),
+    quote: v.string(),
+    userName: v.string(),
+    school: v.string(),
+    subject: v.string(),
+    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("featured")),
+    featured: v.boolean(),
+  })),
+  handler: async (ctx, args) => {
+    const testimonials = await ctx.db
+      .query("testimonials")
+      .withIndex("by_featured", (q) => q.eq("featured", true))
+      .order("desc")
+      .collect();
+
+    // Filter to only approved featured testimonials
+    const filtered = testimonials
+      .filter((t) => t.status === "approved" && t.featured)
+      .map((t) => ({
+        _id: t._id,
+        _creationTime: t._creationTime,
+        quote: t.quote,
+        userName: t.userName,
+        school: t.school,
+        subject: t.subject,
+        status: t.status,
+        featured: t.featured,
+      }));
+
+    // Apply limit if provided
+    if (args.limit) {
+      return filtered.slice(0, args.limit);
+    }
+    return filtered;
+  },
+});
+
+// Mutation: Submit testimonial
+export const submitTestimonial = mutation({
+  args: {
+    frameworkId: v.optional(v.id("frameworks")),
+    quote: v.string(),
+    timeSaved: v.optional(v.number()),
+    impact: v.string(),
+  },
+  returns: v.id("testimonials"),
+  handler: async (ctx, args) => {
+    const user = await authComponent.getAuthUser(ctx);
+    if (!user) {
+      throw new Error("User must be authenticated");
+    }
+    const userId = user._id;
+
+    // Get user profile for name and school
+    const profile = await ctx.db
+      .query("userProfiles")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .first();
+
+    const testimonialId = await ctx.db.insert("testimonials", {
+      userId,
+      quote: args.quote,
+      userName: (user as any).name || profile?.school || "Anonymous",
+      school: profile?.school || "Not specified",
+      subject: profile?.subject || "Not specified",
+      impact: args.impact,
+      status: "pending",
+      featured: false,
+      frameworkId: args.frameworkId,
+      timeSaved: args.timeSaved,
+    });
+
+    return testimonialId;
+  },
+});
+
+// Query: Get all testimonials for cleanup (test helper)
+export const getAllTestimonialsForCleanup = query({
+  args: {},
+  returns: v.array(v.id("testimonials")),
+  handler: async (ctx) => {
+    const testimonials = await ctx.db
+      .query("testimonials")
+      .collect();
+    
+    return testimonials.map((t) => t._id);
+  },
+});
+
 // Mutation: Delete testimonial (for test cleanup)
 export const deleteTestimonial = mutation({
   args: { testimonialId: v.id("testimonials") },
@@ -217,24 +209,3 @@ export const deleteTestimonial = mutation({
   },
 });
 
-// Query: Get all testimonials (for test cleanup)
-export const getAllTestimonialsForCleanup = query({
-  args: {},
-  returns: v.array(v.object({
-    _id: v.id("testimonials"),
-    _creationTime: v.number(),
-    userId: v.string(),
-    frameworkId: v.optional(v.id("frameworks")),
-    quote: v.string(),
-    timeSaved: v.optional(v.number()),
-    impact: v.string(),
-    userName: v.string(),
-    school: v.string(),
-    subject: v.string(),
-    status: v.union(v.literal("pending"), v.literal("approved"), v.literal("featured")),
-    featured: v.boolean(),
-  })),
-  handler: async (ctx) => {
-    return await ctx.db.query("testimonials").collect();
-  },
-});

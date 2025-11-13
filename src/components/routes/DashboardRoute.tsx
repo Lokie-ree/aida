@@ -11,6 +11,8 @@ interface DashboardRouteProps {
 
 const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => {
   const { data: session } = authClient.useSession();
+  // ConvexBetterAuthProvider handles token sync automatically
+  // Since we're inside <Authenticated>, queries are safe to call
   const userProfile = useQuery(api.userProfiles.getUserProfile);
   const betaStatus = useQuery(api.betaProgram.getBetaStatus);
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
