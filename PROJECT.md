@@ -263,15 +263,15 @@ npx convex deploy           # Deploy to production
   * `convex/auth.ts` - Authentication logic
   * `src/lib/auth-client.ts` - Frontend auth client
   * `docs/ARCHITECTURE.md` - Technical architecture reference
-  * `docs/TESTING.md` - Complete testing documentation
+  * `docs/TESTING.md` - Testing guide
 
 ### Documentation
 
-  * **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Minimal technical reference
+  * **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical architecture reference
   * **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development guidelines
-  * **[TESTING.md](docs/TESTING.md)** - Complete testing documentation (protocol, results, best practices)
+  * **[TESTING.md](docs/TESTING.md)** - Testing guide and quick reference
   * **[PELICAN_AI_BRAND_GUIDELINES.md](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Design system
-  * **[decisions/](docs/decisions/)** - Architectural decision records (ADRs)
+  * **[docs/README.md](docs/README.md)** - Documentation index
 
 -----
 
