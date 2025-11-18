@@ -1,9 +1,17 @@
-// ============================================
-// PHASE 2: Out of scope for MVP
-// ============================================
-// This file contains beta program tracking functionality which is not part of Phase 1 MVP.
-// Some basic beta program records are created in auth.ts triggers.
-// Uncomment and refactor when Phase 2 development begins.
+/**
+ * Beta Program Tracking - Building Together
+ * 
+ * **Grassroots Launch:** You're one of 5 educators building this together. No complex
+ * onboarding flows, no gamification, no points - just straightforward tracking so we
+ * know what's working and what's not.
+ * 
+ * **We're Not Waiting for LDOE:** Louisiana educators are building practical AI guidance
+ * NOW. Your participation is about building something together, not about "beta testing"
+ * someone else's product.
+ * 
+ * With 5 users, every interaction matters. These functions track progress simply so we
+ * can iterate quickly based on real feedback.
+ */
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
@@ -11,6 +19,9 @@ import { authComponent } from "./auth";
 
 /**
  * Query: Get beta program status for current user.
+ * 
+ * **Simple Tracking:** No complex onboarding for 5 users. This tracks frameworks tried,
+ * time saved (honest numbers!), and engagement - just enough to know if this is helping.
  * 
  * Returns the user's beta program participation status, onboarding progress,
  * and engagement metrics. Used by dashboard to show program status.

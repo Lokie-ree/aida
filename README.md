@@ -58,7 +58,7 @@ pnpm dev
 
 ### Essential
 - **[PROJECT.md](PROJECT.md)** - Project vision, current status, quick reference
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Technical architecture reference
+- **[ARCHITECTURE_VALIDATION.md](ARCHITECTURE_VALIDATION.md)** - Scaling validation for 5→100 users
 - **[TESTING.md](docs/TESTING.md)** - Testing guide and quick reference
 - **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development guidelines
 

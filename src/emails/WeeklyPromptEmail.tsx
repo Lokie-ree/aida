@@ -34,17 +34,16 @@ export const WeeklyPromptEmail = ({
       <Text style={textStyles.paragraph}>Hi {userName},</Text>
       
       <Text style={textStyles.paragraph}>
-        Welcome to Week {weekNumber} of your Pelican AI journey! This week's Atomic Note 
-        is designed to help you save time on a common Louisiana educator task using 
-        ANY AI platform you have access to.
+        <strong>Week {weekNumber} Framework:</strong> This week's framework is designed to 
+        save you time on a common Louisiana educator task using ANY AI tool you already use.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        <strong>Remember:</strong> This guidance works with MagicSchool AI, Brisk, 
-        SchoolAI, Gemini, ChatGPT, or any other AI tool your district provides.
+        <strong>Platform-Agnostic:</strong> Works with ChatGPT, Gemini, MagicSchool AI, 
+        SchoolAI, Brisk, or any other AI tool your district provides. Copy-paste the prompt below.
       </Text>
 
-      {/* Atomic Note Card */}
+      {/* Framework Card */}
       <Section style={frameworkCard}>
         <div style={frameworkHeader}>
           <Text style={frameworkIdStyle}>{frameworkId}</Text>
@@ -57,12 +56,11 @@ export const WeeklyPromptEmail = ({
         <Heading style={frameworkTitleStyle}>{frameworkTitle}</Heading>
         
         <Text style={frameworkDescription}>
-          <strong>The Challenge:</strong> This Atomic Note addresses a common Louisiana educator pain point.
+          <strong>The Challenge:</strong> This framework addresses a common Louisiana educator pain point.
         </Text>
         
         <Text style={frameworkDescription}>
-          <strong>The AI-Powered Solution:</strong> Copy the prompt below and paste it into your 
-          preferred AI platform (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
+          <strong>The Solution:</strong> Copy the prompt below and paste it into ANY AI tool you use.
         </Text>
         
         <Section style={promptBox}>
@@ -76,60 +74,27 @@ export const WeeklyPromptEmail = ({
         </Text>
         
         <CTAButton href="https://pelicanai.org/frameworks">
-          View Full Atomic Note
+          View Full Framework
         </CTAButton>
       </Section>
 
       <Text style={textStyles.paragraph}>
-        <strong>Louisiana Educator Pro Tip:</strong> Try this framework with 2-3 different lessons 
-        this week and let us know how much time you saved! Your experience helps us understand 
-        what's working and what you need next.
+        <strong>Real Talk:</strong> Try this framework this week and tell me honestly—did it save 
+        you time or waste it? Your feedback literally shapes what we build next. With 5 users, 
+        every data point matters.
       </Text>
 
-      <Text style={textStyles.paragraph}>
-        <strong>Co-Creation Reminder:</strong> This week's check-in survey will ask about your biggest 
-        pain points. Your answers drive what we build next—this is YOUR beta program, and we're building 
-        the frameworks YOU actually need!
-      </Text>
-
-      {/* Feedback Forms */}
+      {/* Grassroots Feedback */}
       <InfoBox>
-        <Heading style={textStyles.h2}>Share Your Experience</Heading>
+        <Heading style={textStyles.h2}>Your Feedback Shapes Everything</Heading>
         <Text style={textStyles.paragraph}>
-          Help us improve by sharing your experience with this framework:
-        </Text>
-        <CTAButton href="https://forms.gle/VhY3qexkgsGLNTu59">
-          Framework Feedback Form
-        </CTAButton>
-        <SecondaryButton href="https://forms.gle/gqGTj3j5AKKSN9iD6">
-          Weekly Check-in Survey
-        </SecondaryButton>
-      </InfoBox>
-
-      {/* Phase 1 MVP Focus */}
-      <HighlightBox>
-        <Heading style={textStyles.h2}>Phase 1 MVP: Email-First Approach</Heading>
-        <Text style={textStyles.paragraph}>
-          You're part of our Phase 1 MVP validation! We're testing whether an email-first 
-          approach can successfully deliver immediate value to Louisiana educators.
+          <strong>We're Not Waiting for LDOE.</strong> Louisiana educators are building 
+          practical AI guidance NOW. You're one of 5 educators starting this with me.
         </Text>
         <Text style={textStyles.paragraph}>
-          <strong>Your feedback matters:</strong> Reply to this email with your experience 
-          using this Atomic Note. Did it save you time? How did it align with Louisiana standards?
-        </Text>
-      </HighlightBox>
-
-      {/* Future Features Preview */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>Coming in Phase 2</Heading>
-        <Text style={textStyles.paragraph}>
-          Based on your feedback, we're building a web-based framework library and 
-          community features. Your input as a Phase 1 beta tester directly shapes 
-          what comes next.
-        </Text>
-        <Text style={textStyles.paragraph}>
-          <strong>Phase 2 Preview:</strong> Searchable framework library, community 
-          sharing, and personalized dashboard.
+          <strong>Just reply to this email:</strong> Did this save you time? Confuse you? 
+          What would make it better? With 5 users, every piece of feedback literally shapes 
+          what we build next.
         </Text>
       </InfoBox>
     </BaseEmailTemplate>

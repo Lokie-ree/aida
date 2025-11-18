@@ -1,3 +1,16 @@
+/**
+ * GRASSROOTS LAUNCH NOTE:
+ * 
+ * This email template is for COLD OUTREACH and is NOT used for the initial
+ * 5-user grassroots launch (personal invitations only).
+ * 
+ * This template will be useful when scaling to 30-100 users and reaching out
+ * to educators we don't personally know. For now, it's kept in the codebase
+ * for future use but is not actively used.
+ * 
+ * Status: DEPRIORITIZED for 5-user launch, READY for scaling phase
+ */
+
 import {
   Heading,
   Link,

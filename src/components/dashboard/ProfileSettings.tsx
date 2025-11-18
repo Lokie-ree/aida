@@ -285,18 +285,18 @@ function ProfileSettings() {
             </CardContent>
           </Card>
 
-          {/* Beta Program Status */}
+          {/* Building Together */}
           <Card>
             <CardHeader>
-              <CardTitle>Beta Program</CardTitle>
+              <CardTitle>Building Together</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm">Active Beta Tester</span>
+                <span className="text-sm">One of 5 Educators</span>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                You're part of our beta program. Thank you for helping us improve Pelican AI!
+                You're one of 5 Louisiana educators building this together. Your feedback literally shapes everything.
               </p>
             </CardContent>
           </Card>

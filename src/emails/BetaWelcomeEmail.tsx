@@ -16,23 +16,23 @@ export function BetaWelcomeEmail({
 }: BetaWelcomeEmailProps) {
   return (
     <BaseEmailTemplate
-      previewText="Welcome to Pelican AI Beta Program - Reclaim Your Time!"
-      headerTitle="Welcome to the Beta Program!"
-      headerSubtitle="Reclaim Your Time with Confidence"
+      previewText="Ready to dive in? - Pelican AI"
+      headerTitle="You're one of 5 educators building this together"
+      headerSubtitle="Let's get started!"
     >
       <Text style={textStyles.paragraph}>Hi {name},</Text>
 
       <Text style={textStyles.paragraph}>
-        I know you're managing a lot right now. Between lesson planning, 
-        differentiating for diverse learners, analyzing data, and everything 
-        else that fills your evenings and weekends, finding time for one more 
-        thing feels impossible.
+        You're one of 5 Louisiana educators I'm starting with. No formal beta 
+        program, no complex onboarding—just practical AI guidance that works with 
+        ANY tool you already use (ChatGPT, Gemini, MagicSchool AI, etc.).
       </Text>
 
       <Text style={textStyles.paragraph}>
-        That's exactly why Pelican AI exists. <strong>I'm committed to helping 
-        you save 3-5 hours per week on planning and prep tasks</strong> so you can 
-        focus on what matters most: teaching Louisiana students.
+        <strong>We're Not Waiting for LDOE.</strong> Louisiana educators need 
+        confidence using AI NOW, not when official guidance arrives. That's why 
+        we're building this together—platform-agnostic frameworks that save you 
+        real time.
       </Text>
 
 
@@ -66,94 +66,65 @@ export function BetaWelcomeEmail({
       <InfoBox>
         <Heading style={textStyles.h2}>What Happens Next?</Heading>
         <Text style={listItem}>
-          • <strong>Immediately:</strong> Your platform access will be ready shortly! You'll receive an email with your login credentials once your account is set up.
+          • <strong>Today:</strong> Your platform access email is coming shortly with a login link
         </Text>
         <Text style={listItem}>
-          • <strong>Right Now:</strong> Start using frameworks through the links below—no need to wait for platform access
+          • <strong>Right Now:</strong> Try the framework linked above—no need to wait!
         </Text>
         <Text style={listItem}>
-          • <strong>At Your Own Pace:</strong> Explore 10+ foundational frameworks designed for Louisiana educators—use them when and how you need them
+          • <strong>This Week:</strong> Explore 10 frameworks designed for your role (see personalized recommendations below)
         </Text>
         <Text style={listItem}>
-          • <strong>Ongoing:</strong> We continuously add new frameworks based on feedback from Louisiana educators. Optional feedback surveys and office hours help shape what we build next
-        </Text>
-        <Text style={listItem}>
-          • <strong>Collaborative Development:</strong> Your pain points and feedback directly influence new frameworks we create. This isn't just testing—it's co-creating solutions that save you time
+          • <strong>Your Feedback:</strong> Tell me honestly—did this save time or waste it? Your feedback literally shapes everything.
         </Text>
         <Text style={textStyles.paragraph}>
-          <strong>There's no structured timeline.</strong> Use the platform when it helps you, provide feedback when you can, and let us know what would save you the most time.
+          <strong>No structured timeline. No pressure.</strong> Use what helps, tell me what doesn't. We're building this together.
         </Text>
       </InfoBox>
 
-      {/* Beta Welcome Kit */}
+      {/* What You Get */}
       <HighlightBox>
-        <Heading style={textStyles.h2}>📚 Your Beta Welcome Kit</Heading>
+        <Heading style={textStyles.h2}>📚 What You're Getting</Heading>
         <Text style={textStyles.paragraph}>
-          Everything you need to succeed in the beta program:
+          <strong>10 Frameworks Ready to Use:</strong>
         </Text>
         <Text style={listItem}>
-          ✓ <strong>Quick Start Guide</strong> - Understand Pelican AI in 5 minutes
+          ✓ <strong>3 Advanced Louisiana-Specific</strong> - Lesson alignment, curriculum internalization, contextualization
         </Text>
         <Text style={listItem}>
-          ✓ <strong>All Available Frameworks</strong> - Direct links and usage instructions
-        </Text>
-        <Text style={listItem}>
-          ✓ <strong>Office Hours Schedule</strong> - Get live support from our team
-        </Text>
-        <Text style={listItem}>
-          ✓ <strong>Feedback Forms</strong> - Help us build what Louisiana educators need
-        </Text>
-        <Text style={listItem}>
-          ✓ <strong>Beta Overview Podcast</strong> - Listen to the full vision and approach
-        </Text>
-        <Text style={listItem}>
-          ✓ <strong>Optional Feedback Surveys</strong> - Share your progress and feedback when convenient
-        </Text>
-        <Text style={listItem}>
-          ✓ <strong>Post-Framework Survey</strong> - Help us improve each framework
+          ✓ <strong>7 Essential Productivity</strong> - Document summarization, email drafting, meeting notes, standards unpacking, misconceptions, rubrics
         </Text>
         <Text style={textStyles.paragraph}>
-          <Link href="https://docs.google.com/document/d/1-oZ1qHqyM-cdhX8jmkm1nPQ5ahiAnVWiQun1qqeBNo8/edit" style={ctaLink}>
-            <strong>→ Access Your Beta Welcome Kit</strong>
-          </Link>
+          <strong>Platform-Agnostic:</strong> Copy-paste into ANY AI tool you already use. No new platform to learn.
         </Text>
         <Text style={textStyles.paragraph}>
-          <Link href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing" style={ctaLink}>
-            <strong>→ Listen to Beta Overview Podcast</strong>
-          </Link>
+          <strong>Louisiana-Aligned:</strong> Every framework references Louisiana standards and educator rubric.
         </Text>
         <Text style={textStyles.paragraph}>
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSdZxABU24KLmaUs0J9OrWqdUuhVV_zEQ5RjU6ttIHgTIR3OWw/viewform?usp=sharing&ouid=110279044776974210923" style={ctaLink}>
-            <strong>→ Optional Feedback Survey</strong>
-          </Link>
-        </Text>
-        <Text style={textStyles.paragraph}>
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLScs85mhZvVU7F_Ldcpgu3XhrT3qIXrnMmT050c7pn5mPqpQ9A/viewform?usp=sharing&ouid=110279044776974210923" style={ctaLink}>
-            <strong>→ Post-Framework Survey</strong>
+          <Link href="https://pelicanai.org/frameworks" style={ctaLink}>
+            <strong>→ Browse All 10 Frameworks</strong>
           </Link>
         </Text>
       </HighlightBox>
 
-      {/* Time Commitment */}
+      {/* Real Talk */}
       <Text style={textStyles.paragraph}>
-        <strong>Your Time Commitment:</strong> Use the platform at your own pace. Try frameworks when you need them (~15 min each), optionally provide feedback (~5 min), and join office hours if helpful. In return, you'll save 3-5 hours per week on planning and prep tasks.
+        <strong>Real Talk:</strong> With 5 users, your feedback matters more than anything. 
+        Did this framework save you 10 minutes or waste 5? Tell me. That's how we figure 
+        out what actually works for Louisiana educators.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Thank you for helping us build AI guidance that truly serves Louisiana 
-        educators. Your feedback will directly shape what we create next.
+        <strong>Questions? Confusion? Ideas?</strong> Just reply to this email or text me. 
+        This is grassroots—we're building it together.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Questions? Just reply to this email.
-      </Text>
-
-      <Text style={textStyles.paragraph}>
-        Best regards,
+        Thanks for being one of the 5 to start this with me,
         <br />
-        The Pelican AI Team
+        Ryan
         <br />
-        <em>Built by Louisiana educators, for Louisiana educators</em>
+        <em>Louisiana educator building this for Louisiana educators</em>
       </Text>
     </BaseEmailTemplate>
   );

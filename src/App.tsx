@@ -89,7 +89,7 @@ export default function App() {
                         </ProtectedRoute>
                       } 
                     />
-                    <Route 
+                     <Route 
                       path="/community" 
                       element={
                         <ProtectedRoute>

@@ -18,13 +18,13 @@ export function PlatformAccessEmail({
 }: PlatformAccessEmailProps) {
   return (
     <BaseEmailTemplate
-      previewText="Your Pelican AI Platform Access is Ready"
+      previewText="You're in - Let's get started"
       headerTitle={`Welcome ${name}!`}
-      headerSubtitle="Your Platform Access is Ready!"
+      headerSubtitle="Your access is ready"
     >
       <Text style={textStyles.paragraph}>
-        Your beta program application has been approved! You now have
-        access to the Pelican AI platform.
+        You're in! Your platform access is ready—no application, no approval process. 
+        You're one of 5 Louisiana educators building this together.
       </Text>
 
       {/* Magic Link CTA */}
@@ -68,26 +68,30 @@ export function PlatformAccessEmail({
         )}
       </InfoBox>
 
-      {/* Beta Program Overview */}
+      {/* Building Together */}
       <InfoBox>
-        <Heading style={textStyles.h2}>Learn More About the Beta Program</Heading>
+        <Heading style={textStyles.h2}>We're Building This Together</Heading>
         <Text style={textStyles.paragraph}>
-          Get a comprehensive overview of what to expect during your beta journey:
+          <strong>We're Not Waiting for LDOE.</strong> Louisiana educators need practical 
+          AI guidance NOW. That's why you're one of 5 educators starting this with me.
         </Text>
-        <SecondaryButton href="https://drive.google.com/file/d/1bUhJuvoNZURqn6Wrm6_G3UCaxvNDLN29/view?usp=sharing">
-          Podcast Beta Overview
-        </SecondaryButton>
+        <Text style={textStyles.paragraph}>
+          Your honest feedback ("Did this save time or waste it?") literally shapes 
+          everything we build next. With 5 users, every voice matters.
+        </Text>
       </InfoBox>
 
       <Text style={textStyles.paragraph}>
-        We're excited to have you as part of the Pelican AI community!
-        If you have any questions, feel free to reply to this email.
+        <strong>Questions?</strong> Just reply to this email or text me. This is 
+        grassroots—real conversations, not automated support tickets.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Best regards,
+        Thanks for being one of the 5,
         <br />
-        The Pelican AI Team
+        Ryan
+        <br />
+        <em>Louisiana educator building this for Louisiana educators</em>
       </Text>
     </BaseEmailTemplate>
   );

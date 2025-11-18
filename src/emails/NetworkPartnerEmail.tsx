@@ -1,9 +1,22 @@
+/**
+ * GRASSROOTS LAUNCH NOTE:
+ * 
+ * This email template is for NETWORK PARTNERSHIP OUTREACH and is NOT used for
+ * the initial 5-user grassroots launch.
+ * 
+ * This template will be useful when scaling beyond 100 users and establishing
+ * partnerships with Louisiana education organizations (LDOE, parishes, professional
+ * organizations). For now, it's kept in the codebase for future use but is not
+ * actively used.
+ * 
+ * Status: DEPRIORITIZED for 5-user launch, READY for partnership phase
+ */
+
 import {
   Heading,
-  Link,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, InfoBox, HighlightBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, InfoBox, HighlightBox, ActionBox, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface NetworkPartnerEmailProps {
   organizationName?: string;

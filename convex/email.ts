@@ -27,12 +27,11 @@ export const resend: Resend = new Resend(components.resend, {
 
 
 /**
- * Action to send welcome email to new beta tester.
+ * Action: Send grassroots welcome email to one of the initial 5 educators.
  * 
- * Sends a welcome email with next steps for beta testers
- * who have successfully signed up.
- * 
- * **Phase 1 MVP:** Scheduled automatically after beta signup.
+ * Grassroots Launch Context: You're one of 5 educators building this together.
+ * Your feedback literally shapes everything. This is a personal invitation, not
+ * corporate automation.
  * 
  * @param {string} args.email - Recipient email address
  * @param {string} [args.name] - Recipient name (defaults to "Educator")
@@ -81,7 +80,7 @@ export const sendBetaWelcomeEmail = action({
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.email,
-        subject: "Welcome to Pelican AI Beta Program - Reclaim Your Time!",
+        subject: "Ready to dive in? - Pelican AI",
         html: emailHtml,
         replyTo: REPLY_TO,
       });
@@ -100,16 +99,14 @@ export const sendBetaWelcomeEmail = action({
 });
 
 /**
- * Action: Send platform access email with credentials.
+ * Action: Send platform access email to one of the initial 5 educators.
  * 
- * Sends an email containing the user's temporary password and platform
- * access instructions after their beta signup has been approved.
- * 
- * **Phase 1 MVP:** Scheduled automatically after beta approval.
+ * Grassroots Launch: Personal access email for building together. No corporate
+ * jargon - just straightforward access information with a personal touch.
  * 
  * @param email - Recipient email address
  * @param name - Optional recipient name (defaults to "Educator")
- * @param temporaryPassword - Generated temporary password for platform access
+ * @param magicLinkUrl - Magic link URL for platform access
  * 
  * @returns Object containing success status and Resend email ID
  * 
@@ -148,7 +145,7 @@ export const sendPlatformAccessEmail = action({
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.email,
-        subject: "Your Pelican AI Platform Access is Ready!",
+        subject: "You're in - Let's get started",
         html: emailHtml,
         replyTo: REPLY_TO,
       });
@@ -168,12 +165,16 @@ export const sendPlatformAccessEmail = action({
 
 
 /**
- * Action to send weekly AI prompt email to a user.
+ * Action: Send weekly AI prompt email to a user.
+ * 
+ * **Grassroots Launch Note:** For 5 users, use personal check-ins instead of automation.
+ * This feature is ready for when you scale to 30-100 users. Enable via env var:
+ * `npx convex env set WEEKLY_EMAILS_ENABLED true`
  * 
  * Sends a curated AI prompt with time estimate, difficulty level, and ethical guardrails.
  * Used for weekly engagement and value delivery to beta testers.
  * 
- * **Phase 1 MVP:** Scheduled via cron job every Monday 6am CT.
+ * **Scaling Feature:** Scheduled via cron job every Monday 6am CT when enabled.
  * 
  * @param {string} args.userEmail - Recipient email address
  * @param {string} args.userName - Recipient name for personalization
@@ -252,10 +253,14 @@ export const sendWeeklyPromptEmail = action({
 /**
  * Action: Send weekly emails to all active beta users.
  * 
+ * **Grassroots Launch:** DISABLED by default for 5 users (use personal check-ins).
+ * Enable when scaling to 30-100 users via: `npx convex env set WEEKLY_EMAILS_ENABLED true`
+ * 
  * Automated cron job that sends weekly AI prompt emails to all active
  * beta users. Selects a random published framework for the week.
  * 
- * **Phase 1 MVP:** Scheduled via cron job every Monday 6am CT.
+ * **Scaling Feature:** Scheduled via cron job every Monday 6am CT when enabled.
+ * **Default:** Disabled (WEEKLY_EMAILS_ENABLED=false)
  * 
  * @returns Object containing success status and number of emails sent
  * 
@@ -263,6 +268,7 @@ export const sendWeeklyPromptEmail = action({
  * 
  * @see WeeklyPromptEmail component for email template
  * @see frameworks.ts for framework selection
+ * @see crons.ts for cron job configuration
  */
 export const sendWeeklyEmailsToAllUsers = action({
   args: {},
@@ -272,6 +278,13 @@ export const sendWeeklyEmailsToAllUsers = action({
   }),
   handler: async (ctx, args) => {
     try {
+      // Feature flag: Check if weekly emails are enabled (default: false for grassroots launch)
+      const isEnabled = (process.env.WEEKLY_EMAILS_ENABLED ?? "false") === "true";
+      if (!isEnabled) {
+        console.log("Weekly emails disabled via WEEKLY_EMAILS_ENABLED env var (grassroots launch mode)");
+        return { success: true, emailsSent: 0 };
+      }
+
       // Get all active beta users
       const betaUsers = await ctx.runQuery(api.betaProgram.getAllBetaUsers, {});
       

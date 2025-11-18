@@ -75,14 +75,14 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
     },
     {
       id: "community",
-      title: "Join the Community",
-      description: "Connect with other Louisiana educators",
+      title: "Stay Connected",
+      description: "You're one of 5 educators building this together",
       icon: Users,
     },
     {
       id: "office-hours",
-      title: "Schedule Office Hours",
-      description: "Book your first support session",
+      title: "Let's Talk",
+      description: "Real conversations when you need them",
       icon: Calendar,
     },
   ];
@@ -204,10 +204,10 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                   <Icon className="h-8 w-8 text-primary" />
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Welcome to Pelican AI Beta!</h3>
+                  <h3 className="text-xl font-semibold">Welcome! You're one of 5 educators building this together</h3>
                   <p className="text-muted-foreground max-w-2xl mx-auto">
-                    You're joining a community of Louisiana educators who are discovering how AI can 
-                    save time and enhance their teaching practice. Let's get you set up in just a few steps.
+                    You're one of 5 Louisiana educators starting this with me. Platform-agnostic AI guidance 
+                    that works with ANY tool you already use. Let's get you set up in just a few steps.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
@@ -215,7 +215,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                     <CardContent className="p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <BookOpen className="h-5 w-5 text-primary" />
-                        <h4 className="font-semibold">10+ Frameworks</h4>
+                        <h4 className="font-semibold">10 Frameworks</h4>
                       </div>
                       <p className="text-sm text-muted-foreground">
                         Copy-paste ready prompts for common teaching tasks
@@ -374,9 +374,9 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                   <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                     <Icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Join the Community</h3>
+                  <h3 className="text-xl font-semibold mb-2">Stay Connected</h3>
                   <p className="text-muted-foreground">
-                    Connect with other Louisiana educators and share your innovations
+                    You're one of 5 educators building this together. Let's stay in touch.
                   </p>
                 </div>
                 
@@ -390,11 +390,11 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Get weekly "Productivity Prompt of the Week" emails with new frameworks and tips.
+                        Personal check-ins about frameworks that work (or don't). Real conversations, not automation.
                       </p>
                       <Button className="w-full">
                         <Mail className="h-4 w-4 mr-2" />
-                        Subscribe to Updates
+                        Stay in Touch
                       </Button>
                     </CardContent>
                   </Card>
@@ -408,11 +408,11 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Join our Google Space to share innovations and get help from other educators.
+                        With 5 users, we're keeping it simple. Share feedback directly via email or text.
                       </p>
                       <Button variant="outline" className="w-full">
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        Join Google Space
+                        Direct Contact
                       </Button>
                     </CardContent>
                   </Card>
@@ -426,9 +426,9 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                   <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                     <Icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Schedule Office Hours</h3>
+                  <h3 className="text-xl font-semibold mb-2">Let's Talk</h3>
                   <p className="text-muted-foreground">
-                    Book a 30-minute session with our team to get personalized help
+                    Want to talk through a framework or share feedback? Just reach out - text, call, or email works.
                   </p>
                 </div>
                 
@@ -436,18 +436,17 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">
                       <div className="space-y-2">
-                        <h4 className="font-semibold">Available Times</h4>
+                        <h4 className="font-semibold">Grassroots Support</h4>
                         <p className="text-sm text-muted-foreground">
-                          Tuesdays & Thursdays, 4:00-6:00 PM CST
+                          No formal office hours. Just real conversations when you need them.
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <h4 className="font-semibold">What to Expect</h4>
+                        <h4 className="font-semibold">Your Feedback Matters</h4>
                         <ul className="text-sm text-muted-foreground space-y-1">
-                          <li>• Personalized framework recommendations</li>
-                          <li>• Help with specific AI tools</li>
-                          <li>• Troubleshooting and best practices</li>
-                          <li>• Q&A about your teaching challenges</li>
+                          <li>• Which frameworks saved you time?</li>
+                          <li>• What confused you?</li>
+                          <li>• What should we build next?</li>
                         </ul>
                       </div>
                       <Button className="w-full">
