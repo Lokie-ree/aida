@@ -92,28 +92,28 @@ export const louisianaExamples: LouisianaExample[] = [
 export const testimonials: Testimonial[] = [
   {
     quote: "Will you be the first to share your success story?",
-    author: "[Your Name Here]",
-    title: "[Your School Here]"
+    author: "Louisiana Educator",
+    title: "Building Together"
   },
   {
-    quote: "Louisiana educators using AI with confidence every day",
-    author: "[Your Name Here]",
-    title: "[Your School Here]"
+    quote: "We're Not Waiting for LDOE - Louisiana educators building practical AI guidance NOW.",
+    author: "Louisiana Educator",
+    title: "Grassroots Launch"
   },
   {
-    quote: "Reclaiming 3-5 hours per week with practical AI frameworks",
-    author: "[Your Name Here]",
-    title: "[Your School Here]"
+    quote: "Platform-agnostic frameworks that work with ANY AI tool you already use - ChatGPT, Gemini, MagicSchool AI, whatever your district provides.",
+    author: "Louisiana Educator",
+    title: "Built by Educators"
   },
   {
-    quote: "Finally, AI guidance that understands Louisiana standards",
-    author: "[Your Name Here]",
-    title: "[Your School Here]"
+    quote: "Real conversations, not automation. Your honest feedback literally shapes what we build next.",
+    author: "Louisiana Educator",
+    title: "Building Together"
   },
   {
-    quote: "Using frameworks that save real time on lesson planning and admin tasks",
-    author: "[Your Name Here]",
-    title: "[Your School Here]"
+    quote: "10 frameworks designed by Louisiana educators, for Louisiana educators. Start with frameworks that save real time, tell us what works.",
+    author: "Louisiana Educator",
+    title: "Grassroots Development"
   }
 ];
 
@@ -140,7 +140,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What's included when I sign up?",
-    answer: "You get immediate platform access with 10+ foundational frameworks designed for Louisiana educators. Start with our Lesson Objective Unpacker (saves 7-12 minutes per lesson), then explore other frameworks for email drafting, differentiation, parent communication, and more. All frameworks are ready to use now. Through optional feedback surveys and office hours, you can help us prioritize which new frameworks to add next based on YOUR pain points."
+    answer: "You get immediate platform access with 10 frameworks (3 advanced Louisiana-specific + 7 essential productivity frameworks) designed for Louisiana educators. Start with our Lesson Objective Unpacker (saves 7-12 minutes per lesson), then explore other frameworks for email drafting, differentiation, parent communication, and more. All frameworks are ready to use now. Through optional feedback surveys and office hours, you can help us prioritize which new frameworks to add next based on YOUR pain points."
   },
   {
     question: "Do I need to be tech-savvy to benefit?",

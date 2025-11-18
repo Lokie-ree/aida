@@ -45,12 +45,14 @@ export function Navigation({ className }: NavigationProps) {
       icon: BookOpen,
       description: "Browse AI guidance frameworks"
     },
-    {
-      path: "/community",
-      label: "Community",
-      icon: Users,
-      description: "Innovations and testimonials"
-    },
+    // GRASSROOTS LAUNCH: Community features hidden for 5-user launch
+    // Deprioritized until scaling to 30-100 users (code stays in place)
+    // {
+    //   path: "/community",
+    //   label: "Community",
+    //   icon: Users,
+    //   description: "Innovations and testimonials"
+    // },
     {
       path: "/time-tracking",
       label: "Time Tracking",

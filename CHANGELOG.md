@@ -8,6 +8,110 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Grassroots Launch Alignment - "We're Not Waiting for LDOE"
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** November 18, 2025
+
+**Impact:** Complete grassroots alignment across 21 files with zero corporate language, honest numbers, and "We're Not Waiting for LDOE" positioning throughout. Ready for launch with 5 Louisiana educators.
+
+**Key Changes:**
+
+**Backend Code (5 files):**
+- ✅ `convex/seedFrameworks.ts` - 10 frameworks (3 advanced Louisiana-specific + 7 essential) with grassroots messaging
+- ✅ `convex/email.ts` - Grassroots tone + feature flags (WEEKLY_EMAILS_ENABLED=false for personal check-ins)
+- ✅ `convex/frameworks.ts` - Optimized database indexes (by_module, by_category, by_status) + platform-agnostic messaging
+- ✅ `convex/alignmentScorecard.ts` - "We're Not Waiting for LDOE" positioning in JSDoc
+- ✅ `convex/betaProgram.ts` - "Building together" tone, removed corporate language
+
+**Frontend Code (7 files):**
+- ✅ `src/App.tsx` - Community routes hidden for grassroots launch (code stays, UI hidden)
+- ✅ `src/components/shared/Navigation.tsx` - Community nav hidden
+- ✅ `src/components/dashboard/BetaOnboarding.tsx` - All 4 steps aligned ("You're one of 5 educators building this together")
+- ✅ `src/components/dashboard/ProfileSettings.tsx` - "Building Together" card (not "Beta Program")
+- ✅ `src/components/dashboard/TimeTracking.tsx` - Leaderboard: "5 educators building together"
+- ✅ `src/components/dashboard/QuickAccessGrid.tsx` - "10 frameworks" (not "10+")
+- ✅ `src/data/landingPageContent.ts` - Testimonials + FAQ updated (public-facing, scalable messaging)
+
+**Email Templates (6 files):**
+- ✅ `src/emails/BetaWelcomeEmail.tsx` - Personal, grassroots tone ("Ready to dive in?")
+- ✅ `src/emails/PlatformAccessEmail.tsx` - "You're in" (not "application approved")
+- ✅ `src/emails/WeeklyPromptEmail.tsx` - No "Atomic Note", no Phase 1/2 language
+- ✅ `src/emails/OutreachEmail.tsx` - Documented as deprioritized (cold outreach for scaling phase)
+- ✅ `src/emails/FollowupEmail.tsx` - Documented as deprioritized (cold follow-up for scaling phase)
+- ✅ `src/emails/NetworkPartnerEmail.tsx` - Documented as deprioritized (partnerships for 100+ users) + ActionBox import fix
+
+**Documentation (3 files created, 1 deleted):**
+- ✅ `ARCHITECTURE_VALIDATION.md` - Scaling validation for 5→100 users ($1-2/month → $20-50/month)
+- ✅ `docs/README.md` - Simplified documentation index
+- ✅ `docs/launch/README.md` - Archive for temporary alignment docs
+- ✅ Updated `PROJECT.md` - 5 educators, grassroots vision, brand voice & tone
+- ✅ Updated `README.md` - Fixed ARCHITECTURE.md reference
+- ❌ Deleted `docs/ARCHITECTURE.md` - Redundant with auto-generated Convex types + ARCHITECTURE_VALIDATION.md
+
+**Key Messaging Changes:**
+
+**Removed (Corporate/Old):**
+- "Welcome to Pelican AI Beta Program"
+- "Your beta program application has been approved"
+- "10+ foundational frameworks"
+- "Office hours schedule", "Beta Overview Podcast"
+- "Phase 1 MVP validation", "Atomic Note" terminology
+- "The Pelican AI Team" (corporate signature)
+
+**Added (Grassroots):**
+- "You're one of 5 educators building this together"
+- "We're Not Waiting for LDOE"
+- "Platform-agnostic frameworks that work with ANY AI tool"
+- "10 frameworks" (3 advanced + 7 essential) - honest numbers
+- "With 5 users, every piece of feedback matters"
+- "Tell me honestly—did it save you time or waste it?"
+- "Just reply to this email or text me" - real conversations
+- "Ryan - Louisiana educator building this for Louisiana educators"
+
+**Public vs. Private Strategy:**
+- **Public-Facing (Landing Page):** Scalable grassroots messaging, no "5 educators" language
+  - "We're Not Waiting for LDOE"
+  - "Louisiana educators building together"
+  - "Will you be the first to share your success story?"
+- **Private (Dashboard/Emails):** Personal to 5 educators
+  - "You're one of 5 educators building this together"
+  - "Your feedback literally shapes everything"
+  - Personal signature from Ryan
+
+**Performance Optimizations:**
+- ✅ `getAllFrameworks` query refactored to use database indexes (no in-memory filtering)
+- ✅ Most selective index first strategy (module > category > status)
+- ✅ No table scans for common queries
+
+**Features Scoped for Launch:**
+- **Enabled:** Framework Library (10 frameworks), Alignment Scorecard, Dashboard, Time Tracking, Profile
+- **Hidden (Code stays, UI hidden):** Community/Innovations (deprioritized for 5 users)
+- **Feature-Flagged:** Weekly emails (WEEKLY_EMAILS_ENABLED=false by default)
+
+**Architecture Validated:**
+- ✅ Ready for organic scaling: 5 users → 100 users
+- ✅ Cost: $1-2/month (5 users) → $20-50/month (100 users)
+- ✅ 7 production-ready Convex components
+- ✅ Auto-scaling built-in (no infrastructure changes needed)
+- ✅ Rate limiting configured (tiered by role)
+
+**Documentation Cleanup:**
+- **Root Directory:** Clean, essential files only (PROJECT.md, ARCHITECTURE_VALIDATION.md, README.md, CHANGELOG.md, LICENSE)
+- **Archived to `docs/launch/`:** Temporary alignment docs (COMPREHENSIVE_VIBE_CHECK_FINDINGS.md, EMAIL_TEMPLATES_ALIGNMENT.md, LAUNCH_READINESS_CHECKLIST.md, PERSONALIZED_ONBOARDING.md, PUBLIC_VS_PRIVATE_MESSAGING.md)
+
+**Environment Variables:**
+- Required: CONVEX_DEPLOYMENT, OPENAI_API_KEY, RESEND_API_KEY
+- Feature Flags: WEEKLY_EMAILS_ENABLED=false (default) - set to "true" when scaling to 30-100 users
+
+**Related Documentation:**
+- `docs/launch/` - Archived alignment documentation
+- `ARCHITECTURE_VALIDATION.md` - Scaling validation and cost projections
+- `PROJECT.md` - Updated with grassroots vision and brand voice
+
+---
+
 ### Core Flare #1: Alignment Scorecard Implementation
 
 **Status:** ✅ **COMPLETED**

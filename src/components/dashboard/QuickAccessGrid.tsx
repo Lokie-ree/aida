@@ -38,7 +38,7 @@ const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAc
   {
     id: "frameworks",
     label: "AI Framework Library",
-    description: "10+ Louisiana Standards-aligned frameworks (growing weekly)",
+    description: "10 Louisiana Standards-aligned frameworks",
     icon: <BookOpen className="h-6 w-6" />,
     onClick: () => {},
     variant: "default"

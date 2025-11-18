@@ -1,8 +1,18 @@
-// ============================================
-// PHASE 2: Out of scope for MVP
-// ============================================
-// This file contains framework library functionality which is not part of Phase 1 MVP.
-// Uncomment and refactor when Phase 2 development begins.
+/**
+ * Framework Library - Platform-Agnostic AI Guidance for Louisiana Educators
+ * 
+ * **We're Not Waiting for LDOE:** Louisiana educators building together to create
+ * practical, platform-agnostic AI guidance that works with ANY AI tool you already use.
+ * 
+ * This is not another platform. These are frameworks - structured prompts and guidance
+ * you can copy-paste into ChatGPT, Gemini, Claude, MagicSchool AI, or any other AI tool.
+ * 
+ * **Grassroots Launch:** Starting with 10 frameworks carefully selected for 5 specific
+ * educator roles. Each framework addresses real Louisiana teacher pain points.
+ * 
+ * Built by Louisiana educators, for Louisiana educators. Your feedback literally
+ * shapes what we build next.
+ */
 
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
@@ -11,9 +21,11 @@ import { authComponent } from "./auth";
 /**
  * Query: Get all frameworks with optional filters
  * 
- * USER-003: Framework Library Access
  * Returns frameworks based on module, category, and status filters.
  * Used by the framework library UI for browsing and searching.
+ * 
+ * **Platform-Agnostic:** These frameworks work with ANY AI tool - ChatGPT, Gemini, Claude,
+ * MagicSchool AI, SchoolAI, etc. We're not locking you into a platform.
  * 
  * @param module - Optional module filter (ai-basics-hub | instructional-expert-hub)
  * @param category - Optional category filter
@@ -43,21 +55,42 @@ export const getAllFrameworks = query({
     averageRating: v.optional(v.number()),
   })),
   handler: async (ctx, args) => {
+    // Convex Best Practice: Use indexes for filtering, not in-memory filter()
+    // Strategy: Use the most selective index first, then client-side filter remaining criteria
+    
     let frameworks;
-
-    // Use status index as primary filter (default to published)
     const status = args.status || "published";
-    frameworks = await ctx.db
-      .query("frameworks")
-      .withIndex("by_status", (q) => q.eq("status", status))
-      .collect();
 
-    // Apply additional filters using indexes where possible
-    if (args.module) {
-      frameworks = frameworks.filter(f => f.module === args.module);
+    // If module is specified, use by_module index (more selective than status)
+    if (args.module !== undefined) {
+      const module = args.module;
+      frameworks = await ctx.db
+        .query("frameworks")
+        .withIndex("by_module", (q) => q.eq("module", module))
+        .collect();
+      // Filter by status in memory (fewer results after module filter)
+      frameworks = frameworks.filter(f => f.status === status);
+    } 
+    // If category is specified (without module), use by_category index
+    else if (args.category !== undefined) {
+      const category = args.category;
+      frameworks = await ctx.db
+        .query("frameworks")
+        .withIndex("by_category", (q) => q.eq("category", category))
+        .collect();
+      // Filter by status in memory
+      frameworks = frameworks.filter(f => f.status === status);
+    }
+    // Otherwise, use by_status index (least selective, but no filters needed)
+    else {
+      frameworks = await ctx.db
+        .query("frameworks")
+        .withIndex("by_status", (q) => q.eq("status", status))
+        .collect();
     }
 
-    if (args.category) {
+    // Apply remaining category filter if module was used
+    if (args.module && args.category) {
       frameworks = frameworks.filter(f => f.category === args.category);
     }
 
@@ -238,16 +271,19 @@ export const searchFrameworks = query({
 /**
  * Records framework usage and time saved for analytics.
  * 
- * USER-003: Framework Library Access
- * Tracks when educators use frameworks to measure impact and
- * provide personalized recommendations.
+ * **Grassroots Launch:** Your feedback literally shapes everything. When you try a framework,
+ * tell us: Did this save time? Was it clear? What would make it better? This is how we figure
+ * out what actually works for Louisiana educators.
+ * 
+ * Tracks when educators use frameworks to measure impact and provide personalized
+ * recommendations. With 5 users, every data point matters.
  * 
  * @requires Authentication - Must be logged in
  * @param frameworkId - The framework being used
  * @param action - Type of interaction ("viewed" | "copied_prompt" | "marked_tried" | "saved")
  * @param rating - Optional user rating (1-5)
- * @param timeSaved - Optional minutes saved (educator's estimate)
- * @param comment - Optional user feedback
+ * @param timeSaved - Optional minutes saved (educator's estimate) - we want honest numbers!
+ * @param comment - Optional user feedback - this is gold for us
  * 
  * @throws "Framework not found" if frameworkId invalid
  * @throws "User must be authenticated" if no session

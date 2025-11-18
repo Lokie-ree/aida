@@ -3,13 +3,22 @@ import { workflow } from "./workflows";
 import { internal } from "./_generated/api";
 
 /**
- * Alignment Scorecard Workflow
+ * Alignment Scorecard Workflow - Core Flare #1
+ * 
+ * **We're Not Waiting for LDOE:** Louisiana educators need confidence that their
+ * AI-generated content actually meets state standards NOW, not when official guidance arrives.
+ * This is the #1 pain point: "Is this quiz any good? Does it ACTUALLY test the Louisiana standard?"
+ * 
+ * Built by Louisiana educators, for Louisiana educators. This is your quality-keeper and
+ * confidence-builder - platform-agnostic analysis that works with ANY AI tool you already use.
  * 
  * Orchestrates multi-step analysis of AI-generated content against Louisiana Standards:
  * 1. Retrieve relevant Louisiana Standards from RAG
  * 2. Analyze content against standards using Agent
  * 3. Generate structured scorecard
  * 4. Save results to database
+ * 
+ * **Grassroots Launch:** ALL 5 initial users should try this feature - it's the core value.
  */
 
 export const analyzeContentAlignment = workflow.define({

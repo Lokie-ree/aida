@@ -1,6 +1,16 @@
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+/**
+ * Seed Initial Frameworks - Grassroots Launch
+ * 
+ * Starting with 10 frameworks for 5 educators:
+ * - 3 Advanced Louisiana-Specific Frameworks (AIB-001, AIB-006, AIB-008)
+ * - 7 Essential Frameworks for diverse educator roles
+ * 
+ * We're Louisiana educators building this together. These frameworks are platform-agnostic
+ * guidance that works with ANY AI tool you already use.
+ */
 export const seedInitialFrameworks = mutation({
   args: {},
   returns: v.null(),
@@ -12,32 +22,47 @@ export const seedInitialFrameworks = mutation({
     const aibFrameworks = [
       {
         frameworkId: "AIB-001",
-        title: "Email Drafting for Parent Communication",
+        title: "Louisiana Lesson Alignment Analyzer",
         module: "ai-basics-hub" as const,
-        category: "teacher-productivity",
-        tags: ["email", "parent-communication", "productivity"],
-        challenge: "Drafting a sensitive email to a parent about a student's struggles can be time-consuming and emotionally taxing. LER Domain 4: PROFESSIONALISM includes school involvement and communication responsibilities, making efficient parent communication essential for evaluation readiness.",
-        solution: `1. Open your preferred AI platform (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
-2. Use the prompt template below, filling in the specific details
-3. Review the AI-generated draft carefully
-4. Personalize the message with your voice and specific observations
-5. Ensure it reflects your professional judgment and the student's context`,
-        samplePrompt: `Act as a compassionate and professional [grade level] [subject] teacher. Draft an email to a parent, [Parent's Name], about their child, [Student's Name]. The tone should be supportive but clear.
+        category: "louisiana-framework",
+        tags: ["louisiana-standards", "ler-alignment", "lesson-planning", "rigor"],
+        challenge: "Every Louisiana teacher knows the sinking feeling: 'Is this lesson actually aligned to the standard? Will this generate the evidence an observer expects on the Louisiana Educator Rubric?' You're anxious—Am I accidentally watering down grade-level expectations? Does this align with what LEAP will assess? This is Alignment Anxiety, compounded by planning in isolation without a trusted second set of eyes.",
+        solution: `1. Gather your lesson context (grade, subject, full Louisiana standard code/text, lesson activities)
+2. Open your preferred AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, Claude, etc.)
+3. Copy the Louisiana Alignment Prompt below
+4. Replace bracketed placeholders with your specific information
+5. Review the 5-part analysis: Standard Breakdown, Rigor Check, LER Alignment, LEAP Readiness, Refinement
+6. Use your professional judgment to adapt recommendations to your specific students and context
 
-**Context:**
-- Student: [Student's Name]
-- Strength: [Positive observation about the student]
-- Challenge: [Specific academic or behavioral struggle]
-- Goal: Schedule a brief phone call to discuss a support plan.
+This takes approximately 5 minutes and provides a "master teacher gut check" before you teach.`,
+        samplePrompt: `You are an expert Louisiana instructional coach helping me ensure my lesson is aligned to state standards, the Louisiana Educator Rubric, and LEAP expectations.
 
-Please provide a subject line and the body of the email.`,
-        ethicalGuardrail: "AI is a drafting assistant. The final message, professional judgment, and accountability are always yours. Never send an AI-generated email without ensuring it reflects your voice and the specific student's context.",
-        tipsAndVariations: "For urgent situations, start with a phone call. For positive news, consider adding a specific example of recent success. This addresses Pain Point #5: Communication and Administrative Tasks by saving time on professional communication while maintaining quality.",
-        timeEstimate: 10,
-        difficultyLevel: "beginner" as const,
+LESSON CONTEXT:
+Grade Level: [INSERT GRADE]
+Subject: [INSERT SUBJECT]
+Louisiana Student Standard: [INSERT FULL STANDARD CODE AND TEXT, e.g., "4.NF.A.2: Compare two fractions with different numerators and different denominators by creating common denominators or numerators, or by comparing to a benchmark fraction such as 1/2"]
+Lesson Activities: [INSERT 2-3 SENTENCES DESCRIBING WHAT STUDENTS WILL DO, e.g., "Students will work in pairs to sort 20 fraction cards into groups (less than 1/2, equal to 1/2, greater than 1/2). They will justify their placement using visual models. The lesson concludes with students writing one comparison statement with evidence."]
+
+Please provide FIVE outputs:
+
+1. STANDARD BREAKDOWN: What are the 3-4 component skills embedded in this Louisiana standard? What is the cognitive demand (DOK level) required for mastery?
+
+2. RIGOR CHECK: Based on the lesson activities I described, does this lesson meet the full depth and rigor of the standard, or is there a gap? Be specific about what is present and what is missing.
+
+3. LER INDICATOR ALIGNMENT: Which Louisiana Educator Rubric indicators does this lesson have the strongest potential to demonstrate? For each indicator, explain what specific evidence an observer would see.
+
+4. LEAP READINESS: Based on LEAP Achievement Level Descriptors for this grade and subject, what does "Mastery" level performance look like for this standard? Does my lesson build toward that level of performance?
+
+5. REFINEMENT FOR PROFICIENT (LER LEVEL 3→4): Provide ONE concrete, high-leverage refinement to move this lesson from "Effective" to "Proficient" on the LER. Make it specific enough that I can implement it in my next lesson.
+
+Format this as a clear planning guide I can reference when revising my lesson.`,
+        ethicalGuardrail: "AI can help unpack standards, but your professional judgment determines how to teach them. Always verify alignment with Louisiana's official curriculum documents and your district's scope and sequence. You remain the instructional decision-maker. This is a planning assistant built by Louisiana educators, for Louisiana educators.",
+        tipsAndVariations: "Use this for any lesson where you're uncertain about alignment. Create anchor charts from the analysis. Share key insights with PLC colleagues. This directly addresses the #1 pain point for Louisiana teachers: 'Is this quiz any good? Does it ACTUALLY test the Louisiana standard?' This is your quality-keeper and confidence-builder.",
+        timeEstimate: 20,
+        difficultyLevel: "advanced" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
-        louisianaStandards: [],
-        lerDomains: ["Domain 4: PROFESSIONALISM"],
+        louisianaStandards: ["All Louisiana State Standards"],
+        lerDomains: ["Domain 1: INSTRUCTION", "Domain 2: PLANNING"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
@@ -46,48 +71,114 @@ Please provide a subject line and the body of the email.`,
         averageTimeSaved: undefined,
       },
       {
-        frameworkId: "AIB-002",
-        title: "Newsletter Generation and Templates",
+        frameworkId: "AIB-006",
+        title: "10-Minute Curriculum Internalizer",
         module: "ai-basics-hub" as const,
-        category: "teacher-productivity",
-        tags: ["newsletter", "communication", "productivity"],
-        challenge: "Creating engaging weekly or monthly newsletters takes valuable planning time away from instruction. LER Domain 4: PROFESSIONALISM emphasizes communication with families, making newsletters an important but time-consuming professional responsibility.",
-        solution: `1. Gather key information: upcoming events, student achievements, curriculum focus
-2. Open your AI platform
-3. Use the newsletter prompt template
-4. Review and customize the generated content
-5. Add personal touches and specific student/class examples
-6. Format in your preferred newsletter tool`,
-        samplePrompt: `Act as an experienced [grade level] [subject] teacher creating a newsletter for parents.
+        category: "louisiana-framework",
+        tags: ["curriculum", "lesson-planning", "fidelity", "differentiation"],
+        challenge: "Your district adopted a high-quality curriculum—excellent news. The challenge? It's a sprawling, multi-hundred-page document. You're told to implement with fidelity AND differentiate. You're not sure which parts are non-negotiable and which are flexible. This is Curriculum Overwhelm: skip it entirely and lose research-based design, follow rigidly without understanding the why, or spend hours reading without clarity.",
+        solution: `1. Gather your curriculum materials (name, publisher, grade, unit, lesson numbers, relevant pages)
+2. Open your AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, Claude, etc.)
+3. Copy the Curriculum Internalization Prompt below
+4. Paste your curriculum text or upload images
+5. Review 6 outputs: Big Idea, Instructional Structure, Non-Negotiables, Flex Points, Misconceptions, Prep Checklist
+6. Use your professional knowledge to adapt to your students
 
-**Information to include:**
-- Week/Month: [Date range]
-- Curriculum Focus: [What students are learning]
-- Upcoming Events: [List 2-3 events]
-- Student Achievements: [Highlight 1-2 achievements]
-- Reminders: [Any important reminders]
-- How Parents Can Help: [1-2 specific suggestions]
+This takes 10 minutes and prepares you to teach with both fidelity and flexibility.`,
+        samplePrompt: `You are an expert instructional coach helping me internalize my curriculum guide so I can teach this lesson with both fidelity and flexibility.
 
-Create an engaging, positive newsletter (300-400 words) with clear sections and a warm, professional tone.`,
-        ethicalGuardrail: "Always review AI-generated content for accuracy. Ensure all dates, events, and student information are correct before sending. Never include student names without permission.",
-        tipsAndVariations: "Save successful prompts as templates. Adjust tone for different grade levels. Consider adding a 'Student Spotlight' section. This addresses Pain Point #5: Communication and Administrative Tasks by reducing time spent on routine communication tasks.",
+CURRICULUM CONTEXT:
+Curriculum Name: [INSERT CURRICULUM NAME, e.g., "Eureka Math Grade 3 Module 4 Lesson 12"]
+Grade and Subject: [INSERT GRADE AND SUBJECT]
+Lesson/Unit: [INSERT SPECIFIC LESSON OR UNIT REFERENCE]
+
+I am providing the relevant pages from my curriculum guide below. [PASTE CURRICULUM TEXT OR UPLOAD IMAGES]
+
+Please provide SIX outputs:
+
+1. THE BIG IDEA: In 2-3 sentences, what is the core mathematical or conceptual understanding this lesson is building? Why does this lesson matter in the bigger picture of the unit or year?
+
+2. INSTRUCTIONAL STRUCTURE: What is the intended flow of this lesson? Identify the key phases (e.g., warm-up, guided instruction, independent practice, closure) and the purpose of each phase.
+
+3. NON-NEGOTIABLE ELEMENTS: What are the 2-3 elements of this lesson that I must implement with fidelity to preserve the curriculum's design? These are the "load-bearing walls" I should not remove or modify.
+
+4. FLEX POINTS: Where does this curriculum expect me to differentiate or adapt based on my students? What decisions am I supposed to make in the moment?
+
+5. ANTICIPATED MISCONCEPTIONS: What student misunderstandings does this curriculum predict or address? How does it suggest I respond to those misconceptions?
+
+6. LESSON PREP CHECKLIST: What materials, models, or teacher moves do I need to prepare in advance to teach this lesson effectively? Give me a concrete list I can check off.
+
+Format this as a focused internalization guide I can reference while teaching.`,
+        ethicalGuardrail: "This framework accelerates curriculum internalization, but your professional judgment, knowledge of your students, and alignment with your district's curriculum are essential. This is a planning assistant built by educators who understand the real work of teaching.",
+        tipsAndVariations: "Use this at the start of each unit. Keep generated frameworks as templates for future years. Share with PLC teams for collaborative planning. This solves Curriculum Overwhelm: you now know what to preserve (fidelity) and where to adapt (flexibility).",
         timeEstimate: 15,
-        difficultyLevel: "beginner" as const,
+        difficultyLevel: "advanced" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
-        lerDomains: ["Domain 4: PROFESSIONALISM"],
+        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION"],
         status: "published" as const,
         createdBy: adminUserId,
         publishedAt: Date.now(),
         usageCount: 0,
       },
       {
-        frameworkId: "AIB-003",
+        frameworkId: "AIB-008",
+        title: "Louisiana Contextualization Engine",
+        module: "ai-basics-hub" as const,
+        category: "louisiana-framework",
+        tags: ["contextualization", "cultural-relevance", "louisiana", "engagement"],
+        challenge: "You're teaching a lesson on economic systems—the curriculum example is a factory in Ohio. Your students have never been to Ohio. You're teaching about historical courage—the curriculum highlights Alabama. Your students struggle to connect. This is the Distant Curriculum Problem: reduced engagement, increased cognitive load, and a subtle message that learning is about other places, not Louisiana, not your community, not them.",
+        solution: `1. Gather lesson details (grade, subject, learning objective, original curriculum context)
+2. Gather student context (community description, region of Louisiana, student interests)
+3. Open your AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, Claude, etc.)
+4. Copy the Louisiana Contextualization Prompt below
+5. Replace placeholders with your specific information
+6. Review 4 outputs: Louisiana Context, Local Hooks, Authenticity Check, Extension Opportunities
+7. Use your community knowledge to verify authenticity and adjust as needed
+
+This takes 5 minutes and transforms a distant lesson into a locally relevant one.`,
+        samplePrompt: `You are an expert Louisiana instructional designer helping me contextualize my curriculum to make it more relevant and engaging for my specific students.
+
+LESSON CONTEXT:
+Grade Level: [INSERT GRADE]
+Subject: [INSERT SUBJECT]
+Learning Objective/Standard: [INSERT THE STANDARD OR OBJECTIVE, e.g., "Students will analyze data sets and calculate measures of central tendency"]
+Original Curriculum Context: [DESCRIBE THE CURRENT EXAMPLE, e.g., "The lesson uses data about favorite ice cream flavors from a national survey of 1,000 students"]
+
+STUDENT CONTEXT:
+Community: [DESCRIBE YOUR STUDENTS' COMMUNITY, e.g., "Rural, sugarcane farming community outside of New Iberia, Louisiana. Many students' families work in agriculture."]
+Student Interests: [DESCRIBE RECENT INTERESTS OR ENTHUSIASMS, e.g., "Students loved the recent crawfish festival and have been asking about how crawfish farming works"]
+
+Please provide FOUR outputs:
+
+1. LOUISIANA CONTEXTUALIZATION: Replace the original curriculum context with a Louisiana-specific example that is authentic to my students' lives and community. The new context must preserve the exact same learning objective and cognitive demand as the original.
+
+2. LOCAL HOOKS: Provide 2-3 opening lines or questions I can use to introduce the lesson that immediately connect to my students' prior knowledge or community experiences.
+
+3. CULTURAL AUTHENTICITY CHECK: Does this contextualization accurately reflect Louisiana culture, economy, or geography? If I am using a cultural reference (Cajun, Creole, Mardi Gras traditions, etc.), provide guidance on how to present it respectfully and accurately.
+
+4. EXTENSION OPPORTUNITY: Suggest one way this Louisiana context could extend beyond the lesson. For example, could this connect to a local expert we could invite, a field trip opportunity, or a community-based project?
+
+Format this as a clear revision guide I can use to adapt my lesson.`,
+        ethicalGuardrail: "Contextualization must be authentic and respectful. Louisiana has rich, diverse cultures. Avoid stereotypes. Use your community knowledge to verify authenticity. You know your students' families, traditions, and lived experiences—trust that knowledge. This is built by Louisiana educators who understand that learning should reflect students' worlds.",
+        tipsAndVariations: "Use this when curriculum examples feel distant or generic. Invite students to suggest local connections. This sends a powerful message: your community matters, your experiences are valuable, and learning is about understanding the world you actually live in.",
+        timeEstimate: 10,
+        difficultyLevel: "advanced" as const,
+        platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
+        louisianaStandards: [],
+        lerDomains: ["Domain 1: INSTRUCTION", "Domain 3: ENVIRONMENT"],
+        status: "published" as const,
+        createdBy: adminUserId,
+        publishedAt: Date.now(),
+        usageCount: 0,
+      },
+      {
+        frameworkId: "AIB-002",
         title: "Document Summarization for Professional Reading",
         module: "ai-basics-hub" as const,
         category: "teacher-productivity",
         tags: ["summarization", "professional-development", "reading"],
-        challenge: "Keeping up with educational research and policy documents is essential but time-consuming. LER Domain 4: PROFESSIONALISM - Growing and Developing Professionally requires participating in professional learning and implementing new learning in the classroom, making efficient document review essential.",
+        challenge: "Keeping up with educational research, curriculum guides, and policy documents is essential but time-consuming. You need to extract key information quickly to implement in your classroom.",
         solution: `1. Upload or paste the document into your AI platform
 2. Use the summarization prompt below
 3. Review the key points and action items
@@ -112,7 +203,7 @@ Create an engaging, positive newsletter (300-400 words) with clear sections and 
 
 Document: [Paste document text here]`,
         ethicalGuardrail: "AI summaries are starting points for understanding. Always verify important information by reading the original source, especially for policy or legal matters.",
-        tipsAndVariations: "Use this for curriculum guides, research papers, and district memos. Create a personal knowledge base by saving summaries. This addresses Pain Point #5: Communication and Administrative Tasks by efficiently processing professional reading requirements.",
+        tipsAndVariations: "Use this for curriculum guides, research papers, and district memos. Create a personal knowledge base by saving summaries. Essential for tech facilitators who need to stay current and support other teachers.",
         timeEstimate: 8,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
@@ -171,35 +262,29 @@ Meeting Notes: [Paste notes here]`,
         usageCount: 0,
       },
       {
-        frameworkId: "AIB-005",
-        title: "Professional Email Responses",
+        frameworkId: "AIB-003",
+        title: "Email Drafting for Parent Communication",
         module: "ai-basics-hub" as const,
         category: "teacher-productivity",
-        tags: ["email", "professional-communication", "responses"],
-        challenge: "Crafting professional, helpful responses to parent emails, colleague requests, and administrative communications.",
-        solution: `1. Read the incoming email carefully
-2. Identify the key points and tone
-3. Use the response prompt template
-4. Review and personalize the draft
-5. Send with confidence`,
-        samplePrompt: `Help me draft a professional response to this email as a [grade level] [subject] teacher:
+        tags: ["email", "parent-communication", "productivity"],
+        challenge: "Drafting a sensitive email to a parent about a student's struggles can be time-consuming and emotionally taxing. Professional parent communication is essential for all educators.",
+        solution: `1. Open your preferred AI platform (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
+2. Use the prompt template below, filling in the specific details
+3. Review the AI-generated draft carefully
+4. Personalize the message with your voice and specific observations
+5. Ensure it reflects your professional judgment and the student's context`,
+        samplePrompt: `Act as a compassionate and professional [grade level] [subject] teacher. Draft an email to a parent, [Parent's Name], about their child, [Student's Name]. The tone should be supportive but clear.
 
-**My Role:** [Your position and responsibilities]
-**Tone:** [Professional, helpful, firm, etc.]
-**Key Points to Address:** [List main points to cover]
+**Context:**
+- Student: [Student's Name]
+- Strength: [Positive observation about the student]
+- Challenge: [Specific academic or behavioral struggle]
+- Goal: Schedule a brief phone call to discuss a support plan.
 
-**Incoming Email:**
-[Paste the email you're responding to]
-
-**Response Requirements:**
-- Acknowledge their concern/request
-- Provide clear information or next steps
-- Maintain professional boundaries
-- Offer additional support if appropriate
-- Keep it concise but complete`,
-        ethicalGuardrail: "AI helps with tone and structure, but your professional judgment and knowledge of school policies are essential. Always review before sending.",
-        tipsAndVariations: "Use this for parent concerns, colleague requests, and administrative communications. Save successful templates for similar situations.",
-        timeEstimate: 7,
+Please provide a subject line and the body of the email.`,
+        ethicalGuardrail: "AI is a drafting assistant. The final message, professional judgment, and accountability are always yours. Never send an AI-generated email without ensuring it reflects your voice and the specific student's context.",
+        tipsAndVariations: "For urgent situations, start with a phone call. For positive news, consider adding a specific example of recent success. This saves time on professional communication while maintaining quality.",
+        timeEstimate: 10,
         difficultyLevel: "beginner" as const,
         platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
         louisianaStandards: [],
@@ -380,289 +465,9 @@ Please provide:
         publishedAt: Date.now(),
         usageCount: 0,
       },
-      {
-        frameworkId: "IEH-005",
-        title: "Designing Formative Assessment Strategies",
-        module: "instructional-expert-hub" as const,
-        category: "instructional-design",
-        tags: ["formative-assessment", "instruction", "feedback"],
-        challenge: "Creating effective formative assessments that provide timely feedback and guide instructional decisions.",
-        solution: `1. Identify your learning objectives
-2. Use the formative assessment prompt
-3. Generate multiple assessment strategies
-4. Plan for quick data collection and analysis
-5. Create systems for providing feedback`,
-        samplePrompt: `Design formative assessment strategies for this lesson:
-
-**Topic:** [Lesson topic]
-**Grade Level:** [Grade]
-**Subject:** [Subject]
-**Learning Objectives:** [What students should understand/do]
-
-**Please provide:**
-1. 3-5 quick formative assessment strategies
-2. How to collect data efficiently
-3. What to look for in student responses
-4. How to use data to adjust instruction
-5. Methods for providing immediate feedback`,
-        ethicalGuardrail: "Formative assessment should inform teaching and learning, not just measure performance. Use data to support student growth, not to label or compare students.",
-        tipsAndVariations: "Use this for new concepts and skills. Create a toolkit of quick assessment strategies you can use throughout lessons.",
-        timeEstimate: 22,
-        difficultyLevel: "intermediate" as const,
-        platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
-        louisianaStandards: [],
-        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION"],
-        status: "published" as const,
-        createdBy: adminUserId,
-        publishedAt: Date.now(),
-        usageCount: 0,
-      },
-      {
-        frameworkId: "IEH-006",
-        title: "Multi-Standard Unit Planning Framework",
-        module: "instructional-expert-hub" as const,
-        category: "louisiana-framework",
-        tags: ["unit-planning", "standards", "differentiation", "ler-alignment", "time-saving"],
-        challenge: "Planning a comprehensive unit aligned to multiple Louisiana standards while differentiating for diverse learners and meeting LER rubric expectations is an overwhelming task that can take hours. Between unpacking standards, creating objectives, planning differentiation, and aligning assessments, unit planning becomes a weekend-consuming burden that steals time from actual instruction. LER Domain 2: PLANNING - Instructional Plans (IP) requires evidence of internalization of high-quality curriculum, measurable objectives aligned to state standards, and activities aligned to standards, content, and success criteria. This directly addresses Pain Point #1: Lesson Planning Burdens and Pain Point #2: Planning Time Constraints.",
-        solution: `1. Gather your standards: Identify 3-5 Louisiana standards for the unit
-2. Open your preferred AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, etc.)
-3. Use this comprehensive unit planning prompt (copy complete prompt below)
-4. Generate full unit framework in one session
-5. Review and refine based on your curriculum materials and student needs
-6. Break down into daily lesson plans using the unit framework as your guide
-7. Align each lesson to specific LER domains for evaluation readiness
-
-This framework saves 30-45 minutes per unit by consolidating multiple planning tasks into one structured AI session, addressing the critical planning time constraints identified in Louisiana teacher research.`,
-        samplePrompt: `Act as an expert Louisiana curriculum specialist and instructional designer. I'm planning a comprehensive unit and need your guidance to create a complete unit framework aligned to Louisiana standards and the Louisiana Educator Rubric.
-
-**UNIT CONTEXT:**
-- **Subject:** [Subject area - e.g., English Language Arts, Mathematics, Science]
-- **Grade Level:** [Grade level]
-- **Unit Duration:** [X weeks]
-- **Unit Title:** [Unit name/theme]
-
-**LOUISIANA STANDARDS FOR THIS UNIT:**
-[Paste all 3-5 Louisiana state standards you're addressing in this unit. Include full standard text, not just codes.]
-
-**STUDENT CONTEXT:**
-- **Needs:** [Brief description of your students' needs - e.g., diverse reading levels, English learners, students with IEPs]
-- **Prior Knowledge:** [What students should already know]
-- **End Goal:** [What students should be able to do by unit end]
-
-**CREATING COMPREHENSIVE UNIT FRAMEWORK:**
-
-**PART 1: STANDARDS UNPACKING & ALIGNMENT**
-For each standard, provide:
-1. Clear explanation in student-friendly language
-2. Three differentiated "I can" statements (approaching grade level, meeting grade level, exceeding grade level)
-3. Key vocabulary students must master
-4. Prerequisite skills/concepts
-5. Connection to LER Domain 1: INSTRUCTION - Standards and Objectives (SO): Ensure objectives are explicitly communicated, aligned to depth and rigor of standards, and students can articulate what they are learning
-
-**PART 2: UNIT STRUCTURE & PACING**
-Create:
-1. Unit timeline broken into weekly goals
-2. Essential questions that guide student inquiry
-3. Unit learning objectives aligned to standards
-4. Culminating assessment/performance task description
-5. Daily learning targets for each week
-
-**PART 3: DIFFERENTIATION STRATEGY**
-Design:
-1. Pre-assessment to identify student readiness levels
-2. Three-tiered differentiation plan:
-   - **Tier 1 (Approaching):** Scaffolds and supports for students below grade level
-   - **Tier 2 (Meeting):** Grade-level activities and expectations
-   - **Tier 3 (Exceeding):** Extensions and challenges for advanced learners
-3. Accommodations for students with IEPs or English learners
-4. Multiple means of representation, engagement, and expression
-
-**PART 4: ASSESSMENT PLAN**
-Develop:
-1. Formative assessments for each week (quick checks for understanding)
-2. Summative assessment plan aligned to standards
-3. Rubric criteria for culminating task
-4. Student self-assessment and reflection opportunities
-5. Parent communication plan for unit progress
-
-**PART 5: RESOURCE & MATERIAL IDENTIFICATION**
-Identify:
-1. LDOE resources relevant to these standards
-2. High-quality texts, media, or materials needed
-3. Technology integration opportunities
-4. Real-world connections relevant to Louisiana students
-
-**PART 6: LER RUBRIC ALIGNMENT**
-Demonstrate alignment to:
-- **Domain 1: INSTRUCTION - Standards and Objectives (SO):** All learning objectives and state content standards explicitly communicated; objectives aligned to depth and rigor of state standards
-- **Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS):** Understanding of each student's learning abilities and needs; differentiated supports to ensure mastery of grade-level standards
-- **Domain 2: PLANNING - Instructional Plans (IP):** Evidence of internalization of high-quality curriculum; measurable objectives aligned to state standards; activities aligned to standards, content, and success criteria; regular opportunities to accommodate individual student needs
-- **Domain 2: PLANNING - Assessment (AS):** Aligned with depth and rigor of state standards; variety of question types; multiple measures; extended written tasks as appropriate
-- **Domain 4: PROFESSIONALISM:** Communication with families, professional growth connections
-
-**OUTPUT FORMAT:**
-Present this as a comprehensive, usable unit planning document that I can immediately reference for lesson planning, parent communication, and evaluation readiness.
-
-**CRITICAL REQUIREMENTS:**
-- All activities must be Louisiana-specific or adaptable to Louisiana context
-- Differentiation must meet needs of diverse Louisiana learners
-- Assessment must align with Louisiana testing expectations
-- Language must be appropriate for [grade level] students
-- Framework must save me significant planning time while maintaining quality
-
-Please create this complete unit framework now.`,
-        ethicalGuardrail: "This framework accelerates unit planning but your professional judgment, knowledge of your students, and alignment with your district's curriculum are essential. Always review AI-generated content for accuracy, appropriateness, and alignment with Louisiana's official documents. This is a planning assistant, not a replacement for your expertise.",
-        tipsAndVariations: "Use this framework at the start of each unit for maximum time savings. Keep generated unit frameworks as templates for future years. Share with PLC teams for collaborative planning. Break the output into daily lesson plans using the weekly targets as your guide. Update framework with actual student data as unit progresses.",
-        timeEstimate: 35,
-        difficultyLevel: "advanced" as const,
-        platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
-        louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION", "Domain 4: PROFESSIONALISM"],
-        status: "published" as const,
-        createdBy: adminUserId,
-        publishedAt: Date.now(),
-        usageCount: 0,
-      },
-      {
-        frameworkId: "IEH-007",
-        title: "Louisiana LEADS Aligned Assessment Builder",
-        module: "instructional-expert-hub" as const,
-        category: "louisiana-framework",
-        tags: ["assessment", "leads", "differentiation", "evaluation", "louisiana"],
-        challenge: "Creating differentiated assessments that align with Louisiana LEADS framework expectations, meet diverse learner needs, and demonstrate educator effectiveness for evaluation is complex and time-consuming. Teachers need assessments that simultaneously assess student learning, provide differentiation pathways, and showcase instructional quality for LEADS evaluation purposes. LER Domain 2: PLANNING - Assessment (AS) requires assessments aligned with depth and rigor of state standards, variety of question types and formats, measuring student performance in more than three ways, and requiring extended written tasks as appropriate. This addresses Pain Point #4: Differentiation Challenges.",
-        solution: `1. Identify your assessment goals: What standards are you assessing? What LEADS elements do you want to demonstrate?
-2. Gather student context: Reading levels, learning needs, prior assessment data
-3. Open your AI platform (MagicSchool AI, Gemini, SchoolAI, ChatGPT, etc.)
-4. Use the comprehensive LEADS assessment builder prompt (complete prompt below)
-5. Generate tiered assessment with differentiated versions
-6. Review for alignment with Louisiana standards and LEADS framework
-7. Create scoring rubrics aligned to LEADS expectations
-8. Prepare accommodation options for diverse learners
-9. Document assessment choices for evaluation portfolios
-
-This framework saves 25-35 minutes per assessment while ensuring LEADS alignment and differentiation.`,
-        samplePrompt: `Act as an expert Louisiana assessment specialist with deep knowledge of the Louisiana LEADS framework and differentiated assessment design. I need to create a comprehensive assessment that demonstrates my effectiveness as an educator while accurately measuring student learning.
-
-**ASSESSMENT CONTEXT:**
-- **Subject:** [Subject area]
-- **Grade Level:** [Grade]
-- **Assessment Type:** [Formative/Summative/Performance Task]
-- **Duration:** [Time students will have]
-- **Standards Being Assessed:** [Paste Louisiana state standards being assessed]
-
-**LER & LEADS FRAMEWORK ALIGNMENT:**
-I need this assessment to demonstrate effectiveness in these LER domains and indicators:
-- **Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS):** Understanding of each student's learning abilities and needs; differentiated supports
-- **Domain 2: PLANNING - Assessment (AS):** Aligned with depth and rigor of state standards; variety of question types and formats; measuring student performance in more than three ways; extended written tasks as appropriate; clear illustrations of student progress toward standards
-- **Domain 1: INSTRUCTION - Questioning (QU):** High-quality questions with appropriate mix of question types
-- **Domain 1: INSTRUCTION - Activities and Materials (ACT):** Student-centered activities that engage diverse learners
-
-**STUDENT DIVERSITY:**
-- **Approaching Grade Level:** [Number/description]
-- **Meeting Grade Level:** [Number/description]
-- **Exceeding Grade Level:** [Number/description]
-- **Students with IEPs:** [Accommodations needed]
-- **English Learners:** [Proficiency levels and supports needed]
-
-**ASSESSMENT DESIGN REQUIREMENTS:**
-
-**PART 1: TIERED ASSESSMENT STRUCTURE**
-Create three parallel versions of this assessment:
-1. **Approaching Grade Level Version:**
-   - Scaffolded questions and prompts
-   - Simplified vocabulary where appropriate
-   - Reduced item count but maintains standard alignment
-   - Clear, step-by-step instructions
-   - Visual supports and examples
-
-2. **Meeting Grade Level Version:**
-   - Standard grade-level expectations
-   - Appropriate complexity for grade level
-   - Full standard coverage
-
-3. **Exceeding Grade Level Version:**
-   - Extended complexity and depth
-   - Higher-order thinking demands
-   - Real-world application and analysis
-   - Extension opportunities
-
-**PART 2: LOUISIANA LEADS ALIGNMENT EVIDENCE**
-For each LEADS component listed above, explain:
-- How this assessment demonstrates effectiveness
-- Specific features that show differentiation
-- Evidence of knowledge of students
-- Engagement strategies embedded
-- Assessment variety and appropriateness
-
-**PART 3: DIFFERENTIATED ITEM DESIGN**
-Create assessment items that:
-1. Assess the same standards across all tiers
-2. Vary in complexity, not content coverage
-3. Include multiple question types (multiple choice, short answer, extended response, performance task)
-4. Provide appropriate scaffolds for approaching learners
-5. Challenge exceeding learners appropriately
-6. Align with Louisiana assessment expectations
-
-**PART 4: ACCOMMODATION & MODIFICATION GUIDE**
-Provide:
-1. Specific accommodations for students with IEPs
-2. English learner supports (native language support, vocabulary scaffolds, etc.)
-3. Technology integration options
-4. Extended time considerations
-5. Alternative response formats
-
-**PART 5: SCORING RUBRIC DESIGN**
-Create rubrics that:
-1. Align with Louisiana grade-level expectations
-2. Show clear progression from approaching → meeting → exceeding
-3. Provide actionable feedback language
-4. Align with LER Domain 2: PLANNING - Assessment (AS) requirements
-5. Support student self-assessment and monitoring of progress toward state standards (LER Domain 2: PLANNING - Assessment (AS))
-
-**PART 6: EVIDENCE COLLECTION FOR LEADS & LER**
-Document:
-1. How assessment data informs instruction (LER Domain 2: PLANNING - Assessment (AS): descriptions of how assessment results will be used by teachers and students to inform future instruction)
-2. Differentiation strategies showcased (LER Domain 1: INSTRUCTION - Teacher Knowledge of Students (TKS))
-3. Student engagement evidence (LER Domain 1: INSTRUCTION - Activities and Materials (ACT))
-4. Question quality demonstration (LER Domain 1: INSTRUCTION - Questioning (QU))
-5. Connection to ongoing assessment practices
-
-**LER & LEADS FRAMEWORK NOTES:**
-- Ensure assessment demonstrates Proficient (3) or Exemplary (5) level expectations
-- Show evidence of "knowledge of students" through differentiation (TKS)
-- Reflect "assessment of learning" with varied strategies aligned to LER Domain 2: PLANNING - Assessment (AS)
-- Connect to "professional growth" through reflection opportunities (Domain 4: PROFESSIONALISM)
-
-**OUTPUT REQUIREMENTS:**
-1. Complete tiered assessment ready to use
-2. LEADS alignment documentation
-3. Scoring rubrics for all tiers
-4. Accommodation implementation guide
-5. Reflection questions for LEADS portfolio
-
-**CRITICAL CONSTRAINTS:**
-- Must maintain academic rigor while providing access
-- Must align with Louisiana testing format expectations
-- Must be appropriate for [grade level] developmental readiness
-- Must save significant planning time while ensuring quality
-- Must demonstrate Louisiana educator expertise
-
-Please create this comprehensive LEADS-aligned assessment now.`,
-        ethicalGuardrail: "This framework helps create differentiated assessments efficiently, but you must ensure assessments are fair, accessible, and accurately measure what you intend. Always review AI-generated assessments for bias, cultural sensitivity, and alignment with your students' actual needs. Use your professional judgment to modify AI suggestions. LEADS evaluation should showcase your authentic teaching, not just follow templates. LER alignment supports evaluation readiness but should reflect genuine instructional practice.",
-        tipsAndVariations: "Use this for major assessments that will be part of your LEADS portfolio. Save templates for different assessment types. Share with colleagues for collaborative assessment design. Use tiered versions to track student growth over time. Document assessment modifications for LEADS evidence collection. Connect assessment data to instructional planning for maximum LEADS alignment. This directly addresses Pain Point #4: Differentiation Challenges by providing explicit differentiation frameworks aligned to LER expectations.",
-        timeEstimate: 30,
-        difficultyLevel: "advanced" as const,
-        platformCompatibility: ["MagicSchool AI", "Gemini", "SchoolAI", "ChatGPT", "Claude"],
-        louisianaStandards: ["All Louisiana State Standards"],
-        lerDomains: ["Domain 2: PLANNING", "Domain 1: INSTRUCTION", "Domain 4: PROFESSIONALISM"],
-        status: "published" as const,
-        createdBy: adminUserId,
-        publishedAt: Date.now(),
-        usageCount: 0,
-      },
     ];
 
-    // Insert all frameworks
+    // Insert all frameworks (10 total: 6 AIB + 4 IEH)
     for (const framework of [...aibFrameworks, ...iehFrameworks]) {
       await ctx.db.insert("frameworks", framework);
     }

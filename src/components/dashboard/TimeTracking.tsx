@@ -349,12 +349,12 @@ function TimeTracking({ className }: TimeTrackingProps) {
           <CardHeader>
             <CardTitle>Community Leaderboard</CardTitle>
             <CardDescription>
-              Top time savers in the beta program
+              Top time savers (5 educators building together)
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {leaderboard.map((user, index) => (
+              {leaderboard.map((user) => (
                 <div key={user.userId} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
