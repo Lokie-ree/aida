@@ -33,7 +33,6 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
     school: "",
     subject: "",
     gradeLevel: "",
-    district: "",
   });
 
   const userProfile = useQuery(api.userProfiles.getUserProfile);
@@ -49,7 +48,6 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
         school: userProfile.school || "",
         subject: userProfile.subject || "",
         gradeLevel: userProfile.gradeLevel || "",
-        district: userProfile.district || "",
       });
     }
   }, [userProfile]);
@@ -68,22 +66,10 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
       icon: User,
     },
     {
-      id: "first-framework",
-      title: "Try Your First Framework",
-      description: "Choose a framework to get started",
+      id: "get-started",
+      title: "Get Started",
+      description: "Frameworks, community, and support",
       icon: BookOpen,
-    },
-    {
-      id: "community",
-      title: "Stay Connected",
-      description: "You're one of 5 educators building this together",
-      icon: Users,
-    },
-    {
-      id: "office-hours",
-      title: "Let's Talk",
-      description: "Real conversations when you need them",
-      icon: Calendar,
     },
   ];
 
@@ -95,7 +81,6 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
           school: profileData.school || undefined,
           subject: profileData.subject || undefined,
           gradeLevel: profileData.gradeLevel || undefined,
-          district: profileData.district || undefined,
         });
         toast.success("Profile updated!");
       } catch (error) {
@@ -106,29 +91,9 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
     }
 
     if (currentStep === 2) {
-      // Record first framework usage
+      // Complete onboarding (final step)
       try {
-        await recordWeeklyEngagement();
-        toast.success("Great choice! You're on your way to saving time.");
-      } catch (error) {
-        console.error("Error recording engagement:", error);
-      }
-    }
-
-    if (currentStep === 3) {
-      // Record community engagement
-      try {
-        await recordWeeklyEngagement();
-        toast.success("Welcome to the community!");
-      } catch (error) {
-        console.error("Error recording engagement:", error);
-      }
-    }
-
-    if (currentStep === 4) {
-      // Complete onboarding
-      try {
-        await updateOnboardingProgress({ step: 4 });
+        await updateOnboardingProgress({ step: 2 });
         await recordWeeklyEngagement();
         toast.success("Onboarding complete! Welcome to Pelican AI!");
         // Close modal and redirect to dashboard
@@ -155,7 +120,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
   };
 
   const handleSkip = () => {
-    if (currentStep === 4) {
+    if (currentStep === 2) {
       onComplete();
     } else {
       setCurrentStep(currentStep + 1);
@@ -268,16 +233,6 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                       value={profileData.school}
                       onChange={(e) => setProfileData(prev => ({ ...prev, school: e.target.value }))}
                       placeholder="Enter your school name"
-                      className="w-full p-3 border rounded-md"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">District</label>
-                    <input
-                      type="text"
-                      value={profileData.district}
-                      onChange={(e) => setProfileData(prev => ({ ...prev, district: e.target.value }))}
-                      placeholder="Enter your district"
                       className="w-full p-3 border rounded-md"
                     />
                   </div>

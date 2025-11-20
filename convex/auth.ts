@@ -19,7 +19,6 @@ export const authComponent = createClient<DataModel>(components.betterAuth, {
         // Create user profile when Better Auth user is created
         await ctx.db.insert("userProfiles", {
           userId: doc._id,
-          authId: doc._id,
         });
       },
     },

@@ -129,7 +129,6 @@ export const initializeBetaProgram = mutation({
       frameworksTried: 0,
       totalTimeSaved: 0,
       innovationsShared: 0,
-      officeHoursAttended: 0,
       weeklyEngagementCount: 0,
     });
 
@@ -139,16 +138,16 @@ export const initializeBetaProgram = mutation({
 
 /**
  * Mutation: Update user's onboarding progress.
- * 
+ *
  * Updates the onboarding step and marks onboarding as completed when
- * the user reaches the final step (step 4).
- * 
+ * the user reaches the final step (step 2).
+ *
  * @requires Authentication - Must be logged in
- * @param step - New onboarding step number (0-4)
- * 
+ * @param step - New onboarding step number (0-2)
+ *
  * @throws "User must be authenticated" if no session
  * @throws "Beta program not initialized" if no beta program record
- * 
+ *
  * @see betaProgram table in schema.ts for onboarding fields
  */
 export const updateOnboardingProgress = mutation({
@@ -178,11 +177,11 @@ export const updateOnboardingProgress = mutation({
     // Update onboarding progress
     const updates: any = {
       onboardingStep: args.step,
-      onboardingCompleted: args.step >= 4,
+      onboardingCompleted: args.step >= 2,
     };
 
-    // When onboarding is completed (step 4), update status to "active" and set joinedAt
-    if (args.step >= 4) {
+    // When onboarding is completed (step 2), update status to "active" and set joinedAt
+    if (args.step >= 2) {
       updates.status = "active";
       if (!betaStatus.joinedAt) {
         updates.joinedAt = Date.now();
@@ -447,7 +446,6 @@ export const createBetaProgramForUserId = mutation({
       frameworksTried: 0,
       totalTimeSaved: 0,
       innovationsShared: 0,
-      officeHoursAttended: 0,
       weeklyEngagementCount: 0,
     });
 
