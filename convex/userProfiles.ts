@@ -293,11 +293,15 @@ export const initializeNewUser = mutation({
     try {
       user = await authComponent.getAuthUser(ctx);
     } catch (error) {
+      console.error("initializeNewUser: Failed to get auth user", error);
       return { success: false, message: "User must be authenticated" };
     }
     if (!user) {
+      console.error("initializeNewUser: No user found");
       return { success: false, message: "User must be authenticated" };
     }
+
+    console.log("initializeNewUser: Starting for user", { userId: user._id, email: user.email });
 
     // Check if already initialized
     const existingProfile = await ctx.db
@@ -306,6 +310,7 @@ export const initializeNewUser = mutation({
       .first();
 
     if (existingProfile) {
+      console.log("initializeNewUser: Profile already exists", existingProfile._id);
       return { success: false, message: "User already initialized" };
     }
 
@@ -315,8 +320,14 @@ export const initializeNewUser = mutation({
       .withIndex("by_email", (q) => q.eq("email", user.email))
       .first();
 
-    if (!betaSignup || betaSignup.status !== "approved") {
-      return { success: false, message: "No approved beta signup found" };
+    if (!betaSignup) {
+      console.error("initializeNewUser: No beta signup found for email", user.email);
+      return { success: false, message: "No beta signup found" };
+    }
+
+    if (betaSignup.status !== "approved") {
+      console.error("initializeNewUser: Beta signup not approved", { email: user.email, status: betaSignup.status });
+      return { success: false, message: `Beta signup status is '${betaSignup.status}', not 'approved'` };
     }
 
     // Check if betaProgram already exists for this user
@@ -361,6 +372,8 @@ export const initializeNewUser = mutation({
       district: undefined,
       role: "teacher",
     });
+
+    console.log("initializeNewUser: SUCCESS", { profileId, betaProgramId, userId: user._id });
 
     return { 
       success: true,
