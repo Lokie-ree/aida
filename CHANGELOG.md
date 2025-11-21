@@ -214,11 +214,82 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Alignment Scorecard Backend Architecture
 
-**Status:** 🚧 **BACKEND COMPLETE - UI IN DEVELOPMENT**
+**Status:** 🚧 **BACKEND COMPLETE, UI PENDING**
 
-**Date:** November 11, 2025
+**Date:** November 11, 2025 (Backend), UI implementation in progress
+
+**Backend Status:** ✅ Fully implemented and tested
+**Frontend Status:** ❌ UI components not yet built
 
 **Impact:** Backend architecture complete for analyzing AI-generated content against Louisiana Standards with multi-step workflows, vector search, and structured scorecards.
+**Impact:** Major milestone - Backend infrastructure complete. Enables educators to analyze AI-generated content against Louisiana Standards with structured scorecards, gap analysis, and actionable recommendations (once UI is built).
+
+**Key Features:**
+- ✅ **Alignment Scorecard Workflow:** Multi-step analysis process using Convex Workflows
+  - Step 1: Retrieve relevant Louisiana Standards from RAG
+  - Step 2: Analyze content against standards using Convex Agent (GPT-4o)
+  - Step 3: Generate structured scorecard with scores, gaps, and recommendations
+  - Step 4: Save results to database
+- ✅ **RAG System:** Vector search for Louisiana Standards
+  - Semantic search with metadata filtering (subject, grade level, cognitive depth)
+  - OpenAI text-embedding-3-small embeddings (1536 dimensions)
+  - Centralized service layer with caching and rate limiting
+- ✅ **Standards Scraping & Population:** Tools to scrape and populate Louisiana Standards
+  - PDF scraping from LDOE (ELA, Math, Social Studies)
+  - Structured data extraction with cognitive depth inference
+  - RAG population with proper metadata and filters
+- ✅ **Workflow Infrastructure:** Multi-step process orchestration
+  - WorkflowManager with retry logic and parallelism (max 10)
+  - Status tracking and reactive queries for frontend
+  - Error handling and graceful degradation
+- ✅ **Authorization System:** Role-based access control
+  - `requireAuth`, `requireRole`, `requireAdmin` helpers
+  - Migration support (role-based + email fallback)
+  - Profile-based role management
+- ✅ **Rate Limiting:** Tiered limits by user role
+  - Teachers: Standard limits (20 RAG queries/min, 10 AI gen/min)
+  - Coaches: Elevated limits (40 RAG queries/min, 20 AI gen/min)
+  - Admins: Unlimited (200 RAG queries/min, 100 AI gen/min)
+- ✅ **Testing Infrastructure:** Comprehensive test suite
+  - Unit tests for workflow steps
+  - Integration test helpers
+  - Test data population utilities
+  - Testing guide documentation
+
+**New Files:**
+- `convex/alignmentScorecard.ts` - Main workflow definition
+- `convex/alignmentSteps.ts` - Individual workflow step implementations
+- `convex/ragService.ts` - Centralized RAG service with rate limiting
+- `convex/workflows.ts` - WorkflowManager configuration
+- `convex/authorization.ts` - Role-based authorization helpers
+- `convex/rateLimiting.ts` - Tiered rate limiting by role
+- `convex/populateStandards.ts` - Standards population from scraper/data
+- `convex/standardsScraper.ts` - PDF scraping for Louisiana Standards
+- `convex/crons.ts` - Scheduled jobs infrastructure
+- `convex/testHelpers.ts` - Test utilities for Alignment Scorecard
+- `convex/alignmentScorecard.test.ts` - Comprehensive test suite
+- `docs/TESTING_ALIGNMENT_SCORECARD.md` - Testing guide
+- `docs/rag/` - RAG documentation directory
+
+**Modified Files:**
+- `convex/rag.ts` - Added workflow integration for alignment analysis
+- `convex/schema.ts` - Added `alignmentAnalyses` table
+- `convex/router.ts` - Updated for new routes
+- `convex/admin.ts`, `convex/auth.ts`, `convex/userProfiles.ts` - Authorization updates
+- `PROJECT.md` - Updated with Alignment Scorecard feature details
+- `package.json`, `pnpm-lock.yaml` - New dependencies (workflows, rate-limiter, agent)
+
+**Database Changes:**
+- New table: `alignmentAnalyses` - Stores analysis results with scorecards, gaps, and recommendations
+  - Indexed by `userId` and `alignmentScore`
+  - Includes full scorecard structure (overallScore, breakdown, gaps, recommendations)
+
+**API Changes:**
+- New action: `rag.analyzeContentAlignment` - Starts alignment analysis workflow
+- New query: `rag.getAlignmentStatus` - Gets workflow status reactively
+- New action: `ragService.getStandards` - Retrieve standards by subject/grade
+- New action: `ragService.analyzeContentAlignment` - Content alignment queries
+- New action: `ragService.searchPolicies` - Policy/document search
 
 **Backend Complete:**
 - Multi-step workflow orchestration with retry logic and status tracking

@@ -20,19 +20,54 @@ Pelican AI is an **educational SaaS platform** that provides Louisiana educators
 
 **Mission:** "We're Not Waiting for LDOE" - Louisiana educators building practical, ethical, and platform-agnostic AI guidance together.
 
-### Key Features
+### Key Features (User-Accessible)
 
-1. **Framework Library** - 10 platform-agnostic AI guidance frameworks (growing based on educator feedback)
+1. **Framework Library** - 10 platform-agnostic AI guidance frameworks (exact count, honest numbers)
 2. **Dashboard** - Personalized educator dashboard with time tracking and analytics
-3. **Beta Program Management** - Grassroots launch with small group of Louisiana educators
-4. **Community Features** - Innovation sharing and testimonials
-5. **Alignment Scorecard** - Backend workflows in place, UI components in development
+3. **Beta Program Management** - Grassroots launch with 5 committed educators
+4. **Community Features** - Innovation sharing and testimonials (backend implemented, UI intentionally hidden for MVP launch)
+
+### Features in Development
+
+**Alignment Scorecard (Core Flare #1)** - Multi-step workflow analyzing AI-generated content against Louisiana Standards
+- ✅ **Backend:** Complete (workflow, RAG, database, API endpoints)
+- ❌ **Frontend:** UI components not yet built
+- **Status:** Backend solid, ready for UI implementation
+- **Files:** `convex/alignmentScorecard.ts`, `convex/alignmentSteps.ts`, `convex/ragService.ts`
+
+### Future Features (Planned, Not Yet Implemented)
+
+**Weekly Spark** - Proactive weekly prompts based on Louisiana pacing guide (see PROJECT.md lines 170-176)
+- Status: Vision documented, implementation pending post-launch
+
+**Delta Generator** - Instant differentiation based on Louisiana accommodation guidelines (see PROJECT.md lines 178-185)
+- Status: Vision documented, implementation pending post-launch
+
+> **Note for AI Assistants:**
+> - Alignment Scorecard backend is COMPLETE - do not rebuild workflow/database logic
+> - UI components need to be built - this is the current gap
+> - Do NOT implement Weekly Spark or Delta Generator unless explicitly requested
 
 ### Current Launch Status
 
-- **Stage:** Grassroots launch with small group of Louisiana educators
+- **Stage:** Grassroots launch with 5 educators (active)
 - **Positioning:** "We're Not Waiting for LDOE"
 - **Philosophy:** Authentic, teacher-to-teacher communication (not corporate speak)
+- **Community Features:** Backend implemented, UI intentionally hidden for MVP launch
+- **Weekly Emails:** Feature-flagged (WEEKLY_EMAILS_ENABLED=false by default)
+  - **Why disabled:** Grassroots launch prioritizes personal check-ins over automation
+  - Real conversations (text/email replies) > automated email sequences
+  - Will enable when scaling to 30-100 users (see PROJECT.md lines 224-231)
+
+### Launch Timeline (From PROJECT.md)
+
+- **Week 1:** Launch to 5 educators, daily personal check-ins
+- **Week 2:** Gather authentic testimonials, update landing page
+- **Week 3:** Organic referrals ("Who else needs this?" conversations)
+- **Week 4:** Tech facilitator meeting prep
+- **Dec 16-31:** Scale to 30-50 users through word-of-mouth
+
+> **Note for AI Assistants:** Do NOT build automated email workflows or marketing features. The grassroots approach prioritizes 1-on-1 relationships over automation during initial launch phase.
 
 ---
 
@@ -254,11 +289,23 @@ logSecure("info", "User action", {
 - "We're Not Waiting for LDOE"
 - Honest numbers (small group of Louisiana educators building together, 10 frameworks at launch)
 - Personal tone, not marketing jargon
+- Personal check-ins over automation
 
 **Examples:**
 - ✅ "Tell me honestly—did it save you time?"
 - ✅ "You're one of the first educators I'm starting with"
 - ❌ "Leverage AI synergies for paradigm-shifting results"
+- ✅ "You're one of 5 educators I'm starting with"
+- ✅ "10 frameworks" (exact count)
+- ❌ "Leverage AI synergies for paradigm-shifting results"
+- ❌ "Join 10,000+ educators transforming education"
+- ❌ "10+ frameworks" (implies we don't know the exact number)
+
+**Public vs. Private Messaging:**
+- **Public-facing (Landing Page):** Scalable grassroots messaging, no "5 educators" language
+  - Use: "We're Not Waiting for LDOE", "Louisiana educators building together"
+- **Private (Dashboard/Emails):** Personal to current 5 beta users
+  - Use: "You're one of 5 educators building this together"
 
 ### 3. Community Features
 Fully implemented and available for testing:
