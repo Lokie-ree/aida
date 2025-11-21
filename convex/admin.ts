@@ -52,13 +52,11 @@ export const getAllBetaUsersAdmin = query({
     status: v.union(v.literal("invited"), v.literal("active"), v.literal("completed")),
     invitedAt: v.number(),
     joinedAt: v.optional(v.number()),
-    completedAt: v.optional(v.number()),
     onboardingStep: v.number(),
     onboardingCompleted: v.boolean(),
     frameworksTried: v.number(),
     totalTimeSaved: v.number(),
     innovationsShared: v.number(),
-    officeHoursAttended: v.number(),
     weeklyEngagementCount: v.number(),
     lastWeeklyPromptOpened: v.optional(v.number()),
     userEmail: v.string(),
@@ -88,13 +86,11 @@ export const getAllBetaUsersAdmin = query({
         status: betaUser.status,
         invitedAt: betaUser.invitedAt,
         joinedAt: betaUser.joinedAt,
-        completedAt: betaUser.completedAt,
         onboardingStep: betaUser.onboardingStep,
         onboardingCompleted: betaUser.onboardingCompleted,
         frameworksTried: betaUser.frameworksTried,
         totalTimeSaved: betaUser.totalTimeSaved,
         innovationsShared: betaUser.innovationsShared,
-        officeHoursAttended: betaUser.officeHoursAttended,
         weeklyEngagementCount: betaUser.weeklyEngagementCount,
         lastWeeklyPromptOpened: betaUser.lastWeeklyPromptOpened,
         userEmail: (user as any)?.email || "Unknown",
@@ -282,7 +278,6 @@ export const updateBetaUserStatus = mutation({
     
     await ctx.db.patch(args.betaUserId, {
       status: args.status,
-      completedAt: args.status === "completed" ? Date.now() : undefined,
     });
     
     return null;

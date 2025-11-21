@@ -18,7 +18,6 @@ function ProfileSettings() {
     school: "",
     subject: "",
     gradeLevel: "",
-    district: "",
     role: "teacher" as "teacher" | "admin" | "coach",
   });
 
@@ -33,7 +32,6 @@ function ProfileSettings() {
         school: userProfile.school || "",
         subject: userProfile.subject || "",
         gradeLevel: userProfile.gradeLevel || "",
-        district: userProfile.district || "",
         role: userProfile.role || "teacher",
       });
     }
@@ -52,7 +50,6 @@ function ProfileSettings() {
         school: formData.school || undefined,
         subject: formData.subject || undefined,
         gradeLevel: formData.gradeLevel || undefined,
-        district: formData.district || undefined,
         role: formData.role,
       });
       
@@ -71,7 +68,6 @@ function ProfileSettings() {
         school: userProfile.school || "",
         subject: userProfile.subject || "",
         gradeLevel: userProfile.gradeLevel || "",
-        district: userProfile.district || "",
         role: userProfile.role || "teacher",
       });
     }
@@ -136,23 +132,6 @@ function ProfileSettings() {
                     <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
                       <School className="h-4 w-4 text-muted-foreground" />
                       <span>{formData.school || "Not specified"}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="district">District</Label>
-                  {isEditing ? (
-                    <Input
-                      id="district"
-                      value={formData.district}
-                      onChange={(e) => handleInputChange("district", e.target.value)}
-                      placeholder="Enter your district"
-                    />
-                  ) : (
-                    <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span>{formData.district || "Not specified"}</span>
                     </div>
                   )}
                 </div>

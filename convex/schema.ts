@@ -55,37 +55,32 @@ const applicationTables = {
 
   /**
    * User profile extensions (Better Auth manages core user data)
-   * 
+   *
    * Extends Better Auth user records with Louisiana educator-specific information.
    * Used for personalization, analytics, and Louisiana standards alignment.
-   * 
+   *
    * @returns {Object} UserProfile record with:
    *  - _id: string (Convex ID)
-   *  - userId: string (Better Auth user ID - legacy)
-   *  - authId?: string (Better Auth user ID - new pattern)
+   *  - userId: string (Better Auth user ID)
    *  - school?: string
    *  - subject?: string
    *  - gradeLevel?: string
-   *  - district?: string
    *  - role?: "teacher" | "admin" | "coach"
-   * 
+   *
    * @see ADR-004 for Better Auth integration details
    * @see userProfiles.ts for mutation functions
    */
   userProfiles: defineTable({
-    userId: v.string(), // References Better Auth user ID (legacy)
-    authId: v.optional(v.string()), // Better Auth user ID (new pattern)
+    userId: v.string(), // References Better Auth user ID
     school: v.optional(v.string()), // Louisiana school name
     subject: v.optional(v.string()), // Teaching subject (e.g., "Mathematics", "English")
     gradeLevel: v.optional(v.string()), // Grade level taught (e.g., "K-5", "9-12")
-    district: v.optional(v.string()), // Louisiana school district
     role: v.optional(v.union(
       v.literal("teacher"),  // Classroom teacher
       v.literal("admin"),    // School administrator
       v.literal("coach")     // Instructional coach
     )),
   }).index("by_user", ["userId"])
-    .index("authId", ["authId"])
     .index("by_role", ["role"]), // Index for efficient role-based queries
 
   // ============================================
@@ -237,13 +232,11 @@ const applicationTables = {
     status: v.union(v.literal("invited"), v.literal("active"), v.literal("completed")),
     invitedAt: v.number(),
     joinedAt: v.optional(v.number()),
-    completedAt: v.optional(v.number()),
     onboardingStep: v.number(),
     onboardingCompleted: v.boolean(),
     frameworksTried: v.number(),
     totalTimeSaved: v.number(),
     innovationsShared: v.number(),
-    officeHoursAttended: v.number(),
     lastWeeklyPromptOpened: v.optional(v.number()),
     weeklyEngagementCount: v.number(),
   }).index("by_user", ["userId"])
