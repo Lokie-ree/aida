@@ -86,11 +86,11 @@ export function PlatformAccessEmail({
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Thanks for being one of the 5,
+        Thanks for being part of this journey,
         <br />
         Randall
         <br />
-        <em>Louisiana educator building this for Louisiana educators</em>
+        <em>Louisiana educators building for Louisiana educators</em>
       </Text>
     </BaseEmailTemplate>
   );

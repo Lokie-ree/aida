@@ -1,7 +1,7 @@
 # Pelican AI - Project Context
 
-**Last Updated:** November 18, 2025
-**Status:** LAUNCHING - Grassroots Launch with 5 Committed Educators (Core Flare #1: Alignment Scorecard Implemented)
+**Last Updated:** November 21, 2025
+**Status:** LAUNCHING - Grassroots Launch with Small Group of Louisiana Educators
 
 ## Vision & Mission
 
@@ -17,16 +17,16 @@ Pelican AI is the "colleague you wish you had"—the master teacher who checks y
 
 ### Founder Story
 
-Pelican AI was built by a Louisiana educator who understands the challenges teachers face. The founder was "that teacher—grading papers at 11 PM, drowning in admin work, anxious about using AI tools because 'what if I get it wrong?'"
+Pelican AI was built by a veteran Louisiana educator who spent the last year and a half learning how to leverage AI—not just for workflow optimization, but to build platforms that solve real pain points. I was drowning—grading papers at 11 PM, buried in admin work, trying to figure out how AI could actually help instead of adding one more thing to learn.
 
-When ChatGPT launched, the need became clear: Louisiana educators needed someone to tell them "Here's how to use this responsibly. Here's what aligns with Louisiana standards. Here's what won't get you in trouble."
+After 18 months of deep experimentation, I cracked it. AI didn't just save me time—it transformed my work/life balance. I got my evenings back. I had energy for my students again. But more importantly, I learned to harness AI workflows to build solutions for problems that plague every teacher I know.
 
-That person didn't exist. So Pelican AI became that person—the colleague you wish you had, the "master teacher" who checks your work and gives you confidence.
+Now I'm using that knowledge to build platforms that solve real educator pain points with AI-powered workflows. The frameworks and tools I'm creating leverage this power to increase productivity and improve work/life balance. This is the support teachers need that often never arrives—because I lived it, learned it, and now I'm building it.
 
 **Founder Credentials:**
 - 15+ years Louisiana classroom experience
-- Mathematics Teacher, Iberville Parish
-- Built Pelican AI in 60 days while teaching full-time
+- Mathematics Teacher and Technology Facilitator, Iberville Parish
+- 18 months learning AI workflow optimization and platform development
 - Platform-agnostic approach (works with ANY AI tool)
 
 ### What We're Building Together
@@ -36,7 +36,7 @@ That person didn't exist. So Pelican AI became that person—the colleague you w
   * **Louisiana-Aligned:** Built for Louisiana state standards and educator rubric.
   * **Ethical Guardrails:** Responsible AI use is built-in.
   * **Quality-Keeper & Confidence-Builder:** Beyond time-saving—provides trust, quality assurance, and pedagogical validation.
-  * **Built Together:** Starting with 5 educators. Your feedback literally shapes everything.
+  * **Built Together:** Starting with a small group of Louisiana educators. Your feedback literally shapes everything.
 
 -----
 
@@ -107,13 +107,13 @@ That person didn't exist. So Pelican AI became that person—the colleague you w
 ### Deployment Environments
 
   * **Development:** `kindly-setter.convex.cloud` (local dev + testing)
-  * **Production:** `outgoing-parttridge.convex.cloud` (live platform)
+  * **Production:** `outgoing-partridge.convex.cloud` (live platform)
   * **Frontend:** Vercel (preview/production deployments)
 
 ### Key Features Operational
 
   * ✅ **Authentication:** Better Auth integration with email/password
-  * ✅ **Framework Library:** 10+ foundational AI guidance frameworks with search, filter, copy functionality (growing weekly)
+  * ✅ **Framework Library:** 10 foundational AI guidance frameworks with search, filter, copy functionality (growing based on educator feedback)
   * ✅ **Community Features:** Innovation sharing and testimonials
   * ✅ **Dashboard:** Personalized dashboard with stats and quick start
   * ✅ **Admin Dashboard:** Content moderation and beta program management
@@ -125,6 +125,8 @@ That person didn't exist. So Pelican AI became that person—the colleague you w
   * ✅ **RAG System:** Vector search for Louisiana Standards with semantic filtering by subject, grade level, and cognitive depth
   * ✅ **Workflow Infrastructure:** Multi-step processes with retry logic and status tracking
   * ✅ **Authorization & Rate Limiting:** Role-based access control (teacher/coach/admin) with tiered rate limits
+  * 🚧 **Alignment Scorecard:** Backend workflows in place, UI components in development
+  * 🚧 **Workflow Infrastructure:** Multi-step processes with retry logic and status tracking
 
 ### Database Schema
 
@@ -225,12 +227,11 @@ Louisiana teachers are using AI tools RIGHT NOW. But LDOE hasn't given us clear 
 
 ### Launch Timeline (Starting TODAY)
 
-- **Today:** Send message to 5 educators ✅
-- **This Week:** Daily check-ins, collect feedback
+- **This Week:** Launch with small group of educators, daily check-ins, collect feedback
 - **Week 2:** Gather testimonials, update landing page with "We're Not Waiting for LDOE" messaging
 - **Week 3:** Organic referrals, newsletter snippet
 - **Week 4:** Tech facilitator meeting prep
-- **Dec 16-31:** Scale to 30-50 users through word-of-mouth
+- **Dec 16-31:** Scale organically through word-of-mouth
 
 ### Launch Message Template
 
@@ -258,7 +259,7 @@ Let's figure this out ourselves.
 
 — Randall
 
-P.S. — You're one of 5 educators I'm starting with. Your feedback
+P.S. — You're one of the first educators I'm starting with. Your feedback 
 will literally shape everything about this platform.
 ```
 
@@ -272,7 +273,7 @@ will literally shape everything about this platform.
 **Landing Page Updates:**
 - Authentic hero section addressing LDOE guidance gap
 - Founder story component
-- Honest numbers (5 educators building together, not fake inflated numbers)
+- Honest numbers (small group of Louisiana educators building together, not fake inflated numbers)
 - FAQ addressing why not wait for LDOE
 
 **Tech Facilitator Meeting:**
@@ -292,16 +293,16 @@ will literally shape everything about this platform.
 1. **No more waiting** - Start today with real users
 2. **Authentic positioning** - LDOE guidance gap is your differentiator  
 3. **Real relationships** - Personal conversations > automated systems
-4. **Honest numbers** - 3 users testing > fake social proof
+4. **Honest numbers** - Small group of educators building together > fake social proof
 5. **Organic growth** - Teacher recommendations > marketing hacks
 
 ### Launch Targets
 
-- **Week 1:** 3 committed beta users
+- **Week 1:** Small group of committed educators
 - **Week 2:** Collect authentic testimonials
-- **Week 3:** 5-10 users through organic referrals
+- **Week 3:** Organic referrals from early users
 - **Week 4:** Tech facilitator meeting
-- **Dec 16-31:** 30-50 users through word-of-mouth
+- **Dec 16-31:** Organic growth through word-of-mouth
 
 -----
 
@@ -333,7 +334,7 @@ will literally shape everything about this platform.
 
 ### Admin Dashboard
 
-  * Beta user management (starting with 5 educators)
+  * Beta user management
   * Content moderation (testimonials, innovations)
   * Basic analytics (honest numbers, not inflated metrics)
   * Access control (teacher/coach/admin roles)
@@ -342,7 +343,7 @@ will literally shape everything about this platform.
 
 ## How We Know It's Working
 
-### Early-Stage Indicators (Starting with 3 Users)
+### Early-Stage Indicators
 
   * **Real Feedback:** "Did this help or waste your time?" (brutally honest)
   * **Actual Usage:** Are they using frameworks? What worked? What didn't?
@@ -358,7 +359,7 @@ will literally shape everything about this platform.
 
 ### Quality Standards
 
-  * **Honest Numbers:** 3 users testing, not fake social proof
+  * **Honest Numbers:** Small group of educators building together, not fake social proof
   * **Real Testimonials:** Specific quotes with names, not placeholders
   * **Authentic Communication:** Teacher-to-teacher, not corporate speak
   * **Iterative Improvement:** Platform evolves based on real educator needs
@@ -391,46 +392,20 @@ will literally shape everything about this platform.
 
 -----
 
-## Quick Reference
-
-### Essential Commands
-
-```bash
-# Development
-pnpm dev                    # Start frontend + backend
-pnpm test:once              # Run unit tests once
-pnpm test:coverage           # Generate coverage report
-pnpm build                   # Build for production
-
-# Database
-npx convex dashboard        # Open Convex dashboard
-npx convex deploy           # Deploy to production
-```
-
-### Key Files
-
-  * `convex/schema.ts` - Database schema (source of truth for API contracts)
-  * `convex/auth.ts` - Authentication logic
-  * `src/lib/auth-client.ts` - Frontend auth client
-  * `ARCHITECTURE_VALIDATION.md` - Architecture validation for scaling
-  * `docs/README.md` - Documentation index
-
-### Documentation
+## Documentation
 
   * **[PROJECT.md](PROJECT.md)** - Main project context (you are here!)
-  * **[ARCHITECTURE_VALIDATION.md](ARCHITECTURE_VALIDATION.md)** - Scaling validation
+  * **[CLAUDE.md](CLAUDE.md)** - AI assistant guide with development patterns and quick reference
   * **[docs/README.md](docs/README.md)** - Documentation index
-  * **[docs/PELICAN_AI_BETA_CORE_FRAMEWORKS.md](docs/PELICAN_AI_BETA_CORE_FRAMEWORKS.md)** - Framework specifications
-
-**Note:** Convex auto-generates API types from `convex/schema.ts` - see `_generated/api.d.ts` for complete type definitions.
+  * **[docs/archived/](docs/archived/)** - Archived reference documentation
 
 -----
 
 ## Next Steps
 
-### Immediate Actions (TODAY)
+### Immediate Actions (THIS WEEK)
 
-1.  **Launch to 5 Educators:** Send launch message to committed colleagues
+1.  **Launch to Educators:** Send launch message to committed colleagues
 2.  **Personal Check-ins:** Real conversations, not automated emails
 3.  **Collect Feedback:** "Did this help or waste your time?"
 
@@ -454,4 +429,4 @@ npx convex deploy           # Deploy to production
 
 -----
 
-*This document reflects Pelican AI as a grassroots effort—Louisiana educators building solutions for Louisiana educators. We're starting with 5 educators and building together.*
+*This document reflects Pelican AI as a grassroots effort—Louisiana educators building solutions for Louisiana educators. We're starting with a small group of educators and building together.*
