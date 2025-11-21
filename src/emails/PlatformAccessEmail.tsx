@@ -3,7 +3,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, CredentialsBox, InfoBox, CTAButton, SecondaryButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, InfoBox, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface PlatformAccessEmailProps {
   email: string;
@@ -12,7 +12,6 @@ interface PlatformAccessEmailProps {
 }
 
 export function PlatformAccessEmail({
-  email,
   name = "Educator",
   magicLinkUrl,
 }: PlatformAccessEmailProps) {
@@ -97,31 +96,6 @@ export function PlatformAccessEmail({
   );
 }
 
-// Styles specific to this email template
-const credentialLabel = {
-  color: "#6b7280",
-  fontSize: "14px",
-  fontWeight: "600",
-  margin: "12px 0 4px",
-};
-
-const credentialValue = {
-  color: "#1e40af",
-  fontSize: "16px",
-  fontWeight: "bold",
-  fontFamily: "monospace",
-  margin: "0 0 12px",
-};
-
-const securityWarning = {
-  color: "#dc2626",
-  fontSize: "14px",
-  fontWeight: "500",
-  margin: "16px 0 0",
-  padding: "12px",
-  backgroundColor: "#fef2f2",
-  borderRadius: "6px",
-};
 
 const ctaSection = {
   textAlign: "center" as const,

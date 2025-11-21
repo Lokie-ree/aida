@@ -122,7 +122,7 @@ export function BetaWelcomeEmail({
       <Text style={textStyles.paragraph}>
         Thanks for being one of the 5 to start this with me,
         <br />
-        Ryan
+        Randall
         <br />
         <em>Louisiana educator building this for Louisiana educators</em>
       </Text>
