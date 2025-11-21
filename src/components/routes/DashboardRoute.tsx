@@ -27,15 +27,36 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   // Auto-initialize new users (first login after approval)
   // Only initialize if: user is authenticated, no profile exists, and beta signup is approved
   React.useEffect(() => {
+    // Wait for all queries to load before attempting initialization
+    if (session === undefined || userProfile === undefined || betaSignup === undefined) {
+      console.log("Waiting for queries to load...", { session: !!session, userProfile, betaSignup });
+      return;
+    }
+
     if (
       session?.user && 
       userProfile === null && 
       betaSignup?.status === "approved"
     ) {
       console.log("Auto-initializing new user after approval:", session.user.email);
-      initializeUser().catch(console.error);
+      initializeUser()
+        .then((result) => {
+          console.log("initializeUser result:", result);
+          if (!result.success) {
+            console.error("User initialization failed:", result.message);
+          }
+        })
+        .catch((error) => {
+          console.error("User initialization error:", error);
+        });
+    } else {
+      console.log("Skipping initialization:", {
+        hasSession: !!session?.user,
+        profileIsNull: userProfile === null,
+        betaStatus: betaSignup?.status
+      });
     }
-  }, [session?.user, userProfile, betaSignup, initializeUser]);
+  }, [session, userProfile, betaSignup, initializeUser]);
 
   // Auto-show onboarding modal when on /onboarding route, but only if onboarding isn't completed
   React.useEffect(() => {

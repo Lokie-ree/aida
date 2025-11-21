@@ -525,7 +525,6 @@ export const recoverDeletedUser = mutation({
         frameworksTried: 0,
         totalTimeSaved: 0,
         innovationsShared: 0,
-        officeHoursAttended: 0,
         weeklyEngagementCount: 0,
       });
 

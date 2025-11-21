@@ -12,18 +12,11 @@ const siteUrl = process.env.SITE_URL!;
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
-export const authComponent = createClient<DataModel>(components.betterAuth, {
-  triggers: {
-    user: {
-      onCreate: async (ctx, doc) => {
-        // Create user profile when Better Auth user is created
-        await ctx.db.insert("userProfiles", {
-          userId: doc._id,
-        });
-      },
-    },
-  },
-});
+// Better Auth component client
+// Note: Triggers are not used because Better Auth components are isolated
+// and cannot access application tables (betaSignups, userProfiles, betaProgram).
+// User initialization happens in DashboardRoute after successful authentication.
+export const authComponent = createClient<DataModel>(components.betterAuth);
 
 export const createAuth = (
   ctx: GenericCtx<DataModel>,
