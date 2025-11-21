@@ -46,32 +46,34 @@ pnpm dev
 
 ## 📊 Current Status
 
-**Status:** Beta Launch Ready
+**Status:** Grassroots Launch - Small Group of Louisiana Educators
 
-**Test Coverage:** ~88% statements/lines (`pnpm test:coverage` → open `coverage/index.html`)
+**Testing:** Unit tests (Vitest) + E2E tests (Playwright) with convex-test
 
 **Notes:** Tests run in-memory with convex-test; Better Auth is bridged in tests via a mock tied to `t.withIdentity()`. Scheduled functions are tested using `vi.useFakeTimers()` + `t.finishAllScheduledFunctions()`.
 
 ## 📚 Documentation
 
-**MVP Focus:** Lean documentation for launch readiness.
+**Streamlined documentation for grassroots launch.**
 
-### Essential
-- **[PROJECT.md](PROJECT.md)** - Project vision, current status, quick reference
-- **[ARCHITECTURE_VALIDATION.md](ARCHITECTURE_VALIDATION.md)** - Scaling validation for 5→100 users
+### Core Documentation
+- **[PROJECT.md](PROJECT.md)** - Project vision, mission, launch strategy, and system overview
+- **[CLAUDE.md](CLAUDE.md)** - AI assistant guide with patterns, conventions, and constraints
+- **[ROADMAP.md](docs/ROADMAP.md)** - Development roadmap with current sprint and future improvements
+- **[docs/README.md](docs/README.md)** - Documentation index
+
+### Operational Reference
 - **[TESTING.md](docs/TESTING.md)** - Testing guide and quick reference
-- **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Development guidelines
+- **[IT Whitelisting](docs/IT_WHITELISTING.md)** - IT whitelisting guide for school districts
 
-### Reference
-- **[Brand Guidelines](docs/PELICAN_AI_BRAND_GUIDELINES.md)** - Design system and voice
-- **[IT Whitelisting](docs/IT_WHITELISTING.md)** - IT whitelisting guide
-- **[Documentation Index](docs/README.md)** - Complete documentation structure
+### Archived Reference
+- **[docs/archived/](docs/archived/)** - Historical documentation including brand guidelines, framework details, architecture validation, and pre-launch materials
 
-**Historical docs:** See `docs/archived/` for reference material.
+**Framework Details:** See `convex/seedFrameworks.ts` for complete framework prompts and specifications.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see **[CONTRIBUTING.md](docs/CONTRIBUTING.md)** for development guidelines.
+We welcome contributions! Please see **[CLAUDE.md](CLAUDE.md)** for development patterns and conventions.
 
 ## 📞 Support
 
@@ -87,4 +89,4 @@ This project is proprietary software. Educational use by Louisiana educators is 
 
 **Pelican AI** - Navigate AI with Confidence 🦅
 
-*Last Updated: November 16, 2025*
+*Last Updated: November 21, 2025*
