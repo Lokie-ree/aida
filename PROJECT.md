@@ -119,7 +119,9 @@ That person didn't exist. So Pelican AI became that person—the colleague you w
   * ✅ **Admin Dashboard:** Content moderation and beta program management
   * ✅ **Email System:** Welcome emails and weekly prompts (real conversations, not automation)
   * ✅ **User Profiles:** Extended educator data (school, subject, grade, district)
-  * ✅ **Alignment Scorecard (Core Flare #1):** Multi-step workflow analyzing AI-generated content against Louisiana Standards with structured scorecards, gap analysis, and recommendations
+  * 🚧 **Alignment Scorecard (Core Flare #1):** Multi-step workflow analyzing AI-generated content against Louisiana Standards with structured scorecards, gap analysis, and recommendations
+    - Backend: ✅ Complete (workflow, RAG, database solid)
+    - Frontend: ❌ UI not yet built
   * ✅ **RAG System:** Vector search for Louisiana Standards with semantic filtering by subject, grade level, and cognitive depth
   * ✅ **Workflow Infrastructure:** Multi-step processes with retry logic and status tracking
   * ✅ **Authorization & Rate Limiting:** Role-based access control (teacher/coach/admin) with tiered rate limits
@@ -248,15 +250,15 @@ Start here:
    actually planning this week
 4. Tell me: Did this help or waste your time?
 
-No formal training. No big onboarding. Just try it and tell me 
+No formal training. No big onboarding. Just try it and tell me
 what you think.
 
-We're tired of waiting for LDOE to give us guidance on AI tools. 
+We're tired of waiting for LDOE to give us guidance on AI tools.
 Let's figure this out ourselves.
 
 — Randall
 
-P.S. — You're one of 5 educators I'm starting with. Your feedback 
+P.S. — You're one of 5 educators I'm starting with. Your feedback
 will literally shape everything about this platform.
 ```
 

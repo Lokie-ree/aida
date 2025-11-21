@@ -89,7 +89,7 @@ export function PlatformAccessEmail({
       <Text style={textStyles.paragraph}>
         Thanks for being one of the 5,
         <br />
-        Ryan
+        Randall
         <br />
         <em>Louisiana educator building this for Louisiana educators</em>
       </Text>
