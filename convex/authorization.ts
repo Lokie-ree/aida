@@ -67,7 +67,6 @@ export async function requireAuth(
       school: profile.school,
       subject: profile.subject,
       gradeLevel: profile.gradeLevel,
-      district: profile.district,
       role: profile.role,
     } : null,
   };

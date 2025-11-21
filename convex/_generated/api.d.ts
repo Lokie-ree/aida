@@ -9,6 +9,7 @@
  */
 
 import type * as admin from "../admin.js";
+import type * as adminDebug from "../adminDebug.js";
 import type * as alignmentScorecard from "../alignmentScorecard.js";
 import type * as alignmentSteps from "../alignmentSteps.js";
 import type * as auth from "../auth.js";
@@ -52,6 +53,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
+  adminDebug: typeof adminDebug;
   alignmentScorecard: typeof alignmentScorecard;
   alignmentSteps: typeof alignmentSteps;
   auth: typeof auth;

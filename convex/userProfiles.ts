@@ -344,7 +344,6 @@ export const initializeNewUser = mutation({
         frameworksTried: 0,
         totalTimeSaved: 0,
         innovationsShared: 0,
-        officeHoursAttended: 0,
         weeklyEngagementCount: 0,
       });
     } else {

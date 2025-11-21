@@ -120,9 +120,9 @@ describe("User Profiles", () => {
     test("updates optional fields without touching others", async () => {
       const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
       await asUser.mutation(api.userProfiles.createUserProfile, { school: "Initial", subject: "Math" });
-      await asUser.mutation(api.userProfiles.updateUserProfile, { district: "District 1" });
+      await asUser.mutation(api.userProfiles.updateUserProfile, { gradeLevel: "9-12" });
       const profile = await asUser.query(api.userProfiles.getUserProfile);
-      expect(profile?.district).toBe("District 1");
+      expect(profile?.gradeLevel).toBe("9-12");
     });
   });
 
@@ -181,21 +181,9 @@ describe("User Profiles", () => {
   });
 
   describe("syncExistingUsers and debugDatabaseState", () => {
-    test("syncExistingUsers creates profiles and programs for signups without profiles", async () => {
-      // seed two beta signups
-      await t.run(async (ctx) => {
-        await ctx.db.insert("betaSignups", { email: "a@example.com", status: "approved", signupDate: Date.now(), betaProgramId: "beta-v1" });
-        await ctx.db.insert("betaSignups", { email: "b@example.com", status: "approved", signupDate: Date.now(), betaProgramId: "beta-v1" });
-      });
-
-      const res = await t.mutation(api.userProfiles.syncExistingUsers, {});
-      expect(res.success).toBe(true);
-      expect(res.syncedCount).toBeGreaterThanOrEqual(1);
-
-      const dbg = await t.query(api.userProfiles.debugDatabaseState, {});
-      expect(dbg).toHaveProperty("userProfilesCount");
-      expect(typeof dbg.userProfilesCount).toBe("number");
-    });
+    // syncExistingUsers and debugDatabaseState were removed
+    // User initialization now happens automatically via initializeNewUser
+    test.skip("syncExistingUsers - function removed", async () => {});
   });
 
   describe("getAllUserProfiles", () => {
