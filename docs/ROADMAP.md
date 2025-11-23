@@ -1,6 +1,7 @@
 # Development Roadmap
 
-**Last Updated:** November 21, 2025
+**Last Updated:** November 23, 2025
+**Beta Launch:** December 1, 2025
 
 ---
 
@@ -8,11 +9,40 @@
 
 ### 1. Alignment Scorecard Completion
 - **Status:** 🚧 Backend Complete, UI Pending
-- **Backend:** ✅ Complete (workflows, mutations, queries)
+- **Backend:** ✅ Complete (workflows, mutations, queries, RAG integration)
 - **Frontend:** 🚧 Needs UI components + connection to backend
+- **Rubric Integration:** ✅ Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
 - **Priority:** High
+- **Target:** Complete UI before beta launch to showcase core value proposition
 
-### 2. Unused UI Cleanup
+### 2. Knowledge Base Cleanup & RAG Optimization
+- **Status:** ✅ Knowledge Files Cleaned
+- **Completed:**
+  - ✅ Removed HTML artifacts from all knowledge files (`la-science.md`, `la-ela.md`, `la-math.md`, `la-social-studies.md`, `la-cmps.md`, `la-ler-rubric.md`)
+  - ✅ Cleaned markdown formatting for optimal RAG retrieval
+  - ✅ Consolidated rubric integration details into `knowledge/la-ler-rubric.md` as single source of truth
+- **Next Steps:**
+  - Optimize RAG search and retrieval accuracy
+  - Test embedding quality with cleaned knowledge base
+  - Validate rubric integration across all features
+- **Priority:** High
+- **Impact:** Clean knowledge base ensures accurate, relevant RAG responses for all platform features
+
+### 3. LER/LSS Data Structuring + RAG Refinements
+- **Status:** 🚧 In Progress
+- **Goal:** Structure Louisiana Educator Rubric (LER) and Louisiana Student Standards (LSS) for optimal RAG system performance
+- **Completed:**
+  - ✅ Knowledge base markdown cleanup (all files cleaned)
+  - ✅ Rubric integration guide consolidated into `knowledge/la-ler-rubric.md`
+- **Remaining Tasks:**
+  - Optimize RAG search and retrieval with cleaned knowledge base
+  - Test accuracy and relevance of embeddings
+  - Validate rubric indicator mapping across features
+  - Ensure all four core features (Weekly Spark, Alignment Scorecard, Delta Generator, Innovation Remix Engine) properly reference rubric indicators
+- **Priority:** High
+- **Context:** Every feature must be rubric-infused—this is the platform's core differentiator
+
+### 4. Unused UI Cleanup
 - **Status:** 🚧 Planned
 - **Goal:** Remove scope creep components from earlier iterations
 - **Tasks:**
@@ -20,20 +50,11 @@
   - Remove dead code
   - Simplify component tree
 - **Priority:** Medium
-
-### 3. LER/LSS Data Structuring + RAG Refinements
-- **Status:** 🚧 In Progress
-- **Goal:** Structure Louisiana Educator Rubric (LER) and Louisiana Student Standards (LSS) for RAG system
-- **Tasks:**
-  - Structure LER data for embeddings
-  - Align with LSS format
-  - Optimize RAG search and retrieval
-  - Test accuracy and relevance
-- **Priority:** High
+- **Timing:** Post-beta launch, based on user feedback
 
 ---
 
-## 💡 Future Improvements (Post-Manual Testing - Nov 21, 2025)
+## 💡 Future Improvements (Post-Beta Launch - Dec 2025)
 
 ### 1. Email Flow Simplification
 **Problem:** Users receive multiple emails (Welcome email → Magic Link email after approval). The "Ready to Dive In" email may be redundant.
@@ -83,29 +104,66 @@
 
 ---
 
-## 🔮 Long-Term Considerations
+## 🔮 Long-Term Vision & Milestones
 
-### Test Suite Refinement
+### Year One: Proof of Concept (Dec 2025 - Spring 2026)
+- **Beta Launch:** December 1, 2025 with small group of Louisiana educators
+- **Goal:** Gather wealth of user testimonials by end of Spring 2026
+- **Focus:** Organic, word-of-mouth growth
+- **Key Metrics:** User engagement, feature adoption, testimonial quality
+- **Status:** 🚧 In Progress
+
+### Year Two: Organic Expansion (Summer 2026 - 2027)
+- **Conference Presentations:**
+  - APEL LEADS conference (Louisiana educators)
+  - ISTE conference in Orlando (end of Summer 2026)
+- **Leverage:** Spring 2026 testimonials for credibility
+- **Goal:** Expand reach while maintaining grassroots authenticity
+- **Status:** ⏸️ Planned
+
+### Year Three and Beyond: Ecosystem Development
+- **Recognition:** Establish as trusted resource for Louisiana educators
+- **Growth:** Continue organic expansion based on educator recommendations
+- **Innovation:** Enhance features based on accumulated user feedback
+- **Status:** 🔮 Future
+
+### Technical Improvements
+
+#### Test Suite Refinement
 - **When:** After 30+ users
 - **Goal:** Refine test coverage based on real-world usage patterns
 - **Status:** ⏸️ Deferred
 
-### Community Feature Enhancements
+#### Community Feature Enhancements
 - **Status:** ✅ Available for testing
-- **Future:** Enhance based on user feedback
+- **Future:** Enhance based on user feedback from beta group
 
-### Analytics Dashboard Expansion
+#### Analytics Dashboard Expansion
 - **Status:** Basic analytics implemented
 - **Future:** Add more granular insights as platform scales
+- **Timing:** Post-Spring 2026, based on user growth patterns
 
 ---
 
 ## 📝 Notes
 
+### Core Principles
+- **Rubric-Infused:** Every feature, every interaction, every suggestion is grounded in the Louisiana Educator Rubric—the same framework used in evaluations
+- **Platform-Agnostic:** Works with ANY AI tool (ChatGPT, Gemini, MagicSchool AI, Brisk, SchoolAI, etc.)
+- **Louisiana-Aligned:** Built specifically for Louisiana state standards and educator rubric
+- **Grassroots Growth:** Organic, word-of-mouth expansion starting with small group of committed Louisiana educators
+
+### Roadmap Philosophy
 - This roadmap is a living document and will evolve based on user feedback
 - Priority may shift based on actual usage patterns from the small group of Louisiana educators
 - All improvements should align with grassroots "We're Not Waiting for LDOE" positioning
-- Platform remains platform-agnostic (works with ANY AI tool)
+- Beta launch (December 1, 2025) focuses on core value: rubric-infused, standards-aligned AI guidance
+
+### Key Context
+- **Beta Launch Date:** December 1, 2025
+- **Target Users:** Small group of Louisiana educators (organic growth)
+- **Core Features:** Weekly Spark, Alignment Scorecard, Delta Generator, Innovation Remix Engine
+- **Differentiator:** Rubric integration—every feature explicitly references rubric indicators and performance levels
 
 ---
 

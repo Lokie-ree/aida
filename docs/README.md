@@ -22,11 +22,11 @@
 - What makes this different
 
 ### [ROADMAP.md](ROADMAP.md)
-**Development Roadmap** - Current sprint, future improvements, and long-term considerations.
-- Current work in progress
-- Manual testing observations
+**Development Roadmap** - Current sprint, future improvements, and long-term vision.
+- Current work in progress (Alignment Scorecard, Knowledge Base cleanup)
+- Beta launch timeline (December 1, 2025)
+- Long-term vision (Spring 2026 testimonials, Summer 2026 conferences)
 - Future enhancement ideas
-- Long-term platform evolution
 
 ---
 
@@ -37,6 +37,9 @@
 
 ### [IT_WHITELISTING.md](IT_WHITELISTING.md)
 **IT Requirements** - Domain whitelisting for school districts.
+
+### [RUBRIC_INTEGRATION_GUIDE.md](RUBRIC_INTEGRATION_GUIDE.md)
+**Rubric Integration** - How the Louisiana Educator Rubric is infused throughout all platform features.
 
 ---
 
@@ -90,5 +93,5 @@ npx convex env set RESEND_TEST_MODE false       # Disable email test mode
 
 ---
 
-**Last Updated:** November 21, 2025
-**Version:** 3.0.0 - Streamlined documentation structure
+**Last Updated:** November 23, 2025
+**Version:** 3.1.0 - Updated for beta launch and rubric integration

@@ -34,9 +34,85 @@ Now I'm using that knowledge to build platforms that solve real educator pain po
   * **Intelligent Coaching Layer:** Not another AI tool—Pelican AI is the "educator in the loop" that sits *on top* of all other AI tools, translating generic AI output into high-quality, safe, and localized classroom practice.
   * **Platform-Agnostic:** Works with ANY AI tool (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.).
   * **Louisiana-Aligned:** Built for Louisiana state standards and educator rubric.
+  * **Rubric-Infused:** Every interaction, every feature, every suggestion is grounded in the Louisiana Educator Rubric—the same framework used in your evaluations.
   * **Ethical Guardrails:** Responsible AI use is built-in.
   * **Quality-Keeper & Confidence-Builder:** Beyond time-saving—provides trust, quality assurance, and pedagogical validation.
   * **Built Together:** Starting with a small group of Louisiana educators. Your feedback literally shapes everything.
+
+-----
+
+## Louisiana Educator Rubric: The Foundation of Every Interaction
+
+### Rubric Integration Philosophy
+
+The Louisiana Educator Rubric, released in April 2024 through a partnership between the Louisiana Department of Education and the National Institute for Excellence in Teaching, provides the foundation for **every Pelican AI feature and interaction**. The rubric represents twenty years of research and experience across twenty-one states, adapted specifically for Louisiana's educational context.
+
+Rather than leaving teachers to interpret rubric language independently, Pelican AI translates rubric expectations into practical, actionable support that helps teachers understand what effective implementation looks like in their specific context. Every feature, every suggestion, and every validation explicitly references rubric indicators and performance descriptors (Exemplary Level 5, Proficient Level 3, Unsatisfactory Level 1) so teachers can see the direct connection between their daily instructional decisions and evaluation expectations.
+
+### How Rubric Integration Works Across Features
+
+**Alignment Scorecard:**
+- Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment)
+- Provides feedback citing exact rubric descriptors and performance levels
+- Explains which rubric expectations are met and which gaps exist
+- Uses the same language observers will use during evaluations
+
+**Weekly Spark:**
+- Suggestions explicitly address rubric indicators (Standards and Objectives, Motivating Students, Lesson Structure and Pacing, Presenting Instructional Content)
+- Helps teachers move from Proficient toward Exemplary practice
+- Connects daily planning decisions to rubric expectations
+- Anticipates needs based on Louisiana pacing guides and curriculum alignment
+
+**Delta Generator:**
+- Differentiation guidance grounded in rubric's Teacher Knowledge of Students and Grouping Students indicators
+- Maintains grade-level standards access as required by rubric expectations
+- Helps teachers distinguish between accommodations (Proficient) and sophisticated, student-centered adaptations (Exemplary)
+- Cites specific rubric indicators when explaining differentiation approaches
+
+**Innovation Remix Engine:**
+- Ensures shared innovations maintain rubric alignment across contexts
+- Preserves cognitive rigor and standards alignment during cross-disciplinary translation
+- Verifies that adapted frameworks meet Planning and Instruction domain expectations
+- Helps teachers understand how rubric principles apply across different instructional contexts
+
+### Rubric Domains Integrated
+
+**Instruction Domain (12 indicators):**
+- Standards and Objectives
+- Motivating Students
+- Presenting Instructional Content
+- Lesson Structure and Pacing
+- Activities and Materials
+- Questioning
+- Academic Feedback
+- Grouping Students
+- Teacher Content Knowledge
+- Teacher Knowledge of Students
+- Thinking
+- Problem-Solving
+
+**Planning Domain (3 indicators):**
+- Instructional Plans
+- Student Work
+- Assessment
+
+**Environment Domain (4 indicators):**
+- Expectations
+- Engaging Students and Managing Behavior
+- Physical Environment
+- Respectful Conditions for Learning
+
+**Professionalism Domain (4 indicators):**
+- Professional Growth and Development
+- Reflection on Teaching Practice
+- School Involvement
+- Fulfillment of School Responsibilities
+
+### Why This Matters
+
+When teachers use Pelican AI, they're not just getting generic AI assistance—they're getting guidance that explicitly connects to the evaluation framework they face every day. This builds confidence, reduces anxiety around observations, and helps teachers understand not just *what* to do, but *why* it matters for both student learning and professional evaluation.
+
+Every interaction with the platform reinforces teachers' understanding of rubric expectations, building capacity rather than creating dependency. Teachers learn to recognize Exemplary practice, understand what Proficient looks like in their context, and identify specific steps to strengthen their instruction.
 
 -----
 
@@ -429,4 +505,37 @@ will literally shape everything about this platform.
 
 -----
 
-*This document reflects Pelican AI as a grassroots effort—Louisiana educators building solutions for Louisiana educators. We're starting with a small group of educators and building together.*
+## Medium & Long-Term Vision
+
+### Year One: Proof of Concept (December 2025 - Spring 2026)
+
+The first year following beta launch focuses on validating that core features solve real problems for Louisiana educators and establishing sustainable operational patterns. The primary goal is demonstrating genuine value rather than rapid user acquisition or aggressive expansion.
+
+**Key Milestones:**
+- **Spring 2026:** Accumulate a wealth of authentic user testimonials demonstrating the platform's genuine value to Louisiana educators
+- **Ongoing:** Initial beta users continue active engagement, report measurable benefits, and voluntarily share the platform with colleagues through word-of-mouth recommendations
+
+Success during this year means that the initial beta users continue active engagement, report measurable benefits in their teaching practice, and voluntarily share the platform with colleagues based on their positive experiences. Validation efforts document concrete impact on teaching practice through systematic collection of usage data, feedback, and outcome information—capturing specific examples of how the platform influenced instructional decisions, time saved on particular tasks, improvements in alignment between content and standards, and enhanced confidence in differentiation strategies.
+
+### Year Two: Organic Expansion & Conference Presentations (Summer 2026 - 2027)
+
+The second year emphasizes controlled growth through teacher-to-teacher sharing based on demonstrated results from year one, while sharing the platform with broader educator communities.
+
+**Key Milestones:**
+- **Summer 2026:** Present at **APEL LEADS conference** to showcase Pelican AI to Louisiana educators, demonstrating how the platform supports rubric-aligned instruction and standards implementation
+- **End of Summer 2026:** Present at **ISTE conference in Orlando** to introduce the platform to a national audience of educational technology leaders, sharing the grassroots approach and authentic Louisiana-specific solutions
+- **Ongoing:** Second-wave adoption occurs when beta users voluntarily recommend the platform to colleagues facing similar instructional challenges
+
+These conference presentations leverage the wealth of user testimonials gathered by Spring 2026, allowing authentic teacher voices to demonstrate the platform's impact rather than relying on marketing claims. The presentations showcase how Louisiana educators built solutions for Louisiana educators, and how other states might adapt similar grassroots models for their own contexts.
+
+### Year Three and Beyond: Ecosystem Development (2027+)
+
+In subsequent years, the platform's goal is becoming a recognized resource within Louisiana's educator community, known for authentic support grounded in Louisiana's instructional vision. This recognition comes through demonstrated results and teacher testimonials rather than marketing campaigns or promotional efforts.
+
+The platform becomes the tool that Louisiana teachers recommend to each other when colleagues seek support for implementing standards effectively or navigating evaluation expectations. Community members contribute content and ideas, creating a collaborative ecosystem. Integration with other Louisiana education initiatives amplifies impact through strategic partnerships with professional learning communities, district coaching programs, university teacher preparation initiatives, or state-level professional development offerings.
+
+Throughout all phases, the platform maintains its authentic grassroots ethos, resisting pressures to scale rapidly through aggressive marketing or partnerships that compromise teacher agency. Growth remains organic, driven by demonstrated results rather than promotional efforts.
+
+-----
+
+*This document reflects Pelican AI as a grassroots effort—Louisiana educators building solutions for Louisiana educators. We're starting with a small group of educators and building together, with every feature grounded in the Louisiana Educator Rubric that guides our professional practice.*
