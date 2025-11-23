@@ -24,24 +24,27 @@ Pelican AI is an **educational SaaS platform** that provides Louisiana educators
 
 1. **Framework Library** - 10 platform-agnostic AI guidance frameworks (exact count, honest numbers)
 2. **Dashboard** - Personalized educator dashboard with time tracking and analytics
-3. **Beta Program Management** - Grassroots launch with 5 committed educators
+3. **Beta Program Management** - Grassroots launch with small group of committed educators
 4. **Community Features** - Innovation sharing and testimonials (backend implemented, UI intentionally hidden for MVP launch)
 
 ### Features in Development
 
-**Alignment Scorecard (Core Flare #1)** - Multi-step workflow analyzing AI-generated content against Louisiana Standards
+**Alignment Scorecard (Core Flare #1)** - Multi-step workflow analyzing AI-generated content against Louisiana Standards and Louisiana Educator Rubric indicators
 - ✅ **Backend:** Complete (workflow, RAG, database, API endpoints)
 - ❌ **Frontend:** UI components not yet built
 - **Status:** Backend solid, ready for UI implementation
 - **Files:** `convex/alignmentScorecard.ts`, `convex/alignmentSteps.ts`, `convex/ragService.ts`
+- **Rubric Integration:** Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
 
 ### Future Features (Planned, Not Yet Implemented)
 
-**Weekly Spark** - Proactive weekly prompts based on Louisiana pacing guide (see PROJECT.md lines 170-176)
+**Weekly Spark** - Proactive weekly prompts based on Louisiana pacing guide (see PROJECT.md for details)
 - Status: Vision documented, implementation pending post-launch
+- **Rubric Integration:** Addresses rubric indicators (Standards and Objectives, Motivating Students, Lesson Structure and Pacing, Presenting Instructional Content)
 
-**Delta Generator** - Instant differentiation based on Louisiana accommodation guidelines (see PROJECT.md lines 178-185)
+**Delta Generator** - Instant differentiation based on Louisiana accommodation guidelines (see PROJECT.md for details)
 - Status: Vision documented, implementation pending post-launch
+- **Rubric Integration:** Grounded in rubric's Teacher Knowledge of Students and Grouping Students indicators, maintains grade-level standards access
 
 > **Note for AI Assistants:**
 > - Alignment Scorecard backend is COMPLETE - do not rebuild workflow/database logic
@@ -50,22 +53,23 @@ Pelican AI is an **educational SaaS platform** that provides Louisiana educators
 
 ### Current Launch Status
 
-- **Stage:** Grassroots launch with 5 educators (active)
+- **Stage:** Grassroots launch with small group of educators
+- **Beta Launch Date:** December 1, 2025
 - **Positioning:** "We're Not Waiting for LDOE"
 - **Philosophy:** Authentic, teacher-to-teacher communication (not corporate speak)
 - **Community Features:** Backend implemented, UI intentionally hidden for MVP launch
 - **Weekly Emails:** Feature-flagged (WEEKLY_EMAILS_ENABLED=false by default)
   - **Why disabled:** Grassroots launch prioritizes personal check-ins over automation
   - Real conversations (text/email replies) > automated email sequences
-  - Will enable when scaling to 30-100 users (see PROJECT.md lines 224-231)
+  - Will enable when scaling to 30-100 users (see PROJECT.md for details)
 
 ### Launch Timeline (From PROJECT.md)
 
-- **Week 1:** Launch to 5 educators, daily personal check-ins
-- **Week 2:** Gather authentic testimonials, update landing page
-- **Week 3:** Organic referrals ("Who else needs this?" conversations)
-- **Week 4:** Tech facilitator meeting prep
-- **Dec 16-31:** Scale to 30-50 users through word-of-mouth
+- **December 1, 2025:** Beta launch with small group of educators
+- **December 2025:** Daily personal check-ins, gather authentic testimonials
+- **Spring 2026:** Accumulate wealth of user testimonials demonstrating platform value
+- **Summer 2026:** Present at APEL LEADS conference (Louisiana educators) and ISTE conference (Orlando)
+- **Ongoing:** Organic growth through word-of-mouth recommendations
 
 > **Note for AI Assistants:** Do NOT build automated email workflows or marketing features. The grassroots approach prioritizes 1-on-1 relationships over automation during initial launch phase.
 
@@ -295,17 +299,16 @@ logSecure("info", "User action", {
 - ✅ "Tell me honestly—did it save you time?"
 - ✅ "You're one of the first educators I'm starting with"
 - ❌ "Leverage AI synergies for paradigm-shifting results"
-- ✅ "You're one of 5 educators I'm starting with"
+- ✅ "You're part of a small group of educators building this together"
 - ✅ "10 frameworks" (exact count)
-- ❌ "Leverage AI synergies for paradigm-shifting results"
 - ❌ "Join 10,000+ educators transforming education"
 - ❌ "10+ frameworks" (implies we don't know the exact number)
 
 **Public vs. Private Messaging:**
-- **Public-facing (Landing Page):** Scalable grassroots messaging, no "5 educators" language
-  - Use: "We're Not Waiting for LDOE", "Louisiana educators building together"
-- **Private (Dashboard/Emails):** Personal to current 5 beta users
-  - Use: "You're one of 5 educators building this together"
+- **Public-facing (Landing Page):** Scalable grassroots messaging, no specific numbers
+  - Use: "We're Not Waiting for LDOE", "Louisiana educators building together", "small group of educators"
+- **Private (Dashboard/Emails):** Personal to current beta users
+  - Use: "You're part of a small group of educators building this together"
 
 ### 3. Community Features
 Fully implemented and available for testing:
@@ -316,8 +319,22 @@ Fully implemented and available for testing:
 ### 4. Platform-Agnostic Approach
 **CRITICAL:** Frameworks must work with ANY AI tool (ChatGPT, Gemini, Claude, MagicSchool AI, etc.). No vendor lock-in.
 
-### 5. Louisiana Standards Alignment
-All content aligns with Louisiana Student Standards (LSS) and Louisiana Educator Rubric (LER) across ELA, Math, Science, Social Studies for K-12.
+### 5. Louisiana Educator Rubric Integration
+**CRITICAL:** The Louisiana Educator Rubric (LER) is the foundation for every Pelican AI feature and interaction. Every feature, suggestion, and validation explicitly references rubric indicators and performance descriptors (Exemplary Level 5, Proficient Level 3, Unsatisfactory Level 1).
+
+**Rubric Domains Integrated:**
+- **Instruction Domain** (12 indicators): Standards and Objectives, Motivating Students, Presenting Instructional Content, Lesson Structure and Pacing, Activities and Materials, Questioning, Academic Feedback, Grouping Students, Teacher Content Knowledge, Teacher Knowledge of Students, Thinking, Problem-Solving
+- **Planning Domain** (3 indicators): Instructional Plans, Student Work, Assessment
+- **Environment Domain** (4 indicators): Expectations, Engaging Students and Managing Behavior, Physical Environment, Respectful Conditions for Learning
+- **Professionalism Domain** (4 indicators): Professional Growth and Development, Reflection on Teaching Practice, School Involvement, Fulfillment of School Responsibilities
+
+**How It Works:**
+- Alignment Scorecard validates against specific rubric indicators and cites exact descriptors
+- Weekly Spark addresses rubric indicators in proactive suggestions
+- Delta Generator grounds differentiation in rubric's Teacher Knowledge of Students and Grouping Students indicators
+- Innovation Remix Engine ensures shared innovations maintain rubric alignment across contexts
+
+All content also aligns with Louisiana Student Standards (LSS) across ELA, Math, Science, Social Studies for K-12.
 
 ### 6. TypeScript Strict Mode
 NO `any` types without justification. Use proper types from `convex/_generated/api.d.ts`.
@@ -380,6 +397,7 @@ pnpm lint                   # Full lint + type check
 - **FERPA Compliance:** No PII in logs
 - **Platform-Agnostic:** Works with ANY AI tool
 - **Louisiana-Aligned:** LSS and LER standards
+- **Rubric-Infused:** Every feature grounded in Louisiana Educator Rubric indicators and performance descriptors
 
 ---
 
@@ -409,4 +427,4 @@ pnpm lint                   # Full lint + type check
 
 **Last Updated:** November 21, 2025
 **Maintained by:** Pelican AI Development Team
-**Version:** 3.0.0 - Streamlined for efficiency
+**Version:** 3.1.0 - Updated with rubric integration emphasis and long-term vision

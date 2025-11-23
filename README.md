@@ -16,6 +16,7 @@ Empower Louisiana educators with practical, ethical, and platform-agnostic AI gu
 
 - **🔄 Platform-Agnostic:** Works with ANY AI tool (MagicSchool AI, Brisk, SchoolAI, Gemini, etc.)
 - **🏛️ Louisiana-Aligned:** Built for Louisiana state standards and educator rubric
+- **📋 Rubric-Infused:** Every feature, every interaction grounded in the Louisiana Educator Rubric
 - **⚖️ Ethical Guardrails:** Responsible AI use is built-in
 - **⏰ Time-Saving:** Immediate, practical solutions (3-5 hours/week savings target)
 
@@ -46,7 +47,15 @@ pnpm dev
 
 ## 📊 Current Status
 
-**Status:** Grassroots Launch - Small Group of Louisiana Educators
+**Status:** 🚀 Beta Launch - December 1, 2025  
+**Launch Strategy:** Grassroots launch with small group of Louisiana educators (organic, word-of-mouth growth)
+
+**Key Features:**
+- ✅ Framework Library (10 platform-agnostic AI guidance frameworks)
+- ✅ Dashboard with analytics and time tracking
+- ✅ Community features (innovation sharing, testimonials)
+- 🚧 Alignment Scorecard (backend complete, UI in development)
+- ✅ RAG system for Louisiana Standards with rubric integration
 
 **Testing:** Unit tests (Vitest) + E2E tests (Playwright) with convex-test
 
@@ -65,6 +74,7 @@ pnpm dev
 ### Operational Reference
 - **[TESTING.md](docs/TESTING.md)** - Testing guide and quick reference
 - **[IT Whitelisting](docs/IT_WHITELISTING.md)** - IT whitelisting guide for school districts
+- **[Rubric Integration Guide](docs/RUBRIC_INTEGRATION_GUIDE.md)** - How the Louisiana Educator Rubric is integrated across all features
 
 ### Archived Reference
 - **[docs/archived/](docs/archived/)** - Historical documentation including brand guidelines, framework details, architecture validation, and pre-launch materials
@@ -89,4 +99,4 @@ This project is proprietary software. Educational use by Louisiana educators is 
 
 **Pelican AI** - Navigate AI with Confidence 🦅
 
-*Last Updated: November 21, 2025*
+*Last Updated: November 23, 2025*
