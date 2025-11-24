@@ -1,7 +1,9 @@
 # Pelican AI - Project Context
 
-**Last Updated:** November 21, 2025
+**Last Updated:** November 23, 2025
 **Status:** LAUNCHING - Grassroots Launch with Small Group of Louisiana Educators
+
+> **Note:** This document focuses on strategic vision, brand positioning, and launch strategy. For technical architecture, development patterns, and implementation details, see [CLAUDE.md](CLAUDE.md).
 
 ## Vision & Mission
 
@@ -172,53 +174,17 @@ Every interaction with the platform reinforces teachers' understanding of rubric
 
 ## Current System Snapshot
 
-### Tech Stack
-
-  * **Frontend:** React 19 + TypeScript + Vite + Tailwind CSS + shadcn/ui
-  * **Backend:** Convex (real-time database + serverless functions)
-  * **Authentication:** Better Auth (@convex-dev/better-auth)
-  * **Email:** Resend API
-  * **Design:** Louisiana-branded, WCAG 2.1 AA compliant, mobile-first
-
-### Deployment Environments
-
-  * **Development:** `kindly-setter.convex.cloud` (local dev + testing)
-  * **Production:** `outgoing-partridge.convex.cloud` (live platform)
-  * **Frontend:** Vercel (preview/production deployments)
-
 ### Key Features Operational
 
-  * ✅ **Authentication:** Better Auth integration with email/password
-  * ✅ **Framework Library:** 10 foundational AI guidance frameworks with search, filter, copy functionality (growing based on educator feedback)
+  * ✅ **Framework Library:** 10 foundational AI guidance frameworks with search, filter, copy functionality
+  * ✅ **Dashboard:** Personalized educator dashboard with stats and quick start
   * ✅ **Community Features:** Innovation sharing and testimonials
-  * ✅ **Dashboard:** Personalized dashboard with stats and quick start
   * ✅ **Admin Dashboard:** Content moderation and beta program management
-  * ✅ **Email System:** Welcome emails and weekly prompts (real conversations, not automation)
-  * ✅ **User Profiles:** Extended educator data (school, subject, grade, district)
-  * 🚧 **Alignment Scorecard (Core Flare #1):** Multi-step workflow analyzing AI-generated content against Louisiana Standards with structured scorecards, gap analysis, and recommendations
-    - Backend: ✅ Complete (workflow, RAG, database solid)
-    - Frontend: ❌ UI not yet built
-  * ✅ **RAG System:** Vector search for Louisiana Standards with semantic filtering by subject, grade level, and cognitive depth
-  * ✅ **Workflow Infrastructure:** Multi-step processes with retry logic and status tracking
-  * ✅ **Authorization & Rate Limiting:** Role-based access control (teacher/coach/admin) with tiered rate limits
-  * 🚧 **Alignment Scorecard:** Backend workflows in place, UI components in development
-  * 🚧 **Workflow Infrastructure:** Multi-step processes with retry logic and status tracking
+  * 🚧 **Alignment Scorecard (Core Flare #1):** Backend complete, UI in development
+    - Validates AI-generated content against Louisiana Standards and Educator Rubric
+    - Provides structured scorecards, gap analysis, and recommendations
 
-### Database Schema
-
-See `convex/schema.ts` for the complete, self-documenting source of truth. Convex automatically generates API contracts from the schema.
-
-**Key Tables:**
-
-  * `betaSignups` - Beta tester recruitment and approval
-  * `userProfiles` - Extended educator data
-  * `frameworks` - AI guidance frameworks with Louisiana standards
-  * `frameworkUsage` - User interaction tracking
-  * `innovations` - Community-shared teaching innovations
-  * `testimonials` - User feedback and success stories
-  * `betaProgram` - Beta program participation and progress
-  * `timeTracking` - Time savings analytics
-  * `alignmentAnalyses` - Alignment Scorecard analysis results (scores, gaps, recommendations)
+> **Technical Details:** For complete technical architecture, deployment environments, database schema, and implementation patterns, see [CLAUDE.md](CLAUDE.md).
 
 -----
 
@@ -426,13 +392,6 @@ will literally shape everything about this platform.
   * **Time Saved:** Specific examples ("14.5 minutes per lesson" not generic claims)
   * **Word-of-Mouth:** "Who else needs this?" conversations happening
 
-### Technical Performance
-
-  * Page Load Time: <3 seconds on 3G connection
-  * Email Delivery: <10 seconds for transactional emails
-  * API Response: <500ms for critical operations
-  * WCAG 2.1 Level AA: Compliant
-
 ### Quality Standards
 
   * **Honest Numbers:** Small group of educators building together, not fake social proof
@@ -440,31 +399,7 @@ will literally shape everything about this platform.
   * **Authentic Communication:** Teacher-to-teacher, not corporate speak
   * **Iterative Improvement:** Platform evolves based on real educator needs
 
------
-
-## Technical Requirements
-
-### Performance Requirements
-
-  * Page Load Time: <3 seconds on 3G connection
-  * Email Delivery: <10 seconds for transactional emails
-  * API Response: <500ms for critical operations
-  * Uptime: 99%+ target
-
-### Security Requirements
-
-  * **FERPA Compliance:** All educator data protected
-  * **Authentication:** Secure session management via Better Auth
-  * **Data Privacy:** No data sharing without consent
-  * **Audit Logging:** Track sensitive operations
-  * **No PII in Logs:** FERPA-compliant logging practices
-
-### Accessibility Requirements
-
-  * **WCAG 2.1 Level AA:** Mandatory compliance
-  * **Keyboard Navigation:** Full keyboard support
-  * **Screen Reader:** Semantic HTML and ARIA labels
-  * **Color Contrast:** Minimum 4.5:1 for normal text
+> **Technical Requirements:** For performance, security, accessibility, and technical architecture details, see [CLAUDE.md](CLAUDE.md).
 
 -----
 
@@ -473,7 +408,6 @@ will literally shape everything about this platform.
   * **[PROJECT.md](PROJECT.md)** - Main project context (you are here!)
   * **[CLAUDE.md](CLAUDE.md)** - AI assistant guide with development patterns and quick reference
   * **[docs/README.md](docs/README.md)** - Documentation index
-  * **[docs/archived/](docs/archived/)** - Archived reference documentation
 
 -----
 

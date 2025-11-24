@@ -43,18 +43,6 @@
 
 ---
 
-## Archived Documentation
-
-### [archived/](archived/)
-**Historical Reference** - Archived documentation for reference only.
-- PELICAN_AI_BRAND_GUIDELINES.md - Detailed brand guidelines (reference)
-- PELICAN_AI_BETA_CORE_FRAMEWORKS.md - Framework prompts (reference)
-- ARCHITECTURE_VALIDATION.md - Point-in-time architecture validation (reference)
-- launch/ - Pre-launch alignment documentation (November 2025)
-- Decision records and historical context
-
----
-
 ## Quick Commands
 
 ```bash
