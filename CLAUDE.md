@@ -1,7 +1,13 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+---
+
 # CLAUDE.md - AI Assistant Guide for Pelican AI
 
-**Last Updated:** November 21, 2025
-**Version:** 3.0.0
+**Last Updated:** November 23, 2025
+**Version:** 3.1.0
 **Status:** Production Ready - Streamlined Documentation
 
 ---
@@ -155,15 +161,15 @@ const frameworks = useQuery(api.frameworks.getAllFrameworks);
 ```typescript
 import { requireAuth } from "./authorization";
 
-const identity = await requireAuth(ctx);
-const userId = identity.subject;
+const { user, profile } = await requireAuth(ctx);
+const userId = user._id;
 ```
 
 **In React Components:**
 ```typescript
-import { useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
-const { data: session } = useSession();
+const { data: session } = authClient.useSession();
 const userId = session?.user?.id;
 ```
 
@@ -171,21 +177,321 @@ const userId = session?.user?.id;
 
 ```typescript
 // Require authentication
-await requireAuth(ctx);
+const { user, profile } = await requireAuth(ctx);
 
 // Require specific role
 await requireRole(ctx, "admin");
 
-// Require admin
+// Require admin (role-based + email fallback)
 await requireAdmin(ctx);
+
+// Non-throwing check
+const isAdmin = await checkIsAdmin(ctx);
 ```
+
+**Authorization Helpers** (`convex/authorization.ts`):
+- `requireAuth(ctx)` - Returns user with profile, throws if not authenticated
+- `requireRole(ctx, role)` - Checks user has specific role ("teacher" | "admin" | "coach")
+- `requireAdmin(ctx)` - Checks admin access (role-based + email fallback)
+- `checkIsAdmin(ctx)` - Non-throwing boolean check for admin status
 
 ### Rate Limiting
 
 ```typescript
+import { checkRateLimit } from "./rateLimiting";
+
 await checkRateLimit(ctx, userId, "aiGeneration");
 // Types: "aiGeneration", "ragQuery", "emailSend"
 // Limits vary by role: teacher (10/min), coach (20/min), admin (100/min)
+```
+
+### Workflow System (@convex-dev/workflow)
+
+**Configuration** (`convex/workflows.ts`):
+```typescript
+export const workflow = new WorkflowManager(components.workflow, {
+  workpoolOptions: {
+    maxParallelism: 10,          // Max concurrent workflows
+    defaultRetryBehavior: {
+      maxAttempts: 3,            // Retry failed steps 3 times
+      initialBackoffMs: 1000,    // Start with 1s delay
+      base: 2,                   // Exponential backoff (2x)
+    },
+  },
+});
+```
+
+**Current Workflows:**
+- **Alignment Scorecard** (`convex/alignmentScorecard.ts`) - Multi-step AI content analysis
+  - Step 1: Extract Louisiana Standards via RAG (`ragService.ts`)
+  - Step 2: Analyze alignment via OpenAI GPT-4o
+  - Step 3: Save results to `alignmentAnalyses` table
+  - Built-in retry logic and status tracking
+
+**Usage Pattern:**
+```typescript
+import { workflow } from "./workflows";
+
+// Start workflow
+const handle = await workflow.start(ctx, {
+  workflowId: "alignmentAnalysis",
+  args: { content, gradeLevel, subject }
+});
+
+// Workflow runs autonomously with fault tolerance
+// Results saved to alignmentAnalyses table
+```
+
+### Email Template System
+
+**React Email Components** (`src/emails/`):
+All emails use `@react-email/components` for consistent, responsive design:
+- `BetaWelcomeEmail.tsx` - New user onboarding
+- `PlatformAccessEmail.tsx` - Beta access granted
+- `WeeklyPromptEmail.tsx` - Weekly engagement prompts (feature-flagged)
+- `FollowupEmail.tsx` - Follow-up communications
+- `NetworkPartnerEmail.tsx` - Network partner outreach
+- `OutreachEmail.tsx` - General outreach
+- `BaseEmailTemplate.tsx` - Shared email layout
+
+**Sending Emails:**
+```typescript
+import { Resend } from "@convex-dev/resend";
+import { components } from "./_generated/api";
+import { BetaWelcomeEmail } from "../src/emails/BetaWelcomeEmail";
+import { render } from "@react-email/render";
+
+const resend = new Resend(components.resend);
+
+await resend.emails.send(ctx, {
+  from: "Pelican AI <hello@pelicanai.com>",
+  to: user.email,
+  subject: "Welcome to Pelican AI",
+  html: render(<BetaWelcomeEmail userName={user.name} />),
+});
+```
+
+---
+
+## Component Organization
+
+### Directory Structure
+
+```
+src/components/
+├── ui/              # shadcn/ui components (Button, Dialog, Card, etc.)
+├── shared/          # Cross-cutting components (AppHeader, Logo, ErrorBoundary)
+├── dashboard/       # Dashboard feature components
+├── framework/       # Framework library feature components
+├── community/       # Community features (innovations, testimonials)
+├── admin/           # Admin dashboard components
+├── auth/            # Authentication components (AuthModal)
+├── routes/          # Route protection and navigation
+└── landing/         # Landing page sections
+
+src/emails/          # React Email templates (@react-email/components)
+src/lib/             # Utility functions and configurations
+```
+
+**Naming Convention:**
+- Feature-based organization with descriptive names
+- ✅ `FrameworkUsageChart.tsx` (clear, descriptive)
+- ❌ `Chart.tsx` (too generic)
+
+**Component Pattern:**
+```typescript
+import { cn } from "@/lib/utils";
+
+interface ComponentProps {
+  title: string;
+  onClick?: () => void;
+}
+
+export function MyComponent({ title, onClick }: ComponentProps) {
+  return (
+    <div className={cn("px-4 py-2 rounded-lg")}>
+      <h3>{title}</h3>
+    </div>
+  );
+}
+```
+
+---
+
+## Route Structure
+
+### Authentication-Based Routing
+
+**Convex React Authentication:**
+- `<Authenticated>` - Routes shown when user is logged in
+- `<Unauthenticated>` - Routes shown when user is logged out
+
+**Route Protection:**
+```typescript
+<ProtectedRoute requireAdmin={true}>  // Admin-only routes
+  <AdminRoute />
+</ProtectedRoute>
+
+<ProtectedRoute>                       // Authenticated user routes
+  <DashboardRoute />
+</ProtectedRoute>
+```
+
+### Key Routes
+
+- `/` - Smart redirect (checks onboarding status → redirects to dashboard or onboarding)
+- `/dashboard` - Main educator dashboard
+- `/frameworks` - Framework library (10 frameworks)
+- `/frameworks/:frameworkId` - Individual framework details
+- `/community` - Innovation sharing & testimonials
+- `/profile` - User profile settings
+- `/time-tracking` - Time savings analytics
+- `/admin` - Admin content moderation (admin-only)
+
+**Implementation:** See `src/App.tsx` for complete route configuration
+
+**Lazy Loading:**
+All route components are lazy-loaded for code splitting:
+```typescript
+const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
+```
+
+---
+
+## Build Optimization
+
+### Code Splitting Strategy
+
+**Lazy Loading:**
+All route components use React's `lazy()` for automatic code splitting:
+```typescript
+import { lazy } from "react";
+
+const DashboardRoute = lazy(() => import("./components/routes/DashboardRoute"));
+const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
+```
+
+**Manual Chunk Splitting** (`vite.config.ts`):
+Vendor chunks defined for optimal caching and parallel loading:
+- `react-vendor` - React core (react, react-dom, react-router-dom)
+- `ui-vendor` - Radix UI components (@radix-ui/*)
+- `animation-vendor` - Framer Motion
+- `convex-vendor` - Convex components
+- `auth-vendor` - Better Auth
+- `form-vendor` - React Hook Form + Zod
+- `chart-vendor` - Recharts
+- `table-vendor` - TanStack Table
+- `dnd-vendor` - DnD Kit
+- `email-vendor` - React Email
+- `ai-vendor` - OpenAI SDK
+
+### Production Optimizations
+
+```typescript
+// vite.config.ts optimizations
+{
+  minify: 'terser',
+  terserOptions: {
+    compress: {
+      drop_console: mode === 'production',  // Remove console.log in production
+      drop_debugger: mode === 'production', // Remove debugger statements
+    },
+  },
+  assetsInlineLimit: 4096,  // Inline assets smaller than 4KB
+  cssCodeSplit: true,       // Split CSS for better caching
+}
+```
+
+**Dependency Pre-bundling:**
+Critical dependencies are pre-bundled for faster dev server startup:
+```typescript
+optimizeDeps: {
+  include: [
+    'react', 'react-dom', 'react-router-dom',
+    'framer-motion', 'lucide-react',
+    'class-variance-authority', 'clsx', 'tailwind-merge',
+  ],
+}
+```
+
+---
+
+## Testing Architecture
+
+### Dual Configuration Setup
+
+**Backend Tests** (`vitest.config.mts`):
+- **Environment:** `edge-runtime` (simulates Convex edge runtime)
+- **Tests:** `convex/**/*.test.ts`
+- **In-memory Testing:** Uses `convex-test` for in-memory Convex simulation
+- **No network calls:** All Convex operations run locally
+
+**E2E Tests** (`vitest.browser.config.mts`):
+- **Environment:** `node` with Playwright browser automation
+- **Tests:** `tests/e2e/**/*.test.ts`
+- **Setup:** `tests/e2e/setup.ts`
+- **Timeout:** 30s for browser operations
+- **Hook Timeout:** 10s
+
+### Better Auth Testing
+
+```typescript
+import { convexTest } from "convex-test";
+import schema from "./schema";
+
+const t = convexTest(schema);
+
+// Mock authenticated user
+const asUser = t.withIdentity({ subject: "user123" });
+await asUser.run(async (ctx) => {
+  // Test authenticated operations
+  const result = await createFramework(ctx, { title: "Test" });
+  expect(result).toBeDefined();
+});
+```
+
+### Running Tests
+
+```bash
+# Run all backend tests once
+pnpm test:once
+
+# Run specific test file/pattern
+pnpm test:once frameworks
+
+# Watch mode for development
+pnpm test:watch
+
+# Generate coverage report (HTML at coverage/index.html)
+pnpm test:coverage
+
+# Run E2E tests
+pnpm test:e2e
+
+# E2E watch mode
+pnpm test:e2e:watch
+
+# E2E with UI
+pnpm test:e2e:ui
+```
+
+### Test Coverage Exclusions
+
+```typescript
+// vitest.config.mts coverage settings
+coverage: {
+  exclude: [
+    "convex/**/*.test.ts",           // Test files
+    "convex/_generated/**",          // Auto-generated files
+    "convex/schema.ts",              // Schema definition
+    "convex/convex.config.ts",       // Configuration
+    "convex/router.ts",              // Router setup
+    "convex/http.ts",                // HTTP endpoints
+    "convex/seedFrameworks.ts",      // Seed data
+    "convex/auth.ts",                // Better Auth glue
+    "convex/auth.config.ts",         // Auth config
+  ],
+}
 ```
 
 ---
@@ -355,10 +661,14 @@ NO `any` types without justification. Use proper types from `convex/_generated/a
 - `frameworkUsage` - Usage tracking
 - `betaProgram` - Beta program participation
 - `innovations` - Community-shared teaching innovations
+- `innovationInteractions` - Innovation likes, tries, comments
 - `testimonials` - User feedback and success stories
+- `timeTracking` - Time savings analytics
+- `alignmentAnalyses` - Alignment Scorecard results
 
 ### Auto-Managed Tables (via Convex Components)
 - `user`, `session`, `account`, `verification` - Better Auth
+- `documents`, `chatMessages`, `feedbackSessions`, `auditLogs` - RAG component
 
 **DO NOT define these in schema.ts** - managed by Convex components.
 
@@ -369,35 +679,51 @@ NO `any` types without justification. Use proper types from `convex/_generated/a
 ### Essential Commands
 ```bash
 # Development
-pnpm dev                    # Start frontend + backend
-pnpm test:once              # Run unit tests
-pnpm test:coverage          # Generate coverage report
+pnpm dev                    # Start frontend + backend (parallel)
+pnpm dev:frontend           # Start Vite dev server only
+pnpm dev:backend            # Start Convex dev server only
+
+# Testing
+pnpm test                   # Run tests in watch mode
+pnpm test:once              # Run unit tests once
+pnpm test:once frameworks   # Run specific test pattern
+pnpm test:watch             # Watch mode for development
+pnpm test:coverage          # Generate coverage report (HTML)
+pnpm test:e2e               # Run E2E tests
+pnpm test:e2e:watch         # E2E watch mode
+pnpm test:e2e:ui            # E2E with UI
+
+# Build
+pnpm build                  # Build for production
+pnpm lint                   # Full lint + type check
 
 # Database
 npx convex dashboard        # Open Convex dashboard
 npx convex deploy           # Deploy to production
 npx convex env set KEY val  # Set environment variable
-
-# Linting
-pnpm lint                   # Full lint + type check
 ```
 
 ### Important Files
 - `convex/schema.ts` - Database schema (source of truth)
-- `convex/authorization.ts` - Auth helpers (requireAuth, requireRole)
+- `convex/authorization.ts` - Auth helpers (requireAuth, requireRole, requireAdmin)
 - `convex/rateLimiting.ts` - Rate limit configuration
-- `src/lib/auth-client.ts` - Better Auth client
+- `convex/workflows.ts` - Workflow manager configuration
+- `src/lib/auth-client.ts` - Better Auth client setup
 - `src/App.tsx` - Routing configuration
+- `vite.config.ts` - Vite build configuration
+- `vitest.config.mts` - Backend test configuration
+- `vitest.browser.config.mts` - E2E test configuration
 - `PROJECT.md` - Project vision and context
 
 ### Key Concepts
 - **Convex Reactivity:** Queries auto-update when data changes
-- **Better Auth:** Session-based authentication
+- **Better Auth:** Session-based authentication with Convex integration
 - **Role-Based Access:** teacher, coach, admin roles
 - **FERPA Compliance:** No PII in logs
 - **Platform-Agnostic:** Works with ANY AI tool
 - **Louisiana-Aligned:** LSS and LER standards
 - **Rubric-Infused:** Every feature grounded in Louisiana Educator Rubric indicators and performance descriptors
+- **Workflow-Driven:** Multi-step processes with fault tolerance and retry logic
 
 ---
 
@@ -425,6 +751,15 @@ pnpm lint                   # Full lint + type check
 
 ---
 
-**Last Updated:** November 21, 2025
+## Development Environment
+
+**Platform:** Windows (MINGW64_NT-10.0-26200)
+**Git:** Git Bash (MINGW64)
+**Path Handling:** Use forward slashes in code (e.g., `./src/components`), backslashes auto-converted by Windows
+**Working Directory:** `C:\Users\rplap\OneDrive\Desktop\personal\aida`
+
+---
+
+**Last Updated:** November 23, 2025
 **Maintained by:** Pelican AI Development Team
-**Version:** 3.1.0 - Updated with rubric integration emphasis and long-term vision
+**Version:** 3.1.0 - Enhanced with architecture details, testing guide, and build optimization documentation

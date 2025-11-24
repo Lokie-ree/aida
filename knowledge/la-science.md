@@ -1,8 +1,19 @@
-## Page 1
+# Louisiana K-12 Science Standards RAG Context Guide
+## Comprehensive Reference for AI-Powered Science Educator Support
 
-# INTRODUCTION
+---
 
-## Louisiana Student Standards for Science
+## Executive Summary
+
+This document serves as the authoritative RAG (Retrieval-Augmented Generation) context for an educator support platform designed to assist Louisiana teachers in planning, creating, and aligning K-12 science instruction. The platform's four Co-Pilot features—Weekly Spark, Alignment Scorecard, Delta Generator, and Innovation Remix Engine—leverage this localized, pedagogically-grounded context to provide proactive, standards-aligned support that competitors cannot replicate.
+
+**Platform Differentiator**: This RAG context transforms generic AI tools into hyper-local, Louisiana-specific educational partners by embedding state standards, vertical progressions, and pedagogical frameworks directly into every platform interaction for science education.
+
+---
+
+## 1. Introduction to Louisiana K-12 Science Standards
+
+### 1.1 Development of K-12 Louisiana Student Standards for Science
 
 The Louisiana Student Standards for Science were created by over eighty content experts and educators with input from parents and teachers from across the state. Educators envisioned what students should know and be able to do to compete in our communities and created standards that would allow students to do so. The Louisiana Student Standards for Science provide appropriate content for all grades or courses, maintain high expectations and create a logical connection of content across and within grades.
 
@@ -14,7 +25,7 @@ The Louisiana Student Standards for Science represent the knowledge and skills n
 
 The Louisiana Student Standards do not dictate curriculum or teaching methods. Decisions about how to teach these expectations are left to local districts, schools, and teachers.
 
-## Structure and Components of the Standards
+### 1.2 Structure and Components of the Standards
 
 The Louisiana Student Standards for Science are arranged by grade levels for kindergarten through grade 8 and content areas for high school. The standards include:
 
@@ -50,11 +61,11 @@ The Louisiana Student Standards for Science are arranged by grade levels for kin
 ---
 
 
-## Page 2
 
-# INTRODUCTION
 
-## Interpreting Standard Codes
+## 2. Standards Architecture & Coding System
+
+### 2.1 Understanding Louisiana Science Standard Codes
 
 Each performance expectation is identified by a code and descriptor. The coding is derived by the following formula: Grade level- Domain and Topic Number- Performance Expectation Number (space)
 
@@ -112,9 +123,21 @@ graph TD
 ---
 
 
-## Page 3
 
-K-PS2-1
+
+## 3. K-12 Science Performance Expectations
+
+The following sections contain all performance expectations organized by grade level and domain. Each performance expectation includes:
+
+- **Performance Expectation**: What students should be able to do by the end of the year
+- **Clarification Statement**: Examples or additional explanation
+- **Science & Engineering Practices**: The practices used in this standard
+- **Disciplinary Core Ideas**: The essential content ideas
+- **Crosscutting Concepts**: Common themes that connect learning
+
+### 3.1 Kindergarten Standards
+
+#### K-PS2-1
 
 # MOTION AND STABILITY: FORCES AND INTERACTIONS
 
@@ -150,7 +173,7 @@ Examples of pushes or pulls could include a string attached to an object being p
 ---
 
 
-## Page 4
+
 
 K-PS2-2
 
@@ -188,7 +211,7 @@ Examples of problems requiring a solution could include having a marble or other
 ---
 
 
-## Page 5
+
 
 K-PS3-1
 
@@ -223,7 +246,7 @@ Events have causes that generate observable patterns.
 ---
 
 
-## Page 6
+
 
 K-PS3-2
 
@@ -261,7 +284,7 @@ Examples of structures could include umbrellas, canopies, or tents that minimize
 ---
 
 
-## Page 7
+
 
 K-LS-1-1
 
@@ -299,7 +322,7 @@ Examples of patterns could include that plants make their own food while animals
 ---
 
 
-## Page 8
+
 
 K-ESS2-1
 
@@ -337,7 +360,7 @@ Examples of qualitative observations could include descriptions of the weather (
 ---
 
 
-## Page 9
+
 
 K-ESS2-2
 
@@ -382,7 +405,7 @@ Systems in the natural and designed world have parts that work together.
 ---
 
 
-## Page 10
+
 
 K-ESS3-1
 
@@ -418,7 +441,7 @@ Systems in the natural and designed world have parts that work together.
 ---
 
 
-## Page 11
+
 
 K-ESS3-2
 
@@ -463,7 +486,7 @@ Emphasis is on local forms of severe weather and safety precautions associated w
 ---
 
 
-## Page 12
+
 
 K-ESS3-3
 
@@ -501,7 +524,7 @@ Examples of human impact on the land could include cutting trees to produce pape
 ---
 
 
-## Page 13
+
 
 1-PS4-1
 
@@ -527,7 +550,7 @@ Examples of human impact on the land could include cutting trees to produce pape
 ---
 
 
-## Page 14
+
 
 1-PS4-2
 # WAVES AND THEIR APPLICATIONS
@@ -564,7 +587,7 @@ Examples of observations could include those made in a completely dark room, a p
 ---
 
 
-## Page 15
+
 
 1-PS4-3
 
@@ -602,7 +625,7 @@ Examples of materials could include those that are transparent (such as clear pl
 ---
 
 
-## Page 16
+
 
 1-PS4-4
 
@@ -640,7 +663,7 @@ Examples of devices could include a light source to send signals, paper cup and 
 ---
 
 
-## Page 17
+
 
 1-LS1-1
 
@@ -674,7 +697,7 @@ Examples of human problems that can be solved by mimicking plant or animal solut
 ---
 
 
-## Page 18
+
 
 1-LS1-2
 
@@ -712,7 +735,7 @@ Examples of patterns of behaviors could include the signals that offspring make 
 ---
 
 
-## Page 19
+
 
 1-LS3-1
 
@@ -750,7 +773,7 @@ Examples of observations could include: leaves from the same kind of plant are s
 ---
 
 
-## Page 20
+
 
 1-ESS1-1
 
@@ -788,7 +811,7 @@ Examples of patterns could include that the sun and moon appear to rise in one p
 ---
 
 
-## Page 21
+
 
 1-ESS1-2
 
@@ -814,7 +837,7 @@ Examples of patterns could include that the sun and moon appear to rise in one p
 ---
 
 
-## Page 22
+
 
 2-PS1-1
 
@@ -852,7 +875,7 @@ Observations could include color, texture, hardness, or flexibility. Patterns co
 ---
 
 
-## Page 23
+
 
 2-PS1-2
 
@@ -890,7 +913,7 @@ Examples of properties could include, strength, flexibility, hardness, texture, 
 ---
 
 
-## Page 24
+
 
 2-PS1-3
 
@@ -928,7 +951,7 @@ Examples of pieces could include blocks, building bricks, or other assorted smal
 ---
 
 
-## Page 25
+
 
 2-PS1-4
 
@@ -954,7 +977,7 @@ Examples of pieces could include blocks, building bricks, or other assorted smal
 ---
 
 
-## Page 26
+
 
 2-LS2-1
 
@@ -992,7 +1015,7 @@ Emphasis is on testing one variable at a time during investigations.
 ---
 
 
-## Page 27
+
 
 2-LS2-2
 
@@ -1030,7 +1053,7 @@ Students could use the model to describe: (1) How the structure of the model giv
 ---
 
 
-## Page 28
+
 
 2-LS4-1
 
@@ -1054,7 +1077,7 @@ Students could use the model to describe: (1) How the structure of the model giv
 ---
 
 
-## Page 29
+
 
 2-ESS1-1
 
@@ -1095,7 +1118,7 @@ Examples of events and timescales could include volcanic explosions and earthqua
 ---
 
 
-## Page 30
+
 
 2-ESS2-1
 
@@ -1137,7 +1160,7 @@ Things may change slowly or rapidly.
 ---
 
 
-## Page 31
+
 
 2-ESS2-2
 
@@ -1175,7 +1198,7 @@ Models do not have to be to scale.
 ---
 
 
-## Page 32
+
 
 2-ESS2-3
 
@@ -1215,7 +1238,7 @@ Patterns in the natural and human designed world can be observed, used to descri
 ---
 
 
-## Page 33
+
 
 3-PS2-1
 # MOTION AND STABILITY: FORCES AND INTERACTIONS
@@ -1252,7 +1275,7 @@ Examples could include an unbalanced force on one side of an object that can mak
 ---
 
 
-## Page 34
+
 
 3-PS2-2
 
@@ -1290,7 +1313,7 @@ Examples of motion with a predictable pattern could include a child swinging in 
 ---
 
 
-## Page 35
+
 
 3-PS2-3
 
@@ -1340,7 +1363,7 @@ Examples of an electric force could include the force on hair from an electrical
 ---
 
 
-## Page 36
+
 
 3-PS2-4
 
@@ -1406,7 +1429,7 @@ Examples of an electric force could include the force on hair from an electrical
 ---
 
 
-## Page 37
+
 
 # FROM MOLECULES TO ORGANISMS: STRUCTURES AND PROCESSES
 
@@ -1445,7 +1468,7 @@ Changes that organisms go through during their lives form a pattern. For plant l
 ---
 
 
-## Page 38
+
 
 # ECOSYSTEMS: INTERACTIONS, ENERGY, AND DYNAMICS
 
@@ -1484,7 +1507,7 @@ Arguments could include examples of group behavior such as division of labor in 
 ---
 
 
-## Page 39
+
 
 # HEREDITY: INHERITANCE AND VARIATION OF TRAITS
 
@@ -1523,7 +1546,7 @@ Emphasis is on organisms other than humans and does not include genetic mechanis
 ---
 
 
-## Page 40
+
 
 3-LS3-2
 
@@ -1549,7 +1572,7 @@ Emphasis is on organisms other than humans and does not include genetic mechanis
 ---
 
 
-## Page 41
+
 
 3-LS4-1
 
@@ -1587,7 +1610,7 @@ Examples of data could include type, size, and distributions of fossil organisms
 ---
 
 
-## Page 42
+
 
 3-LS4-2
 
@@ -1626,7 +1649,7 @@ Cause and effect relationships are routinely identified, tested, and used to exp
 ---
 
 
-## Page 43
+
 
 3-LS4-3
 
@@ -1667,7 +1690,7 @@ Examples of evidence could include needs and characteristics of the organisms an
 ---
 
 
-## Page 44
+
 
 3-LS4-4
 
@@ -1705,7 +1728,7 @@ Examples of environmental change(s) could include changes in land characteristic
 ---
 
 
-## Page 45
+
 
 # EARTH'S SYSTEMS
 
@@ -1741,7 +1764,7 @@ Examples of data could include average temperature, precipitation, and wind dire
 ---
 
 
-## Page 46
+
 
 3-ESS2-2
 
@@ -1781,7 +1804,7 @@ Patterns of change can be used to make predictions.
 ---
 
 
-## Page 47
+
 
 3-ESS3-1
 
@@ -1824,7 +1847,7 @@ Cause and effect relationships are routinely identified, tested, and used to exp
 ---
 
 
-## Page 48
+
 
 4-PS3-1
 
@@ -1862,7 +1885,7 @@ Relating the speed of an object to the energy of the object does not require cal
 ---
 
 
-## Page 49
+
 
 4-PS3-2
 
@@ -1900,7 +1923,7 @@ When energy is transferred it may change forms such as when light from the sun w
 ---
 
 
-## Page 50
+
 
 4-PS3-3
 
