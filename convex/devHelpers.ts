@@ -1,3 +1,7 @@
+/**
+ * 🧪 DEV HELPERS - For development and testing only
+ * Functions: quickApproveAndSendMagicLink
+ */
 import { action, mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";

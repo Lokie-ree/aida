@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Internal workflow steps for Alignment Scorecard: retrieveStandards, analyzeWithAgent, generateScorecard, saveAnalysis
+ */
 import { v } from "convex/values";
 import { internalAction, internalMutation } from "./_generated/server";
 import { components } from "./_generated/api";

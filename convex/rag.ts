@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Alignment Scorecard API: analyzeContentAlignment, getAlignmentStatus
+ */
 import { v } from "convex/values";
 import { query, action } from "./_generated/server";
 import { authComponent } from "./auth";

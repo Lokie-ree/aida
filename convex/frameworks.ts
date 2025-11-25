@@ -14,6 +14,10 @@
  * shapes what we build next.
  */
 
+/**
+ * ✅ ACTIVE - Used in production
+ * Functions: getAllFrameworks, getFrameworkById, searchFrameworks, saveFramework, recordFrameworkUsage
+ */
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";

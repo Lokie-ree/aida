@@ -25,7 +25,18 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
+    // Safely log error to avoid "Cannot convert object to primitive value" issues
+    try {
+      console.error("ErrorBoundary caught an error:", {
+        message: error?.message,
+        name: error?.name,
+        stack: error?.stack,
+        componentStack: errorInfo?.componentStack,
+      });
+    } catch (logError) {
+      // Fallback if even logging fails
+      console.error("ErrorBoundary caught an error (logging failed)");
+    }
     this.setState({ error, errorInfo });
   }
 
@@ -64,15 +75,15 @@ export class ErrorBoundary extends Component<Props, State> {
                 <div className="rounded-md bg-muted p-3">
                   <p className="text-sm font-medium text-muted-foreground">Error Details:</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {this.state.error.message}
+                    {String(this.state.error?.message || "Unknown error")}
                   </p>
-                  {this.state.errorInfo && (
+                  {this.state.errorInfo?.componentStack && (
                     <details className="mt-2">
                       <summary className="text-xs text-muted-foreground cursor-pointer">
                         Stack Trace
                       </summary>
                       <pre className="text-xs text-muted-foreground mt-2 whitespace-pre-wrap">
-                        {this.state.errorInfo.componentStack}
+                        {String(this.state.errorInfo.componentStack || "")}
                       </pre>
                     </details>
                   )}

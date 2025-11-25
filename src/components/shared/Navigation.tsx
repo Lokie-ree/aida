@@ -18,7 +18,8 @@ import {
   Menu,
   X,
   Clock,
-  Shield
+  Shield,
+  FileCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,6 +45,12 @@ export function Navigation({ className }: NavigationProps) {
       label: "Framework Library",
       icon: BookOpen,
       description: "Browse AI guidance frameworks"
+    },
+    {
+      path: "/alignment-scorecard",
+      label: "Alignment Scorecard",
+      icon: FileCheck,
+      description: "Analyze content against Louisiana Standards"
     },
     // GRASSROOTS LAUNCH: Community features hidden for 5-user launch
     // Deprioritized until scaling to 30-100 users (code stays in place)

@@ -1,3 +1,8 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Core Flare #1: Alignment Scorecard workflow
+ * Functions: analyzeContentAlignment (workflow)
+ */
 import { v } from "convex/values";
 import { workflow } from "./workflows";
 import { internal } from "./_generated/api";

@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Rate limiting for RAG service and other operations
+ */
 import { RateLimiter, MINUTE, HOUR } from "@convex-dev/rate-limiter";
 import { components } from "./_generated/api";
 

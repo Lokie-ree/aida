@@ -11,21 +11,21 @@
 - RAG infrastructure exists in `convex/rag.ts` with filters: `contentType`, `subject`, `gradeLevel`, `standardCode`, `cognitiveDepth`, `userId`
 - `convex/populateStandards.ts` has structure for adding standards to RAG but relies on broken PDF scraper (PDF parsing not implemented - returns placeholder)
 - `convex/ragService.ts` provides search APIs using namespace `"louisiana_standards"`
-- `convex/alignmentSteps.ts` uses RAG search for alignment workflows - **workflow is built but broken because no data in RAG**
+- `convex/alignmentSteps.ts` uses RAG search for alignment workflows - **workflow tested and working with test data from `populateStandards.ts`**
 - Knowledge folder contains markdown files: `la-ela.md`, `la-math.md`, `la-social-studies.md`, `la-ler-rubric.md`, etc. - **these are the actual source of truth but not being used**
 - LER referenced in schema (`lerDomains` field) and frameworks but not in RAG
 - `populateStandardsFromData` exists for manual data entry (testing)
 
 **Critical Issues Found:**
 
-- **Two RAG instances**: `rag.ts` (6 filters) and `populateStandards.ts` (5 filters) both initialize RAG with different filter configurations - **MUST consolidate first**
-- **No data in RAG**: Alignment workflows expect standards but scraper doesn't work, so RAG is likely empty - **blocking feature functionality**
+- ✅ **Two RAG instances**: ~~`rag.ts` (6 filters) and `populateStandards.ts` (5 filters) both initialize RAG with different filter configurations - **MUST consolidate first**~~ - **RESOLVED**: RAG consolidation complete, single instance in use
+- **Limited data in RAG**: Test data from `populateStandards.ts` working, but full standards population still needed (scraper doesn't work, JSON conversion needed)
 - **Knowledge files unused**: Markdown files contain the actual standards but no parser exists
 - **File access**: Convex actions can use `fetch()` but best approach is to accept content as string parameter
 
 **What's Missing:**
 
-- Consolidated RAG initialization (single source of truth)
+- ✅ Consolidated RAG initialization (single source of truth) - **COMPLETE**
 - JSON schemas for data validation
 - Markdown-to-JSON converters
 - JSON parsers for reliable data extraction
@@ -181,32 +181,34 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ## Implementation Plan
 
-### Phase 0: RAG Consolidation (CRITICAL - Do First)
+### Phase 0: RAG Consolidation (CRITICAL - Do First) ✅ COMPLETE
+
+**Status:** Completed - `populateStandards.ts` now imports `rag` from `rag.ts`. Single RAG instance confirmed working with alignment scorecard workflow.
 
 **Goal:** Fix structural issue of duplicate RAG instances before adding new functionality
 
 **Tasks:**
 
-1. **Consolidate RAG Initialization**
+1. **Consolidate RAG Initialization** ✅
 
-- Update `convex/populateStandards.ts` to import `rag` from `rag.ts` instead of creating new instance
-- Remove duplicate RAG initialization (lines 15-26 in `populateStandards.ts`)
-- Remove duplicate imports: `RAG` from `@convex-dev/rag` and `openai` (no longer needed)
-- Ensure `addStandardToRAG` function uses imported `rag` instance
-- Verify all 6 filters from `rag.ts` are available (including `userId`)
+- ✅ Update `convex/populateStandards.ts` to import `rag` from `rag.ts` instead of creating new instance
+- ✅ Remove duplicate RAG initialization (lines 15-26 in `populateStandards.ts`)
+- ✅ Remove duplicate imports: `RAG` from `@convex-dev/rag` and `openai` (no longer needed)
+- ✅ Ensure `addStandardToRAG` function uses imported `rag` instance
+- ✅ Verify all 6 filters from `rag.ts` are available (including `userId`)
 
-2. **Verify RAG Filter Consistency**
+2. **Verify RAG Filter Consistency** ✅
 
-- Check that `rag.ts` filterNames match what's actually used in queries
-- Document filter usage patterns
-- Ensure no filter mismatches exist between initialization and usage
+- ✅ Check that `rag.ts` filterNames match what's actually used in queries
+- ✅ Document filter usage patterns
+- ✅ Ensure no filter mismatches exist between initialization and usage
 - **Review filter design:** Consider which filters are truly needed for index-level filtering vs. post-filtering in actions (see Technical Constraints section)
 
-3. **Test Consolidation**
+3. **Test Consolidation** ✅
 
-- Verify existing RAG queries still work after consolidation
-- Test that `populateStandardsFromData` still functions correctly
-- Ensure no breaking changes to alignment workflows
+- ✅ Verify existing RAG queries still work after consolidation
+- ✅ Test that `populateStandardsFromData` still functions correctly
+- ✅ Ensure no breaking changes to alignment workflows (alignment scorecard workflow tested and working)
 - Follow testing patterns from [CLAUDE.md](../CLAUDE.md#testing-architecture) using `convex-test` and `edge-runtime` environment
 
 **Files to Modify:**
@@ -618,7 +620,7 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ## Success Criteria
 
-- Single RAG instance used throughout codebase (Phase 0)
+- ✅ Single RAG instance used throughout codebase (Phase 0) - **COMPLETE**
 - JSON schemas created and validated (Phase 1-2)
 - All LSS markdown files converted to JSON and standards in RAG (Phase 1)
 - All LER indicators converted to JSON and in RAG with correct structure (Phase 2)

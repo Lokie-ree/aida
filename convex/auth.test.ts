@@ -14,11 +14,11 @@ describe("Authentication", () => {
     t = convexTest(schema, modules);
   });
 
-  describe("getCurrentUser", () => {
+  describe("loggedInUser", () => {
     test.skip("returns null when not authenticated", async () => {
       // Skipped: authComponent.getAuthUser() throws "Unauthenticated" error
       // instead of returning null in convex-test environment
-      const user = await t.query(api.auth.getCurrentUser, {});
+      const user = await t.query(api.auth.loggedInUser, {});
 
       expect(user).toBeNull();
     });
@@ -31,7 +31,7 @@ describe("Authentication", () => {
         email: "test@example.com",
       });
 
-      const user = await asUser.query(api.auth.getCurrentUser, {});
+      const user = await asUser.query(api.auth.loggedInUser, {});
       expect(user).not.toBeNull();
       expect(user?.email).toBe("test@example.com");
     });
@@ -81,10 +81,10 @@ describe("Authentication", () => {
       // await t.finishInProgressScheduledFunctions();
     });
 
-    test("getCurrentUser throws when not authenticated", async () => {
-      // Verify that getCurrentUser requires authentication
+    test("loggedInUser throws when not authenticated", async () => {
+      // Verify that loggedInUser requires authentication
       await expect(
-        t.query(api.auth.getCurrentUser, {})
+        t.query(api.auth.loggedInUser, {})
       ).rejects.toThrow();
     });
   });

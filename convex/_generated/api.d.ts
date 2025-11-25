@@ -9,7 +9,6 @@
  */
 
 import type * as admin from "../admin.js";
-import type * as adminDebug from "../adminDebug.js";
 import type * as alignmentScorecard from "../alignmentScorecard.js";
 import type * as alignmentSteps from "../alignmentSteps.js";
 import type * as auth from "../auth.js";
@@ -17,7 +16,6 @@ import type * as authorization from "../authorization.js";
 import type * as betaProgram from "../betaProgram.js";
 import type * as betaSignup from "../betaSignup.js";
 import type * as crons from "../crons.js";
-import type * as dashboardAnalytics from "../dashboardAnalytics.js";
 import type * as devHelpers from "../devHelpers.js";
 import type * as email from "../email.js";
 import type * as emailEvents from "../emailEvents.js";
@@ -28,7 +26,6 @@ import type * as populateStandards from "../populateStandards.js";
 import type * as rag from "../rag.js";
 import type * as ragService from "../ragService.js";
 import type * as rateLimiting from "../rateLimiting.js";
-import type * as router from "../router.js";
 import type * as seedFrameworks from "../seedFrameworks.js";
 import type * as standardsScraper from "../standardsScraper.js";
 import type * as testHelpers from "../testHelpers.js";
@@ -53,7 +50,6 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
-  adminDebug: typeof adminDebug;
   alignmentScorecard: typeof alignmentScorecard;
   alignmentSteps: typeof alignmentSteps;
   auth: typeof auth;
@@ -61,7 +57,6 @@ declare const fullApi: ApiFromModules<{
   betaProgram: typeof betaProgram;
   betaSignup: typeof betaSignup;
   crons: typeof crons;
-  dashboardAnalytics: typeof dashboardAnalytics;
   devHelpers: typeof devHelpers;
   email: typeof email;
   emailEvents: typeof emailEvents;
@@ -72,7 +67,6 @@ declare const fullApi: ApiFromModules<{
   rag: typeof rag;
   ragService: typeof ragService;
   rateLimiting: typeof rateLimiting;
-  router: typeof router;
   seedFrameworks: typeof seedFrameworks;
   standardsScraper: typeof standardsScraper;
   testHelpers: typeof testHelpers;

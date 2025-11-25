@@ -1,12 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   BookOpen, 
   Users, 
   Lightbulb, 
   TrendingUp,
-  ArrowRight
+  ArrowRight,
+  FileCheck
 } from "lucide-react";
 import { spacing } from "@/lib/spacing";
 
@@ -44,18 +46,10 @@ const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAc
     variant: "default"
   },
   {
-    id: "community",
-    label: "Louisiana Educator Community",
-    description: "Connect with fellow educators across the state",
-    icon: <Users className="h-6 w-6" />,
-    onClick: () => {},
-    variant: "outline"
-  },
-  {
-    id: "innovation",
-    label: "Share Your Success",
-    description: "Help fellow Louisiana educators succeed",
-    icon: <Lightbulb className="h-6 w-6" />,
+    id: "alignment-scorecard",
+    label: "Alignment Scorecard",
+    description: "Analyze content against Louisiana Standards",
+    icon: <FileCheck className="h-6 w-6" />,
     onClick: () => {},
     variant: "outline"
   },
@@ -78,6 +72,7 @@ export function QuickAccessGrid({
   userStats,
   className = ""
 }: QuickAccessGridProps) {
+  const navigate = useNavigate();
   const defaultItems = getDefaultItems(userStats);
   const processedItems = items || defaultItems;
   const fadeInUp = {
@@ -97,6 +92,8 @@ export function QuickAccessGrid({
     switch (item.id) {
       case "frameworks":
         return { ...item, onClick: onNavigateToFrameworks || item.onClick };
+      case "alignment-scorecard":
+        return { ...item, onClick: () => navigate('/alignment-scorecard') };
       case "community":
         return { ...item, onClick: onNavigateToCommunity || item.onClick };
       case "innovation":

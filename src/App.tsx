@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
@@ -14,7 +14,8 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 const SmartRedirect = lazy(() => import("./components/routes/SmartRedirect"));
 const DashboardRoute = lazy(() => import("./components/routes/DashboardRoute"));
 const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
-const InnovationList = lazy(() => import("./components/community/InnovationList"));
+//const InnovationList = lazy(() => import("./components/community/InnovationList"));
+const AlignmentScorecard = lazy(() => import("./components/alignment/AlignmentScorecard"));
 const ProfileSettings = lazy(() => import("./components/dashboard/ProfileSettings"));
 const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
 const TimeTracking = lazy(() => import("./components/dashboard/TimeTracking"));
@@ -22,7 +23,6 @@ const LandingPage = lazy(() => import("./components/shared/LandingPage"));
 
 // Component to handle authenticated header with navigation
 function AuthenticatedHeader() {
-  const location = useLocation();
   const { data: session } = authClient.useSession();
 
   return (
@@ -89,11 +89,11 @@ export default function App() {
                         </ProtectedRoute>
                       } 
                     />
-                     <Route 
-                      path="/community" 
+                    <Route 
+                      path="/alignment-scorecard" 
                       element={
                         <ProtectedRoute>
-                          <InnovationList />
+                          <AlignmentScorecard />
                         </ProtectedRoute>
                       } 
                     />

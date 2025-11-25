@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Functions: getUserProfile, updateUserProfile, initializeNewUser
+ */
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";

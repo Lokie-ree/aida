@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Scheduled cron jobs for weekly emails and engagement tracking
+ */
 import { cronJobs } from "convex/server";
 import { internal } from "./_generated/api";
 
