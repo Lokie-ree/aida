@@ -152,8 +152,6 @@ export function Dashboard({
               <QuickAccessGrid
                 userStats={stats}
                 onNavigateToFrameworks={handleNavigateToFrameworks}
-                onNavigateToCommunity={handleNavigateToCommunity}
-                onNavigateToInnovation={handleNavigateToInnovation}
                 onNavigateToProgress={handleNavigateToProgress}
               />
             </div>

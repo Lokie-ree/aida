@@ -1,3 +1,7 @@
+/**
+ * 🧪 TEST HELPERS - For testing only
+ * Functions: addTestStandards, testAlignmentScorecard, getRecentAnalyses, testRAGSearch
+ */
 import { v } from "convex/values";
 import { action, query } from "./_generated/server";
 import { api, internal } from "./_generated/api";
@@ -7,12 +11,6 @@ async function getAuthUserId(ctx: any): Promise<string | null> {
   const user = await authComponent.getAuthUser(ctx);
   return user?._id ?? null;
 }
-
-/**
- * Test Helpers for Alignment Scorecard POC
- * 
- * These functions help test and debug the Alignment Scorecard workflow.
- */
 
 /**
  * Add sample Louisiana Standards to RAG for testing

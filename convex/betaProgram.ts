@@ -1,4 +1,7 @@
 /**
+ * ✅ ACTIVE - Used in production
+ * Functions: getBetaStatus, getBetaStats, recordWeeklyEngagement, getAllBetaUsers
+ * 
  * Beta Program Tracking - Building Together
  * 
  * **Grassroots Launch:** You're one of 5 educators building this together. No complex

@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Authentication: loggedInUser, createAuth, authComponent
+ */
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
 import { magicLink } from "better-auth/plugins";
@@ -66,15 +70,10 @@ export const createAuth = (
   });
 };
 
-// Example function for getting the current user
-// Feel free to edit, omit, etc.
-export const getCurrentUser = query({
+// Get the current logged-in user
+export const loggedInUser = query({
   args: {},
   handler: async (ctx) => {
     return authComponent.getAuthUser(ctx);
   },
 });
-
-// Legacy compatibility
-export const currentUser = getCurrentUser;
-export const loggedInUser = getCurrentUser;

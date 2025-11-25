@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Workflow manager for Alignment Scorecard and other workflows
+ */
 import { WorkflowManager } from "@convex-dev/workflow";
 import { components } from "./_generated/api";
 

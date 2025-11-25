@@ -1,3 +1,9 @@
+/**
+ * ⚠️ PHASE 2 - Backend ready, UI hidden for MVP
+ * Backend: Complete (mutations, queries, database)
+ * Frontend: Community features hidden until 30-100 users
+ * Functions: submitTestimonial
+ */
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";

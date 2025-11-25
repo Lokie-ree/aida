@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * RAG service: getStandards (rate-limited standards retrieval)
+ */
 import { action, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 import { rag } from "./rag";

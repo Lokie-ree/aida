@@ -1,9 +1,9 @@
-// ============================================
-// PHASE 2: Out of scope for MVP
-// ============================================
-// This file contains community innovation sharing functionality which is not part of Phase 1 MVP.
-// Uncomment and refactor when Phase 2 development begins.
-
+/**
+ * ⚠️ PHASE 2 - Backend ready, UI hidden for MVP
+ * Backend: Complete (mutations, queries, database)
+ * Frontend: Community features hidden until 30-100 users
+ * Functions: shareInnovation, getRecentInnovations, getUserInnovations, getInnovationsByFramework, likeInnovation, markInnovationTried
+ */
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
@@ -414,61 +414,6 @@ export const commentInnovation = mutation({
     });
 
     return interactionId;
-  },
-});
-
-/**
- * Mutation: Submit innovation (alias for shareInnovation).
- * 
- * Alternative function name for sharing innovations.
- * Provides the same functionality as shareInnovation with different naming.
- * 
- * @requires Authentication - Must be logged in
- * @param title - Innovation title
- * @param description - Detailed description of the innovation
- * @param relatedFramework - Optional framework ID this innovation relates to
- * @param tags - Array of tags for categorization
- * @param timeSaved - Optional minutes saved using this innovation
- * 
- * @returns ID of the created innovation record
- * 
- * @throws "User must be authenticated" if no session
- * 
- * @see shareInnovation for identical functionality
- */
-export const submitInnovation = mutation({
-  args: {
-    title: v.string(),
-    description: v.string(),
-    relatedFramework: v.optional(v.id("frameworks")),
-    tags: v.array(v.string()),
-    timeSaved: v.optional(v.number()),
-  },
-  returns: v.id("innovations"),
-  handler: async (ctx, args) => {
-    const user = await authComponent.getAuthUser(ctx);
-    if (!user) {
-      throw new Error("User must be authenticated");
-    }
-    const userId = user._id;
-
-    // Create innovation
-    const innovationId = await ctx.db.insert("innovations", {
-      userId,
-      title: args.title.trim(),
-      description: args.description.trim(),
-      relatedFramework: args.relatedFramework,
-      tags: args.tags,
-      timeSaved: args.timeSaved,
-      userName: user.name || "Anonymous",
-      school: (user as any).school || "Not specified",
-      subject: (user as any).subject || "Not specified",
-      likes: 0,
-      triesCount: 0,
-      createdAt: Date.now(),
-    });
-
-    return innovationId;
   },
 });
 

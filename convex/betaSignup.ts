@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Functions: signupForBeta, getBetaSignupByEmail, approveBetaSignup, getPendingSignups
+ */
 import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";

@@ -1,3 +1,8 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Functions: sendBetaWelcomeEmail, sendPlatformAccessEmail, sendMagicLinkEmail
+ * 🚫 FEATURE-FLAGGED: sendWeeklyPromptEmail, sendWeeklyEmailsToAllUsers (disabled for grassroots launch, enable at 30-100 users)
+ */
 "use node";
 import { action } from "./_generated/server";
 import { v } from "convex/values";
@@ -167,6 +172,8 @@ export const sendPlatformAccessEmail = action({
 /**
  * Action: Send weekly AI prompt email to a user.
  * 
+ * 🚫 FEATURE-FLAGGED: Disabled for grassroots launch (5 users). Enable when scaling to 30-100 users.
+ * 
  * **Grassroots Launch Note:** For 5 users, use personal check-ins instead of automation.
  * This feature is ready for when you scale to 30-100 users. Enable via env var:
  * `npx convex env set WEEKLY_EMAILS_ENABLED true`
@@ -252,6 +259,8 @@ export const sendWeeklyPromptEmail = action({
 
 /**
  * Action: Send weekly emails to all active beta users.
+ * 
+ * 🚫 FEATURE-FLAGGED: Disabled for grassroots launch (5 users). Enable when scaling to 30-100 users.
  * 
  * **Grassroots Launch:** DISABLED by default for 5 users (use personal check-ins).
  * Enable when scaling to 30-100 users via: `npx convex env set WEEKLY_EMAILS_ENABLED true`

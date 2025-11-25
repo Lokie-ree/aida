@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # CLAUDE.md - AI Assistant Guide for Pelican AI
 
-**Last Updated:** November 23, 2025
-**Version:** 3.1.0
-**Status:** Production Ready - Streamlined Documentation
+**Last Updated:** November 24, 2025
+**Version:** 3.2.0
+**Status:** Production Ready - Refactored and Streamlined
 
 ---
 
@@ -31,16 +31,12 @@ Pelican AI is an **educational SaaS platform** that provides Louisiana educators
 1. **Framework Library** - 10 platform-agnostic AI guidance frameworks (exact count, honest numbers)
 2. **Dashboard** - Personalized educator dashboard with time tracking and analytics
 3. **Beta Program Management** - Grassroots launch with small group of committed educators
-4. **Community Features** - Innovation sharing and testimonials (backend implemented, UI intentionally hidden for MVP launch)
-
-### Features in Development
-
-**Alignment Scorecard (Core Flare #1)** - Multi-step workflow analyzing AI-generated content against Louisiana Standards and Louisiana Educator Rubric indicators
-- ✅ **Backend:** Complete (workflow, RAG, database, API endpoints)
-- ❌ **Frontend:** UI components not yet built
-- **Status:** Backend solid, ready for UI implementation
-- **Files:** `convex/alignmentScorecard.ts`, `convex/alignmentSteps.ts`, `convex/ragService.ts`
-- **Rubric Integration:** Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
+4. **Alignment Scorecard (Core Flare #1)** - Analyze AI-generated content against Louisiana Standards
+   - ✅ **Backend:** Complete (workflow, RAG, database, API endpoints)
+   - ✅ **Frontend:** Complete (UI components, route, navigation)
+   - **Files:** `convex/alignmentScorecard.ts`, `convex/alignmentSteps.ts`, `convex/rag.ts`, `src/components/alignment/`
+   - **Rubric Integration:** Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
+5. **Community Features** - Innovation sharing and testimonials (backend implemented, UI intentionally hidden for MVP launch - will unhide at 30-100 users)
 
 ### Future Features (Planned, Not Yet Implemented)
 
@@ -751,6 +747,56 @@ npx convex env set KEY val  # Set environment variable
 
 ---
 
+## Refactoring Status (November 2025)
+
+### Completed Refactoring
+
+**Phase 0: Alignment Scorecard UI** ✅
+- Created complete UI component structure (`src/components/alignment/`)
+- Added route, navigation item, and quick access card
+- Connected to backend APIs (`api.rag.analyzeContentAlignment`, `api.rag.getAlignmentStatus`)
+
+**Phase 1: Dead Code Removal** ✅
+- Deleted 4 orphaned backend files (dashboardAnalytics.ts, adminDebug.ts, vapi.ts, router.ts)
+- Removed 5 unused frontend components (CommunityInsights, ProgressTrackingChart, FrameworkUsageChart, TimeSavingsChart, gradient-text.tsx)
+- Updated dashboard index.ts exports
+
+**Phase 2: Community Features Hidden** ✅
+- Removed `/community` route from App.tsx
+- Removed community navigation cards from QuickAccessGrid
+- Removed community navigation handlers from Dashboard
+- Community backend remains intact for future unhiding
+
+**Phase 3: Backend Cleanup** ✅
+- Removed `currentUser` and `getCurrentUser` aliases from auth.ts (kept `loggedInUser`)
+- Removed duplicate `submitInnovation` function from innovations.ts
+- Removed unused `getSimilarInnovations` function
+- Added feature-flag comments to email.ts functions
+
+**Phase 4: Documentation** ✅
+- Added status comments to all Convex files (ACTIVE, PHASE 2, FEATURE-FLAGGED, TEST HELPERS)
+- Updated CLAUDE.md with refactor results
+
+### Feature-Flag Activation Thresholds
+
+**30-100 Users:**
+- Community features (innovations, testimonials) - UI will be unhidden
+- Weekly email automation (`sendWeeklyPromptEmail`, `sendWeeklyEmailsToAllUsers`) - Enable via `WEEKLY_EMAILS_ENABLED=true`
+
+**Current Status:**
+- Community features: Backend complete, UI hidden (5-user grassroots launch)
+- Weekly emails: Disabled by default, feature-flagged in email.ts
+
+### Code Status Markers
+
+All Convex files now have header comments indicating status:
+- ✅ **ACTIVE** - Used in production
+- ⚠️ **PHASE 2** - Backend ready, UI hidden for MVP
+- 🚫 **FEATURE-FLAGGED** - Disabled for grassroots launch
+- 🧪 **TEST HELPERS** - For testing only
+
+---
+
 ## Development Environment
 
 **Platform:** Windows (MINGW64_NT-10.0-26200)
@@ -760,6 +806,6 @@ npx convex env set KEY val  # Set environment variable
 
 ---
 
-**Last Updated:** November 23, 2025
+**Last Updated:** November 24, 2025
 **Maintained by:** Pelican AI Development Team
-**Version:** 3.1.0 - Enhanced with architecture details, testing guide, and build optimization documentation
+**Version:** 3.2.0 - Refactored: Alignment Scorecard UI complete, dead code removed, community features properly hidden, status markers added

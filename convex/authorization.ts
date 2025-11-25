@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Authorization helpers: requireAuth, requireRole, requireAdmin, checkIsAdmin
+ */
 import { authComponent } from "./auth";
 import type { QueryCtx, MutationCtx } from "./_generated/server";
 import type { DataModel } from "./_generated/dataModel";
