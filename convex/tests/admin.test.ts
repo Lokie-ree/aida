@@ -1,31 +1,62 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user and role from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
       if (!identity) throw new Error("Unauthenticated");
       const isAdmin = identity.name === "Admin User";
-      const email = isAdmin ? "delivered@resend.dev" : "user@example.com";
+      const email = isAdmin ? "admin@resend.dev" : "user@example.com";
       return { _id: identity.subject, email, name: identity.name ?? "User", role: isAdmin ? "admin" : "teacher" } as any;
     },
   },
 }));
 
 // Explicitly provide modules for convex-test
+// Exclude test files to avoid circular dependencies
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+// Filter out test files from the modules object
+const modules: Record<string, () => Promise<any>> = {};
+for (const [path, loader] of Object.entries(modulesRaw)) {
+  if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+    modules[path] = loader as () => Promise<any>;
+  }
+}
 
 describe("Admin Dashboard", () => {
   let t: ReturnType<typeof convexTest>;
   let testTestimonialId: Id<"testimonials">;
   let testInnovationId: Id<"innovations">;
   let testBetaUserId: Id<"betaProgram">;
+
+  // Helper function to ensure admin user profile exists
+  async function ensureAdminProfile(asAdmin: ReturnType<ReturnType<typeof convexTest>["withIdentity"]>) {
+    await asAdmin.run(async (ctx) => {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) throw new Error("Unauthenticated");
+      const adminUserId = identity.subject;
+      
+      const existing = await ctx.db
+        .query("userProfiles")
+        .filter((q: any) => q.eq(q.field("userId"), adminUserId))
+        .first();
+      
+      if (!existing) {
+        await ctx.db.insert("userProfiles", {
+          userId: adminUserId,
+          role: "admin",
+          school: "Admin School",
+          subject: "Admin",
+        });
+      }
+    });
+  }
 
   beforeEach(async () => {
     t = convexTest(schema, modules);
@@ -82,7 +113,8 @@ describe("Admin Dashboard", () => {
     });
 
     test("returns true with authenticated admin user", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const isAdmin = await asAdmin.query(api.admin.checkIsAdmin, {});
       expect(isAdmin).toBe(true);
     });
@@ -102,7 +134,8 @@ describe("Admin Dashboard", () => {
     });
 
     test("returns beta users with authenticated admin", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const users = await asAdmin.query(api.admin.getAllBetaUsersAdmin, {});
       expect(Array.isArray(users)).toBe(true);
     });
@@ -116,7 +149,8 @@ describe("Admin Dashboard", () => {
     });
 
     test("returns all testimonials with authenticated admin", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const list = await asAdmin.query(api.admin.getAllTestimonialsAdmin, {});
       expect(Array.isArray(list)).toBe(true);
     });
@@ -130,7 +164,8 @@ describe("Admin Dashboard", () => {
     });
 
     test("returns all innovations with authenticated admin", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const list = await asAdmin.query(api.admin.getAllInnovationsAdmin, {});
       expect(Array.isArray(list)).toBe(true);
     });
@@ -144,7 +179,8 @@ describe("Admin Dashboard", () => {
     });
 
     test("returns admin statistics with authenticated admin", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const stats = await asAdmin.query(api.admin.getAdminStats, {});
       expect(stats).toHaveProperty("totalBetaUsers");
       expect(stats).toHaveProperty("totalFrameworks");
@@ -164,7 +200,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("approves testimonial with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.approveTestimonialAdmin, {
           testimonialId: testTestimonialId,
           status: "approved",
@@ -174,7 +211,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("features testimonial with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.approveTestimonialAdmin, {
           testimonialId: testTestimonialId,
           status: "featured",
@@ -195,7 +233,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("deletes testimonial with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.deleteTestimonialAdmin, { testimonialId: testTestimonialId });
         const exists = await t.query(api.testimonials.getTestimonialById, { testimonialId: testTestimonialId });
         expect(exists).toBeNull();
@@ -212,7 +251,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("deletes innovation with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.deleteInnovationAdmin, { innovationId: testInnovationId });
         const deleted = await t.run(async (ctx) => await ctx.db.get(testInnovationId));
         expect(deleted).toBeNull();
@@ -232,7 +272,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("updates beta user status with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.updateBetaUserStatus, {
           betaUserId: testBetaUserId,
           status: "active",
@@ -252,7 +293,8 @@ describe("Admin Dashboard", () => {
       });
 
       test("sends beta invite with authenticated admin", async () => {
-        const asAdmin = t.withIdentity({ name: "Admin User", email: "delivered@resend.dev" });
+        const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+        await ensureAdminProfile(asAdmin);
         await asAdmin.mutation(api.admin.sendBetaInviteAdmin, { email: "invitee@example.com" });
         // verify an invited beta record exists
         const invited = await t.run(async (ctx) => {

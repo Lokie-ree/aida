@@ -466,7 +466,7 @@ optimizeDeps: {
 
 **Backend Tests** (`vitest.config.mts`):
 - **Environment:** `edge-runtime` (simulates Convex edge runtime)
-- **Tests:** `convex/**/*.test.ts`
+- **Tests:** `convex/tests/**/*.test.ts` (all test files organized in `convex/tests/` subdirectory)
 - **In-memory Testing:** Uses `convex-test` for in-memory Convex simulation
 - **No network calls:** All Convex operations run locally
 
@@ -538,7 +538,7 @@ Before running E2E tests:
 3. **Seed test data (if needed):**
    ```bash
    npx convex run seedFrameworks:seedInitialFrameworks
-   npx convex run ragService:populateSampleStandards  # For alignment scorecard tests
+   npx convex run populateStandards:populateStandardsFromData  # For alignment scorecard tests (with test data)
    ```
 
 ### Test Best Practices
@@ -554,11 +554,10 @@ Before running E2E tests:
 // vitest.config.mts coverage settings
 coverage: {
   exclude: [
-    "convex/**/*.test.ts",           // Test files
+    "convex/tests/**/*.test.ts",     // Test files (organized in tests/ subdirectory)
     "convex/_generated/**",          // Auto-generated files
     "convex/schema.ts",              // Schema definition
     "convex/convex.config.ts",       // Configuration
-    "convex/router.ts",              // Router setup
     "convex/http.ts",                // HTTP endpoints
     "convex/seedFrameworks.ts",      // Seed data
     "convex/auth.ts",                // Better Auth glue
@@ -899,7 +898,7 @@ npx convex deploy           # Deploy to production
 npx convex env set KEY val  # Set environment variable
 
 # RAG/Standards
-npx convex run ragService:populateSampleStandards  # Populate test standards
+npx convex run populateStandards:populateStandardsFromData  # Populate test standards (with test data)
 npx convex run seedFrameworks:seedInitialFrameworks  # Seed framework library
 ```
 
@@ -980,13 +979,29 @@ npx convex run seedFrameworks:seedInitialFrameworks  # Seed framework library
 **Phase 3: Backend Cleanup** ✅
 - Verified auth.ts is clean (only `loggedInUser` exists, no aliases to remove)
 - Removed unused `getSimilarInnovations` function from innovations.ts
+- Deleted `convex/standardsScraper.ts` (unimplemented PDF parsing, not used)
+- Removed `populateSampleStandards` and `populateStandardsFromScraper` functions from `convex/populateStandards.ts`
+- Removed `/populateSampleStandards` HTTP endpoint from `convex/http.ts`
 - Kept all other functions (used in tests or needed for future community features)
 - Verified feature-flag comments already exist in email.ts
 
 **Phase 4: Documentation & Status Markers** ✅
-- Added status comments to remaining Convex files (emailEvents.ts, seedFrameworks.ts, standardsScraper.ts)
+- Added status comments to remaining Convex files (emailEvents.ts, seedFrameworks.ts)
 - All Convex files now have status markers (ACTIVE, PHASE 2, FEATURE-FLAGGED, TEST HELPERS, DEV HELPERS)
 - Updated CLAUDE.md with refactor results
+
+**Phase 5: Test Reorganization & RAG Testing** ✅ (November 26, 2025)
+- Reorganized test files: Moved all `convex/*.test.ts` files to `convex/tests/` subdirectory
+- Updated `vitest.config.mts` test pattern to `convex/tests/**/*.test.ts`
+- Fixed all 48 pre-existing test failures:
+  - Admin tests: Added `ensureAdminProfile` helper to create admin user profiles in test environment
+  - Framework tests: Fixed `import.meta.glob` pattern to correctly load modules from parent directory
+  - Testimonials/UserProfiles tests: Applied admin profile setup pattern
+  - Email tests: Fixed test mode handling to allow error throwing in specific test cases
+- Created RAG test suite (`convex/tests/ragService.test.ts`) with unit tests for RAG search validation
+- Created manual RAG validation script (`convex/ragValidation.ts`) for testing against real deployments
+- Enhanced Alignment Scorecard tests with RAG accuracy validation
+- All 187 tests passing, 40 intentionally skipped (integration tests requiring real deployments)
 
 ### Feature-Flag Activation Thresholds
 
@@ -1056,6 +1071,6 @@ npx convex env set RESEND_TEST_MODE false  # Production: send real emails
 
 ---
 
-**Last Updated:** November 25, 2025
+**Last Updated:** November 26, 2025
 **Maintained by:** Pelican AI Development Team
-**Version:** 3.4.0 - Consolidated: Added RAG system details, deployment/IT operations, enhanced testing section, updated route documentation
+**Version:** 3.5.0 - Test reorganization complete: All tests moved to `convex/tests/`, all 48 test failures fixed, RAG test suite created

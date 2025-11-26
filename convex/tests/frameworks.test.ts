@@ -1,11 +1,11 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -16,8 +16,16 @@ vi.mock("./auth", () => ({
 }));
 
 // Explicitly provide modules for convex-test
+// Exclude test files to avoid circular dependencies
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+// Filter out test files from the modules object
+const modules: Record<string, () => Promise<any>> = {};
+for (const [path, loader] of Object.entries(modulesRaw)) {
+  if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+    modules[path] = loader as () => Promise<any>;
+  }
+}
 
 describe("Framework Library", () => {
   let t: ReturnType<typeof convexTest>;
@@ -119,7 +127,7 @@ describe("Framework Library", () => {
         module: "ai-basics-hub",
       });
 
-      expect(aiBasicsFrameworks.every(f => f.module === "ai-basics-hub")).toBe(true);
+      expect(aiBasicsFrameworks.every((f: { module: string }) => f.module === "ai-basics-hub")).toBe(true);
     });
 
     test("filters by status", async () => {
@@ -148,17 +156,23 @@ describe("Framework Library", () => {
         status: "published",
       });
 
-      expect(publishedFrameworks.every(f => f.module === "ai-basics-hub" || f.module === "instructional-expert-hub")).toBe(true);
+      expect(publishedFrameworks.every((f: { module: string }) => f.module === "ai-basics-hub" || f.module === "instructional-expert-hub")).toBe(true);
       // Draft frameworks should not appear when status filter is "published"
     });
   });
 
   describe("average recomputation for rating and timeSaved", () => {
     test("recomputes averages across multiple usage records", async () => {
-      // Fresh test context
+      // Fresh test context (exclude test files)
       // @ts-expect-error - import.meta.glob is a Vite feature
-      const modules = import.meta.glob("./**/*.ts", { eager: false });
-      const t2 = convexTest(schema, modules);
+      const modulesRaw2 = import.meta.glob("../**/*.ts", { eager: false });
+      const modules2: Record<string, () => Promise<any>> = {};
+      for (const [path, loader] of Object.entries(modulesRaw2)) {
+        if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+          modules2[path] = loader as () => Promise<any>;
+        }
+      }
+      const t2 = convexTest(schema, modules2);
 
       // Seed a framework
       const fid = await t2.run(async (ctx) => {
@@ -298,7 +312,7 @@ describe("Framework Library", () => {
 
       expect(frameworks).toBeInstanceOf(Array);
       if (frameworks.length > 0) {
-        expect(frameworks.every(f => f.module === "instructional-expert-hub")).toBe(true);
+        expect(frameworks.every((f: { module: string }) => f.module === "instructional-expert-hub")).toBe(true);
       }
     });
 
@@ -312,7 +326,7 @@ describe("Framework Library", () => {
       if (frameworks.length > 0) {
         // getAllFrameworks filters by status internally but doesn't return it
         // So we just verify the module filter worked
-        expect(frameworks.every(f => f.module === "ai-basics-hub")).toBe(true);
+        expect(frameworks.every((f: { module: string }) => f.module === "ai-basics-hub")).toBe(true);
       }
     });
   });
@@ -328,7 +342,7 @@ describe("Framework Library", () => {
       const basics = await t.query(api.frameworks.getAllFrameworks, { module: "ai-basics-hub", status: "published" });
       expect(Array.isArray(basics)).toBe(true);
       if (basics.length > 0) {
-        basics.forEach(f => {
+        basics.forEach((f: { module: string }) => {
           expect(f.module).toBe("ai-basics-hub");
         });
       }
@@ -338,7 +352,7 @@ describe("Framework Library", () => {
       const results = await t.query(api.frameworks.getAllFrameworks, { category: "Test Category" });
       expect(Array.isArray(results)).toBe(true);
       if (results.length > 0) {
-        results.forEach(f => expect(f.category).toBe("Test Category"));
+        results.forEach((f: { category: string }) => expect(f.category).toBe("Test Category"));
       }
     });
   });

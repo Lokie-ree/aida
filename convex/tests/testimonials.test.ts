@@ -1,11 +1,11 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -18,12 +18,43 @@ vi.mock("./auth", () => ({
 }));
 
 // Explicitly provide modules for convex-test
+// Exclude test files to avoid circular dependencies
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+// Filter out test files from the modules object
+const modules: Record<string, () => Promise<any>> = {};
+for (const [path, loader] of Object.entries(modulesRaw)) {
+  if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+    modules[path] = loader as () => Promise<any>;
+  }
+}
 
 describe("Testimonials", () => {
   let t: ReturnType<typeof convexTest>;
   let testTestimonialId: Id<"testimonials">;
+
+  // Helper function to ensure admin user profile exists
+  async function ensureAdminProfile(asAdmin: ReturnType<ReturnType<typeof convexTest>["withIdentity"]>) {
+    await asAdmin.run(async (ctx) => {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) throw new Error("Unauthenticated");
+      const adminUserId = identity.subject;
+      
+      const existing = await ctx.db
+        .query("userProfiles")
+        .filter((q: any) => q.eq(q.field("userId"), adminUserId))
+        .first();
+      
+      if (!existing) {
+        await ctx.db.insert("userProfiles", {
+          userId: adminUserId,
+          role: "admin",
+          school: "Admin School",
+          subject: "Admin",
+        });
+      }
+    });
+  }
 
   beforeEach(async () => {
     t = convexTest(schema, modules);
@@ -46,13 +77,13 @@ describe("Testimonials", () => {
 
   describe("getAllTestimonials", () => {
     test("returns all approved testimonials with admin auth", async () => {
-      // Mock authComponent already handles admin role detection based on identity name
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@school.edu" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       
       const approved = await asAdmin.query(api.testimonials.getAllTestimonials, { status: "approved" });
       expect(Array.isArray(approved)).toBe(true);
       // Should include the test testimonial we created in beforeEach
-      expect(approved.some(t => t._id === testTestimonialId)).toBe(true);
+      expect(approved.some((t: { _id: string }) => t._id === testTestimonialId)).toBe(true);
     });
 
     test("can query testimonials via database directly", async () => {
@@ -67,11 +98,12 @@ describe("Testimonials", () => {
     });
 
     test("admin can list pending testimonials", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@school.edu" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const pending = await asAdmin.query(api.testimonials.getAllTestimonials, { status: "pending" });
       expect(Array.isArray(pending)).toBe(true);
       if (pending.length > 0) {
-        expect(pending.every(t => t.status === "pending")).toBe(true);
+        expect(pending.every((t: { status: string }) => t.status === "pending")).toBe(true);
       }
     });
   });
@@ -202,7 +234,8 @@ describe("Testimonials", () => {
     });
 
     test("admin can approve testimonial", async () => {
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@school.edu" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       await asAdmin.mutation(api.testimonials.approveTestimonial, {
         testimonialId: testTestimonialId,
         featured: true,

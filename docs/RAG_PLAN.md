@@ -1,7 +1,7 @@
 # LER/LSS Data Structuring + RAG Refinements Plan
 
-**Last Updated:** November 23, 2025
-**Status:** Ready for Implementation
+**Last Updated:** November 26, 2025
+**Status:** In Progress - Testing phase active, validating search accuracy
 **Reference:** See [CLAUDE.md](../CLAUDE.md) for technical architecture patterns, Convex function types, testing patterns, and workflow system usage.
 
 ## Current State Analysis
@@ -15,11 +15,15 @@
 - Knowledge folder contains markdown files: `la-ela.md`, `la-math.md`, `la-social-studies.md`, `la-ler-rubric.md`, etc. - **these are the actual source of truth but not being used**
 - LER referenced in schema (`lerDomains` field) and frameworks but not in RAG
 - `populateStandardsFromData` exists for manual data entry (testing)
+- ✅ **Test reorganization complete:** All test files moved to `convex/tests/` subdirectory (November 26, 2025)
+- ✅ **RAG test suite created:** `convex/tests/ragService.test.ts` with unit tests for RAG search validation
+- ✅ **Manual validation script created:** `convex/ragValidation.ts` for testing against real deployments
 
 **Critical Issues Found:**
 
 - ✅ **Two RAG instances**: ~~`rag.ts` (6 filters) and `populateStandards.ts` (5 filters) both initialize RAG with different filter configurations - **MUST consolidate first**~~ - **RESOLVED**: RAG consolidation complete, single instance in use
 - **Limited data in RAG**: Test data from `populateStandards.ts` working, but full standards population still needed (scraper doesn't work, JSON conversion needed)
+- ✅ **Unused files removed:** `convex/standardsScraper.ts` deleted, `populateSampleStandards` and `populateStandardsFromScraper` removed (November 26, 2025)
 - **Knowledge files unused**: Markdown files contain the actual standards but no parser exists
 - **File access**: Convex actions can use `fetch()` but best approach is to accept content as string parameter
 
@@ -268,7 +272,6 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
  - Uses `markdownToJson` converter, then `lssJsonParser`
  - Can output JSON for saving to knowledge/ folder
 - Keep existing `populateStandardsFromData` for manual/testing use
-- Mark `populateStandardsFromScraper` as deprecated
 
 5. **Create Workflow for Bulk Ingestion** (`convex/populateStandardsWorkflow.ts`)
 
@@ -504,21 +507,34 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 - Test with actual user scenarios
 - **Monitor embedding costs and rate limit usage**
 
-**Files to Create:**
+**Manual Validation Scripts Created:** ✅
+- `convex/ragValidation.ts` - Validation functions for manual testing:
+  - `validateSearchAccuracy`: Test known query → expected results
+  - `validateEmbeddingQuality`: Check semantic relevance of results
+  - `validateFilterBehavior`: Test filter combinations work correctly
+  - `validateRubricIntegration`: Test LER rubric data retrieval (when available)
+- Run via: `npx convex run ragValidation:validateSearchAccuracy`
+- Output results to console for manual review
 
-- `convex/markdownToJson.test.ts` (updated)
-- `convex/lssJsonParser.test.ts` (updated)
-- `convex/lerJsonParser.test.ts` (updated)
-- `convex/populateLER.test.ts` (new)
-- `convex/populateStandardsWorkflow.test.ts` (new)
-- `convex/populateLERWorkflow.test.ts` (new)
+**Files Created:** ✅ (November 26, 2025)
 
-**Deliverables:**
+- `convex/tests/ragService.test.ts` ✅ - RAG service unit and integration tests
+  - Unit tests for `getStandards` validation (subject enum, filter combinations, vector score threshold, limit parameter, rate limiting)
+  - Integration tests (skipped, require real deployment) for RAG search accuracy and embedding quality
+- `convex/tests/alignmentScorecard.test.ts` ✅ - Enhanced with RAG accuracy tests
+  - Added unit tests for validation and edge cases
+  - Added RAG accuracy tests (skipped, require real deployment)
+- `convex/ragValidation.ts` ✅ - Manual validation functions
+- Test files organized in `convex/tests/` subdirectory (all test files moved from `convex/` root)
 
-- Test suite validates JSON conversion, parsing, and RAG population
-- Alignment workflows work with real data
-- Search accuracy validated (>80% precision target)
-- Workflow durability and Rate Limiter integration validated
+**Deliverables:** ✅ (November 26, 2025)
+
+- ✅ **RAG test suite created** (`convex/tests/ragService.test.ts`) with unit tests for input validation
+- ✅ **Enhanced alignment scorecard tests** with RAG accuracy validation (filter behavior, vector score threshold, semantic relevance)
+- ✅ **Manual validation scripts** available for testing against real deployment
+- ⏳ Integration tests marked as skipped (require real Convex deployment with RAG component)
+- ⏳ Search accuracy validation pending (requires real deployment with populated RAG data)
+- ⏳ Workflow durability and Rate Limiter integration validation pending (requires workflow implementation)
 
 ## Technical Decisions
 

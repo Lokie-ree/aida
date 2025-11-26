@@ -1,6 +1,6 @@
 # Development Roadmap
 
-**Last Updated:** November 23, 2025
+**Last Updated:** November 26, 2025
 **Beta Launch:** December 1, 2025
 
 ---
@@ -8,35 +8,42 @@
 ## 🚀 Current Sprint
 
 ### 1. Alignment Scorecard Completion
-- **Status:** 🚧 Backend Complete, UI Pending
+- **Status:** ✅ Complete
 - **Backend:** ✅ Complete (workflows, mutations, queries, RAG integration)
-- **Frontend:** 🚧 Needs UI components + connection to backend
+- **Frontend:** ✅ Complete (UI components, route, navigation, and E2E tests complete)
 - **Rubric Integration:** ✅ Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
 - **Priority:** High
 - **Target:** Complete UI before beta launch to showcase core value proposition
 
 ### 2. Knowledge Base Cleanup & RAG Optimization
-- **Status:** ✅ Knowledge Files Cleaned
+- **Status:** ✅ Knowledge Files Cleaned, Testing Infrastructure Complete
 - **Completed:**
   - ✅ Removed HTML artifacts from all knowledge files (`la-science.md`, `la-ela.md`, `la-math.md`, `la-social-studies.md`, `la-cmps.md`, `la-ler-rubric.md`)
   - ✅ Cleaned markdown formatting for optimal RAG retrieval
   - ✅ Consolidated rubric integration details into `knowledge/la-ler-rubric.md` as single source of truth
+  - ✅ **Test reorganization:** All test files moved to `convex/tests/` subdirectory (November 26, 2025)
+  - ✅ **RAG test suite created:** `convex/tests/ragService.test.ts` with unit tests for RAG search validation
+  - ✅ **Manual validation script:** `convex/ragValidation.ts` for testing against real deployments
+  - ✅ **Removed unused files:** `convex/standardsScraper.ts` deleted, `populateSampleStandards` and `populateStandardsFromScraper` removed
 - **Next Steps:**
-  - Optimize RAG search and retrieval accuracy
+  - **Current Focus:** Run manual RAG validation against real deployment
   - Test embedding quality with cleaned knowledge base
   - Validate rubric integration across all features
+  - Alignment Scorecard UI completion enables end-to-end RAG testing
 - **Priority:** High
 - **Impact:** Clean knowledge base ensures accurate, relevant RAG responses for all platform features
 
 ### 3. LER/LSS Data Structuring + RAG Refinements
-- **Status:** 🚧 In Progress
+- **Status:** 🚧 In Progress - Testing Infrastructure Complete
 - **Goal:** Structure Louisiana Educator Rubric (LER) and Louisiana Student Standards (LSS) for optimal RAG system performance
 - **Completed:**
   - ✅ Knowledge base markdown cleanup (all files cleaned)
   - ✅ Rubric integration guide consolidated into `knowledge/la-ler-rubric.md`
+  - ✅ **RAG test suite:** Unit tests for RAG search validation, integration tests prepared (require real deployment)
+  - ✅ **Manual validation tools:** `convex/ragValidation.ts` ready for testing against real deployments
 - **Remaining Tasks:**
-  - Optimize RAG search and retrieval with cleaned knowledge base
-  - Test accuracy and relevance of embeddings
+  - **Current Focus:** Run manual RAG validation against real deployment with populated data
+  - Test accuracy and relevance of embeddings with real standards data
   - Validate rubric indicator mapping across features
   - Ensure all four core features (Weekly Spark, Alignment Scorecard, Delta Generator, Innovation Remix Engine) properly reference rubric indicators
 - **Priority:** High
