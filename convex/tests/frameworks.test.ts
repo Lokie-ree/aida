@@ -16,8 +16,16 @@ vi.mock("../auth", () => ({
 }));
 
 // Explicitly provide modules for convex-test
+// Exclude test files to avoid circular dependencies
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("../**/*.ts", { eager: false });
+const modulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+// Filter out test files from the modules object
+const modules: Record<string, () => Promise<any>> = {};
+for (const [path, loader] of Object.entries(modulesRaw)) {
+  if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+    modules[path] = loader as () => Promise<any>;
+  }
+}
 
 describe("Framework Library", () => {
   let t: ReturnType<typeof convexTest>;
@@ -155,10 +163,16 @@ describe("Framework Library", () => {
 
   describe("average recomputation for rating and timeSaved", () => {
     test("recomputes averages across multiple usage records", async () => {
-      // Fresh test context
+      // Fresh test context (exclude test files)
       // @ts-expect-error - import.meta.glob is a Vite feature
-      const modules = import.meta.glob("../**/*.ts", { eager: false });
-      const t2 = convexTest(schema, modules);
+      const modulesRaw2 = import.meta.glob("../**/*.ts", { eager: false });
+      const modules2: Record<string, () => Promise<any>> = {};
+      for (const [path, loader] of Object.entries(modulesRaw2)) {
+        if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+          modules2[path] = loader as () => Promise<any>;
+        }
+      }
+      const t2 = convexTest(schema, modules2);
 
       // Seed a framework
       const fid = await t2.run(async (ctx) => {

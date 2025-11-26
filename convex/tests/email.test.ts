@@ -8,13 +8,13 @@ vi.mock("@react-email/render", () => ({
   render: vi.fn(async () => "<html><body>mock</body></html>")
 }));
 
-vi.mock("../src/emails/WeeklyPromptEmail", () => ({
+vi.mock("../../src/emails/WeeklyPromptEmail", () => ({
   WeeklyPromptEmail: () => ({})
 }));
-vi.mock("../src/emails/BetaWelcomeEmail", () => ({
+vi.mock("../../src/emails/BetaWelcomeEmail", () => ({
   BetaWelcomeEmail: () => ({})
 }));
-vi.mock("../src/emails/PlatformAccessEmail", () => ({
+vi.mock("../../src/emails/PlatformAccessEmail", () => ({
   PlatformAccessEmail: () => ({})
 }));
 
@@ -26,14 +26,22 @@ vi.spyOn(resend, "sendEmail").mockImplementation(async () => {
 });
 
 // Explicitly provide modules for convex-test
+// Exclude test files to avoid circular dependencies
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
 const modules = import.meta.glob("../**/*.ts", { eager: false });
+// Filter out test files from the modules object
+const filteredModules: Record<string, () => Promise<any>> = {};
+for (const [path, loader] of Object.entries(modules)) {
+  if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+    filteredModules[path] = loader as () => Promise<any>;
+  }
+}
 
 describe("Email actions", () => {
   let t: ReturnType<typeof convexTest>;
 
   beforeEach(async () => {
-    t = convexTest(schema, modules);
+    t = convexTest(schema, filteredModules);
   });
 
   test("sendBetaWelcomeEmail sends email and returns id", async () => {
@@ -118,28 +126,43 @@ describe("Email actions", () => {
     const originalEnv = process.env.RESEND_TEST_MODE;
     process.env.RESEND_TEST_MODE = "false";
     
-    // Reload modules to pick up the new env var
-    await vi.resetModules();
-    const emailModule = await import("../email");
-    const { api: freshApi } = await import("../_generated/api");
-    
-    const orig = (await import("@react-email/render")) as any;
-    const spy = vi.spyOn(orig, "render").mockImplementation(async () => {
-      throw new Error("render fail");
-    });
-    
-    await expect(
-      t.action(freshApi.email.sendBetaWelcomeEmail, { email: "e@example.com", name: "N" })
-    ).rejects.toThrow(/Failed to send beta welcome email/);
-    
-    spy.mockRestore();
-    // Restore original env
-    if (originalEnv !== undefined) {
-      process.env.RESEND_TEST_MODE = originalEnv;
-    } else {
-      delete process.env.RESEND_TEST_MODE;
+    try {
+      // Reload modules to pick up the new env var
+      await vi.resetModules();
+      
+      // Re-import modules for fresh test context (exclude test files)
+      // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
+      const freshModulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+      const freshModules: Record<string, () => Promise<any>> = {};
+      for (const [path, loader] of Object.entries(freshModulesRaw)) {
+        if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+          freshModules[path] = loader as () => Promise<any>;
+        }
+      }
+      const freshT = convexTest(schema, freshModules);
+      
+      const emailModule = await import("../email");
+      const { api: freshApi } = await import("../_generated/api");
+      
+      const orig = (await import("@react-email/render")) as any;
+      const spy = vi.spyOn(orig, "render").mockImplementation(async () => {
+        throw new Error("render fail");
+      });
+      
+      await expect(
+        freshT.action(freshApi.email.sendBetaWelcomeEmail, { email: "e@example.com", name: "N" })
+      ).rejects.toThrow(/Failed to send beta welcome email/);
+      
+      spy.mockRestore();
+    } finally {
+      // Always restore original env, even if test fails
+      if (originalEnv !== undefined) {
+        process.env.RESEND_TEST_MODE = originalEnv;
+      } else {
+        delete process.env.RESEND_TEST_MODE;
+      }
+      await vi.resetModules();
     }
-    await vi.resetModules();
   });
 
   test("sendPlatformAccessEmail throws on send failure", async () => {
@@ -147,28 +170,43 @@ describe("Email actions", () => {
     const originalEnv = process.env.RESEND_TEST_MODE;
     process.env.RESEND_TEST_MODE = "false";
     
-    // Reload modules to pick up the new env var
-    await vi.resetModules();
-    const emailModule = await import("../email");
-    const { resend: freshResend } = emailModule;
-    const { api: freshApi } = await import("../_generated/api");
-    
-    const sendSpy = vi.spyOn(freshResend, "sendEmail").mockImplementationOnce(async () => {
-      throw new Error("send fail");
-    });
-    
-    await expect(
-      t.action(freshApi.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
-    ).rejects.toThrow(/Failed to send platform access email/);
-    
-    sendSpy.mockRestore();
-    // Restore original env
-    if (originalEnv !== undefined) {
-      process.env.RESEND_TEST_MODE = originalEnv;
-    } else {
-      delete process.env.RESEND_TEST_MODE;
+    try {
+      // Reload modules to pick up the new env var
+      await vi.resetModules();
+      
+      // Re-import modules for fresh test context (exclude test files)
+      // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
+      const freshModulesRaw = import.meta.glob("../**/*.ts", { eager: false });
+      const freshModules: Record<string, () => Promise<any>> = {};
+      for (const [path, loader] of Object.entries(freshModulesRaw)) {
+        if (!path.includes("/tests/") && !path.endsWith(".test.ts") && !path.endsWith(".spec.ts")) {
+          freshModules[path] = loader as () => Promise<any>;
+        }
+      }
+      const freshT = convexTest(schema, freshModules);
+      
+      const emailModule = await import("../email");
+      const { resend: freshResend } = emailModule;
+      const { api: freshApi } = await import("../_generated/api");
+      
+      const sendSpy = vi.spyOn(freshResend, "sendEmail").mockImplementationOnce(async () => {
+        throw new Error("send fail");
+      });
+      
+      await expect(
+        freshT.action(freshApi.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
+      ).rejects.toThrow(/Failed to send platform access email/);
+      
+      sendSpy.mockRestore();
+    } finally {
+      // Always restore original env, even if test fails
+      if (originalEnv !== undefined) {
+        process.env.RESEND_TEST_MODE = originalEnv;
+      } else {
+        delete process.env.RESEND_TEST_MODE;
+      }
+      await vi.resetModules();
     }
-    await vi.resetModules();
   });
 
   test("sendWeeklyPromptEmail throws on send failure", async () => {
