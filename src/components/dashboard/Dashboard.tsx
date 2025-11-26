@@ -50,8 +50,6 @@ export function Dashboard({
 
   // Navigation handlers
   const handleNavigateToFrameworks = () => navigate('/frameworks');
-  const handleNavigateToCommunity = () => navigate('/community');
-  const handleNavigateToInnovation = () => navigate('/community?tab=innovations');
   const handleNavigateToProgress = () => navigate('/dashboard');
   const handleViewAllFrameworks = () => navigate('/frameworks');
   const handleViewFramework = (frameworkId: string) => {

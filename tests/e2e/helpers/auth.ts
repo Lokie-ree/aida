@@ -52,14 +52,14 @@ export async function loginAsTestUser(
   // First check: if we're on a protected route, we're authenticated
   // (Authenticated users get redirected from "/" to "/dashboard" or "/admin")
   const currentUrl = page.url();
-  if (currentUrl.match(/\/dashboard|\/frameworks|\/community|\/admin|\/profile/)) {
+  if (currentUrl.match(/\/dashboard|\/frameworks|\/alignment-scorecard|\/admin|\/profile/)) {
     console.log(`User ${maskEmail(email)} appears to be already authenticated (on protected route: ${currentUrl})`);
     return;
   }
   
   // Also check if we're being redirected (wait for redirect to complete)
   try {
-    await page.waitForURL(/\/dashboard|\/frameworks|\/community|\/admin|\/profile/, { timeout: 2000 });
+    await page.waitForURL(/\/dashboard|\/frameworks|\/alignment-scorecard|\/admin|\/profile/, { timeout: 2000 });
     const redirectedUrl = page.url();
     console.log(`User ${maskEmail(email)} appears to be already authenticated (redirected to: ${redirectedUrl})`);
     return;
@@ -69,9 +69,9 @@ export async function loginAsTestUser(
   
   // Second check: look for authenticated UI elements
   try {
-    // Check for navigation elements (Dashboard, Frameworks, Community buttons)
+    // Check for navigation elements (Dashboard, Frameworks, Alignment Scorecard buttons)
     // These are buttons inside nav elements, not anchor tags
-    const navButton = page.locator('nav button:has-text("Dashboard"), nav button:has-text("Frameworks"), nav button:has-text("Community")').first();
+    const navButton = page.locator('nav button:has-text("Dashboard"), nav button:has-text("Frameworks"), nav button:has-text("Alignment Scorecard")').first();
     const hasNav = await navButton.waitFor({ state: "visible", timeout: 2000 }).then(() => true).catch(() => false);
     
     if (hasNav) {

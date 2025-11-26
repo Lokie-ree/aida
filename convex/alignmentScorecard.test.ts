@@ -572,6 +572,121 @@ const modules = import.meta.glob("./**/*.ts", { eager: false });
     });
   });
 
+  describe("Step 8: Validation and Edge Cases", () => {
+    test("analyzeContentAlignment validates subject enum", async () => {
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      // Should reject invalid subject
+      await expect(
+        asUser.action(api.rag.analyzeContentAlignment, {
+          content: "Test content",
+          gradeLevel: "10",
+          subject: "invalid" as any,
+        })
+      ).rejects.toThrow();
+    });
+
+    test.skip("analyzeContentAlignment validates required fields", async () => {
+      // Skip: Requires workflow component to be registered (not available in convex-test)
+      // Run this test against a real Convex deployment
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      // Should reject missing content
+      await expect(
+        asUser.action(api.rag.analyzeContentAlignment, {
+          content: "",
+          gradeLevel: "10",
+          subject: "ela",
+        } as any)
+      ).resolves.not.toThrow(); // Validator might allow empty string, or throw
+    });
+
+    test.skip("getAlignmentStatus validates workflowId format", async () => {
+      // Skip: Requires workflow component to be registered (not available in convex-test)
+      // Run this test against a real Convex deployment
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      // Should handle empty string workflowId
+      const status = await asUser.query(api.rag.getAlignmentStatus, {
+        workflowId: "",
+      });
+      
+      // Status might be null or have specific structure
+      expect(status !== undefined).toBe(true);
+    });
+
+    test("saveAnalysis handles empty scorecard arrays", async () => {
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      const userId = "test-user-id";
+      
+      const emptyScorecard = {
+        overallScore: 0,
+        breakdown: [],
+        gaps: [],
+        recommendations: [],
+      };
+
+      await asUser.mutation(internal.alignmentSteps.saveAnalysis, {
+        userId,
+        content: "Empty test content",
+        scorecard: emptyScorecard,
+        gradeLevel: "10",
+        subject: "ela",
+      });
+
+      // Verify it was saved
+      const analyses = await t.run(async (ctx) => {
+        return await ctx.db
+          .query("alignmentAnalyses")
+          .filter((q) => q.eq(q.field("userId"), userId))
+          .order("desc")
+          .first();
+      });
+
+      expect(analyses).toBeDefined();
+      expect(analyses?.scorecard.breakdown).toEqual([]);
+      expect(analyses?.scorecard.gaps).toEqual([]);
+      expect(analyses?.scorecard.recommendations).toEqual([]);
+    });
+
+    test("getRecentAnalyses limits to 10 most recent", async () => {
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      const userId = "test-user-id";
+      
+      // Insert 15 test analyses
+      await t.run(async (ctx) => {
+        for (let i = 0; i < 15; i++) {
+          await ctx.db.insert("alignmentAnalyses", {
+            userId,
+            content: `Test content ${i}`,
+            gradeLevel: "10",
+            subject: "ela",
+            alignmentScore: 80 + i,
+            scorecard: {
+              overallScore: 80 + i,
+              breakdown: [],
+              gaps: [],
+              recommendations: [],
+            },
+            analyzedAt: Date.now() + i, // Ensure ordering
+          });
+        }
+      });
+
+      const analyses = await asUser.query(api.testHelpers.getRecentAnalyses, {});
+
+      expect(Array.isArray(analyses)).toBe(true);
+      // Should return at most 10
+      expect(analyses.length).toBeLessThanOrEqual(10);
+      // Should be ordered by creation time (most recent first)
+      if (analyses.length > 1) {
+        for (let i = 0; i < analyses.length - 1; i++) {
+          expect(analyses[i]._creationTime).toBeGreaterThanOrEqual(analyses[i + 1]._creationTime);
+        }
+      }
+    });
+  });
+
   describe("Multiple Content Types", () => {
     beforeEach(async () => {
       // Skip: RAG component not available in convex-test

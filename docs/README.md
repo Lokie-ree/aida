@@ -30,16 +30,36 @@
 
 ---
 
-## Operational Reference
+## Reference Documentation
 
-### [TESTING.md](TESTING.md)
-**Testing Guide** - Quick reference for running tests and best practices.
+### [ROADMAP.md](ROADMAP.md)
+**Development Roadmap** - Current sprint, future improvements, and long-term vision.
+- Referenced in CLAUDE.md for active development planning
+
+### [REFACTOR.md](REFACTOR.md)
+**Technical Debt Tracking** - Refactoring plan and status.
+- Referenced in CLAUDE.md for technical debt management
+
+### [RAG_PLAN.md](RAG_PLAN.md)
+**RAG Implementation Plan** - Detailed technical plan for Louisiana Standards RAG system.
+- Key constraints and patterns consolidated in CLAUDE.md
+- Detailed implementation guidance remains here for reference
 
 ### [IT_WHITELISTING.md](IT_WHITELISTING.md)
-**IT Requirements** - Domain whitelisting for school districts.
+**IT Whitelisting Guide** - Domain whitelisting instructions for school districts.
+- Quick reference in CLAUDE.md deployment section
+- Full guide here for IT administrators
 
 ### [RUBRIC_INTEGRATION_GUIDE.md](RUBRIC_INTEGRATION_GUIDE.md)
-**Rubric Integration** - How the Louisiana Educator Rubric is infused throughout all platform features.
+**Rubric Integration Guide** - Comprehensive guide to Louisiana Educator Rubric integration.
+- Strategic vision in PROJECT.md
+- Technical implementation details in CLAUDE.md
+- Full comprehensive guide here for deep reference
+
+### [TESTING.md](TESTING.md)
+**Testing Quick Reference** - Legacy testing guide.
+- Content consolidated into CLAUDE.md testing section
+- Kept for historical reference
 
 ---
 
@@ -81,5 +101,5 @@ npx convex env set RESEND_TEST_MODE false       # Disable email test mode
 
 ---
 
-**Last Updated:** November 23, 2025
-**Version:** 3.1.0 - Updated for beta launch and rubric integration
+**Last Updated:** November 25, 2025
+**Version:** 3.2.0 - Consolidated documentation: Testing, IT operations, and RAG details moved to CLAUDE.md

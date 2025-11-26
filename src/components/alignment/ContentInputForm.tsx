@@ -39,7 +39,7 @@ export function ContentInputForm({ onSubmit, isSubmitting = false }: ContentInpu
   const isValid = content.trim().length > 0 && gradeLevel.trim().length > 0;
 
   return (
-    <Card>
+    <Card data-testid="alignment-input-form">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
@@ -50,11 +50,11 @@ export function ContentInputForm({ onSubmit, isSubmitting = false }: ContentInpu
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" data-testid="alignment-form">
           <div className="space-y-2">
             <Label htmlFor="subject">Subject Area</Label>
             <Select value={subject} onValueChange={(value) => setSubject(value as typeof subject)}>
-              <SelectTrigger id="subject">
+              <SelectTrigger id="subject" data-testid="alignment-subject-select">
                 <SelectValue placeholder="Select subject" />
               </SelectTrigger>
               <SelectContent>
@@ -75,6 +75,7 @@ export function ContentInputForm({ onSubmit, isSubmitting = false }: ContentInpu
               value={gradeLevel}
               onChange={(e) => setGradeLevel(e.target.value)}
               required
+              data-testid="alignment-grade-input"
             />
           </div>
 
@@ -88,6 +89,7 @@ export function ContentInputForm({ onSubmit, isSubmitting = false }: ContentInpu
               rows={10}
               required
               className="resize-none"
+              data-testid="alignment-content-textarea"
             />
             <p className="text-sm text-muted-foreground">
               This content will be analyzed against Louisiana Student Standards for alignment.
@@ -99,6 +101,7 @@ export function ContentInputForm({ onSubmit, isSubmitting = false }: ContentInpu
             disabled={!isValid || isSubmitting}
             className="w-full"
             size="lg"
+            data-testid="alignment-submit-button"
           >
             {isSubmitting ? (
               <>

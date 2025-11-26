@@ -38,7 +38,6 @@ describe("Beta Program", () => {
         frameworksTried: 5,
         totalTimeSaved: 120,
         innovationsShared: 2,
-        officeHoursAttended: 1,
         weeklyEngagementCount: 3,
       });
     });
@@ -68,7 +67,6 @@ describe("Beta Program", () => {
           frameworksTried: 1,
           totalTimeSaved: 10,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });
@@ -119,7 +117,6 @@ describe("Beta Program", () => {
           frameworksTried: 3,
           totalTimeSaved: 45,
           innovationsShared: 1,
-          officeHoursAttended: 2,
           weeklyEngagementCount: 4,
         });
       });
@@ -159,7 +156,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
         await ctx.db.insert("betaProgram", {
@@ -172,7 +168,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });
@@ -245,7 +240,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });
@@ -272,7 +266,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });
@@ -308,7 +301,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });
@@ -334,7 +326,6 @@ describe("Beta Program", () => {
           frameworksTried: 0,
           totalTimeSaved: 0,
           innovationsShared: 0,
-          officeHoursAttended: 0,
           weeklyEngagementCount: 0,
         });
       });

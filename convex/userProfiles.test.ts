@@ -221,7 +221,6 @@ describe("User Profiles", () => {
           school: "Test School",
           subject: "Mathematics",
           gradeLevel: "9-12",
-          district: "Test District",
           role: "teacher",
         });
       });

@@ -1,6 +1,10 @@
 /**
  * E2E Tests: Community Features
  * 
+ * ⚠️ SKIPPED: Community features are hidden for MVP launch (Phase 2)
+ * Backend is complete, but UI is hidden until 30-100 users
+ * These tests will be re-enabled when community features are unhidden
+ * 
  * Test Cases TC-COMMUNITY-001 through TC-COMMUNITY-014
  * Covers innovation submission, viewing, filtering, and testimonials
  */
@@ -12,7 +16,7 @@ import { navigateTo } from "./helpers/navigation";
 import { loginAsTestUser } from "./helpers/auth";
 import { testUsers, testInnovations, testTestimonials } from "./helpers/fixtures";
 
-describe("Community Features - Core Functionality", () => {
+describe.skip("Community Features - Core Functionality", () => {
   let page: Page;
 
   beforeEach(async () => {

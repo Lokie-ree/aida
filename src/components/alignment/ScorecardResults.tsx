@@ -47,9 +47,9 @@ export function ScorecardResults({ scorecard }: ScorecardResultsProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="alignment-scorecard-results">
       {/* Overall Score Card */}
-      <Card>
+      <Card data-testid="alignment-overall-score">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
@@ -62,12 +62,12 @@ export function ScorecardResults({ scorecard }: ScorecardResultsProps) {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <div className="text-2xl font-bold" style={{ color: `var(--color-${getScoreColor(overallScore).split('-')[1]})` }}>
+              <div className="text-2xl font-bold" style={{ color: `var(--color-${getScoreColor(overallScore).split('-')[1]})` }} data-testid="alignment-score-value">
                 {overallScore}%
               </div>
               <p className="text-sm text-muted-foreground">Overall Alignment</p>
             </div>
-            <Badge variant={getScoreBadgeVariant(overallScore)} className="text-lg px-4 py-2">
+            <Badge variant={getScoreBadgeVariant(overallScore)} className="text-lg px-4 py-2" data-testid="alignment-score-badge">
               {overallScore >= 80 ? "Strong" : overallScore >= 60 ? "Moderate" : overallScore >= 40 ? "Weak" : "Poor"}
             </Badge>
           </div>
@@ -77,7 +77,7 @@ export function ScorecardResults({ scorecard }: ScorecardResultsProps) {
 
       {/* Breakdown Table */}
       {breakdown && breakdown.length > 0 && (
-        <Card>
+        <Card data-testid="alignment-breakdown-table">
           <CardHeader>
             <CardTitle>Standards Breakdown</CardTitle>
             <CardDescription>
@@ -129,7 +129,7 @@ export function ScorecardResults({ scorecard }: ScorecardResultsProps) {
 
       {/* Gaps */}
       {gaps && gaps.length > 0 && (
-        <Card className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-950/20">
+        <Card className="border-yellow-200 bg-yellow-50/50 dark:bg-yellow-950/20" data-testid="alignment-gaps">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-yellow-700 dark:text-yellow-400">
               <AlertCircle className="h-5 w-5" />
@@ -154,7 +154,7 @@ export function ScorecardResults({ scorecard }: ScorecardResultsProps) {
 
       {/* Recommendations */}
       {recommendations && recommendations.length > 0 && (
-        <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20">
+        <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20" data-testid="alignment-recommendations">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-400">
               <CheckCircle2 className="h-5 w-5" />

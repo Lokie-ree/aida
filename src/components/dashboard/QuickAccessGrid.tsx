@@ -24,8 +24,6 @@ export interface QuickAccessItem {
 export interface QuickAccessGridProps {
   items?: QuickAccessItem[];
   onNavigateToFrameworks?: () => void;
-  onNavigateToCommunity?: () => void;
-  onNavigateToInnovation?: () => void;
   onNavigateToProgress?: () => void;
   userStats?: {
     frameworksTried: number;
@@ -66,8 +64,6 @@ const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAc
 export function QuickAccessGrid({ 
   items,
   onNavigateToFrameworks,
-  onNavigateToCommunity,
-  onNavigateToInnovation,
   onNavigateToProgress,
   userStats,
   className = ""
@@ -94,10 +90,6 @@ export function QuickAccessGrid({
         return { ...item, onClick: onNavigateToFrameworks || item.onClick };
       case "alignment-scorecard":
         return { ...item, onClick: () => navigate('/alignment-scorecard') };
-      case "community":
-        return { ...item, onClick: onNavigateToCommunity || item.onClick };
-      case "innovation":
-        return { ...item, onClick: onNavigateToInnovation || item.onClick };
       case "progress":
         return { ...item, onClick: onNavigateToProgress || item.onClick };
       default:

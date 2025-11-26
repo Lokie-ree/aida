@@ -14,7 +14,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose of This Document
 
-This document provides AI assistants with essential patterns, conventions, and constraints for the Pelican AI codebase. For detailed project vision and strategy, see `PROJECT.md`.
+This document is the **single source of truth** for AI assistants working on Pelican AI. It provides:
+
+1. **Technical patterns, conventions, and constraints** - How to code effectively
+2. **Strategic decision-making frameworks** - Why decisions are made (prevents scope creep)
+3. **Feature prioritization guidance** - What to build and when
+4. **Anti-patterns and success metrics** - What to avoid and how to measure success
+
+For detailed project vision, brand positioning, and launch strategy, see `PROJECT.md`. For active development planning, see `docs/ROADMAP.md`. For technical debt tracking, see `docs/REFACTOR.md`.
 
 ---
 
@@ -224,6 +231,46 @@ export const workflow = new WorkflowManager(components.workflow, {
   - Step 3: Save results to `alignmentAnalyses` table
   - Built-in retry logic and status tracking
 
+### RAG System (@convex-dev/rag)
+
+**Configuration:**
+- **Namespace:** `"louisiana_standards"` for standards and rubric data
+- **Filters:** `contentType`, `subject`, `gradeLevel`, `standardCode`, `cognitiveDepth`, `userId`
+- **Knowledge Base:** Markdown files in `knowledge/` folder (la-ela.md, la-math.md, la-science.md, la-social-studies.md, la-ler-rubric.md)
+
+**Key Constraints:**
+- **Filter Limits:** Up to 16 filter fields per vector index, up to 64 filter expressions per search
+- **Result Limits:** Maximum 256 results per search (default 10)
+- **Filter Semantics:** Filters are OR-ed together; use composite filter values for AND behavior
+- **Large Ingest:** Use `rag.addAsync` with chunkerAction or Workflow/Workpool for large data ingestion
+- **Rate Limiting:** Use Rate Limiter component for embedding operations to avoid hitting provider limits
+
+**Usage Pattern:**
+```typescript
+import { Rag } from "@convex-dev/rag";
+import { components } from "./_generated/api";
+
+const rag = new Rag(components.rag, {
+  namespace: "louisiana_standards",
+});
+
+// Search with filters
+const results = await rag.search(ctx, {
+  query: "grade 9 ELA reading standards",
+  filters: {
+    subject: "ela",
+    gradeLevel: "9",
+  },
+  limit: 10,
+});
+```
+
+**Implementation Notes:**
+- RAG operations are actions (not queries/mutations) - they call LLM embedding APIs
+- Use Workflow/Workpool for durable, retry-safe large ingest operations
+- Reserve tokens/requests with Rate Limiter for batch operations
+- See `docs/RAG_PLAN.md` for detailed implementation guidance
+
 **Usage Pattern:**
 ```typescript
 import { workflow } from "./workflows";
@@ -339,7 +386,8 @@ export function MyComponent({ title, onClick }: ComponentProps) {
 - `/dashboard` - Main educator dashboard
 - `/frameworks` - Framework library (10 frameworks)
 - `/frameworks/:frameworkId` - Individual framework details
-- `/community` - Innovation sharing & testimonials
+- `/alignment-scorecard` - Alignment Scorecard feature (Core Flare #1)
+- `/community` - Innovation sharing & testimonials (hidden for MVP, will unhide at 30-100 users)
 - `/profile` - User profile settings
 - `/time-tracking` - Time savings analytics
 - `/admin` - Admin content moderation (admin-only)
@@ -461,7 +509,7 @@ pnpm test:watch
 # Generate coverage report (HTML at coverage/index.html)
 pnpm test:coverage
 
-# Run E2E tests
+# Run E2E tests (requires dev servers running)
 pnpm test:e2e
 
 # E2E watch mode
@@ -470,6 +518,35 @@ pnpm test:e2e:watch
 # E2E with UI
 pnpm test:e2e:ui
 ```
+
+### E2E Test Prerequisites
+
+Before running E2E tests:
+1. **Start dev servers:**
+   ```bash
+   # Terminal 1: Start Convex backend
+   npx convex dev
+   
+   # Terminal 2: Start Vite frontend
+   pnpm dev:frontend
+   ```
+
+2. **Test users exist:** Test users must be created manually (see `tests/e2e/README.md`)
+   - Regular user: `test-user@resend.dev`
+   - Admin user: `admin@resend.dev`
+
+3. **Seed test data (if needed):**
+   ```bash
+   npx convex run seedFrameworks:seedInitialFrameworks
+   npx convex run ragService:populateSampleStandards  # For alignment scorecard tests
+   ```
+
+### Test Best Practices
+
+1. **Use `data-testid`** for selectors (not CSS classes)
+2. **Wait for elements** before interacting
+3. **Test user flows**, not implementation details
+4. **Run tests before committing** - `pnpm test:once` must pass
 
 ### Test Coverage Exclusions
 
@@ -644,6 +721,129 @@ NO `any` types without justification. Use proper types from `convex/_generated/a
 ### 7. Testing Before Commits
 **ALWAYS run tests:** `pnpm test:once` - Tests must pass, no exceptions.
 
+### 8. Quality Over Speed
+**CRITICAL:** Every feature must maintain quality standards:
+- AI-generated content goes through alignment validation (Alignment Scorecard)
+- Frameworks emphasize ethical guardrails and responsible AI use
+- FERPA compliance is non-negotiable—no PII in logs, ever
+- Builds teacher capacity for rubric understanding, not dependency on the tool
+- Testimonials and validation come before scaling
+
+**Never compromise quality for speed.** Better to launch later with quality than earlier with technical debt.
+
+---
+
+## Educator-First Decision Framework
+
+This framework replaces traditional board-driven product decisions with a systematic approach to gathering and acting on educator feedback. Every feature decision should pass through these filters.
+
+### Decision Filter Questions
+
+Before building or prioritizing any feature, ask:
+
+1. **Did a real educator request this?** If not, is there evidence educators need it?
+2. **Does this solve a time problem?** Louisiana teachers are overwhelmed—does this save minutes?
+3. **Does this align with the Louisiana Educator Rubric?** Every feature must be rubric-infused.
+4. **Is this platform-agnostic?** It must work with any AI tool, not lock users in.
+5. **Can I explain this in teacher-to-teacher language?** No corporate jargon.
+
+### Feedback Collection Cadence
+
+| Timeframe | Activity | Purpose |
+| :---- | :---- | :---- |
+| Daily (Week 1) | Personal check-ins with each beta user | Rapid friction identification |
+| Weekly (Month 1) | "Did this save you time?" conversations | Value validation |
+| Bi-weekly (Ongoing) | Feature request compilation | Roadmap prioritization |
+| Monthly | "What's missing?" open-ended feedback | Gap identification |
+
+### The Core Question
+
+*Before every decision, ask:*
+
+**"Does this help a Louisiana teacher save time while improving their practice?"**
+
+If yes, do it. If no, reconsider.
+
+---
+
+## Feature Prioritization Matrix
+
+Use this matrix when educators request new features or when deciding development priorities.
+
+### Priority Scoring System
+
+| Criteria | Scoring Guide |
+| :---- | :---- |
+| **Educator Demand** | 3=Multiple requests, 2=Single request, 1=Founder idea, 0=No demand |
+| **Time Savings Impact** | 3=Significant daily time saved, 2=Weekly impact, 1=Occasional use, 0=No time savings |
+| **Rubric Alignment** | 3=Directly addresses rubric indicators, 2=Indirect support, 1=Tangential, 0=Unrelated |
+| **Implementation Effort** | 3=Quick win (<1 week), 2=Medium (1-2 weeks), 1=Large (2-4 weeks), 0=Major (>1 month) |
+
+*Priority Score = (Educator Demand × 2) + Time Savings + Rubric Alignment + Implementation*
+
+**Scoring Guidelines:**
+- **8+ points:** High priority (build immediately)
+- **4-7 points:** Medium priority (consider for next sprint)
+- **<4 points:** Defer or reconsider (likely scope creep)
+
+### Current Feature Backlog (Scored)
+
+| Feature | Demand | Time | Rubric | Effort | Score |
+| :---- | :---: | :---: | :---: | :---: | :---: |
+| Alignment Scorecard UI | 3 | 3 | 3 | 2 | **14** |
+| Weekly Spark (Pacing Prompts) | 2 | 3 | 3 | 1 | **11** |
+| Delta Generator (Differentiation) | 2 | 3 | 3 | 1 | **11** |
+| Dashboard Simplification | 1 | 1 | 1 | 2 | **6** |
+
+---
+
+## Anti-Patterns to Avoid
+
+These are decisions or behaviors that would undermine the educator-first mission. When in doubt, refer back to this list.
+
+### Never Do
+
+* **Use fake social proof** — No "Join 10,000+ educators" until you have 10,000 educators
+* **Prioritize features educators didn't ask for** — Founder ideas come second
+* **Use corporate jargon** — "Leverage synergies" is death for authenticity
+* **Lock users into specific AI tools** — Platform-agnostic is non-negotiable
+* **Automate before personal relationships** — Check-ins > email sequences at this stage
+* **Build without rubric alignment** — Every feature must connect to LER indicators
+* **Log PII** — FERPA compliance is absolute
+* **Scale before validating** — Testimonials first, then growth
+
+### Warning Signs
+
+If you notice any of these patterns, pause and re-evaluate:
+
+1. Building features no educator has requested
+2. More time on code than on educator conversations
+3. Feeling pressure to grow faster than organic allows
+4. Neglecting personal check-ins in favor of automation
+5. Adding complexity without educator demand
+
+---
+
+## Success Metrics (Educator-Defined)
+
+Traditional startup metrics (MAU, retention curves, ARR) matter less than educator-defined success. These are the metrics that matter for Pelican AI.
+
+### Primary Metrics
+
+| Metric | Why It Matters | Target |
+| :---- | :---- | :---- |
+| Time Saved Per Week | Core value proposition for teachers | 30+ min/week average |
+| Testimonials Collected | Social proof for organic growth | 10+ by Spring 2026 |
+| Word-of-Mouth Referrals | Validates authentic value | Each user refers 1+ |
+| Rubric Understanding Improved | Builds capacity, not dependency | Self-reported improvement |
+
+### Milestone Checkpoints
+
+* **December 2025:** Beta launch with 4-10 committed educators
+* **January 2026:** First 5 authentic testimonials collected
+* **Spring 2026:** 30-50 users, wealth of testimonials for conference prep
+* **Summer 2026:** APEL LEADS and ISTE presentations delivered
+
 ---
 
 ## Database Schema
@@ -697,6 +897,10 @@ pnpm lint                   # Full lint + type check
 npx convex dashboard        # Open Convex dashboard
 npx convex deploy           # Deploy to production
 npx convex env set KEY val  # Set environment variable
+
+# RAG/Standards
+npx convex run ragService:populateSampleStandards  # Populate test standards
+npx convex run seedFrameworks:seedInitialFrameworks  # Seed framework library
 ```
 
 ### Important Files
@@ -704,12 +908,18 @@ npx convex env set KEY val  # Set environment variable
 - `convex/authorization.ts` - Auth helpers (requireAuth, requireRole, requireAdmin)
 - `convex/rateLimiting.ts` - Rate limit configuration
 - `convex/workflows.ts` - Workflow manager configuration
+- `convex/ragService.ts` - RAG search APIs for Louisiana Standards
+- `convex/alignmentScorecard.ts` - Alignment Scorecard workflow
 - `src/lib/auth-client.ts` - Better Auth client setup
 - `src/App.tsx` - Routing configuration
 - `vite.config.ts` - Vite build configuration
 - `vitest.config.mts` - Backend test configuration
 - `vitest.browser.config.mts` - E2E test configuration
 - `PROJECT.md` - Project vision and context
+- `docs/ROADMAP.md` - Development roadmap and sprint planning
+- `docs/REFACTOR.md` - Technical debt tracking
+- `docs/RAG_PLAN.md` - Detailed RAG implementation plan
+- `docs/IT_WHITELISTING.md` - IT whitelisting guide for school districts
 
 ### Key Concepts
 - **Convex Reactivity:** Queries auto-update when data changes
@@ -768,13 +978,14 @@ npx convex env set KEY val  # Set environment variable
 - Community backend remains intact for future unhiding
 
 **Phase 3: Backend Cleanup** ✅
-- Removed `currentUser` and `getCurrentUser` aliases from auth.ts (kept `loggedInUser`)
-- Removed duplicate `submitInnovation` function from innovations.ts
-- Removed unused `getSimilarInnovations` function
-- Added feature-flag comments to email.ts functions
+- Verified auth.ts is clean (only `loggedInUser` exists, no aliases to remove)
+- Removed unused `getSimilarInnovations` function from innovations.ts
+- Kept all other functions (used in tests or needed for future community features)
+- Verified feature-flag comments already exist in email.ts
 
-**Phase 4: Documentation** ✅
-- Added status comments to all Convex files (ACTIVE, PHASE 2, FEATURE-FLAGGED, TEST HELPERS)
+**Phase 4: Documentation & Status Markers** ✅
+- Added status comments to remaining Convex files (emailEvents.ts, seedFrameworks.ts, standardsScraper.ts)
+- All Convex files now have status markers (ACTIVE, PHASE 2, FEATURE-FLAGGED, TEST HELPERS, DEV HELPERS)
 - Updated CLAUDE.md with refactor results
 
 ### Feature-Flag Activation Thresholds
@@ -797,6 +1008,45 @@ All Convex files now have header comments indicating status:
 
 ---
 
+## Deployment & IT Operations
+
+### Production Deployment
+
+**Frontend:** Vercel (auto-deploys on `git push` to main branch)
+**Backend:** Convex Cloud (deploy via `npx convex deploy`)
+
+### IT Whitelisting for School Districts
+
+Pelican AI (`pelicanai.org`) may need whitelisting in school district content filters (Content Keeper, Mosyle, etc.).
+
+**Required Domains:**
+- `pelicanai.org` (main site)
+- `*.pelicanai.org` (subdomains if used)
+- Backend: `kindly-setter.convex.cloud` (dev) / `outgoing-parttridge.convex.cloud` (prod) - typically already allowed as cloud services
+
+**Category Classification:**
+- Primary: Education
+- Secondary: Professional Development, Teacher Resources
+- Compliance: CIPA compliant, FERPA compliant, no student data collection
+
+**Documentation:** See `docs/IT_WHITELISTING.md` for detailed whitelisting instructions for IT administrators.
+
+### Environment Variables
+
+**Convex Environment Variables:**
+```bash
+# Email configuration
+npx convex env set RESEND_API_KEY your_key
+npx convex env set RESEND_TEST_MODE true  # Development: only send to @resend.dev addresses
+
+# Feature flags
+npx convex env set WEEKLY_EMAILS_ENABLED false  # Disabled for grassroots launch
+npx convex env set OPENAI_API_KEY your_key
+
+# Production settings
+npx convex env set RESEND_TEST_MODE false  # Production: send real emails
+```
+
 ## Development Environment
 
 **Platform:** Windows (MINGW64_NT-10.0-26200)
@@ -806,6 +1056,6 @@ All Convex files now have header comments indicating status:
 
 ---
 
-**Last Updated:** November 24, 2025
+**Last Updated:** November 25, 2025
 **Maintained by:** Pelican AI Development Team
-**Version:** 3.2.0 - Refactored: Alignment Scorecard UI complete, dead code removed, community features properly hidden, status markers added
+**Version:** 3.4.0 - Consolidated: Added RAG system details, deployment/IT operations, enhanced testing section, updated route documentation
