@@ -118,9 +118,10 @@ describe("Email actions", () => {
     const originalEnv = process.env.RESEND_TEST_MODE;
     process.env.RESEND_TEST_MODE = "false";
     
-    // Reload the email module to pick up the new env var
+    // Reload modules to pick up the new env var
     await vi.resetModules();
     const emailModule = await import("../email");
+    const { api: freshApi } = await import("../_generated/api");
     
     const orig = (await import("@react-email/render")) as any;
     const spy = vi.spyOn(orig, "render").mockImplementation(async () => {
@@ -128,7 +129,7 @@ describe("Email actions", () => {
     });
     
     await expect(
-      t.action(api.email.sendBetaWelcomeEmail, { email: "e@example.com", name: "N" })
+      t.action(freshApi.email.sendBetaWelcomeEmail, { email: "e@example.com", name: "N" })
     ).rejects.toThrow(/Failed to send beta welcome email/);
     
     spy.mockRestore();
@@ -146,15 +147,18 @@ describe("Email actions", () => {
     const originalEnv = process.env.RESEND_TEST_MODE;
     process.env.RESEND_TEST_MODE = "false";
     
-    // Reload the email module to pick up the new env var
+    // Reload modules to pick up the new env var
     await vi.resetModules();
+    const emailModule = await import("../email");
+    const { resend: freshResend } = emailModule;
+    const { api: freshApi } = await import("../_generated/api");
     
-    const sendSpy = vi.spyOn(resend, "sendEmail").mockImplementationOnce(async () => {
+    const sendSpy = vi.spyOn(freshResend, "sendEmail").mockImplementationOnce(async () => {
       throw new Error("send fail");
     });
     
     await expect(
-      t.action(api.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
+      t.action(freshApi.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
     ).rejects.toThrow(/Failed to send platform access email/);
     
     sendSpy.mockRestore();
