@@ -56,7 +56,10 @@ pnpm test:e2e:ui
 # Framework Library tests
 pnpm test:e2e framework-library
 
-# Community tests
+# Alignment Scorecard tests
+pnpm test:e2e alignment-scorecard
+
+# Community tests (skipped - Phase 2 feature)
 pnpm test:e2e community
 
 # Dashboard tests
@@ -105,7 +108,8 @@ tests/e2e/
 │   ├── navigation.ts          # Navigation helpers
 │   └── test-setup.ts         # App accessibility verification
 ├── framework-library.test.ts  # Framework Library tests (TC-FRAMEWORK-001 to 014)
-├── community.test.ts          # Community tests (TC-COMMUNITY-001 to 014)
+├── alignment-scorecard.test.ts # Alignment Scorecard tests (TC-ALIGNMENT-001 to 010)
+├── community.test.ts          # Community tests (TC-COMMUNITY-001 to 014) - SKIPPED
 ├── dashboard.test.ts          # Dashboard tests (TC-DASHBOARD-001 to 009)
 └── admin.test.ts              # Admin tests (TC-ADMIN-001 to 009)
 ```
@@ -128,7 +132,23 @@ tests/e2e/
 - Saved Frameworks Persist
 - Saved Framework Indicator
 
-### Community Features (14 tests)
+### Alignment Scorecard (10 tests)
+- View Alignment Scorecard Page
+- Fill Content Input Form
+- Submit Content for Analysis
+- View Workflow Status During Analysis
+- View Scorecard Results
+- View Overall Alignment Score
+- View Standards Breakdown Table
+- View Alignment Gaps
+- View Recommendations
+- Validate Form Inputs
+
+**Note:** Alignment Scorecard tests require RAG data to be populated. Run `npx convex run ragService:populateSampleStandards` before running these tests.
+
+### Community Features (14 tests) - SKIPPED
+⚠️ Community features are hidden for MVP launch (Phase 2). Tests are skipped until features are unhidden at 30-100 users.
+
 - Submit Innovation
 - Innovation Form Validation
 - Tag Innovation

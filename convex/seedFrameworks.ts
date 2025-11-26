@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Seed function: seedInitialFrameworks (10 frameworks for beta launch)
+ */
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 

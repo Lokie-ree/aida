@@ -1,3 +1,7 @@
+/**
+ * ✅ ACTIVE - Used in production
+ * Internal email webhook handler for Resend delivery tracking
+ */
 import { internalMutation } from "./_generated/server";
 import { vOnEmailEventArgs } from "@convex-dev/resend";
 

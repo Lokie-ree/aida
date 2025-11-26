@@ -1,3 +1,8 @@
+/**
+ * 🧪 DEV HELPERS - For development and testing only
+ * Standards scraper: Used to populate knowledge base with Louisiana Standards
+ * Run manually when standards need updating
+ */
 import { v } from "convex/values";
 import { action, internalAction } from "./_generated/server";
 import { internal } from "./_generated/api";

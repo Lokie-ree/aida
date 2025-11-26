@@ -87,7 +87,6 @@ describe("Email actions", () => {
         frameworksTried: 0,
         totalTimeSaved: 0,
         innovationsShared: 0,
-        officeHoursAttended: 0,
         weeklyEngagementCount: 0,
       });
       await ctx.db.insert("frameworks", {

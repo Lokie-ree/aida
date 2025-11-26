@@ -14,7 +14,7 @@ export function WorkflowStatus({ workflowId }: WorkflowStatusProps) {
 
   if (!status) {
     return (
-      <Card>
+      <Card data-testid="alignment-workflow-status">
         <CardContent className="pt-6">
           <div className="flex items-center justify-center gap-3 py-8">
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -33,7 +33,7 @@ export function WorkflowStatus({ workflowId }: WorkflowStatusProps) {
     const progress = statusData.progress || 0;
     
     return (
-      <Card>
+      <Card data-testid="alignment-workflow-status" data-status="in-progress">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
@@ -47,9 +47,9 @@ export function WorkflowStatus({ workflowId }: WorkflowStatusProps) {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Current Step:</span>
-              <span className="font-medium">{stepName}</span>
+              <span className="font-medium" data-testid="alignment-step-name">{stepName}</span>
             </div>
-            <Progress value={progress} className="h-2" />
+            <Progress value={progress} className="h-2" data-testid="alignment-progress" />
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
