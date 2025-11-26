@@ -1,7 +1,7 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
+import { api } from "../_generated/api";
+import schema from "../schema";
 
 // Mock React email renderer and email components to avoid JSX rendering
 vi.mock("@react-email/render", () => ({
@@ -19,7 +19,7 @@ vi.mock("../src/emails/PlatformAccessEmail", () => ({
 }));
 
 // Spy on resend to avoid network and return deterministic email IDs
-import { resend } from "./email";
+import { resend } from "../email";
 import type { EmailId } from "@convex-dev/resend";
 vi.spyOn(resend, "sendEmail").mockImplementation(async () => {
   return { __isEmailId: true } as EmailId;
@@ -27,7 +27,7 @@ vi.spyOn(resend, "sendEmail").mockImplementation(async () => {
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 describe("Email actions", () => {
   let t: ReturnType<typeof convexTest>;
@@ -114,24 +114,57 @@ describe("Email actions", () => {
   });
 
   test("sendBetaWelcomeEmail throws on render error", async () => {
+    // Set RESEND_TEST_MODE to false so errors are thrown instead of caught
+    const originalEnv = process.env.RESEND_TEST_MODE;
+    process.env.RESEND_TEST_MODE = "false";
+    
+    // Reload the email module to pick up the new env var
+    await vi.resetModules();
+    const emailModule = await import("../email");
+    
     const orig = (await import("@react-email/render")) as any;
     const spy = vi.spyOn(orig, "render").mockImplementation(async () => {
       throw new Error("render fail");
     });
+    
     await expect(
       t.action(api.email.sendBetaWelcomeEmail, { email: "e@example.com", name: "N" })
     ).rejects.toThrow(/Failed to send beta welcome email/);
+    
     spy.mockRestore();
+    // Restore original env
+    if (originalEnv !== undefined) {
+      process.env.RESEND_TEST_MODE = originalEnv;
+    } else {
+      delete process.env.RESEND_TEST_MODE;
+    }
+    await vi.resetModules();
   });
 
   test("sendPlatformAccessEmail throws on send failure", async () => {
+    // Set RESEND_TEST_MODE to false so errors are thrown instead of caught
+    const originalEnv = process.env.RESEND_TEST_MODE;
+    process.env.RESEND_TEST_MODE = "false";
+    
+    // Reload the email module to pick up the new env var
+    await vi.resetModules();
+    
     const sendSpy = vi.spyOn(resend, "sendEmail").mockImplementationOnce(async () => {
       throw new Error("send fail");
     });
+    
     await expect(
       t.action(api.email.sendPlatformAccessEmail, { email: "e@example.com", name: "N", magicLinkUrl: "https://example.com/link" })
     ).rejects.toThrow(/Failed to send platform access email/);
+    
     sendSpy.mockRestore();
+    // Restore original env
+    if (originalEnv !== undefined) {
+      process.env.RESEND_TEST_MODE = originalEnv;
+    } else {
+      delete process.env.RESEND_TEST_MODE;
+    }
+    await vi.resetModules();
   });
 
   test("sendWeeklyPromptEmail throws on send failure", async () => {

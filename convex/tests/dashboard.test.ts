@@ -1,11 +1,11 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -17,7 +17,7 @@ vi.mock("./auth", () => ({
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 describe("Dashboard", () => {
   let t: ReturnType<typeof convexTest>;
@@ -62,13 +62,13 @@ describe("Dashboard", () => {
     test("filters frameworks by beginner difficulty", async () => {
       const frameworks = await t.query(api.frameworks.getAllFrameworks, {});
 
-      const beginnerFrameworks = frameworks.filter(f => f.difficultyLevel === "beginner");
+      const beginnerFrameworks = frameworks.filter((f: { difficultyLevel: string }) => f.difficultyLevel === "beginner");
 
       expect(Array.isArray(frameworks)).toBe(true);
       expect(beginnerFrameworks.length).toBeGreaterThanOrEqual(0);
       
       // Verify all returned beginner frameworks have correct difficulty
-      beginnerFrameworks.forEach(framework => {
+      beginnerFrameworks.forEach((framework: { difficultyLevel: string }) => {
         expect(framework.difficultyLevel).toBe("beginner");
       });
     });

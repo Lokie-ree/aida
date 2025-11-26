@@ -1,11 +1,11 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -17,7 +17,7 @@ vi.mock("./auth", () => ({
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 describe("Innovations", () => {
   let t: ReturnType<typeof convexTest>;
@@ -319,7 +319,7 @@ describe("Innovations", () => {
       });
       await t.mutation(api.innovations.deleteInnovationInteraction, { interactionId });
       const interactions = await t.query(api.innovations.getInnovationInteractions, { innovationId: newInnovationId });
-      expect(interactions.find((i) => i._id === interactionId)).toBeUndefined();
+      expect(interactions.find((i: { _id: string }) => i._id === interactionId)).toBeUndefined();
 
       await t.mutation(api.innovations.deleteInnovation, { innovationId: newInnovationId });
       const deleted = await t.run(async (ctx) => await ctx.db.get(newInnovationId));
@@ -338,7 +338,24 @@ describe("Innovations", () => {
         limit: 20,
       });
       
-      innovations.forEach(innovation => {
+      innovations.forEach((innovation: {
+        _id: any;
+        _creationTime: number;
+        title: string;
+        description: string;
+        userName: string;
+        school: string;
+        subject: string;
+        tags: string[];
+        timeSaved?: number;
+        likes: number;
+        triesCount: number;
+        createdAt: number;
+        relatedFramework?: any;
+        studentName?: never;
+        studentId?: never;
+        studentExample?: never;
+      }) => {
         expect(innovation).not.toHaveProperty("studentName");
         expect(innovation).not.toHaveProperty("studentId");
         expect(innovation).not.toHaveProperty("studentExample");

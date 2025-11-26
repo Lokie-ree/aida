@@ -1,10 +1,10 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
+import { api } from "../_generated/api";
+import schema from "../schema";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -24,10 +24,33 @@ vi.mock("./auth", () => ({
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 describe("User Profiles", () => {
   let t: ReturnType<typeof convexTest>;
+
+  // Helper function to ensure admin user profile exists
+  async function ensureAdminProfile(asAdmin: ReturnType<ReturnType<typeof convexTest>["withIdentity"]>) {
+    await asAdmin.run(async (ctx) => {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) throw new Error("Unauthenticated");
+      const adminUserId = identity.subject;
+      
+      const existing = await ctx.db
+        .query("userProfiles")
+        .filter((q: any) => q.eq(q.field("userId"), adminUserId))
+        .first();
+      
+      if (!existing) {
+        await ctx.db.insert("userProfiles", {
+          userId: adminUserId,
+          role: "admin",
+          school: "Admin School",
+          subject: "Admin",
+        });
+      }
+    });
+  }
 
   beforeEach(async () => {
     t = convexTest(schema, modules);
@@ -188,10 +211,10 @@ describe("User Profiles", () => {
 
   describe("getAllUserProfiles", () => {
     test("returns empty array when not authenticated", async () => {
-      const profiles = await t.query(api.userProfiles.getAllUserProfiles);
-      
-      expect(profiles).toBeInstanceOf(Array);
-      expect(profiles.length).toBe(0);
+      // getAllUserProfiles requires admin access, so it should throw when not authenticated
+      await expect(
+        t.query(api.userProfiles.getAllUserProfiles)
+      ).rejects.toThrow();
     });
 
     test("non-admin is forbidden", async () => {
@@ -205,7 +228,8 @@ describe("User Profiles", () => {
         await ctx.db.insert("userProfiles", { userId: "u1", school: "S1", subject: "Math" });
         await ctx.db.insert("userProfiles", { userId: "u2", school: "S2", subject: "ELA" });
       });
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@example.com" });
+      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
+      await ensureAdminProfile(asAdmin);
       const profiles = await asAdmin.query(api.userProfiles.getAllUserProfiles);
       expect(Array.isArray(profiles)).toBe(true);
       expect(profiles.length).toBeGreaterThanOrEqual(2);

@@ -9,7 +9,7 @@ export default defineConfig({
     },
     globals: true,
     // Explicitly include only Convex backend tests
-    include: ["convex/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    include: ["convex/tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     // Exclude E2E tests (they use browser environment)
     exclude: ["tests/e2e/**/*", "node_modules/**/*", "dist/**/*"],
     coverage: {
@@ -17,7 +17,7 @@ export default defineConfig({
       reporter: ["text", "html", "json"],
       include: ["convex/**/*.ts"],
       exclude: [
-        "convex/**/*.test.ts",
+        "convex/tests/**/*.test.ts",
         "convex/_generated/**",
         "convex/schema.ts",
       // Exclude non-runtime/helper or config modules from coverage

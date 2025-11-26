@@ -1,11 +1,11 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, vi } from "vitest";
-import { api, internal } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api, internal } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Bridge Better Auth: mock authComponent to derive user from ctx.auth
-vi.mock("./auth", () => ({
+vi.mock("../auth", () => ({
   authComponent: {
     getAuthUser: async (ctx: any) => {
       const identity = await ctx.auth.getUserIdentity();
@@ -17,7 +17,7 @@ vi.mock("./auth", () => ({
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
   describe("Alignment Scorecard", () => {
   let t: ReturnType<typeof convexTest>;
@@ -168,6 +168,72 @@ const modules = import.meta.glob("./**/*.ts", { eager: false });
         expect(filteredStandards.length).toBeLessThanOrEqual(allStandards.length);
         expect(filteredStandards.every((s) => specificCodes.includes(s.code))).toBe(true);
       }
+    });
+
+    test.skip("RAG search returns relevant standards for given content", async () => {
+      // Skip: Requires RAG component
+      // Test that semantic search returns standards relevant to content
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      // First populate test standards
+      // await asUser.action(api.populateStandards.populateStandardsFromData, { ... });
+      
+      const standards = await asUser.action(internal.alignmentSteps.retrieveStandards, {
+        gradeLevel: "10",
+        subject: "ela",
+      });
+
+      // Verify results are semantically relevant to ELA grade 10
+      expect(standards.length).toBeGreaterThan(0);
+      standards.forEach((standard) => {
+        expect(standard.code).toMatch(/^(RL|RI|W|SL|L|RH|RST|WHST)\.10\./);
+        expect(standard.text.length).toBeGreaterThan(0);
+      });
+    });
+
+    test.skip("filters correctly narrow results (subject + gradeLevel)", async () => {
+      // Skip: Requires RAG component
+      // Test that combining filters works correctly
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      const elaGrade10 = await asUser.action(internal.alignmentSteps.retrieveStandards, {
+        gradeLevel: "10",
+        subject: "ela",
+      });
+
+      const mathGrade10 = await asUser.action(internal.alignmentSteps.retrieveStandards, {
+        gradeLevel: "10",
+        subject: "math",
+      });
+
+      const elaGrade5 = await asUser.action(internal.alignmentSteps.retrieveStandards, {
+        gradeLevel: "5",
+        subject: "ela",
+      });
+
+      // Results should be different for different subject/grade combinations
+      expect(elaGrade10).not.toEqual(mathGrade10);
+      expect(elaGrade10).not.toEqual(elaGrade5);
+    });
+
+    test.skip("vector score threshold (0.6) returns quality results", async () => {
+      // Skip: Requires RAG component
+      // Test that threshold filters out low-relevance results
+      const asUser = t.withIdentity({ name: "Test Teacher", email: "teacher@school.edu" });
+      
+      const standards = await asUser.action(internal.alignmentSteps.retrieveStandards, {
+        gradeLevel: "10",
+        subject: "ela",
+      });
+
+      // All returned standards should be relevant (threshold ensures this)
+      // Note: We can't directly check scores, but we can verify results make sense
+      expect(standards.length).toBeGreaterThan(0);
+      
+      // Verify standards are actually ELA-related
+      standards.forEach((standard) => {
+        expect(standard.code).toMatch(/^(RL|RI|W|SL|L|RH|RST|WHST)/);
+      });
     });
   });
 

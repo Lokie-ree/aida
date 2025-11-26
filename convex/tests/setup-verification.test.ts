@@ -1,10 +1,10 @@
 import { convexTest } from "convex-test";
 import { expect, test } from "vitest";
-import schema from "./schema";
+import schema from "../schema";
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 test("convex-test is working", async () => {
   const t = convexTest(schema, modules);

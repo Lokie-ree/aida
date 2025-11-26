@@ -1,12 +1,12 @@
 import { convexTest } from "convex-test";
 import { expect, test, describe, beforeEach, beforeAll, afterAll, afterEach, vi } from "vitest";
-import { api } from "./_generated/api";
-import schema from "./schema";
-import type { Id } from "./_generated/dataModel";
+import { api } from "../_generated/api";
+import schema from "../schema";
+import type { Id } from "../_generated/dataModel";
 
 // Explicitly provide modules for convex-test
 // @ts-expect-error - import.meta.glob is a Vite feature, TypeScript doesn't recognize it
-const modules = import.meta.glob("./**/*.ts", { eager: false });
+const modules = import.meta.glob("../**/*.ts", { eager: false });
 
 describe("Beta Signup", () => {
   let t: ReturnType<typeof convexTest>;
@@ -198,7 +198,7 @@ describe("Beta Signup", () => {
       expect(pending).toBeInstanceOf(Array);
       // Should have at least one pending signup
       if (pending.length > 0) {
-        expect(pending.every(s => s.status === "pending")).toBe(true);
+        expect(pending.every((s: { status: string }) => s.status === "pending")).toBe(true);
       }
     });
 
