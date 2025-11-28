@@ -1,7 +1,7 @@
 # LER/LSS Data Structuring + RAG Refinements Plan
 
-**Last Updated:** November 26, 2025
-**Status:** In Progress - Testing phase active, validating search accuracy
+**Last Updated:** November 27, 2025
+**Status:** Phase 0 Complete ✅, Phase 1 Complete ✅ (Refactored), Phases 2-4 Pending
 **Reference:** See [CLAUDE.md](../CLAUDE.md) for technical architecture patterns, Convex function types, testing patterns, and workflow system usage.
 
 ## Current State Analysis
@@ -30,12 +30,12 @@
 **What's Missing:**
 
 - ✅ Consolidated RAG initialization (single source of truth) - **COMPLETE**
-- JSON schemas for data validation
-- Markdown-to-JSON converters
-- JSON parsers for reliable data extraction
-- LER data structure and RAG integration
-- LER-specific RAG filters
-- Actual data population (scraper doesn't work)
+- ✅ JSON schemas for data validation - **COMPLETE** (Phase 1)
+- ✅ Markdown-to-JSON converter script - **COMPLETE** (Phase 1, moved to `scripts/convert-markdown-to-json.ts`)
+- ✅ JSON parser for reliable data extraction - **COMPLETE** (Phase 1)
+- ⏳ LER data structure and RAG integration - **PENDING** (Phase 2)
+- ⏳ LER-specific RAG filters - **PENDING** (Phase 2)
+- ⏳ Actual data population - **PENDING** (Run conversion script, then populate RAG)
 
 ## Technical Constraints & Considerations
 
@@ -689,6 +689,103 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 16. **Action Cache Confusion:** Do not use Action Cache for ingest content embeddings (RAG already handles this). Only use for caching search query embeddings if doing manual vector search
 
 17. **Workflow Determinism:** Workflows must be deterministic. Use `step.runAction` for RAG operations, not arbitrary fetch/crypto. Keep non-deterministic logic in actions, not workflow handlers
+
+## Critical Path to Production
+
+### Step 1: Populate LSS Standards (Phase 1) - **HIGHEST PRIORITY**
+
+**Why First:** Alignment Scorecard is the core feature and requires LSS standards to function.
+
+**Tasks:**
+1. ✅ Create JSON schema for LSS standards
+2. ✅ Build markdown-to-JSON converter script
+3. ✅ Build JSON parser
+4. ✅ Create populate actions with workflow support
+5. ⏳ Convert markdown files to JSON (run `pnpm convert:standards`)
+6. ⏳ Populate RAG with LSS standards using workflow
+
+**Estimated Time:** 1-2 weeks  
+**Blocking:** Alignment Scorecard functionality
+
+### Step 2: Populate LER Rubric (Phase 2) - **HIGH PRIORITY**
+
+**Why Second:** Alignment Scorecard needs to cite rubric descriptors. Without LER in RAG, feedback cannot reference rubric indicators.
+
+**Tasks:**
+1. Extend RAG filters (add `lerDomain`, `lerIndicator`, `performanceLevel`)
+2. Create LER data model and JSON schema
+3. Extend markdown-to-JSON converter for LER
+4. Build LER JSON parser
+5. Create LER populator with workflow support
+6. Convert LER markdown to JSON (one-time)
+7. Populate RAG with LER indicators using workflow
+
+**Estimated Time:** 1-2 weeks  
+**Blocking:** Rubric-integrated feedback in Alignment Scorecard
+
+### Step 3: Integrate LER into App Interactions (Phase 3) - **HIGH PRIORITY**
+
+**Why Third:** This "fuses" LER rubric into app interactions. Without this, LER data exists but isn't used.
+
+**Tasks:**
+1. Add LER search functions to `ragService.ts`
+2. Update `alignmentSteps.ts` to retrieve LER indicators
+3. Update agent prompts to reference rubric descriptors
+4. Update scorecard generation to cite performance levels
+5. Test end-to-end with real data
+
+**Estimated Time:** 1 week  
+**Blocking:** Authentic rubric-integrated feedback
+
+### Step 4: Validate & Optimize (Phase 4) - **ONGOING**
+
+**Why Fourth:** Ensure accuracy and performance with real data.
+
+**Tasks:**
+1. Run integration tests with populated RAG
+2. Validate search accuracy (precision/recall)
+3. Optimize query thresholds
+4. Monitor costs and rate limits
+5. Test with real user scenarios
+
+**Estimated Time:** Ongoing  
+**Blocking:** Production confidence
+
+## Current App Interaction Gap
+
+### What's Happening Now
+
+**Alignment Scorecard Workflow:**
+1. `retrieveStandards` searches RAG for LSS standards ✅ (but returns test data only)
+2. `analyzeWithAgent` analyzes content against standards ✅ (but no LER context)
+3. `generateScorecard` creates scorecard ✅ (but cannot cite rubric descriptors)
+
+**Missing:**
+- ❌ No LER indicator retrieval
+- ❌ No rubric descriptor context in agent prompts
+- ❌ No performance level citations in feedback
+- ❌ No validation against rubric expectations
+
+### What Should Happen (After Phases 1-3)
+
+**Alignment Scorecard Workflow:**
+1. `retrieveStandards` searches RAG for LSS standards ✅ (with real data)
+2. **NEW:** `retrieveLERIndicators` searches RAG for relevant LER indicators ✅
+3. `analyzeWithAgent` analyzes content against standards + rubric indicators ✅
+4. `generateScorecard` creates scorecard with rubric citations ✅
+
+**Example Feedback:**
+```
+Your content aligns with Louisiana Standard RL.3.1 (Proficient Level 3).
+
+Rubric Alignment:
+- Standards and Objectives (SO): Proficient - "Learning objectives and state content standards are communicated."
+- Presenting Instructional Content (PIC): Proficient - "Presentation of content consistently includes visuals that establish the purpose of the lesson."
+
+To reach Exemplary (Level 5):
+- Students should be able to articulate what they are learning and why
+- Learning objectives should be displayed and referenced throughout the lesson with explanations
+```
 
 ## Next Steps After Completion
 
