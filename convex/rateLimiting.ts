@@ -37,6 +37,11 @@ export const rateLimiter = new RateLimiter(components.rateLimiter, {
   // Admins: 20 emails per hour
   emailSend: { kind: "fixed window", rate: 5, period: HOUR },
   emailSendAdmin: { kind: "fixed window", rate: 20, period: HOUR },
+  
+  // Bulk ingestion (standards, rubric data)
+  // Lower rate to prevent overwhelming embedding API
+  // Admins only: 50 embeddings per minute (with reserve: true)
+  bulkIngestion: { kind: "fixed window", rate: 50, period: MINUTE },
 });
 
 /**

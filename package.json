@@ -17,7 +17,8 @@
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:e2e": "vitest run --config vitest.browser.config.mts",
     "test:e2e:watch": "vitest --watch --config vitest.browser.config.mts",
-    "test:e2e:ui": "vitest --ui --config vitest.browser.config.mts"
+    "test:e2e:ui": "vitest --ui --config vitest.browser.config.mts",
+    "convert:standards": "tsx scripts/convert-markdown-to-json.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.43",

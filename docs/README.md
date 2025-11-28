@@ -56,10 +56,6 @@
 - Technical implementation details in CLAUDE.md
 - Full comprehensive guide here for deep reference
 
-### [TESTING.md](TESTING.md)
-**Testing Quick Reference** - Legacy testing guide.
-- Content consolidated into CLAUDE.md testing section
-- Kept for historical reference
 
 ---
 
@@ -101,5 +97,5 @@ npx convex env set RESEND_TEST_MODE false       # Disable email test mode
 
 ---
 
-**Last Updated:** November 25, 2025
-**Version:** 3.2.0 - Consolidated documentation: Testing, IT operations, and RAG details moved to CLAUDE.md
+**Last Updated:** November 27, 2025
+**Version:** 3.3.0 - Removed redundant docs: RAG_PLAN_STATUS.md and REFACTOR_PHASE1.md consolidated into RAG_PLAN.md and REFACTOR.md
