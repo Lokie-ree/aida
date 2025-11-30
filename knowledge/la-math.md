@@ -1,49 +1,58 @@
-# Louisiana K-12 Mathematics Standards RAG Context Guide
-## Comprehensive Reference for AI-Powered Mathematics Educator Support
+# Introduction
 
----
+Development of K-12 Louisiana Student Standards for Mathematics.
 
-## Executive Summary
+The Role of Standards in Establishing Key Student Skills and Mathematical Proficiency . 2 Structure of the Standards 2 Reading Standards and Interpreting their Codes in Grades 3-8 3 Reading Standards and Interpreting their Codes in High School Courses 4 Companion Documents for Teachers. 5 Progressions in the Math Standards .
 
-This document serves as the authoritative RAG (Retrieval-Augmented Generation) context for an educator support platform designed to assist Louisiana teachers in planning, creating, and aligning K-12 mathematics instruction. The platform's four Co-Pilot features—Weekly Spark, Alignment Scorecard, Delta Generator, and Innovation Remix Engine—leverage this localized, pedagogically-grounded context to provide proactive, standards-aligned support that competitors cannot replicate.
+# Louisiana Student Standards for Mathematics
 
-**Platform Differentiator**: This RAG context transforms generic AI tools into hyper-local, Louisiana-specific educational partners by embedding state standards, vertical progressions, and pedagogical frameworks directly into every platform interaction for mathematics education.
+Standards for Mathematical Practice. . 6
 
----
+# Standards for Mathematical Content by Grade
 
-## 1. K-12 Mathematics Standards Architecture & Coding System
+Kindergarten . . 9
 
-### 1.1 Understanding Louisiana Math Standard Codes
+Grade 1 . . 12
 
-Every Louisiana mathematics standard follows a structured coding format that enables precise identification and alignment checking. The coding system varies between K-8 standards and high school courses.
+Grade 2 . .. 15
 
-**K-8 Standard Code Format**: `[GRADE].[DOMAIN].[CLUSTER].[STANDARD#]`
+Grade 3 . ... 18
 
-**Example**: `3.NBT.A.3`
-- **3** = Grade 3
-- **NBT** = Number and Operations in Base Ten (domain)
-- **A** = First cluster within that domain
-- **3** = Third standard within that cluster
+Grade 4 . ... 22
 
-**High School Standard Code Format**: `[COURSE]: [CONCEPTUAL_CATEGORY]-[DOMAIN].[CLUSTER].[STANDARD#]`
+Grade 5 . ... 26
 
-**Example**: `GM: G-SRT.B.5`
-- **GM** = Geometry course
-- **G** = Geometry conceptual category
-- **SRT** = Similarity, Right Triangles, and Trigonometry (domain)
-- **B** = Second cluster
-- **5** = Fifth standard
+Grade 6 . .. 30
 
-**Course Abbreviations**:
-- **A1** = Algebra I
-- **GM** = Geometry
-- **A2** = Algebra II
+Grade 7 . ... 35
 
-### 1.2 Development of K-12 Louisiana Student Standards for Mathematics
+Grade 8 . .. 39
+
+Algebra I . .. 43
+
+Geometry . ... 48
+
+Algebra II . .. 52
+
+Glossary and Tables. . 57
+
+# Resources
+
+Instructional Materials Resources . 63
+
+Standards by Domain: Kindergarten through Grade 8 . . 63
+
+Teachers Companion Documents .. 63
+
+Remediation Guides . . 64
+
+# Introduction
+
+# Development of K-12 Louisiana Student Standards for Mathematics
 
 The Louisiana mathematics standards were created by over one hundred Louisiana educators with input by thousands of parents and teachers from across the state. Educators envisioned what mathematically proficient students should know and be able to do to compete in our society and focused their efforts on creating standards that would allow them to do so. The new standards provide appropriate content for all grades or courses, maintain high expectations, and create a logical connection of content across and within grades.
 
-### 1.3 The Role of Standards in Establishing Key Student Skills and Mathematical Proficiency
+# The Role of Standards in Establishing Key Student Skills and Mathematical Proficiency
 
 Students in Louisiana are ready for college or a career if they are able to meet college and workplace expectations without needing remediation in mathematics skills and concepts. The standards define what Louisiana students should know, understand, and be able to do mathematically and represent the steps students must take along the way to be able to meet this goal.
 
@@ -51,34 +60,41 @@ For example, all students should be able to recall and use math skills and conce
 
 The K-12 mathematics standards lay the foundation that allows students to become mathematically proficient by focusing on conceptual understanding, procedural skill and fluency, and application.
 
-**Conceptual Understanding** refers to understanding mathematical concepts, operations, and relations. It is more than knowing isolated facts and methods. Students should be able to make sense of why a mathematical idea is important and the kinds of contexts in which it is useful. It also allows students to connect prior knowledge to new ideas and concepts.
+Conceptual understanding refers to understanding mathematical concepts, operations, and relations. It is more than knowing isolated facts and methods. Students should be able to make sense of why a mathematical idea is important and the kinds of contexts in which it is useful. It also allows students to connect prior knowledge to new ideas and concepts.
 
-**Procedural Skill and Fluency** is the ability to apply procedures accurately, efficiently, and flexibly. It requires speed and accuracy in calculation while giving students opportunities to practice basic skills. Students' ability to solve more complex application tasks is dependent on procedural skill and fluency.
+Procedural Skill and Fluency is the ability to apply procedures accurately, efficiently, and flexibly. It requires speed and accuracy in calculation while giving students opportunities to practice basic skills. Students’ ability to solve more complex application tasks is dependent on procedural skill and fluency.
 
-**Application** provides a valuable context for learning and the opportunity to solve problems in a relevant and a meaningful way. It is through real-world application that students learn to select an efficient method to find a solution, determine whether the solution(s) makes sense by reasoning, and develop critical thinking skills.
+Application provides a valuable context for learning and the opportunity to solve problems in a relevant and a meaningful way. It is through real-world application that students learn to select an efficient method to find a solution, determine whether the solution(s) makes sense by reasoning, and develop critical thinking skills.
 
-### 1.4 Structure of the Standards
+# Structure of the Standards
 
-There are two types of standards in the Louisiana Mathematics Standards:
+There are two types of standards in the Louisiana Mathematics Standards – mathematical practice and content. A summary of each type is provided below:
 
-1. **Standards for Mathematical Practice** - Apply to all grade levels and describe mathematically proficient students
+1. Standards for Mathematical Practice
 
-2. **Standards for Mathematical Content** - K-8 standards are presented by grade level; high school standards are presented by course (Algebra I, Geometry, Algebra II), then organized by conceptual categories:
-   - Number and Quantity
-   - Algebra
-   - Functions
-   - Modeling
-   - Geometry
-   - Statistics and Probability
+Apply to all grade levels – Describe mathematically proficient students
 
-**Key Terminology** (from most specific to most general):
+2. Standards for Mathematical Content K-8 standards presented by grade level High school standards presented by high school course (Algebra I, Geometry, Algebra II), then organized by conceptual categories:
 
-- **Standards** - Statements of what a student should know, understand, and be able to do
-- **Clusters** - Groups of related standards. Cluster headings represent the big ideas that the group of standards address
-- **Domains** - Large categories of mathematics that clusters and content standards delineate and address (e.g., Number and Operations – Fractions)
-- **Conceptual Categories** - Very broad categories of mathematical thought used to organize high school course work (e.g., Algebra, Geometry, Functions)
+• Number and Quantity
 
-### 1.5 Reading Standards and Interpreting their Codes in Grades K-8
+• Algebra
+
+• Functions
+
+• Modeling
+
+• Geometry Statistics and Probability
+
+The following terms will assist in understanding how to read the content standards and their codes. Terms are defined in order from most specific to most general.
+
+Standards - Statements of what a student should know, understand, and be able to do. Clusters - Groups of related standards. Cluster headings may be considered as the big idea(s) that the group of standards they represent are addressing. Cluster headings are therefore useful as a quick summary of the progression of ideas that the standards in a domain are covering and can help teachers to determine the focus of the standards they are teaching.
+
+ Domains - A large category of mathematics that the clusters and their respective content standards delineate and address. For example, Number and Operations – Fractions is a domain under which there are a number of clusters (the big ideas that will be addressed) along with their respective content standards, which give the specifics of what the student should know, understand, and be able to do when working with fractions.
+
+ Conceptual Categories – The content standards, clusters, and domains in Algebra I, Geometry, and Algebra II are further organized under conceptual categories. These are very broad categories of mathematical thought and lend themselves to the organization of high school course work. For example, Algebra is a conceptual category in the high school standards under which are domains such as Seeing Structure in Expressions, Creating Equations, Arithmetic with Polynomials and Rational Expressions, etc.
+
+# Reading Standards and Interpreting their Codes in Grades K-8
 
 Example from the Grade 3 standards:
 
@@ -94,9 +110,9 @@ Look at the example below. It is the code for the last Grade 3 standard in the a
 
 The grade level is 3, the domain code is NBT (Numbers and Operations in Base Ten), the cluster is A (first cluster), and the standard number is 3. The text of standard 3.NBT.A.3 is provided below.
 
-3.NBT.A.3. Multiply one-digit whole numbers by multiples of 10 in the range 10–90 (e.g., $9 \times 80$, $5 \times 60$) using strategies based on place value and properties of operations.
+3.NBT.A.3. Multiply one-digit whole numbers by multiples of 10 in the range 10–90 (e.g., $9 \\times 8 0 , 5 \\times 6 0 )$ using strategies based on place value and properties of operations.
 
-### 1.6 Reading Standards and Interpreting their Codes in High School Courses
+# Reading Standards and Interpreting their Codes in High School Courses
 
 The codes for standards in high school math courses have five parts. An excerpt of the standards for the high school Geometry course as displayed in this document is shown below.
 
@@ -114,27 +130,23 @@ The code for standard 5 in the list above is GM: G-SRT.B.5 with the meaning of e
 
 # A. Reason quantitatively and use units to solve problems.
 
-1. Use units as a way to understand problems and to guide the solution of multi-step problems; choose and interpret units consistently in formulas; choose and interpret the scale and the origin in graphs and data displays.
-
-2. Define appropriate quantities for the purpose of descriptive modeling. Choose a level of accuracy appropriate to limitations on measurement when reporting quantities.
+Useunits as a way to nderstand problemsandto guide the solutimulti-tep problems;choo nd 2.Define appropriate quantities for the purpose of descriptive modeling. Choose a level of accuracy appropriate to limitations on measurement when reporting quantities.
 
 # Algebra II Example A2: F-LE.B.4
 
-# Linear, Quadratic, and Exponential Models★
+# Linear, Quadratic, and Exponential Models\*
 
-A. Construct and compare linear, quadratic, and exponential models and solve problems.
+A. Construct and compare linear, quadratic, and exponential models and solve problems. c problems 4.For exponential models, express as a logarithm the solution to a $b ^ { c t } = d$ where $a , c ,$ and $d$ are numbers and the base b is 2, 10, or e; evaluate the logarithmusingtechnology.
 
-4. For exponential models, express as a logarithm the solution to $ab^{ct} = d$ where $a$, $c$, and $d$ are numbers and the base $b$ is 2, 10, or $e$; evaluate the logarithm using technology.
-
-B. Interpret expressions for functions in terms of the situation they model. Interpret the parameters in a linear, quadratic, or exponential function in terms of a context.
+BInterpret expressions for functions in terms of the situation they model. Interpret the parameters in a linear, quadratic, or exponential function in terms of a context.
 
 Note: There is not an error in the Algebra II listing of standards above. Standards 1 and 3 in the Linear, Quadratic, and Exponential Models domain are in the Algebra I standard with codes of A1: F-LE.A.1 and A1:F-LE.A.3.
 
-### 1.7 Companion Documents for Teachers
+# Companion Documents for Teachers
 
-Companion documents for teachers are designed to assist educators in interpreting and implementing the new Louisiana Student Standards for Mathematics by providing descriptions and examples for each standard in a grade level or course. The companion documents are linked in the Resources section and the grade level listings of this document.
+documents for teachers are designed to assist educators in interpreting and implementing the new Louisiana Student Standards for Mathematics by providing descriptions and examples for each standard in a grade level or course. The companion documents are linked in the Resources section and the grade level listings of this document. Access the companion document for a specific grade or course by clicking an icon sim ilar to the one to the right which links to the Grade 5 Teachers Companion document.
 
-### 1.8 Progressions in the Math Standards
+# Progressions in the Math Standards
 
 The standards for each grade should not be considered a checklist or taught in isolation. There is a flow or progression that creates coherence within a grade and from one grade to the next. The progressions are organized using domains in grades K -8 and conceptual categories in high school. The color-coded table shows the domains, categories, and their abbreviations, and identifies the five progressions present in the Louisiana Student Standards for Mathematics. Each of the progressions begins in Kindergarten and indicates a constant movement toward the high school standards. Progressions guarantee a steady, age-appropriate development of each topic and also ensure that gaps are not created in the mathematical education of Louisiana’s students. The table is designed to allow teachers to see the coherence and connections among the mathematical topics in the standards.
 
@@ -150,15 +162,7 @@ The standards for each grade should not be considered a checklist or taught in i
 | Geometry (G) | Geometry (G) | Geometry (G) |
 | Measurement and Data (MD) | Statistics and Probability (SP) | Statistics and Probability (S) |
 
----
-
-## 2. Standards for Mathematical Practice
-
-The Standards for Mathematical Practice describe varieties of expertise that mathematics educators at all levels should seek to develop in their students. These practices rest on important "processes and proficiencies" with longstanding importance in mathematics education.
-
-The Standards for Mathematical Practice are typically developed as students solve high-level mathematical tasks that support approaches, practices, and habits of mind which are called for within these standards.
-
-### 2.1 The Eight Standards for Mathematical Practice
+# Mathematics \| Standards for Mathematical Practice
 
 Being successful in mathematics requires that development of approaches, practices, and habits of mind are implemented as one strives to develop mathematical fluency, procedural skills, and conceptual understanding. The Standards for Mathematical Practice describe varieties of expertise that mathematics educators at all levels should seek to develop in their students. These practices rest on important “processes and proficiencies” with longstanding importance in mathematics education.
 
@@ -166,43 +170,43 @@ The Standards for Mathematical Practice are typically developed as students solv
 
 The following are the eight Standards for Mathematical Practice and their descriptions.
 
-#### MP1: Make sense of problems and persevere in solving them
+# 1 Make sense of problems and persevere in solving them.
 
 Mathematically proficient students start by explaining to themselves the meaning of a problem and looking for entry points to its solution. They analyze givens, constraints, relationships, and goals. They make conjectures about the form and meaning of the solution and plan a solution pathway rather than simply jumping into a solution attempt. They consider analogous problems, and try special cases and simpler forms of the original problem in order to gain insight into its solution. They monitor and evaluate their progress and change course if necessary. Older students might, depending on the context of the problem, transform algebraic expressions or change the viewing window on their graphing calculator to get the information they need. Mathematically proficient students can explain correspondences between equations, verbal descriptions, tables, and graphs or draw diagrams of important features and relationships, graph data, and search for regularity or trends. Younger students might rely on using concrete objects or pictures to help conceptualize and solve a problem. Mathematically proficient students check their answers to problems using a different method, and they continually ask themselves, “Does this make sense?” They can understand the approaches of others to solving complex problems and identify correspondences between different approaches.
 
-#### MP2: Reason abstractly and quantitatively
+# 2 Reason abstractly and quantitatively.
 
 Mathematically proficient students make sense of the quantities and their relationships in problem situations. Students bring two complementary abilities to bear on problems involving quantitative relationships: the ability to decontextualize—to abstract a given situation and represent it symbolically and manipulate the representing symbols as if they have a life of their own, without necessarily attending to their referents—and the ability to contextualize, to pause as needed during the manipulation process in order to probe into the referents for the symbols involved. Quantitative reasoning entails habits of creating a coherent representation of the problem at hand; considering the units involved; attending to the meaning of quantities, not just how to compute them; and knowing and flexibly using different properties of operations and objects.
 
-#### MP3: Construct viable arguments and critique the reasoning of others
+# 3 Construct viable arguments and critique the reasoning of others.
 
 Mathematically proficient students understand and use stated assumptions, definitions, and previously established results in constructing arguments. They make conjectures and build a logical progression of statements to explore the truth of their conjectures. They are able to analyze situations by breaking them into cases, and can recognize and use counterexamples. They justify their conclusions, communicate them to others, and respond to the arguments of others. They reason inductively about data, making plausible arguments that take into account the context from which the data arose. Mathematically proficient students are also able to compare the effectiveness of two plausible arguments, distinguish correct logic or reasoning from that which is flawed, and—if there is a flaw in an argument—explain what it is. Elementary students can construct arguments using concrete referents such as objects, drawings, diagrams, and actions. Such arguments can make sense and be correct, even though they are not generalized or made formal until later grades. Later, students learn to
 
 determine domains to which an argument applies. Students at all grades can listen or read the arguments of others, decide whether they make sense, and ask useful questions to clarify or improve the arguments.
 
-#### MP4: Model with mathematics
+# 4 Model with mathematics.
 
 Mathematically proficient students can apply the mathematics they know to solve problems arising in everyday life, society, and the workplace. In early grades, this might be as simple as writing an addition equation to describe a situation. In middle grades, a student might apply proportional reasoning to plan a school event or analyze a problem in the community. By high school, a student might use geometry to solve a design problem or use a function to describe how one quantity of interest depends on another. Mathematically proficient students who can apply what they know are comfortable making assumptions and approximations to simplify a complicated situation, realizing that these may need revision later. They are able to identify important quantities in a practical situation and map their relationships using such tools as diagrams, two-way tables, graphs, flowcharts and formulas. They can analyze those relationships mathematically to draw conclusions. They routinely interpret their mathematical results in the context of the situation and reflect on whether the results make sense, possibly improving the model if it has not served its purpose.
 
-#### MP5: Use appropriate tools strategically
+# 5 Use appropriate tools strategically.
 
 Mathematically proficient students consider the available tools when solving a mathematical problem. These tools might include pencil and paper, concrete models, a ruler, a protractor, a calculator, a spreadsheet, a computer algebra system, a statistical package, or dynamic geometry software. Proficient students are sufficiently familiar with tools appropriate for their grade or course to make sound decisions about when each of these tools might be helpful, recognizing both the insight to be gained and their limitations. For example, mathematically proficient high school students analyze graphs of functions and solutions generated using a graphing calculator. They detect possible errors by strategically using estimation and other mathematical knowledge. When making mathematical models, they know that technology can enable them to visualize the results of varying assumptions, explore consequences, and compare predictions with data. Mathematically proficient students at various grade levels are able to identify relevant external mathematical resources, such as digital content located on a website, and use them to pose or solve problems. They are able to use technologica tools to explore and deepen their understanding of concepts.
 
-#### MP6: Attend to precision
+# 6 Attend to precision.
 
 Mathematically proficient students try to communicate precisely to others. They try to use clear definitions in discussion with others and in their own reasoning. They state the meaning of the symbols they choose, including using the equal sign consistently and appropriately. They are careful about specifying units of measure, and labeling axes to clarify the correspondence with quantities in a problem. They calculate accurately and efficiently, express numerical answers with a degree of precision appropriate for the problem context. In the elementary grades, students give carefully formulated explanations to each other. By the time they reach high school they have learned to examine claims and make explicit use of definitions.
 
-#### MP7: Look for and make use of structure
+# 7 Look for and make use of structure.
 
 Mathematically proficient students look closely to discern a pattern or structure. Young students, for example, might notice that three and seven more is the same amount as seven and three more, or they may sort a collection of shapes according to how many sides the shapes have. Later, students will see $7 \\times 8$ equals the wellremembered $7 \\times 5 + 7 \\times 3$ , in preparation for learning about the distributive property. In the expression $x ^ { 2 } + 9 x +$ 14, older students can see the 14 as $2 \\times 7$ and the 9 as $^ 2 + 7$ . They recognize the significance of an existing line in a geometric figure and can use the strategy of drawing an auxiliary line for solving problems. They also can step back for an overview and shift perspective. They can see complicated things, such as some algebraic expressions, as single objects or as being composed of several objects. For example, they can see $5 - 3 ( x - y ) ^ { 2 }$ as
 
 5 minus a positive number times a square and use that to realize that its value cannot be more than 5 for any real numbers x and y.
 
-#### MP8: Look for and express regularity in repeated reasoning
+# 8 Look for and express regularity in repeated reasoning.
 
 Mathematically proficient students notice if calculations are repeated, and look both for general methods and for shortcuts. Upper elementary students might notice when dividing 25 by 11 that they are repeating the same calculations over and over again, and conclude they have a repeating decimal. By paying attention to the calculation of slope as they repeatedly check whether points are on the line through (1, 2) with slope 3, middle school students might abstract the equation $( y - 2 ) / ( x - 1 ) = 3 .$ . Noticing the regularity in the way terms cancel when expanding $( x - 1 ) ( x + 1 ) , ( x - 1 ) ( x ^ { 2 } + x + 1 )$ , and $( x - 1 ) ( x ^ { 3 } + x ^ { 2 } + x + 1 )$ might lead them to the general formula for the sum of a geometric series. As they work to solve a problem, mathematically proficient students maintain oversight of the process, while attending to the details. They continually evaluate the reasonableness of their intermediate results.
 
-### 2.2 Connecting the Standards for Mathematical Practice to the Standards for Mathematical Content
+# Connecting the Standards for Mathematical Practice to the Standards for Mathematical Content
 
 The Standards for Mathematical Practice describe ways in which developing student practitioners of the discipline of mathematics increasingly ought to engage with the subject matter as they grow in mathematical maturity and expertise throughout the elementary, middle and high school years.
 
@@ -210,12 +214,9 @@ The Standards for Mathematical Content are a balanced combination of procedure a
 
 In this respect, those content standards which set an expectation of understanding are potential “points of intersection” between the Standards for Mathematical Content and the Standards for Mathematical Practice. These points of intersection are intended to be weighted toward central and generative concepts in the school mathematics curriculum that most merit the time, resources, innovative energies, and focus necessary to qualitatively improve the curriculum, instruction, assessment, professional development, and student achievement in mathematics.
 
----
+# Mathematics \| Kindergarten
 
-## 3. Standards for Mathematical Content by Grade Level
-
-### 3.1 Kindergarten
-
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -309,8 +310,9 @@ A. Identify and describe shapes (squares, circles, triangles, rectangles, hexago
 5. Model shapes in the world by building shapes from components (e.g., sticks and clay balls) and drawing shapes. 6. Compose simple shapes to form larger shapes. For example, "Can you join these two triangles with full sides touching to make a rectangle?
 
 
-### 3.2 Grade 1
+# Mathematics \| Grade 1
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -331,7 +333,7 @@ A. Identify and describe shapes (squares, circles, triangles, rectangles, hexago
 2. Solve word problems that call for addition of three whole numbers whose sum is less than or equal to 20, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem.
 
 
-# B. Understand and apply properties of operations and the relationship between addition and subtraction.
+# . Understand and apply properties of operations and the relationship between addition and subtraction.
 
 3. Apply properties of operations to add and subtract.3 Examples: If $8 + 3 = 1 1$ is known, then $3 + 8 = 1 1$ is also known. (Commutative property of addition.) To add $2 + 6 + 4 ,$ , the second two numbers can be added to make a ten, so $2 + 6 + 4 = 2 + 1 0 = 1 2$ . (Associative property of addition.)
 
@@ -406,6 +408,7 @@ b. Understand that in adding two-digit numbers, one adds tens and tens, ones and
 
 # Geometry
 
+1.G
 
 # A. Reason with shapes and their attributes.
 
@@ -416,8 +419,9 @@ b. Understand that in adding two-digit numbers, one adds tens and tens, ones and
 3. Partition circles and rectangles into two and four equal shares, describe the shares using the words halves, fourths, and quarters, and use the phrases half of, fourth of, and quarter of. Describe the whole as two of, or four of the shares. Understand for these examples that decomposing into more equal shares creates smaller shares.
 
 
-### 3.3 Grade 2
+# Mathematics \| Grade 2
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -512,6 +516,7 @@ b. The numbers 100, 200, 300, 400, 500, 600, 700, 800, 900 refer to one, two, th
 
 # Geometry
 
+2.G
 
 # A. Reason with shapes and their attributes.
 
@@ -522,8 +527,9 @@ b. The numbers 100, 200, 300, 400, 500, 600, 700, 800, 900 refer to one, two, th
 3. Partition circles and rectangles into two, three, or four equal shares, describe the shares using the words halves, thirds, half of, a third of, etc., and describe the whole as two halves, three thirds, four fourths. Recognize that equal shares of identical wholes need not have the same shape.
 
 
-### 3.4 Grade 3
+# Mathematics \| Grade 3
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -578,6 +584,7 @@ D. Solve problems involving the four operations, and identify and explain patter
 
 # Number and Operations - Fractions
 
+3.NF
 
 # A. Develop understanding of fractions as numbers.
 
@@ -601,7 +608,7 @@ d. Compare two fractions with the same numerator or the same denominator by reas
 
 # Measurement and Data
 
-# A. Solve problems involving measurement and estimation of intervals of time, liquid volumes, and masses of objects.
+A. Solve problems involving measurement and estimation of intervals of time, liquid volumes, and masses of objects.
 
 1. Understand time to the nearest minute.
 
@@ -618,7 +625,7 @@ c. Solve word problems involving addition and subtraction of time intervals in m
 3. Draw a scaled picture graph and a scaled bar graph to represent a data set with several categories. Solve oneand two-step “how many more” and “how many less” problems using information presented in scaled bar graphs. For example, draw a bar graph in which each square in the bar graph might represent 5 pets.
 4. Generate measurement data by measuring lengths using rulers marked with halves and fourths of an inch. Show the data by making a line plot, where the horizontal scale is marked off in appropriate units—whole numbers, halves, or quarters.
 
-# C. Geometric measurement: understand concepts of area and relate area to multiplication and to addition
+. Geometric measurement: understand concepts of area and relate area to multiplication and to addition
 
 5. Recognize area as an attribute of plane figures and understand concepts of area measurement.
 
@@ -637,7 +644,7 @@ b. Multiply side lengths to find areas of rectangles with whole-number side leng
 
 c. Use tiling to show in a concrete case that the area of a rectangle with whole-number side lengths $\\pmb { a }$ and $b + c$ is the sum of ${ \\boldsymbol { a } } \\times { \\boldsymbol { b } }$ and ${ \\mathfrak { a } } \\times { \\mathfrak { c } }$ . Use area models to represent the distributive property in mathematical reasoning.
 
-# D. Geometric measurement: recognize perimeter as an attribute of plane figures and distinguish between linear and area measures.
+D. Geometric measurement: recognize perimeter as an attribute of plane figures and distinguish between linear and area measures.
 
 8. Solve real-world and mathematical problems involving perimeters of polygons, including finding the perimeter given the side lengths, finding an unknown side length, and exhibiting rectangles with the same perimeter and different areas or with the same area and different perimeters.
 
@@ -652,8 +659,9 @@ c. Use tiling to show in a concrete case that the area of a rectangle with whole
 1. Understand that shapes in different categories (e.g., rhombuses, rectangles, and others) may share attributes (e.g., having four sides), and that the shared attributes can define a larger category (e.g., quadrilaterals). Recognize rhombuses, rectangles, and squares as examples of quadrilaterals, and draw examples of quadrilaterals that do not belong to any of these subcategories.
 2. Partition shapes into parts with equal areas. Express the area of each part as a unit fraction of the whole. For example, partition a shape into 4 parts with equal area, and describe the area of each part as $\\scriptscriptstyle { \\mathcal { 1 } / 4 }$ of the area of the shape.
 
-### 3.5 Grade 4
+# Mathematics \| Grade 4
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -719,7 +727,7 @@ d. Determine whether a given whole number is prime or composite.
 2. Compare two fractions with different numerators and different denominators, e.g., by creating common denominators or numerators, or by comparing to a benchmark fraction such as $1 / 2$ . Recognize that comparisons are valid only when the two fractions refer to the same whole. Record the results of comparisons with symbols $> , = , 0 { \\mathsf { r } } < ,$ and justify the conclusions, e.g., by using a visual fraction model. (Denominators are limited to 2, 3, 4, 5, 6, 8, 10, 12, and 100.)
 
 
-# B. Build fractions from unit fractions by applying and extending previous understandings of operations on whole numbers.
+B. Build fractions from unit fractions by applying and extending previous understandings of operations on whole numbers.
 
 3. Understand a fraction $a / b$ with $a > 1$ as a sum of fractions $1 / b$ . (Denominators are limited to 2, 3, 4, 5, 6, 8, 10, 12, and 100.) a. Understand addition and subtraction of fractions as joining and separating parts referring to the same whole. Example: $3 / 4 = 1 / 4 + 1 / 4 + 1 / 4$ . b. Decompose a fraction into a sum of fractions with the same denominator in more than one way, recording each decomposition by an equation. Justify decompositions, e.g., by using a visual fraction model. Examples: $3 / 8 = 1 / 8 + 1 / 8 + 1 / 8 + 1 / 8 + 3 / 8 = 1 / 8 + 2 / 8 ; 2 1 / 8 = 1 + 1 + 1 / 8 = 8 / 8 + 8 / 8 + 1 / 8 .$ c. Add and subtract mixed numbers with like denominators, e.g., by replacing each mixed number with an equivalent fraction, and/or by using properties of operations and the relationship between addition and subtraction. d. Solve word problems involving addition and subtraction of fractions referring to the same whole and having like denominators, e.g., by using visual fraction models and equations to represent the problem.
 
@@ -779,8 +787,9 @@ a. An angle is measured with reference to a circle with its center at the common
 2. Classify two-dimensional figures based on the presence or absence of parallel or perpendicular lines, or the presence or absence of angles of a specified size. Recognize right triangles as a category, and identify right triangles.
 3. Recognize a line of symmetry for a two-dimensional figure as a line across the figure such that the figure can b folded along the line into matching parts. Identify line-symmetric figures and draw lines of symmetry.
 
-### 3.6 Grade 5
+# Mathematics \| Grade 5
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -820,7 +829,7 @@ b. Compare two decimals to thousandths based on meanings of the digits in each p
 
 4. Use place value understanding to round decimals to any place.
 
-# B. Perform operations with multi-digit whole numbers and with decimals to hundredths.
+# . Perform operations with multi-digit whole numbers and with decimals to hundredths.
 
 5. Fluently multiply multi-digit whole numbers using the standard algorithm.
 
@@ -911,8 +920,9 @@ b. A solid figure that can be packed without gaps or overlaps using n unit cubes
 4. Classify quadrilaterals in a hierarchy based on properties. (Students will define a trapezoid as a quadrilateral with at least one pair of parallel sides.)
 
 
-### 3.7 Grade 6
+# Mathematics \| Grade 6
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -955,9 +965,9 @@ d. Use ratio reasoning to convert measurement units; manipulate and transform un
 
 2. Fluently divide multi-digit numbers using the standard algorithm.
 
-3. Fluently add, subtract, multiply, and divide multi-digit decimals using the standard algorithm for each operation.
+. Fluently add, subtract, multiply, and divide multi-digit decimals using the standard algorithm for each operation.
 
-4. Find the greatest common factor of two whole numbers less than or equal to 100 and the least common multiple of two whole numbers less than or equal to 12. Use the distributive property to express a sum of two whole numbers 1–100 with a common factor as a multiple of a sum of two whole numbers with no common factor. For example, express $36 + 8$ as $4(9 + 2)$.
+4\. Find the greatest common factor of two whole numbers less than or equal to 100 and the least common multiple of two whole numbers less than or equal to 12. Use the distributive property to express a sum of two whole numbers 1–100 with a common factor as a multiple of a sum of two whole numbers with no common factor. For example, express $3 6 + 8$ as 4 $( 9 + 2 )$ .
 
 # C. Apply and extend previous understandings of numbers to the system of rational numbers.
 
@@ -1050,9 +1060,10 @@ c. Evaluate expressions at specific values of their variables. Include expressio
 5. Summarize numerical data sets in relation to their context, such as by: a. Reporting the number of observations. b. Describing the nature of the attribute under investigation, including how it was measured and its units of measurement. c. Giving quantitative measures of center (median and/or mean) and variability (interquartile range) as well as describing any overall pattern and any striking deviations from the overall pattern with reference to the context in which the data were gathered. d. Relating the choice of measures of center and variability to the shape of the data distribution and the context in which the data were gathered.
 
 
-### 3.8 Grade 7
+# Mathematics \| Grade 7
 
-# 
+# Teachers Companion Documents.zip
+
 # Grade Level Overview
 
 (1) Students extend their understanding of ratios and develop understanding of proportionality to solve single- and multi-step problems. Students use their understanding of ratios and proportionality to solve a wide variety of percent problems, including those involving discounts, interest, taxes, tips, and percent increase or decrease. Students solve problems about scale drawings by relating corresponding lengths between the objects or by using the fact that relationships of lengths within an object are preserved in similar objects. Students graph proportional relationships and understand the unit rate informally as a measure of the steepness of the related line, called the slope. They distinguish proportional relationships from other relationships.
@@ -1065,7 +1076,7 @@ c. Evaluate expressions at specific values of their variables. Include expressio
 
 # Ratios and Proportional Relationships
 
-# A. Analyze proportional relationships and use them to solve real-world and mathematical problems.
+# . Analyze proportional relationships and use them to solve real-world and mathematical problems.
 
 1. Compute unit rates associated with ratios of fractions, including ratios of lengths, areas, and other quantities measured in like or different units. For example, if a person walks ½ mile in each ¼ hour, compute the unit rate as the complex fraction $% / %$ miles per hour, equivalently 2 miles per hour.
 
@@ -1084,7 +1095,7 @@ d. Explain what a point $( x , y )$ on the graph of a proportional relationship 
 
 # The Number System
 
-# A. Apply and extend previous understandings of operations with fractions to add, subtract, multiply, and divide rational numbers.
+A. Apply and extend previous understandings of operations with fractions to add, subtract, multiply, and divide rational numbers.
 
 1. Apply and extend previous understandings of addition and subtraction to add and subtract rational numbers; represent addition and subtraction on a horizontal or vertical number line diagram.
 
@@ -1179,8 +1190,9 @@ b. Represent sample spaces for compound events using methods such as organized l
 
 c. Design and use a simulation to generate frequencies for compound events. For example, use random digits as a simulation tool to approximate the answer to the question: If $40 %$ of donors have type A blood, what is the probability that it will take at least 4 donors to find one with type A blood?
 
-### 3.9 Grade 8
+# Mathematics \| Grade 8
 
+Teachers Companion Documents.zip
 
 # Grade Level Overview
 
@@ -1450,7 +1462,7 @@ a. Determine an explicit expression, a recursive process, or steps for calculati
 
 # Linear, Quadratic, and Exponential Models★
 
-# A. Construct and compare linear, quadratic, and exponential models and solve problems.
+# . Construct and compare linear, quadratic, and exponential models and solve problems.
 
 1. Distinguish between situations that can be modeled with linear functions and with expone
 
@@ -1473,7 +1485,7 @@ c. Recognize situations in which a quantity grows or decays by a constant percen
 
 # Interpreting Categorical and Quantitative Data
 
-# A. Summarize, represent, and interpret data on a single count or measurement variable.
+# . Summarize, represent, and interpret data on a single count or measurement variable.
 
 2. Use statistics appropriate to the shape of the data distribution to compare center (median, mean) and spread (interquartile range, standard deviation) of two or more different data sets.
 
@@ -1650,7 +1662,7 @@ selected student from your school will favor science given that the student is i
 7. Apply the Addition Rule, $P ( A { \\mathsf { o r } } B ) = P ( A ) + P ( B ) - P ( A { \\mathsf { a n d } } B ) ,$ , and interpret the answer in terms of the model.
 
 
-★ Modeling Standards - Making mathematical models is a Standard for Mathematical Practice, and specific modeling standards appear throughout the high school standards. The basic modeling cycle involves
+★Modeling Standards - Making mathematical models is a Standard for Mathematical Practice, and specific modeling standards appear throughout the high school standards. The basic modeling cycle involves
 
 1. identifying variables in the situation and selecting those that represent essential features, 2. formulating a model by creating and selecting geometric, graphical, tabular, algebraic, or statistical representations that describe relationships between the variables, 3. analyzing and performing operations on these relationships to draw conclusions, 4. interpreting the results of the mathematics in terms of the original situation, 5. validating the conclusions by comparing them with the situation, and then either improving the model or, if it is acceptable, 6. reporting on the conclusions and the reasoning behind them. Choices, assumptions, and approximations are present throughout this cycle.
 
@@ -1835,11 +1847,7 @@ A2: S-IC
 
 1. identifying variables in the situation and selecting those that represent essential features, 2. formulating a model by creating and selecting geometric, graphical, tabular, algebraic, or statistical representations that describe relationships between the variables, 3. analyzing and performing operations on these relationships to draw conclusions, 4. interpreting the results of the mathematics in terms of the original situation, 5. validating the conclusions by comparing them with the situation, and then either improving the model or, if it is acceptable, 6. reporting on the conclusions and the reasoning behind them. Choices, assumptions, and approximations are present throughout this cycle.
 
----
-
-## 5. Glossary and Reference Tables
-
-### 5.1 Essential Mathematics Terms
+# Glossary
 
 Addition and subtraction within 5, 10, 20, 100, or 1000. Addition or subtraction of two whole numbers with whole number answers, and with sum or minuend in the range 0-5, 0-10, 0-20, or 0-100, respectively. Example: $8 + 2 = 1 0$ is an addition within 10, $1 4 - 5 = 9$ is a subtraction within 20, and $5 5 - 1 8 = 3 7$ is a subtraction within 100.
 
@@ -1953,7 +1961,7 @@ Visual fraction model. A tape diagram, number line diagram, or area model.
 
 Whole numbers. The numbers 0, 1, 2, 3, ….
 
-### 5.2 Common Addition and Subtraction Situations (Table 1)
+TABLE 1. Common addition and subtraction situations.30
 
 |     |     |     |     |
 | --- | --- | --- | --- |
@@ -1979,7 +1987,7 @@ Either addend can be unknown, so there are three variations of these problem sit
 
 3For the Bigger Unknown or Smaller Unknown situations, one version directs the correct operation (the version using more for the bigger unknown and using less for the smaller unknown). The other versions are more difficult.
 
-### 5.3 Common Multiplication and Division Situations (Table 2)
+TABLE 2. Common multiplication and division situations.31
 
 |     |     |     |     |
 | --- | --- | --- | --- |
@@ -1992,9 +2000,7 @@ Either addend can be unknown, so there are three variations of these problem sit
 
 4The language in the array examples shows the easiest form of array problems. A harder form is to use the terms rows and columns: The apples in the grocery window are in 3 rows and 6 columns. How many apples are in there? Both forms are valuable. 5Area involves arrays of squares that have been pushed together so that there are no gaps or overlaps, so array problems include these especially important measurement situations.
 
-### 5.4 Properties of Operations (Table 3)
-
-The properties of operations apply to the rational number system, the real number system, and the complex number system. Here $a$, $b$ and $c$ stand for arbitrary numbers in a given number system.
+TABLE 3. The properties of operations. Here $\\pmb { a }$ , $b$ and $c$ stand for arbitrary numbers in a given number system. The properties of operations apply to the rational number system, the real number system, and the complex number system.
 
 |     |     |
 | --- | --- |
@@ -2008,73 +2014,52 @@ The properties of operations apply to the rational number system, the real numbe
 | Existence of multiplicative inverses | For every a ≠ 0 there exists 1/a so that a × 1/a = 1/a × a = 1. |
 | Distributive property of multiplication over addition | αb+)=ab+ac |
 
-### 5.5 Properties of Equality (Table 4)
-
-Here $a$, $b$ and $c$ stand for arbitrary numbers in the rational, real, or complex number systems.
+TABLE 4. The properties of equality. Here $\\pmb { a }$ , $b$ and $c$ stand for arbitrary numbers in the rational, real, or complex number systems.
 
 ![](https://doe.louisiana.gov/docs/default-source/teacher-toolbox-resources/images/b668f651694e01c7fe7e45e46ecb7dca8f1c825a31b5a84604ff922561cbc8e2.jpg)
 
-### 5.6 Properties of Inequality (Table 5)
-
-Here $a$, $b$ and $c$ stand for arbitrary numbers in the rational or real number systems.
+TABLE 5. The properties of inequality. Here $\\pmb { a }$ , $b$ and $c$ stand for arbitrary numbers in the rational or real number systems.
 
 ![](https://doe.louisiana.gov/docs/default-source/teacher-toolbox-resources/images/3d5a7664a8e1e76117c22f0415a5985a124c689348074acc45de04c8147b1e07.jpg)
 
----
-
-## 6. Resources
+# RESOURCES
 
 Local districts are free to use any materials that are appropriate to meet the needs of students. The LDOE offers these optional resources for consideration by districts as ways to support their teachers in implementing the new Louisiana Student Standards for Mathematics.
 
-### 6.1 Instructional Materials Review (IMR)
+# Instructional Materials Review (IMR)
 
 In Louisiana, all districts are able to purchase instructional materials that are best for their local communities. The Louisiana Department of Education engages in an online review of instructional materials to determine the degree of alignment with state content standards to support districts with these decisions. Based on these reviews, instructional materials fall into one of three categories:
 
-**TIER 1 - EXEMPLIFIES QUALITY**: Meets all non-negotiable criteria and scored the best possible on all indicators of superior quality.
+# TIER 1 - EXEMPLIFIES QUALITY:
 
-**TIER 2 - APPROACHING QUALITY**: Meets all non-negotiable criteria and some indicators of superior quality.
+Meets all non-negotiable criteria and scored the best possible on all indicators of superior quality.
 
-**TIER 3 - NOT REPRESENTING QUALITY**: Does not meet non-negotiable criteria.
+# TIER 2 - APPROACHING QUALITY:
+
+Meets all non-negotiable criteria and some indicators of superior quality.
+
+# TIER 3 - NOT REPRESENTING QUALITY:
+
+Does not meet non-negotiable criteria.
 
 The Department will continue to review and evaluate instructional materials based on the standards in place at the time of the review. Additionally, the Department will conduct additional reviews when standards change and publishers update their materials upon request. Click here to see up-to-date annotated reviews of instructional materials.
 
-### 6.2 K-8 Math Standards by Domain
+# K-8 Math Standards by Domain
 
 This document arranges the math standards for Kindergarten through Grade 8 in such a way to show how mathematical concepts are built within each domain and how those concepts progress across grades. This progression shows the coherence across grades within each domain that can be used to inform teaching and learning.
 
-### 6.3 Louisiana Student Standards for Mathematics: Companion Document for Teachers
+K-8 Math Standards by Domain
+
+# Louisiana Student Standards for Mathematics: Companion Document for Teachers
 
 These are grade or course level documents designed to assist teachers in interpreting and implementing the standards through the use of descriptions and examples.
 
-### 6.4 Math Remediation Guides
+# Math Remediation Guides
 
 These guides, one for each grade or course, are designed to help teachers more quickly determine the required previous knowledge needed for each individual standard using easy-to-access charts.
 
-Available for: Kindergarten, Grade 1, Grade 2, Grade 3, Grade 4, Grade 5, Grade 6, Grade 7, Grade 8, Algebra I, Geometry, Algebra II
+Kindergarten Remediation Guide Grade 1 Remediation Guide Grade 2 Remediation Guide Grade 3 Remediation Guide
 
----
+Grade 4 Remediation Guide Grade 5 Remediation Guide Grade 6 Remediation Guide Grade 7 Remediation Guide
 
-## 7. Conclusion: The Competitive Moat
-
-This RAG context guide represents the platform's competitive advantage for K-12 mathematics instruction because it embeds four types of knowledge that cannot be easily replicated:
-
-**State-Specific Knowledge**: Exact Louisiana K-12 standards text, vertical progressions across all grades, and local context that generic tools lack
-
-**Developmental Knowledge**: Deep understanding of how mathematical concepts develop from Kindergarten through high school, including progressions, prerequisite relationships, and common misconceptions
-
-**Pedagogical Knowledge**: Research-based instructional practices including concrete-representational-abstract sequencing, problem types, fluency development, and standards-based teaching aligned with how students learn mathematics
-
-**Temporal Knowledge**: Awareness of typical K-12 pacing, seasonal instructional focus, and the natural rhythm of the school year across all grade levels
-
-When combined, these knowledge domains transform generic AI assistance into a proactive, developmentally-appropriate, trustworthy partner that anticipates educator needs, ensures quality and standards alignment, provides appropriate differentiation, and recognizes the unique needs of mathematics instruction across all grade levels. This is the moat that prevents competitors from offering equivalent value for Louisiana K-12 mathematics education, even if they have access to similar AI models.
-
----
-
-## Document Version and Maintenance
-
-**Version**: 1.0  
-**Last Updated**: November 2025  
-**Source**: Louisiana K-12 Student Standards for Mathematics (Updated December 21, 2017)  
-**Recommended Review Cycle**: Annually, or upon Louisiana DOE standards updates  
-
-**Maintenance Notes**: This RAG context guide should be updated whenever Louisiana releases revised K-12 mathematics standards, new pacing guidance, or modified accommodation guidelines. Platform developers should monitor the Louisiana Department of Education website for official updates to K-12 mathematics instruction guidance, assessment formats, and instructional materials recommendations.
+Grade 8 Remediation Guide Algebra I Remediation Guide Geometry Remediation Guide Algebra II Remediation Guide

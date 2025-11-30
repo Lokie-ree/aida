@@ -98,8 +98,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
             setEmailValue("");
             return;
           } else if (betaSignup.status === "approved") {
-            toast.info("You've been approved! Check your email for a magic link to access the platform.");
+            toast.success("You've been approved! Sign in to access the platform.");
             setFlow("signIn");
+            // Optionally auto-submit or just let them click
             return;
           } else if (betaSignup.status === "rejected") {
             toast.error("Your application was not approved. Please contact support if you believe this is an error.");
@@ -183,8 +184,8 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
           </DialogTitle>
           <DialogDescription className="text-center">
             {flow === "signIn" 
-              ? "Sign in with a magic link sent to your email" 
-              : "Sign up for the beta program"}
+              ? "Sign in with a magic link sent to your email. Check your spam folder if you don't see it." 
+              : "Sign up for the beta program. We review applications within 24-48 hours."}
           </DialogDescription>
         </DialogHeader>
 
@@ -195,8 +196,8 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
             </CardTitle>
             <CardDescription>
               {flow === "signIn" 
-                ? "Enter your email and we'll send you a magic link to sign in" 
-                : "Enter your details to apply for beta access"}
+                ? "Enter your email and we'll send you a magic link (expires in 15 mins)." 
+                : "Enter your details to apply for beta access."}
             </CardDescription>
           </CardHeader>
           

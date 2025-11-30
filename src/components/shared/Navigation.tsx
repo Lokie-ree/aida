@@ -19,7 +19,8 @@ import {
   X,
   Clock,
   Shield,
-  FileCheck
+  FileCheck,
+  MessageSquare
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,12 @@ export function Navigation({ className }: NavigationProps) {
 
   const navigationItems = [
     {
+      path: "/coach",
+      label: "Coach",
+      icon: MessageSquare,
+      description: "AI Instructional Coach"
+    },
+    {
       path: "/dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
@@ -42,7 +49,7 @@ export function Navigation({ className }: NavigationProps) {
     },
     {
       path: "/frameworks",
-      label: "Framework Library",
+      label: "Frameworks",
       icon: BookOpen,
       description: "Browse AI guidance frameworks"
     },

@@ -2,7 +2,39 @@
 
 **Last Updated:** November 27, 2025
 **Status:** Phase 0 Complete ✅, Phase 1 Complete ✅ (Refactored), Phases 2-4 Pending
-**Reference:** See [CLAUDE.md](../CLAUDE.md) for technical architecture patterns, Convex function types, testing patterns, and workflow system usage.
+**Reference:** See [CLAUDE.md](../CLAUDE.md) for technical architecture patterns, Convex function types, testing patterns, and workflow system usage. 
+
+## Rubric Integration Foundation
+
+**CRITICAL PRINCIPLE:** The Louisiana Educator Rubric (LER) is the foundation for every Pelican AI feature. This RAG implementation plan must ensure that all platform features are **rubric-infused**, not merely rubric-aligned. Every feature, every interaction, every suggestion must explicitly reference rubric indicators and performance descriptors.
+
+### Core Rubric Integration Requirements
+
+1. **Explicit Rubric Citations:** All AI-generated feedback must cite specific rubric indicators (e.g., "Standards and Objectives (SO)", "Presenting Instructional Content (PIC)") and performance levels (Exemplary Level 5, Proficient Level 3, Unsatisfactory Level 1).
+
+2. **Performance Level Descriptors:** RAG must retrieve and surface exact performance level descriptors from the rubric, not generic interpretations. Teachers need to see the precise language evaluators will use.
+
+3. **Four-Domain Coverage:** The rubric encompasses four domains that must be searchable and retrievable:
+   - **Instruction Domain** (12 indicators): Standards and Objectives, Motivating Students, Presenting Instructional Content, Lesson Structure and Pacing, Activities and Materials, Questioning, Academic Feedback, Grouping Students, Teacher Content Knowledge, Teacher Knowledge of Students, Thinking, Problem-Solving
+   - **Planning Domain** (3 indicators): Instructional Plans, Student Work, Assessment
+   - **Environment Domain** (4 indicators): Expectations, Engaging Students and Managing Behavior, Physical Environment, Respectful Conditions for Learning
+   - **Professionalism Domain** (4 indicators): Professional Growth and Development, Reflection on Teaching Practice, School Involvement, Fulfillment of School Responsibilities
+
+4. **Standards-Rubric Alignment:** RAG must enable cross-domain searches that connect Louisiana Student Standards (LSS) to relevant rubric indicators, helping teachers understand how standards implementation aligns with evaluation expectations.
+
+5. **Feature-Specific Rubric Integration:**
+   - **Alignment Scorecard:** Must validate against Planning domain indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with explicit performance level feedback
+   - **Weekly Spark:** Must address Instruction domain indicators (Standards and Objectives, Motivating Students, Lesson Structure and Pacing, Presenting Instructional Content)
+   - **Delta Generator:** Must ground differentiation in rubric's Teacher Knowledge of Students and Grouping Students indicators
+   - **Innovation Remix Engine:** Must ensure shared innovations maintain rubric alignment across contexts
+
+### RAG Design Implications
+
+- **LER Data Structure:** Must preserve domain, indicator, and performance level hierarchy for precise retrieval
+- **Embedding Text Format:** Must include full rubric descriptor text, not just indicator names, to enable semantic matching
+- **Filter Design:** Must support searching by domain, indicator, and performance level to enable targeted rubric retrieval
+- **Cross-Domain Queries:** Must enable searches that connect standards to rubric indicators (e.g., "What rubric indicators relate to RL.3.1?")
+- **Agent Prompts:** Must include rubric context in all AI agent prompts to ensure responses cite rubric descriptors
 
 ## Current State Analysis
 
@@ -325,7 +357,14 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ### Phase 2: LER JSON Structure & Conversion (Week 1-2)
 
-**Goal:** Parse LER rubric and structure for RAG embedding using JSON format
+**Goal:** Parse LER rubric and structure for RAG embedding using JSON format, ensuring rubric-infused integration across all platform features
+
+**Rubric Integration Requirements:**
+- Must preserve four-domain structure (Instruction, Planning, Environment, Professionalism)
+- Must include all 23 indicators across domains
+- Must preserve performance level descriptors (Level 1, 3, 5) with exact rubric language
+- Must enable retrieval by domain, indicator, and performance level
+- Must support cross-domain queries connecting standards to rubric indicators
 
 **Tasks:**
 
@@ -336,6 +375,7 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 - **Verify Convex RAG supports 9 filters** (test during implementation - within 16-filter limit but close to edge)
 - **Review filter design:** Consider composite filters for AND operations (see Technical Constraints section)
 - Update filterNames to include all 9 filters
+- **Rubric Integration:** Filters must enable searching by domain (e.g., "INSTRUCTION", "PLANNING"), indicator code (e.g., "SO", "PIC"), and performance level (e.g., "1", "3", "5")
 
 2. **Create LER Data Model** (`convex/lerTypes.ts`)
 
@@ -372,18 +412,27 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 - Follow [CLAUDE.md](../CLAUDE.md#architecture-patterns) action patterns
 - Similar structure to `populateStandards.ts`
 - Action `populateLERFromJson` (preferred method):
- - Accepts `jsonContent: v.string()` parameter
- - Uses `lerJsonParser` to extract indicators
- - **Processes indicators in batches using Workflow/Workpool patterns** (see Technical Constraints)
- - **Integrates Rate Limiter for embedding calls** (see Technical Constraints)
+  - Accepts `jsonContent: v.string()` parameter
+  - Uses `lerJsonParser` to extract indicators
+  - **Processes indicators in batches using Workflow/Workpool patterns** (see Technical Constraints)
+  - **Integrates Rate Limiter for embedding calls** (see Technical Constraints)
 - Action `populateLERFromMarkdown` (fallback/one-time conversion):
- - Accepts `markdownContent: v.string()` parameter
- - Uses `markdownToJson` converter, then `lerJsonParser`
- - Can output JSON for saving
-- Chunking strategy: One chunk per indicator+performance level (3 chunks per indicator)
-- Embedding text format includes domain, indicator, and performance level
+  - Accepts `markdownContent: v.string()` parameter
+  - Uses `markdownToJson` converter, then `lerJsonParser`
+  - Can output JSON for saving
+- **Chunking strategy (Rubric-Infused):** One chunk per indicator+performance level (3 chunks per indicator: Level 1, Level 3, Level 5)
+  - Each chunk must include full performance level descriptor text (not just summary)
+  - Chunks must preserve exact rubric language for semantic matching
+  - Enables precise retrieval of performance level descriptors
+- **Embedding text format (Rubric-Infused):** Must include:
+  - Domain name (e.g., "Instruction Domain")
+  - Indicator code and name (e.g., "Standards and Objectives (SO)")
+  - Performance level (e.g., "Proficient Level 3")
+  - Full descriptor text from rubric (exact language evaluators use)
+  - Example format: `"Instruction Domain - Standards and Objectives (SO) - Proficient Level 3: [full descriptor text from rubric]"`
 - Use namespace: `"louisiana_educator_rubric"`
 - Filter values: `contentType: "louisiana_educator_rubric"`, `lerDomain`, `lerIndicator`, `performanceLevel`
+- **Rubric Integration:** Embedding text must preserve exact rubric language to enable semantic matching with teacher-created content and agent prompts
 
 7. **Create Workflow for LER Bulk Ingestion** (`convex/populateLERWorkflow.ts`)
 
@@ -423,33 +472,57 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ### Phase 3: RAG Service Extensions (Week 2)
 
-**Goal:** Add LER search capabilities and optimize queries
+**Goal:** Add LER search capabilities and optimize queries, ensuring all features are rubric-infused
+
+**Rubric Integration Requirements:**
+- All search functions must return rubric indicators with full performance level descriptors
+- Agent prompts must include rubric context to ensure responses cite rubric language
+- Cross-domain queries must connect standards to relevant rubric indicators
+- Search results must preserve exact rubric descriptor language
 
 **Tasks:**
 
-1. **Extend `ragService.ts`**
+1. **Extend `ragService.ts` (Rubric-Infused)**
 
 - Follow [CLAUDE.md](../CLAUDE.md#architecture-patterns) action patterns
 - Add `searchLERIndicators` action:
- - Search by domain, indicator, or performance level
- - Return LER indicators matching query
- - Use filters: `contentType: "louisiana_educator_rubric"`, optional `lerDomain`, `lerIndicator`, `performanceLevel`
- - **Note:** Remember filters are OR-ed; use composite filters or post-filtering for AND operations
+  - Search by domain, indicator, or performance level
+  - Return LER indicators matching query with full performance level descriptors
+  - Use filters: `contentType: "louisiana_educator_rubric"`, optional `lerDomain`, `lerIndicator`, `performanceLevel`
+  - **Note:** Remember filters are OR-ed; use composite filters or post-filtering for AND operations
+  - **Rubric Integration:** Must return exact rubric descriptor text, not summaries
 - Add `searchStandardsByLER` action:
- - Find standards relevant to a specific LER indicator
- - Cross-domain search (LER + LSS)
- - Uses semantic search across both namespaces
- - **Note:** Limited to 256 results max; design queries to narrow search region efficiently
+  - Find standards relevant to a specific LER indicator
+  - Cross-domain search (LER + LSS)
+  - Uses semantic search across both namespaces
+  - **Note:** Limited to 256 results max; design queries to narrow search region efficiently
+  - **Rubric Integration:** Enables teachers to understand which standards align with specific rubric indicators
+- Add `searchLERByStandard` action:
+  - Find rubric indicators relevant to a specific LSS standard
+  - **Rubric Integration:** Enables Alignment Scorecard to cite relevant rubric indicators for each standard
 - Update existing `getStandards` to handle both LSS and LER queries (if needed)
-- **For Agent integration:** Design tool schemas that explicitly take filter arguments (subject, grade, domain, etc.) rather than just `query: string` to ensure structured filters are used
+- **For Agent integration:** Design tool schemas that explicitly take filter arguments (subject, grade, domain, indicator, performance level) rather than just `query: string` to ensure structured filters are used
 
-2. **Update Alignment Workflows** (`convex/alignmentSteps.ts`)
+2. **Update Alignment Workflows** (`convex/alignmentSteps.ts`) - **Rubric-Infused**
 
 - Verify existing workflow works with populated RAG data
 - Follow [CLAUDE.md](../CLAUDE.md#workflow-system) workflow patterns
-- Optionally retrieve relevant LER indicators when analyzing content
+- **REQUIRED:** Retrieve relevant LER indicators when analyzing content
+  - Search Planning domain indicators (Instructional Plans, Student Work, Assessment)
+  - Search Instruction domain indicators (Standards and Objectives, Presenting Instructional Content)
+  - Retrieve performance level descriptors (Level 1, 3, 5) for each indicator
+- **REQUIRED:** Update agent prompts to include rubric context
+  - Include retrieved rubric indicators and performance level descriptors in agent system prompt
+  - Instruct agent to cite specific rubric indicators and performance levels in feedback
+  - Provide rubric language examples for agent to use
+- **REQUIRED:** Update scorecard generation to cite rubric descriptors
+  - Include rubric indicator citations (e.g., "Standards and Objectives (SO)")
+  - Include performance level assessments (e.g., "Proficient Level 3")
+  - Include exact rubric descriptor language in feedback
+  - Provide pathway from current level to next level using rubric descriptors
 - Test end-to-end alignment workflow with real data
 - **Ensure workflow steps use deterministic patterns** (call actions via `step.runAction`, not arbitrary fetch/crypto)
+- **Validate rubric integration:** Verify feedback includes rubric citations and performance level descriptors
 
 3. **Query Optimization**
 
@@ -473,38 +546,66 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ### Phase 4: Testing & Validation (Week 2-3)
 
-**Goal:** Ensure accuracy and validate structure
+**Goal:** Ensure accuracy and validate structure, with emphasis on rubric integration validation
+
+**Rubric Integration Validation Requirements:**
+- All four domains must be searchable and retrievable
+- All 23 indicators must be accessible with full performance level descriptors
+- Cross-domain queries must connect standards to rubric indicators
+- Agent prompts must include rubric context
+- Feedback must cite rubric indicators and use exact rubric language
 
 **Tasks:**
 
 1. **Create Test Data**
 
 - Sample standards from each subject/grade (extract from knowledge files)
-- Sample LER indicators from each domain
+- Sample LER indicators from each domain (Instruction, Planning, Environment, Professionalism)
+- Sample performance level descriptors (Level 1, 3, 5) for each indicator
 - Known good query → expected results pairs
+- **Rubric Integration Test Cases:**
+  - Query: "Standards and Objectives for grade 3 ELA" → Should return SO indicator with Level 1, 3, 5 descriptors
+  - Query: "What rubric indicators relate to RL.3.1?" → Should return relevant indicators from Instruction and Planning domains
+  - Query: "Presenting Instructional Content Proficient level" → Should return exact PIC Level 3 descriptor text
 
-2. **Integration Tests**
+2. **Integration Tests (Including Rubric Integration Validation)**
 
 - Follow [CLAUDE.md](../CLAUDE.md#testing-architecture) testing patterns:
- - Use `convex-test` for in-memory Convex simulation
- - Use `edge-runtime` environment
- - Test files follow `convex/**/*.test.ts` pattern
+  - Use `convex-test` for in-memory Convex simulation
+  - Use `edge-runtime` environment
+  - Test files follow `convex/**/*.test.ts` pattern
 - Test markdown-to-JSON conversion accuracy
 - Test JSON parsing and schema validation
 - Test RAG population (verify chunks created correctly)
 - Test search retrieval (precision/recall)
 - Test filter combinations (including composite filters for AND operations)
-- Test alignment workflow end-to-end
+- **Rubric Integration Tests:**
+  - Test LER indicator retrieval by domain (Instruction, Planning, Environment, Professionalism)
+  - Test LER indicator retrieval by indicator code (SO, PIC, etc.)
+  - Test performance level descriptor retrieval (Level 1, 3, 5)
+  - Test cross-domain queries (standards → rubric indicators)
+  - Test embedding text includes full rubric descriptor language
+  - Test agent prompts include rubric context
+  - Test scorecard generation includes rubric citations
+  - Validate feedback uses exact rubric language, not generic interpretations
+- Test alignment workflow end-to-end with rubric integration
 - **Test workflow durability:** Verify retries and backoff work correctly
 - **Test Rate Limiter integration:** Verify embedding calls respect rate limits
 
-3. **Manual Validation**
+3. **Manual Validation (Including Rubric Integration)**
 
 - Populate RAG with real data from JSON files using workflows
-- Test alignment workflows end-to-end
-- Verify LER indicators appear in relevant searches
+- Test alignment workflows end-to-end with rubric integration
+- **Rubric Integration Validation:**
+  - Verify all four domains (Instruction, Planning, Environment, Professionalism) are searchable
+  - Verify all 23 indicators are retrievable with full performance level descriptors
+  - Verify LER indicators appear in relevant searches with exact rubric language
+  - Verify cross-domain queries connect standards to rubric indicators
+  - Verify agent prompts include rubric context
+  - Verify scorecard feedback includes rubric citations (indicator codes, performance levels)
+  - Verify feedback uses exact rubric descriptor language, not generic interpretations
+  - Test with actual user scenarios (e.g., grade 3 ELA lesson plan analysis)
 - Verify standards appear in alignment analysis
-- Test with actual user scenarios
 - **Monitor embedding costs and rate limit usage**
 
 **Manual Validation Scripts Created:** ✅
@@ -513,7 +614,15 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
   - `validateEmbeddingQuality`: Check semantic relevance of results
   - `validateFilterBehavior`: Test filter combinations work correctly
   - `validateRubricIntegration`: Test LER rubric data retrieval (when available)
+    - **Rubric Integration Validation:**
+      - Test all four domains are searchable
+      - Test all 23 indicators are retrievable
+      - Test performance level descriptors (Level 1, 3, 5) include exact rubric language
+      - Test cross-domain queries (standards → rubric indicators)
+      - Test agent prompts include rubric context
+      - Test scorecard feedback includes rubric citations
 - Run via: `npx convex run ragValidation:validateSearchAccuracy`
+- Run rubric validation: `npx convex run ragValidation:validateRubricIntegration`
 - Output results to console for manual review
 
 **Files Created:** ✅ (November 26, 2025)
@@ -627,12 +736,29 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
  - Use Action Cache only for caching search query embeddings if doing manual `ctx.vectorSearch` outside RAG
  - Let RAG handle all ingest embeddings
 
-10. **Code Patterns:**
+10. **Rubric Integration Strategy:**
+
+- **Decision:** All RAG operations must preserve exact rubric language and enable rubric-infused features
+- **Rationale:** 
+  - The platform's core differentiator is rubric integration—every feature must be rubric-infused
+  - Teachers need exact rubric language that evaluators will use, not generic interpretations
+  - Cross-domain queries must connect standards to rubric indicators
+  - Agent prompts must include rubric context to ensure responses cite rubric descriptors
+- **Implementation:**
+  - Embedding text must include full performance level descriptors (not summaries)
+  - Chunking strategy preserves indicator+performance level structure
+  - Filter design enables searching by domain, indicator, and performance level
+  - Agent prompts include retrieved rubric indicators and performance level descriptors
+  - Scorecard generation cites specific rubric indicators and uses exact rubric language
+- **Validation:** All features must be tested to ensure rubric citations and exact rubric language appear in feedback
+
+11. **Code Patterns:**
 
 - Follow [CLAUDE.md](../CLAUDE.md#architecture-patterns) for Convex function types (query, mutation, action)
 - Use TypeScript strict types (no `any` - see [CLAUDE.md](../CLAUDE.md#code-conventions))
 - Follow [CLAUDE.md](../CLAUDE.md#testing-architecture) for test structure and patterns
 - Use [CLAUDE.md](../CLAUDE.md#workflow-system) patterns for workflow integration
+- **Rubric Integration:** All features must reference [RUBRIC_INTEGRATION_GUIDE.md](./RUBRIC_INTEGRATION_GUIDE.md) for foundational principles
 
 ## Success Criteria
 
@@ -640,9 +766,23 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 - JSON schemas created and validated (Phase 1-2)
 - All LSS markdown files converted to JSON and standards in RAG (Phase 1)
 - All LER indicators converted to JSON and in RAG with correct structure (Phase 2)
+- **Rubric Integration Validation:**
+  - ✅ All four domains (Instruction, Planning, Environment, Professionalism) searchable in RAG
+  - ✅ All 23 indicators across domains retrievable with full performance level descriptors
+  - ✅ Performance level descriptors (Level 1, 3, 5) include exact rubric language
+  - ✅ Cross-domain queries connect standards to relevant rubric indicators
+  - ✅ Agent prompts include rubric context and cite rubric indicators
+  - ✅ Alignment Scorecard feedback includes rubric citations and performance level assessments
+  - ✅ Feedback uses exact rubric descriptor language, not generic interpretations
 - Search queries return relevant results with >80% precision
-- Alignment workflows functional with real data (unblocked)
+- Alignment workflows functional with real data and rubric integration (unblocked)
 - Tests pass and validate data structure and schema compliance
+- **Rubric Integration Tests:**
+  - ✅ Test retrieval of rubric indicators by domain, indicator, and performance level
+  - ✅ Test cross-domain queries connecting standards to rubric indicators
+  - ✅ Test agent prompts include rubric context
+  - ✅ Test scorecard generation includes rubric citations
+  - ✅ Validate feedback uses exact rubric descriptor language
 - No breaking changes to existing functionality
 - All code follows patterns documented in [CLAUDE.md](../CLAUDE.md)
 - **Workflow-based ingestion with Rate Limiter integration working correctly**
@@ -690,6 +830,15 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 17. **Workflow Determinism:** Workflows must be deterministic. Use `step.runAction` for RAG operations, not arbitrary fetch/crypto. Keep non-deterministic logic in actions, not workflow handlers
 
+18. **Rubric Integration Failure (CRITICAL):** If RAG implementation does not preserve exact rubric language or enable rubric citations, the platform cannot fulfill its core mission. **This is non-negotiable.**
+   - **Risk:** Generic feedback that doesn't cite rubric indicators or use exact rubric language
+   - **Mitigation:** 
+     - Embedding text must include full performance level descriptors
+     - Agent prompts must include rubric context
+     - All feedback must be validated to include rubric citations
+     - Test rubric integration at every phase
+   - **Validation:** Every feature must be tested to ensure rubric citations and exact rubric language appear in feedback
+
 ## Critical Path to Production
 
 ### Step 1: Populate LSS Standards (Phase 1) - **HIGHEST PRIORITY**
@@ -709,33 +858,64 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 
 ### Step 2: Populate LER Rubric (Phase 2) - **HIGH PRIORITY**
 
-**Why Second:** Alignment Scorecard needs to cite rubric descriptors. Without LER in RAG, feedback cannot reference rubric indicators.
+**Why Second:** Alignment Scorecard needs to cite rubric descriptors. Without LER in RAG, feedback cannot reference rubric indicators. **The platform's core differentiator is rubric integration—this is non-negotiable.**
+
+**Rubric Integration Requirements:**
+- Must preserve four-domain structure (Instruction, Planning, Environment, Professionalism)
+- Must include all 23 indicators with full performance level descriptors
+- Must preserve exact rubric language for semantic matching
+- Must enable retrieval by domain, indicator, and performance level
 
 **Tasks:**
 1. Extend RAG filters (add `lerDomain`, `lerIndicator`, `performanceLevel`)
-2. Create LER data model and JSON schema
-3. Extend markdown-to-JSON converter for LER
-4. Build LER JSON parser
-5. Create LER populator with workflow support
-6. Convert LER markdown to JSON (one-time)
-7. Populate RAG with LER indicators using workflow
+2. Create LER data model and JSON schema (preserve domain/indicator/performance level hierarchy)
+3. Extend markdown-to-JSON converter for LER (extract full descriptor text, not summaries)
+4. Build LER JSON parser (validate structure preserves rubric language)
+5. Create LER populator with workflow support (chunk by indicator+performance level)
+6. Convert LER markdown to JSON (one-time, preserve exact rubric language)
+7. Populate RAG with LER indicators using workflow (embedding text includes full descriptors)
 
 **Estimated Time:** 1-2 weeks  
-**Blocking:** Rubric-integrated feedback in Alignment Scorecard
+**Blocking:** Rubric-integrated feedback in Alignment Scorecard  
+**Critical:** Without this, platform cannot fulfill its core mission of being rubric-infused
 
 ### Step 3: Integrate LER into App Interactions (Phase 3) - **HIGH PRIORITY**
 
-**Why Third:** This "fuses" LER rubric into app interactions. Without this, LER data exists but isn't used.
+**Why Third:** This "fuses" LER rubric into app interactions. Without this, LER data exists but isn't used. **This is where the platform becomes rubric-infused, not just rubric-aligned.**
+
+**Rubric Integration Requirements:**
+- All agent prompts must include rubric context
+- All feedback must cite specific rubric indicators and performance levels
+- All feedback must use exact rubric descriptor language
+- Cross-domain queries must connect standards to rubric indicators
 
 **Tasks:**
 1. Add LER search functions to `ragService.ts`
+   - `searchLERIndicators`: Search by domain, indicator, performance level
+   - `searchStandardsByLER`: Find standards relevant to rubric indicators
+   - `searchLERByStandard`: Find rubric indicators relevant to standards
 2. Update `alignmentSteps.ts` to retrieve LER indicators
+   - Retrieve Planning domain indicators (Instructional Plans, Student Work, Assessment)
+   - Retrieve Instruction domain indicators (Standards and Objectives, Presenting Instructional Content)
+   - Retrieve performance level descriptors for each indicator
 3. Update agent prompts to reference rubric descriptors
+   - Include retrieved rubric indicators in system prompt
+   - Include performance level descriptors (Level 1, 3, 5) with exact rubric language
+   - Instruct agent to cite specific rubric indicators in feedback
+   - Provide rubric language examples for agent to use
 4. Update scorecard generation to cite performance levels
+   - Include rubric indicator citations (e.g., "Standards and Objectives (SO)")
+   - Include performance level assessments (e.g., "Proficient Level 3")
+   - Include exact rubric descriptor language in feedback
+   - Provide pathway from current level to next level using rubric descriptors
 5. Test end-to-end with real data
+   - Validate feedback includes rubric citations
+   - Validate feedback uses exact rubric language
+   - Validate cross-domain queries work correctly
 
 **Estimated Time:** 1 week  
-**Blocking:** Authentic rubric-integrated feedback
+**Blocking:** Authentic rubric-integrated feedback  
+**Critical:** This is where the platform fulfills its core mission—every feature must be rubric-infused
 
 ### Step 4: Validate & Optimize (Phase 4) - **ONGOING**
 
@@ -760,32 +940,73 @@ If JSON schemas drift from how you're actually using filters in RAG, you'll get 
 2. `analyzeWithAgent` analyzes content against standards ✅ (but no LER context)
 3. `generateScorecard` creates scorecard ✅ (but cannot cite rubric descriptors)
 
-**Missing:**
-- ❌ No LER indicator retrieval
+**Critical Rubric Integration Gaps:**
+- ❌ No LER indicator retrieval from RAG
 - ❌ No rubric descriptor context in agent prompts
-- ❌ No performance level citations in feedback
-- ❌ No validation against rubric expectations
+- ❌ No performance level citations in feedback (Exemplary Level 5, Proficient Level 3, Unsatisfactory Level 1)
+- ❌ No validation against rubric expectations across four domains
+- ❌ No explicit connections between standards and rubric indicators
+- ❌ Feedback lacks rubric language that evaluators will use
+
+**Impact:** Without rubric integration, the platform cannot fulfill its core mission of being rubric-infused. Teachers receive generic feedback that doesn't connect to evaluation expectations.
 
 ### What Should Happen (After Phases 1-3)
 
-**Alignment Scorecard Workflow:**
+**Alignment Scorecard Workflow (Rubric-Infused):**
 1. `retrieveStandards` searches RAG for LSS standards ✅ (with real data)
-2. **NEW:** `retrieveLERIndicators` searches RAG for relevant LER indicators ✅
+2. **NEW:** `retrieveLERIndicators` searches RAG for relevant LER indicators based on content analysis ✅
+   - Searches Planning domain indicators (Instructional Plans, Student Work, Assessment)
+   - Searches Instruction domain indicators (Standards and Objectives, Presenting Instructional Content)
+   - Retrieves performance level descriptors (Level 1, 3, 5) for each indicator
 3. `analyzeWithAgent` analyzes content against standards + rubric indicators ✅
+   - Agent prompt includes rubric context and performance level descriptors
+   - Analysis explicitly references rubric language
 4. `generateScorecard` creates scorecard with rubric citations ✅
+   - Cites specific rubric indicators and performance levels
+   - Uses exact rubric descriptor language
+   - Provides pathway from current level to next level
 
-**Example Feedback:**
+**Example Rubric-Infused Feedback:**
 ```
-Your content aligns with Louisiana Standard RL.3.1 (Proficient Level 3).
+Your content aligns with Louisiana Standard RL.3.1.
 
-Rubric Alignment:
-- Standards and Objectives (SO): Proficient - "Learning objectives and state content standards are communicated."
-- Presenting Instructional Content (PIC): Proficient - "Presentation of content consistently includes visuals that establish the purpose of the lesson."
+Rubric Alignment Analysis:
+
+Standards and Objectives (SO) - Instruction Domain
+Current Level: Proficient (Level 3)
+Evidence: "Learning objectives and state content standards are communicated."
+Your content demonstrates: Learning objectives are present and aligned to RL.3.1.
 
 To reach Exemplary (Level 5):
 - Students should be able to articulate what they are learning and why
 - Learning objectives should be displayed and referenced throughout the lesson with explanations
+- Students should make connections between learning objectives and what they have previously learned
+
+Presenting Instructional Content (PIC) - Instruction Domain
+Current Level: Proficient (Level 3)
+Evidence: "Presentation of content consistently includes visuals that establish the purpose of the lesson, examples and illustrations for new concepts, modeling demonstrations, success criteria, concise communication, and logical sequencing."
+Your content demonstrates: Visuals and examples are present.
+
+To reach Exemplary (Level 5):
+- Students should be able to explain how the visuals, examples, and modeling connect to the learning objective
+- Presentation should consistently include all elements with no irrelevant, confusing, or nonessential information
+
+Student Work - Planning Domain
+Current Level: Proficient (Level 3)
+Evidence: "Assignments are aligned to the rigor and depth of standards and curriculum content."
+Your content demonstrates: Assignments require students to interpret and analyze text.
+
+To reach Exemplary (Level 5):
+- Assignments should require students to organize, interpret, analyze, synthesize, and evaluate information
+- Student work should connect to their experiences, observations, and situations both inside and outside of school
 ```
+
+**Key Differences:**
+- ✅ Explicit rubric indicator citations (SO, PIC, Student Work)
+- ✅ Performance level descriptors (Level 3, Level 5) with exact rubric language
+- ✅ Domain context (Instruction Domain, Planning Domain)
+- ✅ Pathway from current level to next level using rubric descriptors
+- ✅ Language matches what evaluators will use during observations
 
 ## Next Steps After Completion
 

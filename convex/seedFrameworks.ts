@@ -4,6 +4,27 @@
  */
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { LER_INDICATORS } from "./lerDefinitions";
+
+/**
+ * Helper to format LER context for prompts
+ */
+function formatLERContext(indicators: (keyof typeof LER_INDICATORS)[]) {
+  return `
+LDOE EVALUATION CONTEXT (LOUISIANA EDUCATOR RUBRIC):
+Use these specific Louisiana definitions to guide your response. Do not use generic pedagogical definitions.
+
+${indicators.map(key => {
+    const i = LER_INDICATORS[key];
+    return `${i.name} (${i.code}) - ${i.domain} Domain:
+EXEMPLARY (LEVEL 5) PERFORMANCE:
+${i.exemplary}
+
+PROFICIENT (LEVEL 3) PERFORMANCE:
+${i.proficient}`;
+  }).join("\n\n")}
+`;
+}
 
 /**
  * Seed Initial Frameworks - Grassroots Launch
@@ -59,7 +80,7 @@ Please provide FIVE outputs:
 
 5. REFINEMENT FOR PROFICIENT (LER LEVEL 3→4): Provide ONE concrete, high-leverage refinement to move this lesson from "Effective" to "Proficient" on the LER. Make it specific enough that I can implement it in my next lesson.
 
-Format this as a clear planning guide I can reference when revising my lesson.`,
+Format this as a clear planning guide I can reference when revising my lesson.${formatLERContext(["SO", "IP", "SW", "AS"])}`,
         ethicalGuardrail: "AI can help unpack standards, but your professional judgment determines how to teach them. Always verify alignment with Louisiana's official curriculum documents and your district's scope and sequence. You remain the instructional decision-maker. This is a planning assistant built by Louisiana educators, for Louisiana educators.",
         tipsAndVariations: "Use this for any lesson where you're uncertain about alignment. Create anchor charts from the analysis. Share key insights with PLC colleagues. This directly addresses the #1 pain point for Louisiana teachers: 'Is this quiz any good? Does it ACTUALLY test the Louisiana standard?' This is your quality-keeper and confidence-builder.",
         timeEstimate: 20,
@@ -112,7 +133,7 @@ Please provide SIX outputs:
 
 6. LESSON PREP CHECKLIST: What materials, models, or teacher moves do I need to prepare in advance to teach this lesson effectively? Give me a concrete list I can check off.
 
-Format this as a focused internalization guide I can reference while teaching.`,
+Format this as a focused internalization guide I can reference while teaching.${formatLERContext(["IP", "PIC", "SO"])}`,
         ethicalGuardrail: "This framework accelerates curriculum internalization, but your professional judgment, knowledge of your students, and alignment with your district's curriculum are essential. This is a planning assistant built by educators who understand the real work of teaching.",
         tipsAndVariations: "Use this at the start of each unit. Keep generated frameworks as templates for future years. Share with PLC teams for collaborative planning. This solves Curriculum Overwhelm: you now know what to preserve (fidelity) and where to adapt (flexibility).",
         timeEstimate: 15,
@@ -334,7 +355,7 @@ Please provide:
 - Align objectives to the depth and rigor of the state standards
 - Connect objectives to prior learning and life experiences (for Exemplary rating)
 - Create clear, demanding, and high expectations for each student's performance
-- Ensure student work is aligned to state content standards and learning objectives`,
+- Ensure student work is aligned to state content standards and learning objectives${formatLERContext(["SO"])}`,
         ethicalGuardrail: "AI can help unpack standards, but your professional judgment determines how to teach them. Always verify alignment with Louisiana's official curriculum documents and your district's scope and sequence. LER alignment supports evaluation but should reflect authentic teaching practice.",
         tipsAndVariations: "Use this for unit planning. Create anchor charts from the 'I can' statements. Share unpacked standards with students at the start of units. Display objectives and reference throughout the lesson per LER expectations. This directly addresses Pain Point #3: Standards Unpacking and Alignment.",
         timeEstimate: 20,
@@ -382,7 +403,7 @@ Please provide:
 **LER Alignment:**
 - Create statements students can explain to their peers
 - Connect to what students have previously learned
-- Include clear expectations for student performance`,
+- Include clear expectations for student performance${formatLERContext(["SO"])}`,
         ethicalGuardrail: "These statements guide student learning and assessment. Ensure they accurately reflect the standard and are appropriate for your students' developmental level. LER alignment supports evaluation readiness.",
         tipsAndVariations: "Use these for lesson objectives, exit tickets, and student self-assessment. Display them prominently in your classroom. Have students reference them throughout lessons per LER expectations. This supports Pain Point #3: Standards Unpacking and Alignment.",
         timeEstimate: 15,
@@ -471,9 +492,26 @@ Please provide:
       },
     ];
 
-    // Insert all frameworks (10 total: 6 AIB + 4 IEH)
+    // Insert or update all frameworks (10 total: 6 AIB + 4 IEH)
     for (const framework of [...aibFrameworks, ...iehFrameworks]) {
-      await ctx.db.insert("frameworks", framework);
+      const existing = await ctx.db
+        .query("frameworks")
+        .withIndex("by_framework_id", (q) => q.eq("frameworkId", framework.frameworkId))
+        .first();
+
+      if (existing) {
+        // Update existing framework with new prompt and definition
+        await ctx.db.patch(existing._id, {
+          samplePrompt: framework.samplePrompt,
+          title: framework.title,
+          challenge: framework.challenge,
+          solution: framework.solution,
+          tags: framework.tags,
+          lerDomains: framework.lerDomains,
+        });
+      } else {
+        await ctx.db.insert("frameworks", framework);
+      }
     }
 
     return null;

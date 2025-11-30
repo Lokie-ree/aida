@@ -2,1075 +2,839 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
----
-
-# CLAUDE.md - AI Assistant Guide for Pelican AI
-
-**Last Updated:** November 24, 2025
-**Version:** 3.2.0
-**Status:** Production Ready - Refactored and Streamlined
-
----
-
-## Purpose of This Document
-
-This document is the **single source of truth** for AI assistants working on Pelican AI. It provides:
-
-1. **Technical patterns, conventions, and constraints** - How to code effectively
-2. **Strategic decision-making frameworks** - Why decisions are made (prevents scope creep)
-3. **Feature prioritization guidance** - What to build and when
-4. **Anti-patterns and success metrics** - What to avoid and how to measure success
-
-For detailed project vision, brand positioning, and launch strategy, see `PROJECT.md`. For active development planning, see `docs/ROADMAP.md`. For technical debt tracking, see `docs/REFACTOR.md`.
-
----
-
 ## Project Overview
 
-### What is Pelican AI?
+**Pelican AI** is an intelligent coaching assistant for Louisiana K-12 educators, helping them generate high-quality, Louisiana-aligned prompts for use in any AI tool (ChatGPT, Claude, Gemini, etc.). The platform is built specifically for Louisiana educators navigating LEADS evaluations and the Louisiana Educator Rubric.
 
-Pelican AI is an **educational SaaS platform** that provides Louisiana educators with platform-agnostic AI guidance. It's NOT another AI tool—it's an "intelligent coaching layer" that works with ANY AI tool (ChatGPT, Gemini, MagicSchool AI, etc.).
+**Core Mission:** Platform-agnostic guidance that improves teaching practice through Louisiana-specific alignment, not just generic AI assistance.
 
-**Mission:** "We're Not Waiting for LDOE" - Louisiana educators building practical, ethical, and platform-agnostic AI guidance together.
+See `VISION.md` for complete product vision and strategic context.
 
-### Key Features (User-Accessible)
+---
 
-1. **Framework Library** - 10 platform-agnostic AI guidance frameworks (exact count, honest numbers)
-2. **Dashboard** - Personalized educator dashboard with time tracking and analytics
-3. **Beta Program Management** - Grassroots launch with small group of committed educators
-4. **Alignment Scorecard (Core Flare #1)** - Analyze AI-generated content against Louisiana Standards
-   - ✅ **Backend:** Complete (workflow, RAG, database, API endpoints)
-   - ✅ **Frontend:** Complete (UI components, route, navigation)
-   - **Files:** `convex/alignmentScorecard.ts`, `convex/alignmentSteps.ts`, `convex/rag.ts`, `src/components/alignment/`
-   - **Rubric Integration:** Validates content against specific rubric indicators (Standards and Objectives, Presenting Instructional Content, Student Work, Assessment) with performance level feedback
-5. **Community Features** - Innovation sharing and testimonials (backend implemented, UI intentionally hidden for MVP launch - will unhide at 30-100 users)
+## 🚀 SHIPPING GUIDE: What Can Deploy This Week
 
-### Future Features (Planned, Not Yet Implemented)
+### ✅ READY TO SHIP NOW (Backend + UI Complete)
 
-**Weekly Spark** - Proactive weekly prompts based on Louisiana pacing guide (see PROJECT.md for details)
-- Status: Vision documented, implementation pending post-launch
-- **Rubric Integration:** Addresses rubric indicators (Standards and Objectives, Motivating Students, Lesson Structure and Pacing, Presenting Instructional Content)
+**1. Framework Library** (`src/components/framework/FrameworkLibrary.tsx`)
+- **Status:** ✅ Fully functional, seeded with 10 frameworks
+- **Backend:** Complete CRUD operations in `convex/frameworks.ts`
+- **UI:** Polished interface with search, filters, recommendations
+- **Data:** `convex/seedFrameworks.ts` has 10 production-ready frameworks
+- **User Value:** Teachers can browse, search, save, and use AI guidance frameworks
+- **Action Required:** NONE - Deploy as-is
+- **Test:** `pnpm dev` → Navigate to `/frameworks`
 
-**Delta Generator** - Instant differentiation based on Louisiana accommodation guidelines (see PROJECT.md for details)
-- Status: Vision documented, implementation pending post-launch
-- **Rubric Integration:** Grounded in rubric's Teacher Knowledge of Students and Grouping Students indicators, maintains grade-level standards access
+**2. User Profiles** (`src/components/dashboard/ProfileSettings.tsx`)
+- **Status:** ✅ Working profile management
+- **Backend:** `convex/userProfiles.ts` - CRUD complete
+- **UI:** Profile settings page with school, subject, grade level
+- **User Value:** Personalized framework recommendations
+- **Action Required:** NONE - Deploy as-is
 
-> **Note for AI Assistants:**
-> - Alignment Scorecard backend is COMPLETE - do not rebuild workflow/database logic
-> - UI components need to be built - this is the current gap
-> - Do NOT implement Weekly Spark or Delta Generator unless explicitly requested
+**3. Time Tracking** (`src/components/shared/TimeSavingsTracker.tsx`)
+- **Status:** ✅ Working time savings display
+- **Backend:** `convex/timeTracking.ts` - CRUD complete
+- **UI:** Visual time savings tracker on dashboard
+- **User Value:** See time saved using frameworks
+- **Action Required:** NONE - Deploy as-is
 
-### Current Launch Status
+### 🟡 BACKEND READY, UI NEEDS CONNECTION (Ship Week 2)
 
-- **Stage:** Grassroots launch with small group of educators
-- **Beta Launch Date:** December 1, 2025
-- **Positioning:** "We're Not Waiting for LDOE"
-- **Philosophy:** Authentic, teacher-to-teacher communication (not corporate speak)
-- **Community Features:** Backend implemented, UI intentionally hidden for MVP launch
-- **Weekly Emails:** Feature-flagged (WEEKLY_EMAILS_ENABLED=false by default)
-  - **Why disabled:** Grassroots launch prioritizes personal check-ins over automation
-  - Real conversations (text/email replies) > automated email sequences
-  - Will enable when scaling to 30-100 users (see PROJECT.md for details)
+**4. Community Innovations**
+- **Status:** 🟡 Backend complete, UI partially implemented
+- **Backend:** `convex/innovations.ts` - Full CRUD operations ✅
+- **UI Files:**
+  - `src/components/community/InnovationForm.tsx` ✅
+  - `src/components/community/InnovationList.tsx` ✅
+  - `src/components/community/InnovationCard.tsx` ✅
+- **What's Missing:** Integration into dashboard/navigation
+- **User Value:** Teachers share and discover classroom innovations
+- **Action Required:**
+  1. Add route to `src/App.tsx` for `/community` or `/innovations`
+  2. Add navigation link in `src/components/shared/Navigation.tsx`
+  3. Test create/list/like functionality
+- **Estimated Time:** 1-2 hours
 
-### Launch Timeline (From PROJECT.md)
+**5. Testimonials**
+- **Status:** 🟡 Backend complete, UI partially implemented
+- **Backend:** `convex/testimonials.ts` - Full CRUD operations ✅
+- **UI Files:**
+  - `src/components/community/TestimonialForm.tsx` ✅
+  - `src/components/community/TestimonialCard.tsx` ✅
+  - `src/components/landing/TestimonialsSection.tsx` (landing page) ✅
+- **What's Missing:** Integration for authenticated users to submit testimonials
+- **User Value:** Social proof, community building
+- **Action Required:**
+  1. Add testimonial submission page/modal
+  2. Connect to dashboard or community section
+  3. Add admin approval flow (backend already exists)
+- **Estimated Time:** 2-3 hours
 
-- **December 1, 2025:** Beta launch with small group of educators
-- **December 2025:** Daily personal check-ins, gather authentic testimonials
-- **Spring 2026:** Accumulate wealth of user testimonials demonstrating platform value
-- **Summer 2026:** Present at APEL LEADS conference (Louisiana educators) and ISTE conference (Orlando)
-- **Ongoing:** Organic growth through word-of-mouth recommendations
+### ⏳ NOT NEEDED FOR WEEK 1 LAUNCH
 
-> **Note for AI Assistants:** Do NOT build automated email workflows or marketing features. The grassroots approach prioritizes 1-on-1 relationships over automation during initial launch phase.
+**6. Alignment Scorecard**
+- **Status:** ⏳ Blocked by RAG data population
+- **Why Not Now:** Requires Louisiana Student Standards in RAG (see `docs/RAG_PLAN.md`)
+- **Backend:** Workflow infrastructure ready, but no data to search
+- **Decision:** Defer to Phase 2 after RAG Phase 1 complete
+- **User Impact:** Low - not part of Week 1 beta goals per `VISION.md`
+
+**7. Conversational Prompt Coach**
+- **Status:** ⏳ Backend ready, UI in development
+- **Why Not Now:** Core value is frameworks library, not chat interface
+- **Backend:** `convex/promptCoach.ts` fully implemented ✅
+- **UI:** `src/components/coach/ChatInterface.tsx`, `PromptLibrary.tsx` exist but need integration
+- **Decision:** Ship in Week 2-3 after frameworks proven valuable
+- **User Impact:** Medium - nice to have, but frameworks deliver immediate value
+
+---
+
+## ⚠️ CRITICAL UI/UX ISSUES TO ADDRESS
+
+### 1. Dashboard Complexity (HIGH PRIORITY)
+
+**Problem:** `src/components/dashboard/Dashboard.tsx` tries to show too much
+
+**Current Dashboard Components:**
+- WelcomeHero
+- JourneyStats (frameworksTried, timeSaved, innovationsShared, weeklyStreak)
+- FeaturedRecommendation
+- TimeSavingsTracker
+- QuickAccessGrid
+- Profile completion prompt
+
+**Issues:**
+- Overwhelming for new beta users (violates VISION.md principle of simplicity)
+- Shows stats for features not yet live (innovations, weekly streak)
+- Too many cards competing for attention
+
+**Recommended Simplification for Week 1 Beta:**
+
+```tsx
+// Simplified Dashboard for Beta Launch
+- WelcomeHero (keep - friendly, sets tone)
+- Profile completion prompt (keep - critical for personalization)
+- QuickAccessGrid with ONLY:
+  → "Browse Frameworks" (primary action)
+  → "My Saved Frameworks" (if user has saved any)
+  → "Share Feedback" (testimonial submission)
+- Remove: JourneyStats (no data yet), FeaturedRecommendation (redundant with framework library), TimeSavingsTracker (add after usage data exists)
+```
+
+**Action Required:**
+1. Create `src/components/dashboard/SimplifiedDashboard.tsx` for beta
+2. Use feature flag or environment variable to toggle between full/simple
+3. Move complexity to "full dashboard" post-beta
+
+**Estimated Time:** 2-3 hours
+
+### 2. Navigation Clarity (MEDIUM PRIORITY)
+
+**Problem:** Navigation doesn't clearly surface working features
+
+**Current Navigation:** (Check `src/components/shared/Navigation.tsx`)
+- Likely has routes for features not ready (Coach, Alignment)
+- Missing route for Innovations (backend ready)
+
+**Recommended Beta Navigation:**
+```
+- Home/Dashboard
+- Framework Library ← PRIMARY FEATURE
+- My Profile
+- Community (Innovations + Testimonials) ← NEW
+- (Remove or hide: Coach, Alignment Scorecard until ready)
+```
+
+**Action Required:**
+1. Audit `src/components/shared/Navigation.tsx`
+2. Hide unfinished features
+3. Add Community section route
+4. Make "Framework Library" visually prominent (primary CTA)
+
+**Estimated Time:** 1 hour
+
+### 3. Onboarding Flow (MEDIUM PRIORITY)
+
+**Problem:** No clear "first use" experience
+
+**Current:** Profile completion prompt appears, but users don't know what to do next
+
+**Recommended:**
+1. After signup/first login → Show simple modal:
+   - "Welcome to Pelican AI!"
+   - "Complete your profile to get personalized framework recommendations"
+   - Big button: "Complete Profile" → Navigate to profile page
+2. After profile complete → Navigate directly to Framework Library with tooltip:
+   - "Start here! Browse frameworks designed for Louisiana educators"
+
+**Action Required:**
+1. Check if `src/components/dashboard/BetaOnboarding.tsx` exists and what it does
+2. Implement simple 2-step onboarding (profile → frameworks)
+3. Use localStorage to track onboarding completion
+
+**Estimated Time:** 2-3 hours
+
+### 4. Framework Library - Minor Polish
+
+**Current Status:** Excellent UI, fully functional
+
+**Minor Improvements:**
+1. Empty state when user has no saved frameworks (show popular instead)
+2. Add "Getting Started" tooltip on first visit
+3. Ensure seed data is loaded (`pnpm convex run seedFrameworks:seedInitialFrameworks`)
+
+**Action Required:**
+1. Run seed function if not already run
+2. Test all framework actions (view, save, copy, mark tried)
+
+**Estimated Time:** 30 minutes
+
+---
+
+## 📋 WEEK 1 DEPLOYMENT CHECKLIST
+
+### Pre-Deployment
+
+- [ ] Run `pnpm convex run seedFrameworks:seedInitialFrameworks` to populate frameworks
+- [ ] Test framework library thoroughly (search, filters, view, save, copy)
+- [ ] Test user profile CRUD (create, read, update)
+- [ ] Simplify dashboard to beta version (or hide unused stats)
+- [ ] Update navigation to show only working features
+- [ ] Add basic onboarding flow (profile → frameworks)
+- [ ] Test full user journey:
+  1. Sign up → Complete profile → Browse frameworks → Save framework → Copy prompt
+- [ ] Run `pnpm test` to ensure backend tests pass
+- [ ] Run `pnpm lint` to check TypeScript/build issues
+- [ ] Verify environment variables are set in Convex dashboard
+
+### Post-Deployment (Week 1 Monitoring)
+
+- [ ] Monitor framework usage (`frameworkUsage` table)
+- [ ] Track time savings entries (`timeTracking` table)
+- [ ] Monitor beta signup → activation conversion
+- [ ] Collect qualitative feedback from beta testers
+- [ ] Identify most popular frameworks (usageCount, averageRating)
+
+### Week 2 Additions (After Week 1 Success)
+
+- [ ] Connect Innovations UI to navigation
+- [ ] Add testimonial submission flow
+- [ ] Implement conversational coach UI
+- [ ] (Optional) Begin RAG Phase 1 if time permits
+
+---
+
+## 🎯 FOCUS: Ship Value, Not Features
+
+**Remember VISION.md principles:**
+- **Quality over Speed:** "Better aligned, more thoughtful, Louisiana-specific prompts that improve your practice"
+- **Conversation Over Configuration:** Keep it simple, not overwhelming
+- **Louisiana-Specific Intelligence:** The 10 seeded frameworks ARE Louisiana-specific
+
+**Week 1 Success = 4 beta testers each:**
+- Complete their profile ✅
+- Browse and save 2-3 frameworks ✅
+- Copy at least 1 prompt to use in their preferred AI tool ✅
+- Provide feedback on framework quality ✅
+
+**Everything else is secondary.**
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-- **React 19.2.0** + **TypeScript 5.7.3** + **Vite 6.3.6**
-- **React Router DOM 7.9.4** - Client-side routing
-- **Tailwind CSS 4.1.14** + **shadcn/ui** - Styling
-- **Framer Motion 12.23.22** - Animations
+- **Framework:** React 19 + Vite 6
+- **Routing:** React Router v7
+- **UI Components:** Radix UI + shadcn/ui + Tailwind CSS v4
+- **Animations:** Framer Motion
+- **Forms:** React Hook Form + Zod
+- **Auth:** Better Auth (client-side)
+- **Real-time Data:** Convex (React hooks)
 
 ### Backend
-- **Convex 1.27.5** - Serverless backend + real-time database
-- **Better Auth 1.3.27** - Authentication (@convex-dev/better-auth)
-- **OpenAI GPT-4o** - AI agent for content analysis
-- **Resend API** - Email delivery
+- **Platform:** Convex (serverless backend with real-time subscriptions)
+- **Authentication:** Better Auth via `@convex-dev/better-auth`
+- **RAG (Retrieval-Augmented Generation):** `@convex-dev/rag` for Louisiana Student Standards and Louisiana Educator Rubric
+- **AI Agents:** `@convex-dev/agent` for conversational prompt coaching
+- **Workflows:** `@convex-dev/workflow` for multi-step processes (e.g., Alignment Scorecard)
+- **Rate Limiting:** `@convex-dev/rate-limiter` for API call management
+- **Email:** `@convex-dev/resend` for transactional emails
+- **AI Models:** OpenAI (GPT-4o, text-embedding-3-small) via `@ai-sdk/openai`
 
-### Convex Components (Production-Ready)
-1. `@convex-dev/better-auth` - Authentication
-2. `@convex-dev/resend` - Email delivery
-3. `@convex-dev/rag` - Vector search for Louisiana Standards
-4. `@convex-dev/agent` - LLM integration with retry logic
-5. `@convex-dev/workflow` - Multi-step processes with fault tolerance
-6. `@convex-dev/rate-limiter` - Distributed rate limiting
-7. `@convex-dev/action-cache` - Action result caching
+## Architecture Overview
+
+### Directory Structure
+
+```
+convex/           # Convex backend (serverless functions)
+├── tests/        # Backend tests using convex-test
+├── schema.ts     # Database schema definitions
+├── rag.ts        # RAG initialization (Louisiana standards & rubric)
+├── workflows.ts  # Workflow manager configuration
+├── promptCoach.ts # Conversational AI coach
+├── alignmentScorecard.ts # Alignment workflow entry points
+├── alignmentSteps.ts # Workflow step definitions
+├── frameworks.ts # ✅ Framework CRUD (READY TO SHIP)
+├── innovations.ts # ✅ Innovations CRUD (READY TO SHIP)
+├── testimonials.ts # ✅ Testimonials CRUD (READY TO SHIP)
+├── seedFrameworks.ts # ✅ Seed 10 frameworks (RUN THIS)
+└── *.ts          # Other backend functions
+
+src/              # React frontend
+├── components/   # UI components
+│   ├── alignment/ # ⏳ Alignment Scorecard (Week 2-3)
+│   ├── coach/     # ⏳ Conversational Coach (Week 2-3)
+│   ├── community/ # 🟡 Innovations + Testimonials (Week 1-2)
+│   ├── framework/ # ✅ Framework Library (READY TO SHIP)
+│   ├── dashboard/ # ⚠️ Needs simplification for beta
+│   ├── shared/    # Shared components
+│   └── ui/        # shadcn/ui components
+├── App.tsx       # Root component with routing
+└── main.tsx      # Application entry point
+
+knowledge/        # Louisiana education data (markdown source files)
+├── schemas/      # JSON schemas for data validation
+├── la-ela.md     # Louisiana ELA standards
+├── la-math.md    # Louisiana Math standards
+└── la-ler-rubric.md # Louisiana Educator Rubric
+
+docs/             # Technical documentation
+└── RAG_PLAN.md   # RAG implementation plan (Phase 2-3, NOT Week 1)
+```
+
+### Convex Backend Architecture
+
+Convex uses three function types:
+
+1. **Queries** (`query`): Read-only, real-time subscriptions, cached, deterministic
+   - Use for: Fetching data, listing records, searching
+   - Example: `getConversation`, `listConversations`
+
+2. **Mutations** (`mutation`): Write operations, real-time updates, deterministic
+   - Use for: Creating/updating/deleting records
+   - Example: `startConversation`, `savePrompt`
+
+3. **Actions** (`action`): Non-deterministic operations (API calls, AI, external services)
+   - Use for: LLM calls, embeddings, RAG search, external APIs
+   - Example: `analyzeContentAlignment`, `sendMessage`
+
+**Internal functions** (prefixed with `internal`): Only callable from backend, not exposed to frontend.
+
+### Key Architectural Patterns
+
+1. **RAG Integration**: All Louisiana Student Standards and Educator Rubric data is embedded in Convex RAG
+   - See `convex/rag.ts` for RAG initialization (6 filters: contentType, subject, gradeLevel, standardCode, cognitiveDepth, userId)
+   - See `docs/RAG_PLAN.md` for comprehensive RAG architecture and implementation plan
+   - **CRITICAL**: RAG filters are OR-ed together; use composite filters for AND operations (see RAG_PLAN.md Technical Constraints)
+   - **NOT NEEDED FOR WEEK 1 BETA** - Defer to Phase 2
+
+2. **Workflow System**: Multi-step processes use `@convex-dev/workflow`
+   - Example: Alignment Scorecard workflow (`convex/alignmentSteps.ts`)
+   - Steps: retrieve standards → analyze with agent → generate scorecard
+   - Workflows provide retry logic, backoff, and durability
+   - **NOT NEEDED FOR WEEK 1 BETA** - Frameworks provide immediate value
+
+3. **AI Agent Integration**: Conversational coach uses `@convex-dev/agent`
+   - Stateful chat threads with system prompts
+   - Louisiana-specific context (see `PELICAN_SYSTEM_PROMPT` in `convex/promptCoach.ts`)
+   - **NOT NEEDED FOR WEEK 1 BETA** - Ship in Week 2-3
+
+4. **Authentication**: Better Auth integration
+   - User sessions managed by `@convex-dev/better-auth`
+   - Helper function: `authComponent.getAuthUser(ctx)` returns authenticated user or null
+   - User profiles extended in `userProfiles` table
+
+## Common Development Commands
+
+### Development
+```bash
+# Start both frontend and backend development servers
+pnpm dev
+
+# Start only frontend (Vite dev server with auto-open browser)
+pnpm dev:frontend
+
+# Start only backend (Convex dev server)
+pnpm dev:backend
+```
+
+### Seeding Data (IMPORTANT FOR WEEK 1)
+```bash
+# Seed 10 initial frameworks for beta launch
+pnpm convex run seedFrameworks:seedInitialFrameworks
+
+# This populates the frameworks table with production-ready content
+```
+
+### Building
+```bash
+# Production build (includes TypeScript checks, lint, and Convex validation)
+pnpm build
+
+# This runs: tsc (frontend) → tsc (backend) → convex dev --once → vite build
+```
 
 ### Testing
-- **Vitest 4.0.6** - Unit tests
-- **@vitest/browser + Playwright** - E2E tests
-- **convex-test 0.0.38** - Convex backend testing
+```bash
+# Run all backend tests (Vitest with convex-test, edge-runtime environment)
+pnpm test
 
----
+# Run tests once (no watch mode)
+pnpm test:once
 
-## Architecture Patterns
+# Run tests in watch mode
+pnpm test:watch
 
-### Convex Function Types
+# Run tests with coverage
+pnpm test:coverage
 
-**Query** - Read-only, reactive (re-runs when data changes):
+# Run single test file
+pnpm test convex/tests/alignmentScorecard.test.ts
+
+# Debug tests with inspector
+pnpm test:debug
+
+# E2E browser tests (Playwright)
+pnpm test:e2e
+pnpm test:e2e:watch
+pnpm test:e2e:ui
+```
+
+### Linting
+```bash
+# TypeScript type checking (frontend + backend) + Convex validation + production build
+pnpm lint
+```
+
+## Testing Architecture
+
+### Backend Tests (Convex)
+
+**Framework:** Vitest with `convex-test` for in-memory Convex simulation
+
+**Environment:** `edge-runtime` (required for Convex backend tests)
+
+**Location:** `convex/tests/**/*.test.ts`
+
+**Key Patterns:**
+
+1. **Test Setup:**
 ```typescript
-export const getFrameworks = query({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.db.query("frameworks").collect();
-  },
+import { convexTest } from "convex-test";
+import { describe, it, expect, beforeEach } from "vitest";
+import schema from "../schema";
+import { api, internal } from "../_generated/api";
+
+describe("FeatureName", () => {
+  let t: ReturnType<typeof convexTest>;
+
+  beforeEach(() => {
+    t = convexTest(schema, import.meta.url);
+  });
+
+  it("should do something", async () => {
+    const result = await t.query(api.module.functionName, { args });
+    expect(result).toEqual(expected);
+  });
 });
 ```
 
-**Mutation** - Write operations:
+2. **Authenticated Tests:**
 ```typescript
-export const createFramework = mutation({
-  args: { title: v.string() },
-  handler: async (ctx, args) => {
-    return await ctx.db.insert("frameworks", args);
-  },
+// Mock Better Auth user
+const user = await t.mutation(internal.testHelpers.createTestUser, {
+  email: "test@example.com",
+  name: "Test User",
+});
+
+// Set auth context for subsequent calls
+t.withIdentity({ subject: user._id });
+```
+
+3. **Async Workflows:**
+```typescript
+// Test workflow steps (use `t.runUntil()` for async operations)
+const workflowId = await t.action(api.module.startWorkflow, { args });
+await t.runUntil(async () => {
+  const status = await t.query(api.module.getStatus, { workflowId });
+  return status.completed;
 });
 ```
 
-**Action** - External API calls (OpenAI, Resend):
-```typescript
-export const analyzeContent = action({
-  args: { content: v.string() },
-  handler: async (ctx, args) => {
-    const result = await openai.chat.completions.create(...);
-    await ctx.runMutation(api.frameworks.saveAnalysis, result);
-  },
-});
-```
+**Important:** Integration tests that require real Convex deployment (RAG searches, LLM calls) should be marked as skipped with `.skip` and documented why they require real deployment.
 
-### Real-Time Reactivity
+### E2E Tests (Browser)
 
-**CRITICAL:** Convex provides automatic real-time updates. When you use `useQuery()` in React, the query automatically re-runs when underlying data changes. No manual polling needed.
+**Framework:** Vitest Browser Mode with Playwright
 
-```typescript
-// This automatically updates when frameworks change
-const frameworks = useQuery(api.frameworks.getAllFrameworks);
-```
+**Location:** Tests use `vitest.browser.config.mts`
 
-### Authentication
+**Run:** `pnpm test:e2e`
 
-**In Convex Functions:**
-```typescript
-import { requireAuth } from "./authorization";
+## Workflow System
 
-const { user, profile } = await requireAuth(ctx);
-const userId = user._id;
-```
+### Workflow Manager Configuration
 
-**In React Components:**
-```typescript
-import { authClient } from "@/lib/auth-client";
+Located in `convex/workflows.ts`:
 
-const { data: session } = authClient.useSession();
-const userId = session?.user?.id;
-```
-
-### Authorization
-
-```typescript
-// Require authentication
-const { user, profile } = await requireAuth(ctx);
-
-// Require specific role
-await requireRole(ctx, "admin");
-
-// Require admin (role-based + email fallback)
-await requireAdmin(ctx);
-
-// Non-throwing check
-const isAdmin = await checkIsAdmin(ctx);
-```
-
-**Authorization Helpers** (`convex/authorization.ts`):
-- `requireAuth(ctx)` - Returns user with profile, throws if not authenticated
-- `requireRole(ctx, role)` - Checks user has specific role ("teacher" | "admin" | "coach")
-- `requireAdmin(ctx)` - Checks admin access (role-based + email fallback)
-- `checkIsAdmin(ctx)` - Non-throwing boolean check for admin status
-
-### Rate Limiting
-
-```typescript
-import { checkRateLimit } from "./rateLimiting";
-
-await checkRateLimit(ctx, userId, "aiGeneration");
-// Types: "aiGeneration", "ragQuery", "emailSend"
-// Limits vary by role: teacher (10/min), coach (20/min), admin (100/min)
-```
-
-### Workflow System (@convex-dev/workflow)
-
-**Configuration** (`convex/workflows.ts`):
 ```typescript
 export const workflow = new WorkflowManager(components.workflow, {
   workpoolOptions: {
-    maxParallelism: 10,          // Max concurrent workflows
+    maxParallelism: 10,
     defaultRetryBehavior: {
-      maxAttempts: 3,            // Retry failed steps 3 times
-      initialBackoffMs: 1000,    // Start with 1s delay
-      base: 2,                   // Exponential backoff (2x)
+      maxAttempts: 3,
+      initialBackoffMs: 1000,
+      base: 2, // Exponential backoff
     },
   },
 });
 ```
 
-**Current Workflows:**
-- **Alignment Scorecard** (`convex/alignmentScorecard.ts`) - Multi-step AI content analysis
-  - Step 1: Extract Louisiana Standards via RAG (`ragService.ts`)
-  - Step 2: Analyze alignment via OpenAI GPT-4o
-  - Step 3: Save results to `alignmentAnalyses` table
-  - Built-in retry logic and status tracking
+### Creating a Workflow
 
-### RAG System (@convex-dev/rag)
-
-**Configuration:**
-- **Namespace:** `"louisiana_standards"` for standards and rubric data
-- **Filters:** `contentType`, `subject`, `gradeLevel`, `standardCode`, `cognitiveDepth`, `userId`
-- **Knowledge Base:** Markdown files in `knowledge/` folder (la-ela.md, la-math.md, la-science.md, la-social-studies.md, la-ler-rubric.md)
-
-**Key Constraints:**
-- **Filter Limits:** Up to 16 filter fields per vector index, up to 64 filter expressions per search
-- **Result Limits:** Maximum 256 results per search (default 10)
-- **Filter Semantics:** Filters are OR-ed together; use composite filter values for AND behavior
-- **Large Ingest:** Use `rag.addAsync` with chunkerAction or Workflow/Workpool for large data ingestion
-- **Rate Limiting:** Use Rate Limiter component for embedding operations to avoid hitting provider limits
-
-**Usage Pattern:**
+1. **Define workflow steps** (in dedicated file, e.g., `convex/alignmentSteps.ts`):
 ```typescript
-import { Rag } from "@convex-dev/rag";
-import { components } from "./_generated/api";
+import { workflow } from "./workflows";
 
-const rag = new Rag(components.rag, {
-  namespace: "louisiana_standards",
+export const myWorkflow = workflow.define({
+  args: v.object({
+    userId: v.string(),
+    // ... other args
+  }),
+  handler: async (step, args) => {
+    // Step 1: Run a query
+    const data = await step.runQuery(internal.module.getData, { args });
+
+    // Step 2: Run an action (AI call, external API)
+    const result = await step.runAction(internal.module.processData, { data });
+
+    // Step 3: Save results
+    await step.runMutation(internal.module.saveResults, { result });
+
+    return { completed: true };
+  },
 });
+```
 
-// Search with filters
-const results = await rag.search(ctx, {
-  query: "grade 9 ELA reading standards",
+2. **Start workflow from public action:**
+```typescript
+export const startMyWorkflow = action({
+  args: { /* ... */ },
+  handler: async (ctx, args) => {
+    const workflowId = await workflow.start(
+      ctx,
+      internal.module.myWorkflow,
+      args
+    );
+    return { workflowId };
+  },
+});
+```
+
+3. **Query workflow status:**
+```typescript
+export const getStatus = query({
+  args: { workflowId: v.string() },
+  handler: async (ctx, args) => {
+    return await workflow.status(ctx, args.workflowId as any);
+  },
+});
+```
+
+### Workflow Best Practices
+
+- Use `step.runQuery`, `step.runMutation`, `step.runAction` for all operations
+- Keep steps small and idempotent
+- Use retry configuration for transient failures
+- Workflows are deterministic - no `fetch()` or `Math.random()` directly in handler
+- For long-running workflows, use `workflow.cleanup()` to manage state
+
+## RAG (Retrieval-Augmented Generation)
+
+**⚠️ NOT NEEDED FOR WEEK 1 BETA LAUNCH**
+
+**CRITICAL:** Read `docs/RAG_PLAN.md` before working on RAG features. This is the comprehensive technical plan for Louisiana Student Standards and Louisiana Educator Rubric integration.
+
+### RAG Instance
+
+Initialized in `convex/rag.ts` and exported for use across backend:
+
+```typescript
+import { rag } from "./rag";
+```
+
+**Filters (6 total):**
+- `contentType`: "louisiana_standard", "framework", "user_content"
+- `subject`: "ela", "math", "science", "social_studies"
+- `gradeLevel`: "K", "1", "2", ..., "12"
+- `standardCode`: Parsed standard identifier (e.g., "RL.3.1")
+- `cognitiveDepth`: "recall", "application", "synthesis"
+- `userId`: For user-specific content
+
+**IMPORTANT:** Filters are OR-ed together. For AND operations, use composite filter values or post-filtering in actions.
+
+### Searching RAG
+
+```typescript
+const results = await rag.search(ctx, query, {
   filters: {
     subject: "ela",
-    gradeLevel: "9",
+    gradeLevel: "3",
   },
   limit: 10,
 });
 ```
 
-**Implementation Notes:**
-- RAG operations are actions (not queries/mutations) - they call LLM embedding APIs
-- Use Workflow/Workpool for durable, retry-safe large ingest operations
-- Reserve tokens/requests with Rate Limiter for batch operations
-- See `docs/RAG_PLAN.md` for detailed implementation guidance
+See `convex/ragService.ts` for search helper functions.
 
-**Usage Pattern:**
-```typescript
-import { workflow } from "./workflows";
+### Adding to RAG
 
-// Start workflow
-const handle = await workflow.start(ctx, {
-  workflowId: "alignmentAnalysis",
-  args: { content, gradeLevel, subject }
-});
-
-// Workflow runs autonomously with fault tolerance
-// Results saved to alignmentAnalyses table
-```
-
-### Email Template System
-
-**React Email Components** (`src/emails/`):
-All emails use `@react-email/components` for consistent, responsive design:
-- `BetaWelcomeEmail.tsx` - New user onboarding
-- `PlatformAccessEmail.tsx` - Beta access granted
-- `WeeklyPromptEmail.tsx` - Weekly engagement prompts (feature-flagged)
-- `FollowupEmail.tsx` - Follow-up communications
-- `NetworkPartnerEmail.tsx` - Network partner outreach
-- `OutreachEmail.tsx` - General outreach
-- `BaseEmailTemplate.tsx` - Shared email layout
-
-**Sending Emails:**
-```typescript
-import { Resend } from "@convex-dev/resend";
-import { components } from "./_generated/api";
-import { BetaWelcomeEmail } from "../src/emails/BetaWelcomeEmail";
-import { render } from "@react-email/render";
-
-const resend = new Resend(components.resend);
-
-await resend.emails.send(ctx, {
-  from: "Pelican AI <hello@pelicanai.com>",
-  to: user.email,
-  subject: "Welcome to Pelican AI",
-  html: render(<BetaWelcomeEmail userName={user.name} />),
-});
-```
-
----
-
-## Component Organization
-
-### Directory Structure
-
-```
-src/components/
-├── ui/              # shadcn/ui components (Button, Dialog, Card, etc.)
-├── shared/          # Cross-cutting components (AppHeader, Logo, ErrorBoundary)
-├── dashboard/       # Dashboard feature components
-├── framework/       # Framework library feature components
-├── community/       # Community features (innovations, testimonials)
-├── admin/           # Admin dashboard components
-├── auth/            # Authentication components (AuthModal)
-├── routes/          # Route protection and navigation
-└── landing/         # Landing page sections
-
-src/emails/          # React Email templates (@react-email/components)
-src/lib/             # Utility functions and configurations
-```
-
-**Naming Convention:**
-- Feature-based organization with descriptive names
-- ✅ `FrameworkUsageChart.tsx` (clear, descriptive)
-- ❌ `Chart.tsx` (too generic)
-
-**Component Pattern:**
-```typescript
-import { cn } from "@/lib/utils";
-
-interface ComponentProps {
-  title: string;
-  onClick?: () => void;
-}
-
-export function MyComponent({ title, onClick }: ComponentProps) {
-  return (
-    <div className={cn("px-4 py-2 rounded-lg")}>
-      <h3>{title}</h3>
-    </div>
-  );
-}
-```
-
----
-
-## Route Structure
-
-### Authentication-Based Routing
-
-**Convex React Authentication:**
-- `<Authenticated>` - Routes shown when user is logged in
-- `<Unauthenticated>` - Routes shown when user is logged out
-
-**Route Protection:**
-```typescript
-<ProtectedRoute requireAdmin={true}>  // Admin-only routes
-  <AdminRoute />
-</ProtectedRoute>
-
-<ProtectedRoute>                       // Authenticated user routes
-  <DashboardRoute />
-</ProtectedRoute>
-```
-
-### Key Routes
-
-- `/` - Smart redirect (checks onboarding status → redirects to dashboard or onboarding)
-- `/dashboard` - Main educator dashboard
-- `/frameworks` - Framework library (10 frameworks)
-- `/frameworks/:frameworkId` - Individual framework details
-- `/alignment-scorecard` - Alignment Scorecard feature (Core Flare #1)
-- `/community` - Innovation sharing & testimonials (hidden for MVP, will unhide at 30-100 users)
-- `/profile` - User profile settings
-- `/time-tracking` - Time savings analytics
-- `/admin` - Admin content moderation (admin-only)
-
-**Implementation:** See `src/App.tsx` for complete route configuration
-
-**Lazy Loading:**
-All route components are lazy-loaded for code splitting:
-```typescript
-const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
-```
-
----
-
-## Build Optimization
-
-### Code Splitting Strategy
-
-**Lazy Loading:**
-All route components use React's `lazy()` for automatic code splitting:
-```typescript
-import { lazy } from "react";
-
-const DashboardRoute = lazy(() => import("./components/routes/DashboardRoute"));
-const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
-```
-
-**Manual Chunk Splitting** (`vite.config.ts`):
-Vendor chunks defined for optimal caching and parallel loading:
-- `react-vendor` - React core (react, react-dom, react-router-dom)
-- `ui-vendor` - Radix UI components (@radix-ui/*)
-- `animation-vendor` - Framer Motion
-- `convex-vendor` - Convex components
-- `auth-vendor` - Better Auth
-- `form-vendor` - React Hook Form + Zod
-- `chart-vendor` - Recharts
-- `table-vendor` - TanStack Table
-- `dnd-vendor` - DnD Kit
-- `email-vendor` - React Email
-- `ai-vendor` - OpenAI SDK
-
-### Production Optimizations
+**For bulk ingestion, use Workflows** (see `docs/RAG_PLAN.md` Phase 1 for LSS standards ingestion plan):
 
 ```typescript
-// vite.config.ts optimizations
-{
-  minify: 'terser',
-  terserOptions: {
-    compress: {
-      drop_console: mode === 'production',  // Remove console.log in production
-      drop_debugger: mode === 'production', // Remove debugger statements
-    },
+await rag.add(ctx, {
+  namespace: "louisiana_standards",
+  text: standardText,
+  metadata: {
+    contentType: "louisiana_standard",
+    subject: "ela",
+    gradeLevel: "3",
+    standardCode: "RL.3.1",
   },
-  assetsInlineLimit: 4096,  // Inline assets smaller than 4KB
-  cssCodeSplit: true,       // Split CSS for better caching
-}
-```
-
-**Dependency Pre-bundling:**
-Critical dependencies are pre-bundled for faster dev server startup:
-```typescript
-optimizeDeps: {
-  include: [
-    'react', 'react-dom', 'react-router-dom',
-    'framer-motion', 'lucide-react',
-    'class-variance-authority', 'clsx', 'tailwind-merge',
-  ],
-}
-```
-
----
-
-## Testing Architecture
-
-### Dual Configuration Setup
-
-**Backend Tests** (`vitest.config.mts`):
-- **Environment:** `edge-runtime` (simulates Convex edge runtime)
-- **Tests:** `convex/tests/**/*.test.ts` (all test files organized in `convex/tests/` subdirectory)
-- **In-memory Testing:** Uses `convex-test` for in-memory Convex simulation
-- **No network calls:** All Convex operations run locally
-
-**E2E Tests** (`vitest.browser.config.mts`):
-- **Environment:** `node` with Playwright browser automation
-- **Tests:** `tests/e2e/**/*.test.ts`
-- **Setup:** `tests/e2e/setup.ts`
-- **Timeout:** 30s for browser operations
-- **Hook Timeout:** 10s
-
-### Better Auth Testing
-
-```typescript
-import { convexTest } from "convex-test";
-import schema from "./schema";
-
-const t = convexTest(schema);
-
-// Mock authenticated user
-const asUser = t.withIdentity({ subject: "user123" });
-await asUser.run(async (ctx) => {
-  // Test authenticated operations
-  const result = await createFramework(ctx, { title: "Test" });
-  expect(result).toBeDefined();
 });
 ```
 
-### Running Tests
+### RAG Status
 
-```bash
-# Run all backend tests once
-pnpm test:once
+- **Phase 0:** ✅ COMPLETE - RAG consolidation (single instance)
+- **Phase 1:** 🟡 IN PROGRESS - LSS standards JSON conversion and ingestion
+- **Phase 2:** ⏳ PENDING - Louisiana Educator Rubric integration
+- **Phase 3:** ⏳ PENDING - RAG service extensions and workflow updates
 
-# Run specific test file/pattern
-pnpm test:once frameworks
+**Decision:** Defer RAG work until Week 2-3. Framework library provides immediate value without RAG dependency.
 
-# Watch mode for development
-pnpm test:watch
-
-# Generate coverage report (HTML at coverage/index.html)
-pnpm test:coverage
-
-# Run E2E tests (requires dev servers running)
-pnpm test:e2e
-
-# E2E watch mode
-pnpm test:e2e:watch
-
-# E2E with UI
-pnpm test:e2e:ui
-```
-
-### E2E Test Prerequisites
-
-Before running E2E tests:
-1. **Start dev servers:**
-   ```bash
-   # Terminal 1: Start Convex backend
-   npx convex dev
-   
-   # Terminal 2: Start Vite frontend
-   pnpm dev:frontend
-   ```
-
-2. **Test users exist:** Test users must be created manually (see `tests/e2e/README.md`)
-   - Regular user: `test-user@resend.dev`
-   - Admin user: `admin@resend.dev`
-
-3. **Seed test data (if needed):**
-   ```bash
-   npx convex run seedFrameworks:seedInitialFrameworks
-   npx convex run populateStandards:populateStandardsFromData  # For alignment scorecard tests (with test data)
-   ```
-
-### Test Best Practices
-
-1. **Use `data-testid`** for selectors (not CSS classes)
-2. **Wait for elements** before interacting
-3. **Test user flows**, not implementation details
-4. **Run tests before committing** - `pnpm test:once` must pass
-
-### Test Coverage Exclusions
-
-```typescript
-// vitest.config.mts coverage settings
-coverage: {
-  exclude: [
-    "convex/tests/**/*.test.ts",     // Test files (organized in tests/ subdirectory)
-    "convex/_generated/**",          // Auto-generated files
-    "convex/schema.ts",              // Schema definition
-    "convex/convex.config.ts",       // Configuration
-    "convex/http.ts",                // HTTP endpoints
-    "convex/seedFrameworks.ts",      // Seed data
-    "convex/auth.ts",                // Better Auth glue
-    "convex/auth.config.ts",         // Auth config
-  ],
-}
-```
-
----
+See `docs/RAG_PLAN.md` for detailed implementation plan and rubric integration requirements.
 
 ## Code Conventions
 
-### TypeScript Guidelines
-
-**Use strict types, never `any`:**
-```typescript
-// ✅ GOOD
-const frameworks: Framework[] = await ctx.db
-  .query("frameworks")
-  .filter(q => q.eq(q.field("status"), "published"))
-  .collect();
-
-// ❌ BAD
-const frameworks: any = await ctx.db.query("frameworks").collect();
-```
-
-**Always use Convex validators:**
-```typescript
-export const createFramework = mutation({
-  args: {
-    title: v.string(),
-    category: v.string(),
-    status: v.union(v.literal("draft"), v.literal("published")),
-  },
-  handler: async (ctx, args) => { /* ... */ },
-});
-```
-
-### Component Patterns
-
-**Naming:** PascalCase, descriptive names (`FrameworkUsageChart.tsx` not `Chart.tsx`)
-
-**Structure:**
-```typescript
-import { cn } from "@/lib/utils";
-
-interface ComponentProps {
-  title: string;
-  onClick?: () => void;
-}
-
-export function MyComponent({ title, onClick }: ComponentProps) {
-  return (
-    <div className={cn("px-4 py-2 rounded-lg")}>
-      <h3>{title}</h3>
-    </div>
-  );
-}
-```
-
-### Database Query Patterns
-
-**Always use indexes:**
-```typescript
-// ✅ GOOD - Uses index
-const frameworks = await ctx.db
-  .query("frameworks")
-  .withIndex("by_status", q => q.eq("status", "published"))
-  .collect();
-
-// ❌ BAD - Table scan (slow)
-const frameworks = await ctx.db
-  .query("frameworks")
-  .filter(q => q.eq(q.field("status"), "published"))
-  .collect();
-```
-
-**Query optimization order:** Use most selective index first (module > category > status)
-
-### FERPA Compliance
-
-**NEVER log PII:**
-```typescript
-// ❌ BAD - Logs student email
-console.log("User email:", user.email);
-
-// ✅ GOOD - Logs non-PII identifier
-console.log("User action:", { userId: user.id, action: "framework_viewed" });
-```
-
-**Use secure logging:**
-```typescript
-import { logSecure } from "@/lib/secure-logging";
-
-logSecure("info", "User action", {
-  userId: user.id,
-  action: "framework_viewed"
-});
-```
-
----
-
-## Critical Constraints
-
-### 1. FERPA Compliance
-**NEVER log PII:** No student names, emails, addresses, or teacher emails in logs. Use user IDs only.
-
-### 2. Grassroots Launch Positioning
-**Brand Voice:**
-- Teacher-to-teacher communication (NOT corporate speak)
-- "We're Not Waiting for LDOE"
-- Honest numbers (small group of Louisiana educators building together, 10 frameworks at launch)
-- Personal tone, not marketing jargon
-- Personal check-ins over automation
+### TypeScript
+- **Strict mode:** No `any` types (use `unknown` and type guards if needed)
+- **Zod validation:** All user inputs validated with Zod schemas
+- **Convex validators:** Use `v.*` from `convex/values` for function arguments
 
-**Examples:**
-- ✅ "Tell me honestly—did it save you time?"
-- ✅ "You're one of the first educators I'm starting with"
-- ❌ "Leverage AI synergies for paradigm-shifting results"
-- ✅ "You're part of a small group of educators building this together"
-- ✅ "10 frameworks" (exact count)
-- ❌ "Join 10,000+ educators transforming education"
-- ❌ "10+ frameworks" (implies we don't know the exact number)
+### Component Structure
+- **Function components:** Use function declarations, not arrow functions
+- **Hooks:** Custom hooks prefixed with `use`
+- **Props:** Destructure in function signature
+- **Types:** Define inline or in separate `types.ts` files
 
-**Public vs. Private Messaging:**
-- **Public-facing (Landing Page):** Scalable grassroots messaging, no specific numbers
-  - Use: "We're Not Waiting for LDOE", "Louisiana educators building together", "small group of educators"
-- **Private (Dashboard/Emails):** Personal to current beta users
-  - Use: "You're part of a small group of educators building this together"
+### File Naming
+- **Components:** PascalCase (`AlignmentScorecard.tsx`)
+- **Backend functions:** camelCase (`alignmentSteps.ts`)
+- **Tests:** Match source file with `.test.ts` suffix
 
-### 3. Community Features
-Fully implemented and available for testing:
-- `src/components/community/` - Innovation sharing and testimonials
-- Navigation menu - Community features accessible
-- Gathering feedback from early users
+### Import Order
+1. External dependencies (React, Convex)
+2. Internal modules (components, utils)
+3. Relative imports
+4. Types (if separate)
 
-### 4. Platform-Agnostic Approach
-**CRITICAL:** Frameworks must work with ANY AI tool (ChatGPT, Gemini, Claude, MagicSchool AI, etc.). No vendor lock-in.
+### Documentation
+- **JSDoc comments:** For all exported functions and complex logic
+- **Inline comments:** Explain "why", not "what"
+- **Schema documentation:** Document tables and fields in `convex/schema.ts`
 
-### 5. Louisiana Educator Rubric Integration
-**CRITICAL:** The Louisiana Educator Rubric (LER) is the foundation for every Pelican AI feature and interaction. Every feature, suggestion, and validation explicitly references rubric indicators and performance descriptors (Exemplary Level 5, Proficient Level 3, Unsatisfactory Level 1).
+## Louisiana-Specific Context
 
-**Rubric Domains Integrated:**
-- **Instruction Domain** (12 indicators): Standards and Objectives, Motivating Students, Presenting Instructional Content, Lesson Structure and Pacing, Activities and Materials, Questioning, Academic Feedback, Grouping Students, Teacher Content Knowledge, Teacher Knowledge of Students, Thinking, Problem-Solving
-- **Planning Domain** (3 indicators): Instructional Plans, Student Work, Assessment
-- **Environment Domain** (4 indicators): Expectations, Engaging Students and Managing Behavior, Physical Environment, Respectful Conditions for Learning
-- **Professionalism Domain** (4 indicators): Professional Growth and Development, Reflection on Teaching Practice, School Involvement, Fulfillment of School Responsibilities
+### Louisiana Educator Rubric (LER)
 
-**How It Works:**
-- Alignment Scorecard validates against specific rubric indicators and cites exact descriptors
-- Weekly Spark addresses rubric indicators in proactive suggestions
-- Delta Generator grounds differentiation in rubric's Teacher Knowledge of Students and Grouping Students indicators
-- Innovation Remix Engine ensures shared innovations maintain rubric alignment across contexts
+The platform's core differentiator is rubric integration. All features must be **rubric-infused**, not just rubric-aligned.
 
-All content also aligns with Louisiana Student Standards (LSS) across ELA, Math, Science, Social Studies for K-12.
+**Four Domains:**
+1. **Instruction Domain** (12 indicators): Standards and Objectives, Motivating Students, Presenting Instructional Content, etc.
+2. **Planning Domain** (3 indicators): Instructional Plans, Student Work, Assessment
+3. **Environment Domain** (4 indicators): Expectations, Engaging Students, Physical Environment, Respectful Conditions
+4. **Professionalism Domain** (4 indicators): Professional Growth, Reflection, School Involvement, Fulfillment of Responsibilities
 
-### 6. TypeScript Strict Mode
-NO `any` types without justification. Use proper types from `convex/_generated/api.d.ts`.
+**Performance Levels:** Each indicator has descriptors for Unsatisfactory (Level 1), Proficient (Level 3), and Exemplary (Level 5).
 
-### 7. Testing Before Commits
-**ALWAYS run tests:** `pnpm test:once` - Tests must pass, no exceptions.
+**Integration in Seeded Frameworks:** The 10 seeded frameworks in `convex/seedFrameworks.ts` already include LER context via `formatLERContext()` function. This provides Louisiana-specific definitions without needing RAG.
 
-### 8. Quality Over Speed
-**CRITICAL:** Every feature must maintain quality standards:
-- AI-generated content goes through alignment validation (Alignment Scorecard)
-- Frameworks emphasize ethical guardrails and responsible AI use
-- FERPA compliance is non-negotiable—no PII in logs, ever
-- Builds teacher capacity for rubric understanding, not dependency on the tool
-- Testimonials and validation come before scaling
+See `knowledge/la-ler-rubric.md` for full rubric text.
 
-**Never compromise quality for speed.** Better to launch later with quality than earlier with technical debt.
+### Louisiana Student Standards (LSS)
 
----
+**Subjects:**
+- ELA (English Language Arts): RL (Reading Literature), RI (Reading Informational), W (Writing), etc.
+- Math: NBT (Number & Operations), OA (Operations & Algebraic Thinking), etc.
+- Science, Social Studies
 
-## Educator-First Decision Framework
+**Format Examples:**
+- ELA: `RL.3.1` (Reading Literature, Grade 3, Standard 1)
+- Math: `3.NBT.A.1` (Grade 3, Number & Operations in Base Ten, Cluster A, Standard 1)
 
-This framework replaces traditional board-driven product decisions with a systematic approach to gathering and acting on educator feedback. Every feature decision should pass through these filters.
+See `knowledge/` folder for complete standards markdown files.
 
-### Decision Filter Questions
+## Environment Variables
 
-Before building or prioritizing any feature, ask:
+Required environment variables (configured in Convex dashboard):
 
-1. **Did a real educator request this?** If not, is there evidence educators need it?
-2. **Does this solve a time problem?** Louisiana teachers are overwhelmed—does this save minutes?
-3. **Does this align with the Louisiana Educator Rubric?** Every feature must be rubric-infused.
-4. **Is this platform-agnostic?** It must work with any AI tool, not lock users in.
-5. **Can I explain this in teacher-to-teacher language?** No corporate jargon.
-
-### Feedback Collection Cadence
-
-| Timeframe | Activity | Purpose |
-| :---- | :---- | :---- |
-| Daily (Week 1) | Personal check-ins with each beta user | Rapid friction identification |
-| Weekly (Month 1) | "Did this save you time?" conversations | Value validation |
-| Bi-weekly (Ongoing) | Feature request compilation | Roadmap prioritization |
-| Monthly | "What's missing?" open-ended feedback | Gap identification |
-
-### The Core Question
-
-*Before every decision, ask:*
-
-**"Does this help a Louisiana teacher save time while improving their practice?"**
-
-If yes, do it. If no, reconsider.
-
----
-
-## Feature Prioritization Matrix
-
-Use this matrix when educators request new features or when deciding development priorities.
-
-### Priority Scoring System
-
-| Criteria | Scoring Guide |
-| :---- | :---- |
-| **Educator Demand** | 3=Multiple requests, 2=Single request, 1=Founder idea, 0=No demand |
-| **Time Savings Impact** | 3=Significant daily time saved, 2=Weekly impact, 1=Occasional use, 0=No time savings |
-| **Rubric Alignment** | 3=Directly addresses rubric indicators, 2=Indirect support, 1=Tangential, 0=Unrelated |
-| **Implementation Effort** | 3=Quick win (<1 week), 2=Medium (1-2 weeks), 1=Large (2-4 weeks), 0=Major (>1 month) |
-
-*Priority Score = (Educator Demand × 2) + Time Savings + Rubric Alignment + Implementation*
-
-**Scoring Guidelines:**
-- **8+ points:** High priority (build immediately)
-- **4-7 points:** Medium priority (consider for next sprint)
-- **<4 points:** Defer or reconsider (likely scope creep)
-
-### Current Feature Backlog (Scored)
-
-| Feature | Demand | Time | Rubric | Effort | Score |
-| :---- | :---: | :---: | :---: | :---: | :---: |
-| Alignment Scorecard UI | 3 | 3 | 3 | 2 | **14** |
-| Weekly Spark (Pacing Prompts) | 2 | 3 | 3 | 1 | **11** |
-| Delta Generator (Differentiation) | 2 | 3 | 3 | 1 | **11** |
-| Dashboard Simplification | 1 | 1 | 1 | 2 | **6** |
-
----
-
-## Anti-Patterns to Avoid
-
-These are decisions or behaviors that would undermine the educator-first mission. When in doubt, refer back to this list.
-
-### Never Do
-
-* **Use fake social proof** — No "Join 10,000+ educators" until you have 10,000 educators
-* **Prioritize features educators didn't ask for** — Founder ideas come second
-* **Use corporate jargon** — "Leverage synergies" is death for authenticity
-* **Lock users into specific AI tools** — Platform-agnostic is non-negotiable
-* **Automate before personal relationships** — Check-ins > email sequences at this stage
-* **Build without rubric alignment** — Every feature must connect to LER indicators
-* **Log PII** — FERPA compliance is absolute
-* **Scale before validating** — Testimonials first, then growth
-
-### Warning Signs
-
-If you notice any of these patterns, pause and re-evaluate:
-
-1. Building features no educator has requested
-2. More time on code than on educator conversations
-3. Feeling pressure to grow faster than organic allows
-4. Neglecting personal check-ins in favor of automation
-5. Adding complexity without educator demand
-
----
-
-## Success Metrics (Educator-Defined)
-
-Traditional startup metrics (MAU, retention curves, ARR) matter less than educator-defined success. These are the metrics that matter for Pelican AI.
-
-### Primary Metrics
-
-| Metric | Why It Matters | Target |
-| :---- | :---- | :---- |
-| Time Saved Per Week | Core value proposition for teachers | 30+ min/week average |
-| Testimonials Collected | Social proof for organic growth | 10+ by Spring 2026 |
-| Word-of-Mouth Referrals | Validates authentic value | Each user refers 1+ |
-| Rubric Understanding Improved | Builds capacity, not dependency | Self-reported improvement |
-
-### Milestone Checkpoints
-
-* **December 2025:** Beta launch with 4-10 committed educators
-* **January 2026:** First 5 authentic testimonials collected
-* **Spring 2026:** 30-50 users, wealth of testimonials for conference prep
-* **Summer 2026:** APEL LEADS and ISTE presentations delivered
-
----
+- `OPENAI_API_KEY`: OpenAI API key for embeddings and GPT-4o
+- `RESEND_API_KEY`: Resend API key for transactional emails
+- Better Auth environment variables (configured via `convex/auth.config.ts`)
 
 ## Database Schema
 
-**Source of Truth:** `convex/schema.ts` (Convex auto-generates API types)
+See `convex/schema.ts` for complete schema definitions.
 
-### Key Tables
-- `betaSignups` - Landing page signups
-- `userProfiles` - Extended educator data
-- `frameworks` - AI guidance frameworks (10 at launch)
-- `frameworkUsage` - Usage tracking
-- `betaProgram` - Beta program participation
-- `innovations` - Community-shared teaching innovations
-- `innovationInteractions` - Innovation likes, tries, comments
-- `testimonials` - User feedback and success stories
-- `timeTracking` - Time savings analytics
-- `alignmentAnalyses` - Alignment Scorecard results
+**Key Tables (Ready to Ship):**
+- `betaSignups`: Beta program signups (landing page form) ✅
+- `userProfiles`: User profile extensions (Louisiana educator-specific) ✅
+- `frameworks`: AI guidance frameworks (library content) ✅
+- `frameworkUsage`: Framework usage tracking ✅
+- `timeTracking`: Time savings tracking ✅
+- `innovations`: Community innovations ✅
+- `testimonials`: User testimonials ✅
 
-### Auto-Managed Tables (via Convex Components)
-- `user`, `session`, `account`, `verification` - Better Auth
-- `documents`, `chatMessages`, `feedbackSessions`, `auditLogs` - RAG component
+**Tables for Week 2-3:**
+- `promptConversations`: Chat history for Conversational Coach
+- `generatedPrompts`: Saved prompts from conversations
+- `alignmentAnalyses`: Alignment Scorecard results
 
-**DO NOT define these in schema.ts** - managed by Convex components.
-
----
-
-## Quick Reference
-
-### Essential Commands
-```bash
-# Development
-pnpm dev                    # Start frontend + backend (parallel)
-pnpm dev:frontend           # Start Vite dev server only
-pnpm dev:backend            # Start Convex dev server only
-
-# Testing
-pnpm test                   # Run tests in watch mode
-pnpm test:once              # Run unit tests once
-pnpm test:once frameworks   # Run specific test pattern
-pnpm test:watch             # Watch mode for development
-pnpm test:coverage          # Generate coverage report (HTML)
-pnpm test:e2e               # Run E2E tests
-pnpm test:e2e:watch         # E2E watch mode
-pnpm test:e2e:ui            # E2E with UI
-
-# Build
-pnpm build                  # Build for production
-pnpm lint                   # Full lint + type check
-
-# Database
-npx convex dashboard        # Open Convex dashboard
-npx convex deploy           # Deploy to production
-npx convex env set KEY val  # Set environment variable
-
-# RAG/Standards
-npx convex run populateStandards:populateStandardsFromData  # Populate test standards (with test data)
-npx convex run seedFrameworks:seedInitialFrameworks  # Seed framework library
-```
-
-### Important Files
-- `convex/schema.ts` - Database schema (source of truth)
-- `convex/authorization.ts` - Auth helpers (requireAuth, requireRole, requireAdmin)
-- `convex/rateLimiting.ts` - Rate limit configuration
-- `convex/workflows.ts` - Workflow manager configuration
-- `convex/ragService.ts` - RAG search APIs for Louisiana Standards
-- `convex/alignmentScorecard.ts` - Alignment Scorecard workflow
-- `src/lib/auth-client.ts` - Better Auth client setup
-- `src/App.tsx` - Routing configuration
-- `vite.config.ts` - Vite build configuration
-- `vitest.config.mts` - Backend test configuration
-- `vitest.browser.config.mts` - E2E test configuration
-- `PROJECT.md` - Project vision and context
-- `docs/ROADMAP.md` - Development roadmap and sprint planning
-- `docs/REFACTOR.md` - Technical debt tracking
-- `docs/RAG_PLAN.md` - Detailed RAG implementation plan
-- `docs/IT_WHITELISTING.md` - IT whitelisting guide for school districts
-
-### Key Concepts
-- **Convex Reactivity:** Queries auto-update when data changes
-- **Better Auth:** Session-based authentication with Convex integration
-- **Role-Based Access:** teacher, coach, admin roles
-- **FERPA Compliance:** No PII in logs
-- **Platform-Agnostic:** Works with ANY AI tool
-- **Louisiana-Aligned:** LSS and LER standards
-- **Rubric-Infused:** Every feature grounded in Louisiana Educator Rubric indicators and performance descriptors
-- **Workflow-Driven:** Multi-step processes with fault tolerance and retry logic
-
----
+**Auto-managed by components:**
+- Better Auth: `user`, `session`, `account`, `verification`
+- RAG: `documents`, `chatMessages`, `feedbackSessions`, `auditLogs`
 
 ## Development Workflow
 
-### Before Making Changes
-1. Read `PROJECT.md` for project context
-2. Check if tests exist for the code you're changing
-3. Follow TypeScript strict mode (no `any` types)
-4. Respect FERPA compliance (no PII in logs)
+### Week 1 Beta Launch Workflow
 
-### Making Changes
-1. Use Convex validators for all args and returns
-2. Use indexes for database queries
-3. Write tests for new functionality
-4. Run `pnpm test:once` before committing
-5. Follow code conventions (TypeScript, components, queries)
+1. **Simplify Dashboard** (2-3 hours)
+   - Create simplified version for beta users
+   - Hide stats for features not yet live
+   - Focus on "Browse Frameworks" primary action
 
-### NEVER
-1. Push directly to `main` branch
-2. Edit `convex/_generated/` files (auto-generated)
-3. Use `any` types without explicit justification
-4. Log PII (student names, emails, etc.)
-5. Skip tests before committing
+2. **Connect Innovations UI** (1-2 hours)
+   - Add `/community` or `/innovations` route
+   - Wire up InnovationForm and InnovationList
+   - Test create/list/like functionality
 
----
+3. **Add Testimonial Submission** (2-3 hours)
+   - Create testimonial submission modal or page
+   - Connect TestimonialForm to backend
+   - Add to navigation
 
-## Refactoring Status (November 2025)
+4. **Simple Onboarding** (2-3 hours)
+   - Welcome modal on first login
+   - Guided profile completion
+   - Navigate to Framework Library with tooltip
 
-### Completed Refactoring
+5. **Test End-to-End** (1 hour)
+   - Complete user journey: signup → profile → frameworks → save → copy
+   - Verify seed data loaded
+   - Check all CRUD operations
 
-**Phase 0: Alignment Scorecard UI** ✅
-- Created complete UI component structure (`src/components/alignment/`)
-- Added route, navigation item, and quick access card
-- Connected to backend APIs (`api.rag.analyzeContentAlignment`, `api.rag.getAlignmentStatus`)
+**Total Estimated Time: 8-12 hours** (1-2 days)
 
-**Phase 1: Dead Code Removal** ✅
-- Deleted 4 orphaned backend files (dashboardAnalytics.ts, adminDebug.ts, vapi.ts, router.ts)
-- Removed 5 unused frontend components (CommunityInsights, ProgressTrackingChart, FrameworkUsageChart, TimeSavingsChart, gradient-text.tsx)
-- Updated dashboard index.ts exports
+### Adding a New Feature (Post-Beta)
 
-**Phase 2: Community Features Hidden** ✅
-- Removed `/community` route from App.tsx
-- Removed community navigation cards from QuickAccessGrid
-- Removed community navigation handlers from Dashboard
-- Community backend remains intact for future unhiding
+1. **Backend first:**
+   - Define schema in `convex/schema.ts` (if new tables needed)
+   - Write queries/mutations/actions in `convex/`
+   - Write tests in `convex/tests/`
+   - Run `pnpm test` to verify
 
-**Phase 3: Backend Cleanup** ✅
-- Verified auth.ts is clean (only `loggedInUser` exists, no aliases to remove)
-- Removed unused `getSimilarInnovations` function from innovations.ts
-- Deleted `convex/standardsScraper.ts` (unimplemented PDF parsing, not used)
-- Removed `populateSampleStandards` and `populateStandardsFromScraper` functions from `convex/populateStandards.ts`
-- Removed `/populateSampleStandards` HTTP endpoint from `convex/http.ts`
-- Kept all other functions (used in tests or needed for future community features)
-- Verified feature-flag comments already exist in email.ts
+2. **Frontend integration:**
+   - Create components in `src/components/`
+   - Use Convex React hooks (`useQuery`, `useMutation`, `useAction`)
+   - Style with Tailwind CSS and shadcn/ui components
 
-**Phase 4: Documentation & Status Markers** ✅
-- Added status comments to remaining Convex files (emailEvents.ts, seedFrameworks.ts)
-- All Convex files now have status markers (ACTIVE, PHASE 2, FEATURE-FLAGGED, TEST HELPERS, DEV HELPERS)
-- Updated CLAUDE.md with refactor results
+3. **Testing:**
+   - Backend: `pnpm test`
+   - E2E: `pnpm test:e2e`
+   - Lint: `pnpm lint`
 
-**Phase 5: Test Reorganization & RAG Testing** ✅ (November 26, 2025)
-- Reorganized test files: Moved all `convex/*.test.ts` files to `convex/tests/` subdirectory
-- Updated `vitest.config.mts` test pattern to `convex/tests/**/*.test.ts`
-- Fixed all 48 pre-existing test failures:
-  - Admin tests: Added `ensureAdminProfile` helper to create admin user profiles in test environment
-  - Framework tests: Fixed `import.meta.glob` pattern to correctly load modules from parent directory
-  - Testimonials/UserProfiles tests: Applied admin profile setup pattern
-  - Email tests: Fixed test mode handling to allow error throwing in specific test cases
-- Created RAG test suite (`convex/tests/ragService.test.ts`) with unit tests for RAG search validation
-- Created manual RAG validation script (`convex/ragValidation.ts`) for testing against real deployments
-- Enhanced Alignment Scorecard tests with RAG accuracy validation
-- All 187 tests passing, 40 intentionally skipped (integration tests requiring real deployments)
+### Working with RAG (Phase 2-3, NOT Week 1)
 
-### Feature-Flag Activation Thresholds
+**ALWAYS read `docs/RAG_PLAN.md` first.** This document contains:
+- Current implementation status
+- Technical constraints (filter limits, vector search limits, rate limiting)
+- Phased implementation plan
+- Rubric integration requirements
+- Workflow-based ingestion patterns
 
-**30-100 Users:**
-- Community features (innovations, testimonials) - UI will be unhidden
-- Weekly email automation (`sendWeeklyPromptEmail`, `sendWeeklyEmailsToAllUsers`) - Enable via `WEEKLY_EMAILS_ENABLED=true`
+**Key points:**
+- RAG filters are OR-ed; use composite filters for AND operations
+- 256 results max per search (design queries to narrow search efficiently)
+- Bulk ingestion must use Workflows + Rate Limiter (not plain actions)
+- Embedding calls should integrate Rate Limiter with `reserve: true`
+- LER integration requires preserving exact rubric language in embeddings
 
-**Current Status:**
-- Community features: Backend complete, UI hidden (5-user grassroots launch)
-- Weekly emails: Disabled by default, feature-flagged in email.ts
+### Git Workflow
 
-### Code Status Markers
+- Main branch: `main`
+- Feature branches: Descriptive names (e.g., `feature/simplify-dashboard-beta`)
+- Commit messages: Descriptive, present tense (e.g., "Simplify dashboard for beta launch")
+- Pull requests: Reference related issues, include testing notes
 
-All Convex files now have header comments indicating status:
-- ✅ **ACTIVE** - Used in production
-- ⚠️ **PHASE 2** - Backend ready, UI hidden for MVP
-- 🚫 **FEATURE-FLAGGED** - Disabled for grassroots launch
-- 🧪 **TEST HELPERS** - For testing only
+## Performance Considerations
 
----
+### Frontend
+- Code splitting via Vite manual chunks (see `vite.config.ts`)
+- Lazy loading routes with React.lazy
+- Optimistic UI updates with Convex mutations
+- Memoization for expensive computations
 
-## Deployment & IT Operations
+### Backend
+- RAG search results cached at query level
+- Rate limiting for external API calls (OpenAI, etc.)
+- Workflow parallelism configured (max 10 concurrent)
+- Database indexes on frequently queried fields
 
-### Production Deployment
+## Known Issues & Limitations
 
-**Frontend:** Vercel (auto-deploys on `git push` to main branch)
-**Backend:** Convex Cloud (deploy via `npx convex deploy`)
+### Week 1 Launch Blockers (MUST FIX)
+1. **Dashboard Complexity:** Too overwhelming for beta users
+2. **Missing Routes:** Innovations and testimonials not in navigation
+3. **No Onboarding:** Users don't know what to do after signup
+4. **Seed Data:** May not be loaded yet (run `pnpm convex run seedFrameworks:seedInitialFrameworks`)
 
-### IT Whitelisting for School Districts
+### Not Blocking Week 1 (Defer to Later)
+1. **RAG Data Population:** LSS standards and LER rubric not yet populated (Phase 1-2 of RAG_PLAN.md)
+2. **Alignment Scorecard:** Works with test data only; needs real standards for production
+3. **Conversational Coach:** Backend ready, UI in development
 
-Pelican AI (`pelicanai.org`) may need whitelisting in school district content filters (Content Keeper, Mosyle, etc.).
+See `docs/RAG_PLAN.md` for complete RAG status and blocking issues.
 
-**Required Domains:**
-- `pelicanai.org` (main site)
-- `*.pelicanai.org` (subdomains if used)
-- Backend: `kindly-setter.convex.cloud` (dev) / `outgoing-parttridge.convex.cloud` (prod) - typically already allowed as cloud services
+## Additional Resources
 
-**Category Classification:**
-- Primary: Education
-- Secondary: Professional Development, Teacher Resources
-- Compliance: CIPA compliant, FERPA compliant, no student data collection
-
-**Documentation:** See `docs/IT_WHITELISTING.md` for detailed whitelisting instructions for IT administrators.
-
-### Environment Variables
-
-**Convex Environment Variables:**
-```bash
-# Email configuration
-npx convex env set RESEND_API_KEY your_key
-npx convex env set RESEND_TEST_MODE true  # Development: only send to @resend.dev addresses
-
-# Feature flags
-npx convex env set WEEKLY_EMAILS_ENABLED false  # Disabled for grassroots launch
-npx convex env set OPENAI_API_KEY your_key
-
-# Production settings
-npx convex env set RESEND_TEST_MODE false  # Production: send real emails
-```
-
-## Development Environment
-
-**Platform:** Windows (MINGW64_NT-10.0-26200)
-**Git:** Git Bash (MINGW64)
-**Path Handling:** Use forward slashes in code (e.g., `./src/components`), backslashes auto-converted by Windows
-**Working Directory:** `C:\Users\rplap\OneDrive\Desktop\personal\aida`
+- **Product Vision:** `VISION.md` - Complete product strategy and beta testing plan (**READ THIS FIRST**)
+- **RAG Implementation Plan:** `docs/RAG_PLAN.md` - Comprehensive technical plan for RAG integration (Phase 2-3, not Week 1)
+- **UX Audit:** `docs/UX_AUDIT.md` - User experience decisions and design patterns
+- **Convex Documentation:** https://docs.convex.dev
+- **Better Auth:** https://www.better-auth.com
+- **shadcn/ui:** https://ui.shadcn.com
 
 ---
 
-**Last Updated:** November 26, 2025
-**Maintained by:** Pelican AI Development Team
-**Version:** 3.5.0 - Test reorganization complete: All tests moved to `convex/tests/`, all 48 test failures fixed, RAG test suite created
+## Quick Reference: What's Ready vs. What's Not
+
+| Feature | Backend | UI | Status | Week 1? |
+|---------|---------|-----|---------|---------|
+| Framework Library | ✅ | ✅ | READY TO SHIP | ✅ YES |
+| User Profiles | ✅ | ✅ | READY TO SHIP | ✅ YES |
+| Time Tracking | ✅ | ✅ | READY TO SHIP | ✅ YES |
+| Innovations | ✅ | 🟡 Needs routing | ALMOST READY | 🟡 WEEK 1-2 |
+| Testimonials | ✅ | 🟡 Needs submission flow | ALMOST READY | 🟡 WEEK 1-2 |
+| Dashboard | ✅ | ⚠️ Too complex | NEEDS SIMPLIFICATION | ⚠️ REFACTOR |
+| Conversational Coach | ✅ | 🟡 Needs integration | WEEK 2-3 | ❌ NO |
+| Alignment Scorecard | 🟡 No data | 🟡 Blocked by RAG | WEEK 2-3 | ❌ NO |
+| RAG System | 🟡 Infrastructure only | N/A | PHASE 2-3 | ❌ NO |
+
+**Legend:**
+- ✅ Complete and tested
+- 🟡 Partial implementation
+- ⚠️ Needs changes
+- ❌ Not ready for Week 1

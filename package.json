@@ -17,8 +17,7 @@
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:e2e": "vitest run --config vitest.browser.config.mts",
     "test:e2e:watch": "vitest --watch --config vitest.browser.config.mts",
-    "test:e2e:ui": "vitest --ui --config vitest.browser.config.mts",
-    "convert:standards": "tsx scripts/convert-markdown-to-json.ts"
+    "test:e2e:ui": "vitest --ui --config vitest.browser.config.mts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.43",
@@ -57,6 +56,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.27.5",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
     "next-themes": "^0.4.6",

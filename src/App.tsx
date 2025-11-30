@@ -20,6 +20,7 @@ const ProfileSettings = lazy(() => import("./components/dashboard/ProfileSetting
 const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
 const TimeTracking = lazy(() => import("./components/dashboard/TimeTracking"));
 const LandingPage = lazy(() => import("./components/shared/LandingPage"));
+const PromptCoach = lazy(() => import("./components/coach/PromptCoach"));
 
 // Component to handle authenticated header with navigation
 function AuthenticatedHeader() {
@@ -57,6 +58,14 @@ export default function App() {
                 <Suspense fallback={<LoadingPage />}>
                   <Routes>
                     <Route path="/" element={<SmartRedirect />} />
+                    <Route 
+                      path="/coach" 
+                      element={
+                        <ProtectedRoute>
+                          <PromptCoach />
+                        </ProtectedRoute>
+                      } 
+                    />
                     <Route 
                       path="/onboarding" 
                       element={

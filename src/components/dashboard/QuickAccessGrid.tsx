@@ -8,7 +8,8 @@ import {
   Lightbulb, 
   TrendingUp,
   ArrowRight,
-  FileCheck
+  FileCheck,
+  MessageSquare
 } from "lucide-react";
 import { spacing } from "@/lib/spacing";
 
@@ -36,12 +37,20 @@ export interface QuickAccessGridProps {
 
 const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAccessItem[] => [
   {
+    id: "coach",
+    label: "Conversational Coach",
+    description: "Start a new coaching session",
+    icon: <MessageSquare className="h-6 w-6" />,
+    onClick: () => {},
+    variant: "default"
+  },
+  {
     id: "frameworks",
-    label: "AI Framework Library",
+    label: "Frameworks",
     description: "10 Louisiana Standards-aligned frameworks",
     icon: <BookOpen className="h-6 w-6" />,
     onClick: () => {},
-    variant: "default"
+    variant: "outline"
   },
   {
     id: "alignment-scorecard",
@@ -86,12 +95,14 @@ export function QuickAccessGrid({
   // Override default onClick handlers if provided
   const finalItems = processedItems.map(item => {
     switch (item.id) {
+      case "coach":
+        return { ...item, onClick: () => navigate('/coach') };
       case "frameworks":
         return { ...item, onClick: onNavigateToFrameworks || item.onClick };
       case "alignment-scorecard":
         return { ...item, onClick: () => navigate('/alignment-scorecard') };
       case "progress":
-        return { ...item, onClick: onNavigateToProgress || item.onClick };
+        return { ...item, onClick: onNavigateToProgress || (() => navigate('/time-tracking')) };
       default:
         return item;
     }
