@@ -164,13 +164,19 @@ export const sendMessage = action({
     if (!threadId) {
        const threadResult = await agent.createThread(ctx, {});
        threadId = threadResult.threadId;
+       // Save the new threadId to the conversation record
+       await ctx.runMutation(internal.promptCoach.updateThreadId, {
+         conversationId: args.conversationId,
+         threadId: threadId,
+       });
     }
 
     // 5. Run Agent
     const response = await agent.generateText(ctx, {
       threadId,
     }, {
-      prompt: promptWithContext, 
+      model: openai("gpt-4o"),
+      prompt: promptWithContext,
     });
 
     const responseText = response.text;
@@ -191,6 +197,19 @@ export const getConversationInternal = internalQuery({
     args: { conversationId: v.id("promptConversations") },
     handler: async (ctx, args) => {
         return await ctx.db.get(args.conversationId);
+    }
+});
+
+// Internal mutation to update threadId on a conversation
+export const updateThreadId = internalMutation({
+    args: {
+        conversationId: v.id("promptConversations"),
+        threadId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        await ctx.db.patch(args.conversationId, {
+            threadId: args.threadId,
+        });
     }
 });
 
