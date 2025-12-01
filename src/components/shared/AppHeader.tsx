@@ -125,7 +125,8 @@ export function AppHeader({
                 <BookOpen className="h-4 w-4 mr-2" />
                 Frameworks
               </Button>
-              <Button 
+              {/* Community feature hidden for MVP launch (needs 30-100 users) */}
+              {/* <Button 
                 variant={isActiveRoute('/community') ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => handleNavigation('/community')}
@@ -137,7 +138,7 @@ export function AppHeader({
               >
                 <Users className="h-4 w-4 mr-2" />
                 Community
-              </Button>
+              </Button> */}
             </nav>
           )}
           
@@ -245,7 +246,8 @@ export function AppHeader({
                               </div>
                             </div>
                           </Button>
-                          <Button
+                          {/* Community feature hidden for MVP launch */}
+                          {/* <Button
                             variant={isActiveRoute('/community') ? "secondary" : "ghost"}
                             size="lg"
                             onClick={() => handleNavigation('/community')}
@@ -262,7 +264,7 @@ export function AppHeader({
                                 Connect with educators
                               </div>
                             </div>
-                          </Button>
+                          </Button> */}
                           <div className="border-t pt-4 mt-4">
                             <div className="w-full">
                               <SignOutButton />

@@ -123,7 +123,7 @@ for (const [path, loader] of Object.entries(modulesRaw)) {
 
       expect(Array.isArray(standards)).toBe(true);
       // Standards should be relevant to grade 10
-      standards.forEach((s) => {
+      standards.forEach((s: any) => {
         expect(s).toHaveProperty("code");
         expect(s).toHaveProperty("text");
       });
@@ -148,8 +148,8 @@ for (const [path, loader] of Object.entries(modulesRaw)) {
       expect(Array.isArray(mathStandards)).toBe(true);
       // ELA and Math standards should be different
       if (elaStandards.length > 0 && mathStandards.length > 0) {
-        const elaCodes = elaStandards.map((s) => s.code);
-        const mathCodes = mathStandards.map((s) => s.code);
+        const elaCodes = elaStandards.map((s: any) => s.code);
+        const mathCodes = mathStandards.map((s: any) => s.code);
         expect(elaCodes).not.toEqual(mathCodes);
       }
     });
@@ -174,7 +174,7 @@ for (const [path, loader] of Object.entries(modulesRaw)) {
         });
 
         expect(filteredStandards.length).toBeLessThanOrEqual(allStandards.length);
-        expect(filteredStandards.every((s) => specificCodes.includes(s.code))).toBe(true);
+        expect(filteredStandards.every((s: any) => specificCodes.includes(s.code))).toBe(true);
       }
     });
 
@@ -193,7 +193,7 @@ for (const [path, loader] of Object.entries(modulesRaw)) {
 
       // Verify results are semantically relevant to ELA grade 10
       expect(standards.length).toBeGreaterThan(0);
-      standards.forEach((standard) => {
+      standards.forEach((standard: any) => {
         expect(standard.code).toMatch(/^(RL|RI|W|SL|L|RH|RST|WHST)\.10\./);
         expect(standard.text.length).toBeGreaterThan(0);
       });
@@ -239,7 +239,7 @@ for (const [path, loader] of Object.entries(modulesRaw)) {
       expect(standards.length).toBeGreaterThan(0);
       
       // Verify standards are actually ELA-related
-      standards.forEach((standard) => {
+      standards.forEach((standard: any) => {
         expect(standard.code).toMatch(/^(RL|RI|W|SL|L|RH|RST|WHST)/);
       });
     });

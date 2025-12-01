@@ -41,18 +41,18 @@ function AlignmentScorecard() {
           if (Array.isArray(result)) {
             setStandards(result);
             if (result.length === 0) {
-              setStandardsError("No standards found. Please populate RAG data first.");
+              setStandardsError("No Louisiana standards found for this grade and subject. Our standards database is being set up.");
             } else {
               setStandardsError(null);
             }
           } else {
-            setStandardsError("Error loading standards. Please ensure RAG data is populated.");
+            setStandardsError("We're having trouble loading the Louisiana standards. Our team has been notified.");
             setStandards(null);
           }
         })
         .catch((error) => {
           const errorMessage = error instanceof Error ? error.message : String(error || "Unknown error");
-          setStandardsError(`Error loading standards: ${errorMessage}. Please ensure RAG data is populated.`);
+          setStandardsError(`We encountered an issue loading the standards. If this persists, please contact support.`);
           setStandards(null);
         })
         .finally(() => {
@@ -90,7 +90,7 @@ function AlignmentScorecard() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error || "Unknown error");
       console.error("Error starting analysis:", errorMessage);
-      setStandardsError(`Failed to start analysis: ${errorMessage}`);
+      setStandardsError(`We couldn't start the alignment analysis. Please try again, or contact support if the issue continues.`);
     }
   };
 
@@ -107,8 +107,8 @@ function AlignmentScorecard() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold font-heading">Alignment Scorecard</h1>
-          <p className="text-muted-foreground text-lg">
+          <h1 className="text-3xl md:text-4xl font-bold font-heading">Alignment Scorecard</h1>
+          <p className="text-muted-foreground">
             Analyze your AI-generated content against Louisiana Student Standards
           </p>
         </div>
@@ -126,21 +126,21 @@ function AlignmentScorecard() {
           </TabsList>
 
           <TabsContent value="analyze" className="space-y-6">
-            {/* RAG Data Warning */}
+            {/* Standards Loading Warning */}
             {standardsError && (
               <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950">
                 <CardHeader>
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                     <CardTitle className="text-yellow-900 dark:text-yellow-100">
-                      RAG Data Required
+                      Standards Database Loading
                     </CardTitle>
                   </div>
                   <CardDescription className="text-yellow-800 dark:text-yellow-200">
                     {standardsError}
                     <br />
                     <span className="text-sm mt-2 block">
-                      To populate sample standards, call the <code className="bg-yellow-100 dark:bg-yellow-900 px-1 rounded">populateSampleStandards</code> action in the Convex dashboard, or use the HTTP endpoint: <code className="bg-yellow-100 dark:bg-yellow-900 px-1 rounded">POST /populateSampleStandards</code>
+                      The Louisiana Student Standards database is currently being set up. This feature will be available shortly. Contact support if you need immediate access.
                     </span>
                   </CardDescription>
                 </CardHeader>

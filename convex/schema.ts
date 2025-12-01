@@ -322,6 +322,57 @@ const applicationTables = {
   })
     .index("by_user", ["userId"])
     .index("by_score", ["alignmentScore"]),
+
+  // ============================================
+  // PHASE 3 TABLES (Conversational Coach)
+  // ============================================
+
+  /**
+   * Prompt Conversations
+   * 
+   * Stores the chat thread history for the Conversational Coach.
+   * Tracks the multi-turn conversation between the teacher and Pelican AI.
+   */
+  promptConversations: defineTable({
+    userId: v.string(),
+    threadId: v.optional(v.string()), // ID from AI agent/LLM provider if applicable
+    title: v.optional(v.string()), // Generated title for the conversation
+    messages: v.array(v.object({
+      role: v.union(v.literal("user"), v.literal("assistant"), v.literal("system")),
+      content: v.string(),
+      timestamp: v.number(),
+    })),
+    status: v.union(v.literal("active"), v.literal("archived")),
+    lastUpdated: v.number(),
+  }).index("by_user", ["userId"])
+    .index("by_last_updated", ["lastUpdated"]),
+
+  /**
+   * Generated Prompts
+   * 
+   * Stores the final, high-quality prompts teachers want to keep.
+   * Linked to the conversation where they were generated.
+   */
+  generatedPrompts: defineTable({
+    userId: v.string(),
+    conversationId: v.id("promptConversations"),
+    promptText: v.string(), // The actual prompt content
+    context: v.object({
+      grade: v.optional(v.string()),
+      subject: v.optional(v.string()),
+      topic: v.optional(v.string()),
+      challenge: v.optional(v.string()),
+    }),
+    feedback: v.optional(v.object({
+      rating: v.union(v.literal("positive"), v.literal("negative")),
+      workedInClassroom: v.boolean(),
+      notes: v.optional(v.string()),
+    })),
+    isExemplar: v.boolean(), // Marked as an exemplar for the community
+    createdAt: v.number(),
+  }).index("by_user", ["userId"])
+    .index("by_conversation", ["conversationId"])
+    .index("by_created_at", ["createdAt"]),
 };
 
 export default defineSchema({
