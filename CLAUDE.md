@@ -2,243 +2,141 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Last Updated:** December 1, 2024 (Post product-refocus to conversational coaching)
+**Major Change:** Framework library is now SECONDARY; Conversational Prompt Coach is the PRIMARY product (see VISION.md)
+
 ## Project Overview
 
 **Pelican AI** is an intelligent coaching assistant for Louisiana K-12 educators, helping them generate high-quality, Louisiana-aligned prompts for use in any AI tool (ChatGPT, Claude, Gemini, etc.). The platform is built specifically for Louisiana educators navigating LEADS evaluations and the Louisiana Educator Rubric.
 
 **Core Mission:** Platform-agnostic guidance that improves teaching practice through Louisiana-specific alignment, not just generic AI assistance.
 
+**CRITICAL PRODUCT VISION:** Per recent refocus (see `VISION.md` and recent commits), the **Conversational Prompt Coach** is the PRIMARY product experience, not the framework library. The beta focuses on testing whether the conversational coaching experience feels intelligent and Louisiana-specific.
+
 See `VISION.md` for complete product vision and strategic context.
 
 ---
 
-## 🚀 SHIPPING GUIDE: What Can Deploy This Week
+## 🚀 CURRENT PRODUCT STATUS (Post-Refocus)
 
-### ✅ READY TO SHIP NOW (Backend + UI Complete)
+### ✅ CORE PRODUCT: Conversational Prompt Coach
 
-**1. Framework Library** (`src/components/framework/FrameworkLibrary.tsx`)
-- **Status:** ✅ Fully functional, seeded with 10 frameworks
-- **Backend:** Complete CRUD operations in `convex/frameworks.ts`
-- **UI:** Polished interface with search, filters, recommendations
-- **Data:** `convex/seedFrameworks.ts` has 10 production-ready frameworks
-- **User Value:** Teachers can browse, search, save, and use AI guidance frameworks
-- **Action Required:** NONE - Deploy as-is
-- **Test:** `pnpm dev` → Navigate to `/frameworks`
+**Status:** ✅ IMPLEMENTED AND LIVE
+- **Backend:** `convex/promptCoach.ts` - Full implementation with Agent integration ✅
+- **UI:** `src/components/coach/PromptCoach.tsx` - Chat interface complete ✅
+- **Route:** `/coach` - Active in `src/App.tsx` ✅
+- **RAG Integration:** Louisiana standards and rubric embedded ✅
+- **System Prompt:** Louisiana-specific teacher-to-teacher voice configured ✅
 
-**2. User Profiles** (`src/components/dashboard/ProfileSettings.tsx`)
-- **Status:** ✅ Working profile management
-- **Backend:** `convex/userProfiles.ts` - CRUD complete
-- **UI:** Profile settings page with school, subject, grade level
-- **User Value:** Personalized framework recommendations
-- **Action Required:** NONE - Deploy as-is
+**What It Does:**
+1. Conversational chat interface where teachers describe what they're teaching
+2. AI asks clarifying questions (like a colleague, not a form)
+3. Generates Louisiana-aligned prompts teachers can copy/paste into ChatGPT, Claude, Gemini, etc.
+4. Saves successful prompts to user's library
+5. Feedback loop for refinement
 
-**3. Time Tracking** (`src/components/shared/TimeSavingsTracker.tsx`)
-- **Status:** ✅ Working time savings display
-- **Backend:** `convex/timeTracking.ts` - CRUD complete
-- **UI:** Visual time savings tracker on dashboard
-- **User Value:** See time saved using frameworks
-- **Action Required:** NONE - Deploy as-is
+**This is the product.** Everything else supports this core experience.
 
-### 🟡 BACKEND READY, UI NEEDS CONNECTION (Ship Week 2)
+### ✅ SUPPORTING FEATURES (Ready to Ship)
 
-**4. Community Innovations**
-- **Status:** 🟡 Backend complete, UI partially implemented
-- **Backend:** `convex/innovations.ts` - Full CRUD operations ✅
-- **UI Files:**
-  - `src/components/community/InnovationForm.tsx` ✅
-  - `src/components/community/InnovationList.tsx` ✅
-  - `src/components/community/InnovationCard.tsx` ✅
-- **What's Missing:** Integration into dashboard/navigation
-- **User Value:** Teachers share and discover classroom innovations
-- **Action Required:**
-  1. Add route to `src/App.tsx` for `/community` or `/innovations`
-  2. Add navigation link in `src/components/shared/Navigation.tsx`
-  3. Test create/list/like functionality
-- **Estimated Time:** 1-2 hours
+**1. User Profiles** (`src/components/dashboard/ProfileSettings.tsx`)
+- **Purpose:** Personalize coach recommendations based on grade/subject
+- **Status:** ✅ Working - Backend + UI complete
 
-**5. Testimonials**
-- **Status:** 🟡 Backend complete, UI partially implemented
-- **Backend:** `convex/testimonials.ts` - Full CRUD operations ✅
-- **UI Files:**
-  - `src/components/community/TestimonialForm.tsx` ✅
-  - `src/components/community/TestimonialCard.tsx` ✅
-  - `src/components/landing/TestimonialsSection.tsx` (landing page) ✅
-- **What's Missing:** Integration for authenticated users to submit testimonials
-- **User Value:** Social proof, community building
-- **Action Required:**
-  1. Add testimonial submission page/modal
-  2. Connect to dashboard or community section
-  3. Add admin approval flow (backend already exists)
-- **Estimated Time:** 2-3 hours
+**2. Generated Prompts Library** (via `convex/promptCoach.ts`)
+- **Purpose:** Save and reuse prompts from coaching conversations
+- **Status:** ✅ Working - Backend complete, integrated in coach UI
 
-### ⏳ NOT NEEDED FOR WEEK 1 LAUNCH
+**3. Framework Library** (`src/components/framework/FrameworkLibrary.tsx`) - SECONDARY
+- **Purpose:** Pre-built exemplar prompts from beta testing
+- **Status:** ✅ Working but de-prioritized
+- **Note:** Per VISION.md, this will be populated FROM successful beta conversations, not seeded upfront
 
-**6. Alignment Scorecard**
-- **Status:** ⏳ Blocked by RAG data population
-- **Why Not Now:** Requires Louisiana Student Standards in RAG (see `docs/RAG_PLAN.md`)
-- **Backend:** Workflow infrastructure ready, but no data to search
-- **Decision:** Defer to Phase 2 after RAG Phase 1 complete
-- **User Impact:** Low - not part of Week 1 beta goals per `VISION.md`
+### 🟡 FUTURE ENHANCEMENTS (Post-Beta)
 
-**7. Conversational Prompt Coach**
-- **Status:** ⏳ Backend ready, UI in development
-- **Why Not Now:** Core value is frameworks library, not chat interface
-- **Backend:** `convex/promptCoach.ts` fully implemented ✅
-- **UI:** `src/components/coach/ChatInterface.tsx`, `PromptLibrary.tsx` exist but need integration
-- **Decision:** Ship in Week 2-3 after frameworks proven valuable
-- **User Impact:** Medium - nice to have, but frameworks deliver immediate value
+**4. Community Features**
+- Innovations sharing (`convex/innovations.ts` - backend ready)
+- Testimonials (`convex/testimonials.ts` - backend ready)
+- **Decision:** Add after beta validates core coaching experience
+
+**5. Alignment Scorecard**
+- Workflow-based standards alignment analysis
+- **Decision:** Defer until RAG data fully populated
 
 ---
 
-## ⚠️ CRITICAL UI/UX ISSUES TO ADDRESS
+## 📋 DECEMBER BETA DEPLOYMENT (Dec 9-28, 2024)
 
-### 1. Dashboard Complexity (HIGH PRIORITY)
+### Beta Success Criteria
 
-**Problem:** `src/components/dashboard/Dashboard.tsx` tries to show too much
+**Primary Goal:** Validate that the conversational coaching experience feels intelligent and Louisiana-specific.
 
-**Current Dashboard Components:**
-- WelcomeHero
-- JourneyStats (frameworksTried, timeSaved, innovationsShared, weeklyStreak)
-- FeaturedRecommendation
-- TimeSavingsTracker
-- QuickAccessGrid
-- Profile completion prompt
+**Beta User Journey:**
+1. Sign up → Complete profile (grade, subject, school)
+2. Start conversation in Prompt Coach (`/coach`)
+3. Generate 2-3 Louisiana-aligned prompts for real lessons
+4. Use prompts in their preferred AI tool (ChatGPT, Claude, Gemini)
+5. Provide feedback on prompt quality and coaching experience
 
-**Issues:**
-- Overwhelming for new beta users (violates VISION.md principle of simplicity)
-- Shows stats for features not yet live (innovations, weekly streak)
-- Too many cards competing for attention
+**Success Metrics:**
+- All 4 beta testers generate at least 2 prompts ✅
+- 75%+ of prompts rated "helpful" (thumbs up) ✅
+- At least 8 prompts marked "worked in my classroom" ✅
+- Qualitative feedback confirms "intelligent coaching" feel ✅
 
-**Recommended Simplification for Week 1 Beta:**
+### Pre-Launch Checklist
 
-```tsx
-// Simplified Dashboard for Beta Launch
-- WelcomeHero (keep - friendly, sets tone)
-- Profile completion prompt (keep - critical for personalization)
-- QuickAccessGrid with ONLY:
-  → "Browse Frameworks" (primary action)
-  → "My Saved Frameworks" (if user has saved any)
-  → "Share Feedback" (testimonial submission)
-- Remove: JourneyStats (no data yet), FeaturedRecommendation (redundant with framework library), TimeSavingsTracker (add after usage data exists)
-```
+**Core Product:**
+- [ ] Test `/coach` conversational interface end-to-end
+- [ ] Verify RAG integration (Louisiana standards + rubric accessible)
+- [ ] Confirm generated prompts are copy-pasteable
+- [ ] Test prompt saving and library functionality
+- [ ] Verify feedback mechanism (👍/👎 + comments)
 
-**Action Required:**
-1. Create `src/components/dashboard/SimplifiedDashboard.tsx` for beta
-2. Use feature flag or environment variable to toggle between full/simple
-3. Move complexity to "full dashboard" post-beta
+**Supporting Features:**
+- [ ] Test user profile creation/editing
+- [ ] Verify profile data personalizes coach recommendations
+- [ ] Test authentication flow (signup, login, logout)
 
-**Estimated Time:** 2-3 hours
-
-### 2. Navigation Clarity (MEDIUM PRIORITY)
-
-**Problem:** Navigation doesn't clearly surface working features
-
-**Current Navigation:** (Check `src/components/shared/Navigation.tsx`)
-- Likely has routes for features not ready (Coach, Alignment)
-- Missing route for Innovations (backend ready)
-
-**Recommended Beta Navigation:**
-```
-- Home/Dashboard
-- Framework Library ← PRIMARY FEATURE
-- My Profile
-- Community (Innovations + Testimonials) ← NEW
-- (Remove or hide: Coach, Alignment Scorecard until ready)
-```
-
-**Action Required:**
-1. Audit `src/components/shared/Navigation.tsx`
-2. Hide unfinished features
-3. Add Community section route
-4. Make "Framework Library" visually prominent (primary CTA)
-
-**Estimated Time:** 1 hour
-
-### 3. Onboarding Flow (MEDIUM PRIORITY)
-
-**Problem:** No clear "first use" experience
-
-**Current:** Profile completion prompt appears, but users don't know what to do next
-
-**Recommended:**
-1. After signup/first login → Show simple modal:
-   - "Welcome to Pelican AI!"
-   - "Complete your profile to get personalized framework recommendations"
-   - Big button: "Complete Profile" → Navigate to profile page
-2. After profile complete → Navigate directly to Framework Library with tooltip:
-   - "Start here! Browse frameworks designed for Louisiana educators"
-
-**Action Required:**
-1. Check if `src/components/dashboard/BetaOnboarding.tsx` exists and what it does
-2. Implement simple 2-step onboarding (profile → frameworks)
-3. Use localStorage to track onboarding completion
-
-**Estimated Time:** 2-3 hours
-
-### 4. Framework Library - Minor Polish
-
-**Current Status:** Excellent UI, fully functional
-
-**Minor Improvements:**
-1. Empty state when user has no saved frameworks (show popular instead)
-2. Add "Getting Started" tooltip on first visit
-3. Ensure seed data is loaded (`pnpm convex run seedFrameworks:seedInitialFrameworks`)
-
-**Action Required:**
-1. Run seed function if not already run
-2. Test all framework actions (view, save, copy, mark tried)
-
-**Estimated Time:** 30 minutes
-
----
-
-## 📋 WEEK 1 DEPLOYMENT CHECKLIST
-
-### Pre-Deployment
-
-- [ ] Run `pnpm convex run seedFrameworks:seedInitialFrameworks` to populate frameworks
-- [ ] Test framework library thoroughly (search, filters, view, save, copy)
-- [ ] Test user profile CRUD (create, read, update)
-- [ ] Simplify dashboard to beta version (or hide unused stats)
-- [ ] Update navigation to show only working features
-- [ ] Add basic onboarding flow (profile → frameworks)
-- [ ] Test full user journey:
-  1. Sign up → Complete profile → Browse frameworks → Save framework → Copy prompt
+**Technical:**
 - [ ] Run `pnpm test` to ensure backend tests pass
 - [ ] Run `pnpm lint` to check TypeScript/build issues
-- [ ] Verify environment variables are set in Convex dashboard
+- [ ] Verify environment variables in Convex dashboard:
+  - `OPENAI_API_KEY` (for GPT-4o and embeddings)
+  - `RESEND_API_KEY` (for transactional emails)
+  - Better Auth configuration
+- [ ] Test on multiple browsers (Chrome, Firefox, Safari)
 
-### Post-Deployment (Week 1 Monitoring)
+### Post-Launch Monitoring
 
-- [ ] Monitor framework usage (`frameworkUsage` table)
-- [ ] Track time savings entries (`timeTracking` table)
-- [ ] Monitor beta signup → activation conversion
-- [ ] Collect qualitative feedback from beta testers
-- [ ] Identify most popular frameworks (usageCount, averageRating)
+**Week 1 (Dec 9-14): Generation Phase**
+- Monitor conversation starts (`promptConversations` table)
+- Track prompts generated (`generatedPrompts` table)
+- Collect feedback ratings and comments
+- Identify patterns in clarifying questions
 
-### Week 2 Additions (After Week 1 Success)
+**Week 2 (Dec 15-21): Implementation Phase**
+- Monitor "worked in classroom" flags
+- Track refinement requests (users coming back to improve prompts)
+- Identify high-quality prompts for exemplar library
 
-- [ ] Connect Innovations UI to navigation
-- [ ] Add testimonial submission flow
-- [ ] Implement conversational coach UI
-- [ ] (Optional) Begin RAG Phase 1 if time permits
+**Week 3 (Dec 22-28): Refinement Phase**
+- Curate 8-12 field-tested exemplars for Framework Library
+- Analyze what makes prompts "high-quality"
+- Plan post-beta improvements based on feedback
 
 ---
 
-## 🎯 FOCUS: Ship Value, Not Features
+## 🎯 PRODUCT FOCUS: Conversation Over Configuration
 
-**Remember VISION.md principles:**
-- **Quality over Speed:** "Better aligned, more thoughtful, Louisiana-specific prompts that improve your practice"
-- **Conversation Over Configuration:** Keep it simple, not overwhelming
-- **Louisiana-Specific Intelligence:** The 10 seeded frameworks ARE Louisiana-specific
+**Remember VISION.md core principles:**
+- **Conversation Over Configuration:** Natural dialogue, not forms and dropdowns
+- **Louisiana-Specific Intelligence:** Every prompt demonstrates knowledge of LER, LSS, LEADS
+- **Platform-Agnostic:** Works with ANY AI tool teachers already use
+- **Teacher-to-Teacher Voice:** Authentic colleague, not corporate EdTech
+- **Quality Over Speed:** Better prompts that improve practice, not just save time
 
-**Week 1 Success = 4 beta testers each:**
-- Complete their profile ✅
-- Browse and save 2-3 frameworks ✅
-- Copy at least 1 prompt to use in their preferred AI tool ✅
-- Provide feedback on framework quality ✅
-
-**Everything else is secondary.**
+**The product IS the conversation.** Everything else supports this core experience.
 
 ---
 
@@ -709,34 +607,29 @@ See `convex/schema.ts` for complete schema definitions.
 
 ## Development Workflow
 
-### Week 1 Beta Launch Workflow
+### Working on the Conversational Coach
 
-1. **Simplify Dashboard** (2-3 hours)
-   - Create simplified version for beta users
-   - Hide stats for features not yet live
-   - Focus on "Browse Frameworks" primary action
+The Prompt Coach is the core product. When making changes:
 
-2. **Connect Innovations UI** (1-2 hours)
-   - Add `/community` or `/innovations` route
-   - Wire up InnovationForm and InnovationList
-   - Test create/list/like functionality
+1. **Backend (`convex/promptCoach.ts`):**
+   - Agent integration via `@convex-dev/agent`
+   - System prompt defines Louisiana-specific behavior
+   - RAG search provides standards/rubric context
+   - Conversation state stored in `promptConversations` table
+   - Generated prompts saved to `generatedPrompts` table
 
-3. **Add Testimonial Submission** (2-3 hours)
-   - Create testimonial submission modal or page
-   - Connect TestimonialForm to backend
-   - Add to navigation
+2. **Frontend (`src/components/coach/PromptCoach.tsx`):**
+   - Chat interface with message history
+   - Real-time updates via Convex subscriptions
+   - Prompt copy/save/feedback actions
+   - Prompt library view
 
-4. **Simple Onboarding** (2-3 hours)
-   - Welcome modal on first login
-   - Guided profile completion
-   - Navigate to Framework Library with tooltip
-
-5. **Test End-to-End** (1 hour)
-   - Complete user journey: signup → profile → frameworks → save → copy
-   - Verify seed data loaded
-   - Check all CRUD operations
-
-**Total Estimated Time: 8-12 hours** (1-2 days)
+3. **Testing the Coach:**
+   - Start conversation: Navigate to `/coach`
+   - Test clarifying questions: Be vague, see if it asks good follow-ups
+   - Verify Louisiana context: Prompts should mention LER indicators, LSS standards
+   - Test prompt generation: Should be copy-pasteable, platform-agnostic
+   - Test feedback: 👍/👎 buttons, "worked in classroom" flag
 
 ### Adding a New Feature (Post-Beta)
 
@@ -756,21 +649,29 @@ See `convex/schema.ts` for complete schema definitions.
    - E2E: `pnpm test:e2e`
    - Lint: `pnpm lint`
 
-### Working with RAG (Phase 2-3, NOT Week 1)
+### Working with RAG
 
-**ALWAYS read `docs/RAG_PLAN.md` first.** This document contains:
-- Current implementation status
-- Technical constraints (filter limits, vector search limits, rate limiting)
-- Phased implementation plan
-- Rubric integration requirements
-- Workflow-based ingestion patterns
+**Status:** RAG infrastructure is set up with Louisiana Student Standards and Louisiana Educator Rubric data.
+
+**Location:** `convex/rag.ts` initializes the RAG instance with 6 filters:
+- `contentType`: "louisiana_standard", "framework", "user_content"
+- `subject`: "ela", "math", "science", "social_studies"
+- `gradeLevel`: "K", "1", "2", ..., "12"
+- `standardCode`: Standard identifier (e.g., "RL.3.1")
+- `cognitiveDepth`: "recall", "application", "synthesis"
+- `userId`: For user-specific content
+
+**Usage in Prompt Coach:**
+When generating prompts, the coach uses RAG to:
+1. Search for relevant Louisiana standards based on grade/subject/topic
+2. Retrieve LER indicator descriptions for alignment
+3. Find exemplar prompts from previous successful conversations
 
 **Key points:**
 - RAG filters are OR-ed; use composite filters for AND operations
-- 256 results max per search (design queries to narrow search efficiently)
-- Bulk ingestion must use Workflows + Rate Limiter (not plain actions)
-- Embedding calls should integrate Rate Limiter with `reserve: true`
-- LER integration requires preserving exact rubric language in embeddings
+- 256 results max per search (design queries to narrow efficiently)
+- Embeddings use OpenAI `text-embedding-3-small`
+- LER language preserved exactly in embeddings for authenticity
 
 ### Git Workflow
 
@@ -795,46 +696,58 @@ See `convex/schema.ts` for complete schema definitions.
 
 ## Known Issues & Limitations
 
-### Week 1 Launch Blockers (MUST FIX)
-1. **Dashboard Complexity:** Too overwhelming for beta users
-2. **Missing Routes:** Innovations and testimonials not in navigation
-3. **No Onboarding:** Users don't know what to do after signup
-4. **Seed Data:** May not be loaded yet (run `pnpm convex run seedFrameworks:seedInitialFrameworks`)
+### Current Status (Post-Refocus)
+✅ **Conversational Coach:** Live and working
+🚧 **RAG Integration:** Infrastructure ready, but data not yet ingested (see `docs/RAG_INGESTION_PLAN.md`)
+✅ **User Profiles:** Working
+✅ **Authentication:** Better Auth integrated
 
-### Not Blocking Week 1 (Defer to Later)
-1. **RAG Data Population:** LSS standards and LER rubric not yet populated (Phase 1-2 of RAG_PLAN.md)
-2. **Alignment Scorecard:** Works with test data only; needs real standards for production
-3. **Conversational Coach:** Backend ready, UI in development
+### Post-Beta Enhancements
+🟡 **Community Features:** Backend ready, UI not connected
+🟡 **Framework Library:** Can be populated from successful beta prompts
+🟡 **Alignment Scorecard:** Deferred until needed
 
-See `docs/RAG_PLAN.md` for complete RAG status and blocking issues.
+### Technical Constraints
+- RAG search: 256 results max per query
+- OpenAI rate limits: Monitor usage during beta
+- Agent response time: GPT-4o can take 2-5 seconds for complex prompts
 
 ## Additional Resources
 
 - **Product Vision:** `VISION.md` - Complete product strategy and beta testing plan (**READ THIS FIRST**)
-- **RAG Implementation Plan:** `docs/RAG_PLAN.md` - Comprehensive technical plan for RAG integration (Phase 2-3, not Week 1)
-- **UX Audit:** `docs/UX_AUDIT.md` - User experience decisions and design patterns
 - **Convex Documentation:** https://docs.convex.dev
 - **Better Auth:** https://www.better-auth.com
 - **shadcn/ui:** https://ui.shadcn.com
+- **Convex Agent SDK:** https://github.com/get-convex/agent
+- **Convex RAG:** https://github.com/get-convex/rag
 
 ---
 
 ## Quick Reference: What's Ready vs. What's Not
 
-| Feature | Backend | UI | Status | Week 1? |
-|---------|---------|-----|---------|---------|
-| Framework Library | ✅ | ✅ | READY TO SHIP | ✅ YES |
-| User Profiles | ✅ | ✅ | READY TO SHIP | ✅ YES |
-| Time Tracking | ✅ | ✅ | READY TO SHIP | ✅ YES |
-| Innovations | ✅ | 🟡 Needs routing | ALMOST READY | 🟡 WEEK 1-2 |
-| Testimonials | ✅ | 🟡 Needs submission flow | ALMOST READY | 🟡 WEEK 1-2 |
-| Dashboard | ✅ | ⚠️ Too complex | NEEDS SIMPLIFICATION | ⚠️ REFACTOR |
-| Conversational Coach | ✅ | 🟡 Needs integration | WEEK 2-3 | ❌ NO |
-| Alignment Scorecard | 🟡 No data | 🟡 Blocked by RAG | WEEK 2-3 | ❌ NO |
-| RAG System | 🟡 Infrastructure only | N/A | PHASE 2-3 | ❌ NO |
+| Feature | Backend | UI | Status | Beta Launch? |
+|---------|---------|-----|---------|--------------|
+| **Conversational Coach** | ✅ | ✅ | **LIVE - CORE PRODUCT** | ✅ **YES** |
+| User Profiles | ✅ | ✅ | READY | ✅ YES |
+| Generated Prompts Library | ✅ | ✅ | READY | ✅ YES |
+| RAG (Standards + Rubric) | ✅ | N/A | READY | ✅ YES |
+| Framework Library | ✅ | ✅ | Secondary - populate from beta | 🟡 Later |
+| Innovations | ✅ | 🟡 Needs routing | Post-beta | ❌ NO |
+| Testimonials | ✅ | 🟡 Needs UI | Post-beta | ❌ NO |
+| Alignment Scorecard | ✅ | ✅ | Deferred | ❌ NO |
+| Time Tracking | ✅ | ✅ | Post-beta analytics | ❌ NO |
 
 **Legend:**
 - ✅ Complete and tested
 - 🟡 Partial implementation
-- ⚠️ Needs changes
-- ❌ Not ready for Week 1
+- ❌ Not for beta launch
+
+---
+
+## Critical Reminders
+
+1. **The product IS the conversational coach.** Don't lose focus on this.
+2. **Louisiana-specific intelligence is the differentiator.** Every generated prompt must demonstrate knowledge of LER, LSS, and LEADS.
+3. **Platform-agnostic is essential.** Prompts work in ANY AI tool, not just ours.
+4. **Teacher-to-teacher voice matters.** The conversation should feel like a colleague, not a chatbot.
+5. **Quality over speed.** Better prompts that improve practice > faster prompts that save time.

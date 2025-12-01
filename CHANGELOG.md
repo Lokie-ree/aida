@@ -8,6 +8,47 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Documentation Updates - README, Landing Page, and Changelog
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** December 1, 2025
+
+**Impact:** Created comprehensive README.md, updated landing page content to emphasize Conversational Prompt Coach as primary product, and updated CHANGELOG with current status.
+
+**Key Changes:**
+
+**New Documentation:**
+- ✅ **README.md:** Created comprehensive project documentation
+  - Project overview and core mission
+  - Current product status (Conversational Prompt Coach as primary)
+  - Tech stack and architecture overview
+  - Getting started guide with setup instructions
+  - Testing and building commands
+  - Project structure and key features
+
+**Landing Page Content Updates:**
+- ✅ **src/data/landingPageContent.ts:** Refocused on Conversational Prompt Coach
+  - Features updated to emphasize conversational coaching experience
+  - Testimonials updated to highlight conversational coach and Louisiana-specific intelligence
+  - FAQs rewritten to explain conversational coach workflow and prompt library
+  - Removed outdated "10 frameworks" messaging, now emphasizes coach as primary product
+
+**Changelog Updates:**
+- ✅ **CHANGELOG.md:** Added current status entry
+  - Documented README creation and landing page updates
+  - Clarified product focus: Conversational Prompt Coach is primary product
+
+**Current Product Status:**
+- ✅ **Conversational Prompt Coach:** Live and operational at `/coach` route
+- 🚧 **RAG Integration:** Infrastructure ready, but Louisiana standards and rubric data not yet ingested (see `docs/RAG_INGESTION_PLAN.md`)
+- ✅ **User Profiles:** Working - Backend + UI complete
+- ✅ **Generated Prompts Library:** Working - Backend complete, integrated in coach UI
+- ✅ **Framework Library:** Secondary feature - populated from successful beta conversations
+- ✅ **Authentication:** Better Auth integrated
+
+---
+
 ### Roadmap Creation & Launch Documentation Archiving
 
 **Status:** ✅ **COMPLETED**

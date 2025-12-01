@@ -26,33 +26,33 @@ export interface FAQ {
 export const features: Feature[] = [
   {
     icon: BookOpen,
-    title: "Platform-Agnostic Guidance",
-    description: "Learn to use ANY AI tool effectively—MagicSchool AI, Brisk, SchoolAI, Gemini, or others. We teach principles, not platforms."
+    title: "Conversational AI Coach",
+    description: "Describe what you're teaching, and our intelligent coach asks clarifying questions like a colleague—then generates Louisiana-aligned prompts you can use in ANY AI tool."
   },
   {
     icon: Target,
     title: "Louisiana Standards Aligned",
-    description: "Every framework and prompt is designed specifically for Louisiana's educational standards and the Louisiana Educator Rubric."
+    description: "Every generated prompt demonstrates knowledge of Louisiana's educational standards, the Louisiana Educator Rubric, and LEADS evaluation framework."
   },
   {
     icon: Shield,
-    title: "Ethical Guardrails Built-In",
-    description: "Clear guidance on academic integrity, data privacy, and responsible AI use that aligns with district policies."
+    title: "Platform-Agnostic Guidance",
+    description: "Works with whatever AI tool you already use—ChatGPT, Claude, Gemini, MagicSchool AI, or others. We generate prompts, not lock you into our platform."
   },
   {
     icon: Clock,
-    title: "Reclaim 3-5 Hours Per Week",
-    description: "Practical solutions for lesson planning, email drafting, differentiation, and admin tasks that save real time."
+    title: "Quality Over Speed",
+    description: "Better aligned, more thoughtful prompts that improve your practice—not just faster prompts that save time."
   },
   {
     icon: Users,
-    title: "Community-Driven Learning",
-    description: "Share innovations with Louisiana educators. Learn from peers who understand your classroom challenges."
+    title: "Teacher-to-Teacher Voice",
+    description: "Built by a Louisiana educator for Louisiana educators. Authentic conversations, not corporate EdTech speak."
   },
   {
     icon: Lightbulb,
-    title: "Educator-First Approach",
-    description: "No corporate jargon. No tech-speak. Just practical advice from educators for educators."
+    title: "Intelligent Prompt Library",
+    description: "Save successful prompts, refine them based on classroom feedback, and build your personal library of Louisiana-aligned AI prompts."
   }
 ];
 
@@ -101,9 +101,9 @@ export const testimonials: Testimonial[] = [
     title: "Grassroots Launch"
   },
   {
-    quote: "Platform-agnostic frameworks that work with ANY AI tool you already use - ChatGPT, Gemini, MagicSchool AI, whatever your district provides.",
+    quote: "Just describe what you're teaching, and the AI coach asks smart questions like a colleague would—then gives you a prompt ready to paste into ChatGPT or Claude.",
     author: "Louisiana Educator",
-    title: "Built by Educators"
+    title: "Conversational Coaching"
   },
   {
     quote: "Real conversations, not automation. Your honest feedback literally shapes what we build next.",
@@ -111,40 +111,40 @@ export const testimonials: Testimonial[] = [
     title: "Building Together"
   },
   {
-    quote: "10 frameworks designed by Louisiana educators, for Louisiana educators. Start with frameworks that save real time, tell us what works.",
+    quote: "Finally, prompts that actually understand Louisiana standards and the Educator Rubric. No more generic AI outputs that don't fit our context.",
     author: "Louisiana Educator",
-    title: "Grassroots Development"
+    title: "Louisiana-Specific Intelligence"
   }
 ];
 
 export const faqs: FAQ[] = [
   {
     question: "Is this another AI tool I have to learn?",
-    answer: "No! We teach you how to use whatever AI platform you already have access to—MagicSchool AI, Brisk, SchoolAI, Gemini, ChatGPT, or others. We're a guidance system, not a software product."
+    answer: "No! Pelican AI is a conversational coach that helps you generate better prompts for whatever AI tool you already use—ChatGPT, Claude, Gemini, MagicSchool AI, or others. We're a guidance layer, not a replacement for your existing AI tools."
+  },
+  {
+    question: "How does the conversational coach work?",
+    answer: "Simply describe what you're teaching (grade, subject, topic, challenge). Our AI coach asks clarifying questions like a colleague would, then generates a Louisiana-aligned prompt you can copy and paste into your preferred AI tool. The conversation feels natural, not like filling out a form."
   },
   {
     question: "How is this aligned to Louisiana standards?",
-    answer: "Our framework and prompts are built specifically for Louisiana's educational standards and the Louisiana Educator Rubric. We understand your district's expectations and requirements, and we co-create additional frameworks based on what Louisiana educators actually need."
+    answer: "Every generated prompt demonstrates knowledge of Louisiana's educational standards, the Louisiana Educator Rubric, and LEADS evaluation framework. The coach understands your context and generates prompts that reference specific LER indicators and LSS standards relevant to what you're teaching."
   },
   {
     question: "What about ethical concerns and academic integrity?",
-    answer: "Every framework includes clear ethical guardrails. We show you how to use AI as a productivity partner while maintaining academic integrity, protecting student privacy, and following district policies."
+    answer: "Every generated prompt includes clear ethical guardrails. We show you how to use AI as a productivity partner while maintaining academic integrity, protecting student privacy, and following district policies. The coach helps you generate prompts that improve your practice, not replace your teaching."
   },
   {
-    question: "How much time will this actually save me?",
-    answer: "Our Lesson Objective Unpacker saves 7-12 minutes per lesson planned. With 5-10 lessons planned weekly, that's 35-120 minutes saved just on objective unpacking and success criteria creation. As we add more frameworks based on feedback from Louisiana educators, time savings compound."
-  },
-  {
-    question: "How often are new frameworks added?",
-    answer: "You get immediate platform access and can start using frameworks right away. We continuously add new frameworks based on feedback from Louisiana educators. Use the platform at your own pace—all frameworks are available now. Through optional feedback surveys and office hours, you can help us prioritize which frameworks to add next based on YOUR needs."
+    question: "Can I save and reuse prompts?",
+    answer: "Yes! Every generated prompt can be saved to your personal library. You can mark prompts that worked well in your classroom, add notes for refinement, and build a collection of Louisiana-aligned prompts tailored to your teaching context."
   },
   {
     question: "What's included when I sign up?",
-    answer: "You get immediate platform access with 10 frameworks (3 advanced Louisiana-specific + 7 essential productivity frameworks) designed for Louisiana educators. Start with our Lesson Objective Unpacker (saves 7-12 minutes per lesson), then explore other frameworks for email drafting, differentiation, parent communication, and more. All frameworks are ready to use now. Through optional feedback surveys and office hours, you can help us prioritize which new frameworks to add next based on YOUR pain points."
+    answer: "You get immediate access to the Conversational Prompt Coach—our core product. Describe what you're teaching, get Louisiana-aligned prompts, and save them to your library. We also provide a Framework Library with exemplar prompts from successful beta conversations. Your feedback shapes what we build next."
   },
   {
     question: "Do I need to be tech-savvy to benefit?",
-    answer: "Not at all! We meet you where you are. Whether you're an AI novice or an eager innovator, we have guidance tailored to your readiness level. Start simple, grow at your pace."
+    answer: "Not at all! The conversational interface is designed to feel natural. Just describe what you're teaching in plain language, and the coach guides you through generating a high-quality prompt. Whether you're an AI novice or an eager innovator, we meet you where you are."
   }
 ];
 
