@@ -1,0 +1,1730 @@
+{
+  "metadata": {
+    "title": "Louisiana Educator Rubric & Evaluation Handbook",
+    "source": "Louisiana Department of Education",
+    "releaseDate": "April 2024",
+    "totalPages": 149,
+    "description": "A comprehensive guide defining effective teaching and student-centered instruction for Louisiana educators, developed in partnership with NIET."
+  },
+  "leadsSystem": {
+    "name": "Louisiana Educator Advancement and Development System (LEADS)",
+    "overview": "Louisiana’s improved Educator Evaluation System will build upon and support these education initiatives. The process and instructional practices supported by evaluation will be implemented through the structures of instructional leadership teams and teacher collaboration and will support the implementation of high-quality instructional materials that have been adopted across the state.",
+    "keyObjectives": [
+      "Use research-based teaching and leadership standards that provide clear descriptions of practice across a range of indicators.",
+      "Provide high-quality feedback to teachers and leaders that is actionable, detailed, and timely.",
+      "Support the continuous improvement of teaching and learning using materials teachers use every day in classrooms.",
+      "Offer opportunities for teamwork and collaboration that help educators to develop their practice.",
+      "Provide differentiated follow-up coaching and support based on refinement areas.",
+      "Enable educators to reflect on their practice and share their views as part of the evaluation process."
+    ],
+    "threeProvenStrategies": [
+      "Instructional Leadership Team",
+      "Teacher Collaboration Support",
+      "Career Pipeline Support"
+    ]
+  },
+  "rubric": {
+    "name": "Louisiana Educator Rubric (LER)",
+    "releaseDate": "April 2024",
+    "overview": "The Louisiana Educator Rubric was designed through a partnership between the Louisiana Department of Education (LDOE) and the National Institute for Excellence in Teaching (NIET) to directly support improvements in classroom instruction. By clearly defining effective teaching and student-centered instruction, this rubric provides educators with a roadmap for strengthening their practice, facilitating high-quality coaching, and fostering collaboration around best instructional practices.",
+    "performanceLevelGuidance": "Performance definitions are provided at levels 5, 3, and 1. Observers can score performance at levels 2 or 4 based on evidence and their professional judgment. A rating of 2 often occurs when examination of the evidence is stronger than unsatisfactory, but there is not enough specific evidence to merit a proficient rating. A rating of 4 often occurs when many of the descriptors in the proficient level are evident and strong, but there is not enough evidence or consistency to merit an exemplary rating of 5. These ratings should always be based on close evaluation of evidence, including student work and observation analysis.",
+    "domains": [
+      {
+        "domain": "INSTRUCTION",
+        "domainName": "Instruction",
+        "indicators": [
+          {
+            "indicatorCode": "SO",
+            "indicatorName": "Standards and Objectives",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "All learning objectives and state content standards*, and their connection to student work expectations, are explicitly communicated and understood by students.",
+                  "Objectives and expectations are aligned to the depth and rigor of the state standards; lesson content is aligned to the objectives of the high-quality instructional materials.",
+                  "Sub-objectives/Prerequisite skills are aligned and logically sequenced to the lesson’s major objective.",
+                  "Students make connections between learning objectives and (a) what they have previously learned, (b) know from life experiences, and/or (c) knowledge of other disciplines.",
+                  "Expectations for each student’s performance are clear, demanding, and high, and student work is aligned to state content standards and learning objectives.",
+                  "Students are able to articulate what they are learning and why and explain those to their peers.",
+                  "Learning objectives are displayed and referenced throughout the lesson with explanations.",
+                  "Student work shows evidence that each student is progressing or demonstrating mastery of the objective(s)."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Learning objectives and state content standards* are communicated.",
+                  "Objectives and expectations are aligned to the depth and rigor of the state standards; lesson content is aligned to the objectives of the high-quality instructional materials.",
+                  "Sub-objectives/Prerequisite skills are aligned to the lesson’s major objective.",
+                  "Learning objectives are connected to what students have previously learned.",
+                  "Expectations for student performance are clear.",
+                  "Learning objectives are displayed.",
+                  "There is evidence that students are progressing or demonstrating mastery of the objective(s)."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Some learning objectives and state content standards* are communicated.",
+                  "Sub-objectives/Prerequisite skills are inconsistently aligned to the lesson’s major objective.",
+                  "Learning objectives are rarely connected to what students have previously learned.",
+                  "Expectations for student performance are vague.",
+                  "Learning objectives are displayed.",
+                  "There is little evidence that students are progressing or demonstrating mastery of the objective(s)."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "MS",
+            "indicatorName": "Motivating Students",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "The teacher consistently organizes the content, including high-quality curriculum resources, so that it is personally meaningful, relevant, and intellectually engaging to students.",
+                  "The teacher consistently develops learning experiences where inquiry, curiosity, and exploration are valued.",
+                  "Students are consistently engaged in their own learning, and the teacher reinforces students’ initiative to learn more."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "The teacher organizes the content, including high-quality curriculum resources, so that it is personally meaningful and relevant to students.",
+                  "The teacher develops learning experiences where inquiry, curiosity, and exploration are valued.",
+                  "The teacher regularly reinforces and rewards effort."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The teacher sometimes organizes the content, including high-quality curriculum resources, so that it is personally meaningful and relevant to students.",
+                  "The teacher seldom develops learning experiences where inquiry, curiosity, and exploration are valued.",
+                  "The teacher rarely reinforces and rewards effort."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "PIC",
+            "indicatorName": "Presenting Instructional Content",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Presentation of content always includes: visuals, including student work exemplars, that establish the purpose of the lesson, preview the organization of the lesson, and include internal summaries of the lesson;",
+                  "examples, illustrations, analogies, and labels for new concepts and ideas;",
+                  "modeling by the teacher or student that demonstrates accurate understanding of the content and meets performance expectations;",
+                  "criteria that clarifies how students can be successful;",
+                  "concise communication;",
+                  "logical sequencing and segmenting;",
+                  "all essential information; and",
+                  "no irrelevant, confusing, or nonessential information."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Presentation of content consistently includes: visuals that establish the purpose of the lesson, preview the organization of the lesson, and include internal summaries of the lesson;",
+                  "examples, illustrations, analogies, and labels for new concepts and ideas;",
+                  "modeling by the teacher to demonstrate his or her performance expectations;",
+                  "criteria that clarifies how students can be successful;",
+                  "concise communication;",
+                  "logical sequencing and segmenting;",
+                  "all essential information; and",
+                  "no irrelevant, confusing, or nonessential information."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Presentation of content inconsistently includes: visuals that establish the purpose of the lesson, preview the organization of the lesson, and include internal summaries of the lesson;",
+                  "examples, illustrations, analogies, and labels for new concepts and ideas;",
+                  "modeling by the teacher to demonstrate his or her performance expectations;",
+                  "criteria that clarifies how students can be successful;",
+                  "concise communication;",
+                  "logical sequencing and segmenting;",
+                  "all essential information; and",
+                  "no irrelevant, confusing, or nonessential information."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "LS",
+            "indicatorName": "Lesson Structure and Pacing",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "The lesson starts promptly.",
+                  "The lesson’s structure is coherent, based on the content, and organized to meet students’ needs, with time for reflection to ensure student understanding.",
+                  "Pacing is brisk, adjusted for rigor of content and individual student learning expectations.",
+                  "Students’ individual needs are attended to and pacing provides many opportunities for individual students who progress at different learning rates.",
+                  "Students understand and engage in classroom routines and transitions to ensure efficient use of time."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "The lesson starts promptly.",
+                  "The lesson’s structure is coherent, based on the content, and has a beginning, middle, and end, with time for reflection to ensure student understanding.",
+                  "Pacing is appropriate and sometimes provides opportunities for students who progress at different learning rates.",
+                  "Routines for distributing materials are efficient.",
+                  "Little instructional time is lost during transitions."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The lesson does not start promptly.",
+                  "The lesson has a structure, but may be missing key components of the content, or it may not include reflection or introductory elements.",
+                  "Pacing rarely provides opportunities for students who progress at different learning rates.",
+                  "Routines for distributing materials are inefficient.",
+                  "Considerable time is lost during transitions."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "ACT",
+            "indicatorName": "Activities and Materials",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Activities and materials include all of the following:",
+                  "Content: support the lesson objectives; are challenging; elicit a variety of thinking; provide time for reflection; and are relevant to students’ lives.",
+                  "Student-centered: sustain students’ attention; provide opportunities for student-to-student interaction; evoke student curiosity and suspense; and provide students with choices when appropriate and aligned to the learning objectives.",
+                  "Multiple materials: incorporate additional standards-based resources where appropriate to support individual and whole group understanding (e.g., visuals, multimedia, technology, manipulatives, resources from museums, cultural centers, etc., when not available in the high-quality instructional materials).",
+                  "In addition, sometimes activities are game-like, involve simulations, require creating products, and demand self-direction, and students are continuously self-monitoring as appropriate to enhance learning."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Activities and materials include a majority of the following:",
+                  "Content: support the lesson objectives; are challenging; elicit a variety of thinking; provide time for reflection; and are relevant to students’ lives.",
+                  "Student-centered: sustain students’ attention; provide opportunities for student-to-student interaction; evoke student curiosity and suspense; and provide students with choices when appropriate and aligned to the learning objectives.",
+                  "Multiple materials: incorporate additional standards-based resources where appropriate to support individual and whole group understanding (e.g., visuals, multimedia, technology, manipulatives, resources from museums, cultural centers, etc., when not available in the high-quality instructional materials)."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Activities and materials include a few of the following:",
+                  "Content: support the lesson objectives; are challenging; elicit a variety of thinking; provide time for reflection; or are relevant to students’ lives.",
+                  "Student-centered: sustain students’ attention; provide opportunities for student-to-student interaction; evoke student curiosity and suspense; or provide students with choices.",
+                  "Multiple materials: incorporate additional standards-based resources where appropriate to support individual and whole group understanding (e.g., visuals, multimedia, technology, manipulatives, resources from museums, cultural centers, etc., when not available in the high-quality instructional materials)."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "QU",
+            "indicatorName": "Questioning",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Teacher questions are varied and high-quality, providing an appropriate mix of question types based on content: knowledge and comprehension; application and analysis; and creation and evaluation.",
+                  "Questions are consistently purposeful and coherent.",
+                  "The frequency of questions consistently engages students in the rigor of the content and in critical thinking.",
+                  "Questions are consistently sequenced with attention to the instructional goals.",
+                  "Wait time (3-5 seconds) is consistently provided.",
+                  "Students regularly respond to a variety of teacher questions (e.g., whole-class signaling, choral responses, written and shared responses, or group and individual answers).",
+                  "All students are actively answering questions and engaging with the teacher or each other to share their perspectives.",
+                  "Students generate questions that lead to further inquiry and self-directed learning."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Teacher questions are varied and high-quality, providing an appropriate mix of question types based on content: knowledge and comprehension; application and analysis; and creation and evaluation.",
+                  "Questions are purposeful and coherent.",
+                  "The frequency of questions engages students in critical thinking.",
+                  "Questions are sequenced with attention to the instructional goals.",
+                  "Wait time (3-5 seconds) is provided.",
+                  "Questions require active responses (e.g., whole-class signaling, choral responses, or group and individual answers).",
+                  "The teacher calls on a variety of students to engage different students’ perspectives and provide opportunities for many students to respond."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Teacher questions are inconsistent in quality and include few question types: knowledge and comprehension; application and analysis; and creation and evaluation.",
+                  "Questions are random and lack coherence.",
+                  "The frequency of questions sometimes engages students in critical thinking.",
+                  "Questions are rarely sequenced with attention to the instructional goals.",
+                  "Wait time (3-5 seconds) is inconsistently provided.",
+                  "Questions rarely require active responses (e.g., whole-class signaling, choral responses, or group and individual answers).",
+                  "The teacher mostly calls on volunteers."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "FEED",
+            "indicatorName": "Academic Feedback",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Oral and written feedback is consistently academically focused, frequent, and high-quality.",
+                  "Feedback is frequently given during guided practice, throughout the lesson, and during review of independent work assignments.",
+                  "The teacher circulates during instructional activities to prompt student thinking, assess each student’s progress based on student work expectations, and provide individual feedback.",
+                  "Feedback, both verbal and non-verbal, from students is regularly used to monitor and adjust instruction.",
+                  "Students give specific and clear feedback to each other based on the teacher’s expectations."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Oral and written feedback is academically focused, frequent, and high-quality.",
+                  "Feedback is given during guided practice, throughout the lesson, and during review of independent work assignments.",
+                  "The teacher circulates during instructional activities to support engagement and monitor student work.",
+                  "Feedback from students is used to monitor and adjust instruction."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The quality and timeliness of feedback is inconsistent.",
+                  "Feedback is sometimes given during guided practice.",
+                  "The teacher circulates during instructional activities but monitors mostly behavior.",
+                  "Feedback from students is sometimes used to monitor or adjust instruction."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "GRP",
+            "indicatorName": "Grouping Students",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "The instructional grouping arrangements (whole class, small groups, pairs, or individual) consistently maximize student understanding and learning efficiency.",
+                  "Teacher sets clear expectations that are understood by students.",
+                  "In an instructional group, each student takes responsibility for their individual role, tasks, and group work expectations so they can have meaningful and productive collaboration.",
+                  "In an instructional group, each student assumes accountability for completing group work and individual work.",
+                  "Instructional group composition is varied to best accomplish the goals of the lesson.",
+                  "Students set goals, reflect on, and evaluate their learning in instructional groups.",
+                  "When provided the choice or independence, students make responsible decisions about how to group themselves."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "The instructional grouping arrangements (whole class, small groups, pairs, or individual) adequately enhance student understanding and learning efficiency.",
+                  "Teacher sets expectations that are understood by students.",
+                  "In an instructional group, students take responsibility for their roles, tasks, and group work expectations so they can have meaningful and productive collaboration.",
+                  "Students participating in groups are held accountable for group work and individual work.",
+                  "Instructional group composition is varied to accomplish the goals of the lesson.",
+                  "Instructional groups facilitate opportunities for students to set goals, reflect on, and evaluate their learning."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The instructional grouping arrangements (whole class, small groups, pairs, or individual) inhibit student understanding and learning efficiency.",
+                  "Few students in groups know their roles, responsibilities, and group work expectations.",
+                  "Few students participating in groups are held accountable for group work and individual work.",
+                  "Instructional group composition remains unchanged, irrespective of the learning and instructional goals of a lesson."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "TCK",
+            "indicatorName": "Teacher Content Knowledge",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Teacher displays extensive content knowledge and understanding of both state standards and high-quality instructional materials, including their adopted or approved curriculum, for all the subjects they teach.",
+                  "Teacher consistently implements a variety of subject-specific instructional strategies to enhance student content knowledge.",
+                  "Teacher consistently highlights key concepts and ideas and uses them as the basis to connect other powerful ideas."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Teacher displays accurate content knowledge and understanding of both state standards and high-quality instructional materials, including their adopted or approved curriculum, for all the subjects they teach.",
+                  "Teacher implements subject-specific instructional strategies to enhance student content knowledge.",
+                  "Teacher highlights key concepts and ideas and uses them as the basis to connect other powerful ideas."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Teacher displays underdeveloped content knowledge and lacks understanding of state standards or high-quality instructional materials, including their adopted or approved curriculum, in several subject areas.",
+                  "Teacher rarely implements subject-specific instructional strategies to enhance student content knowledge.",
+                  "Teacher does not understand key concepts and ideas in the discipline and therefore presents content in an unconnected way."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "TKS",
+            "indicatorName": "Teacher Knowledge of Students",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Teacher practices display understanding of each student’s anticipated learning abilities and needs.",
+                  "Teacher practices consistently incorporate student interests and backgrounds.",
+                  "Teacher consistently provides differentiated supports and strategies to ensure students have the opportunity to master grade-level standards."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Teacher practices display understanding of students’ anticipated learning abilities and needs.",
+                  "Teacher practices incorporate student interests and backgrounds.",
+                  "Teacher provides differentiated supports and strategies to ensure students have the opportunity to master grade-level standards."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Teacher practices demonstrate some knowledge of students’ anticipated learning abilities and needs.",
+                  "Teacher practices sometimes incorporate student interests or backgrounds.",
+                  "Teacher practices demonstrate some differentiation."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "TH",
+            "indicatorName": "Thinking",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Students are actively engaged in multiple types of thinking: analytical thinking, practical thinking, creative thinking, and research-based thinking.",
+                  "The teacher and/or students model metacognitive strategies.",
+                  "Students are provided opportunities to: generate a variety of ideas and alternatives; analyze problems from multiple perspectives and viewpoints; and monitor their thinking to ensure they understand what they are learning, are attending to critical information, and are aware of the learning strategies they are using and why."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "The teacher engages students in multiple types of thinking: analytical thinking, practical thinking, creative thinking, and research-based thinking.",
+                  "The teacher and students: generate a variety of ideas and alternatives; and analyze problems from multiple perspectives and viewpoints."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The teacher implements some learning experiences that engage students in different types of thinking.",
+                  "The teacher sometimes provides opportunities where students: generate a variety of ideas and alternatives; or analyze problems from multiple perspectives and viewpoints."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "PS",
+            "indicatorName": "Problem Solving",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Students engage in activities that reinforce several of the following problem-solving types: Abstraction, Categorization, Drawing conclusions/justifying solutions, Predicting outcomes, Observing and experimenting, Improving solutions, Identifying relevant/irrelevant information, Generating ideas, Creating and designing."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "The teacher uses and/or engages students in some of the following problem-solving types: Abstraction, Categorization, Drawing conclusions/justifying solutions, Predicting outcomes, Observing and experimenting, Improving solutions, Identifying relevant/irrelevant information, Generating ideas, Creating and designing."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The teacher sometimes engages students in the following problem-solving types: Abstraction, Categorization, Drawing conclusions/justifying solutions, Predicting outcomes, Observing and experimenting, Improving solutions, Identifying relevant/irrelevant information, Generating ideas, Creating and designing."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "PLANNING",
+        "domainName": "Planning",
+        "indicators": [
+          {
+            "indicatorCode": "IP",
+            "indicatorName": "Instructional Plans",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Instructional plans include: evidence of the internalization of the plans from the high-quality curriculum;",
+                  "measurable and explicit objectives aligned to state standards and aligned high-quality curriculum, both in content and in rigor;",
+                  "activities, materials, and assessments that: are aligned to state standards, content, including high-quality curriculum, and success criteria; are sequenced and scaffolded based on student need; build on prior student knowledge, are relevant to students’ lives, and integrate other disciplines as appropriate; and provide appropriate time for student work, student reflection, and lesson closure;",
+                  "evidence that the plan is appropriate for the age, knowledge, and interests of all learners;",
+                  "evidence that the plan provides regular opportunities to accommodate individual student needs; and",
+                  "strategies for student autonomy and ownership."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Instructional plans include: some evidence of the internalization of the plans from the high-quality curriculum;",
+                  "objectives aligned to state standards and aligned high-quality curriculum, both in content and in rigor;",
+                  "activities, materials, and assessments that: are aligned to state standards content, including high-quality curriculum ,and success criteria; are sequenced and scaffolded based on student need; build on prior student knowledge; and provide appropriate time for student work and lesson closure;",
+                  "evidence that the plan is appropriate for the age, knowledge, and interests of learners; and",
+                  "evidence that the plan provides opportunities to accommodate individual student needs."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Instructional plans include: little evidence of the internalization of the plans from the high-quality curriculum;",
+                  "some objectives aligned to state standards and aligned high-quality curriculum;",
+                  "activities, materials, and assessments that: are sometimes aligned to state standards; are sometimes logically sequenced; sometimes build on prior student knowledge; and inconsistently provide time for student work and lesson closure;",
+                  "little evidence that the plan is appropriate for the age, knowledge, or interests of the learners; and",
+                  "little evidence that the plan provides opportunities to accommodate individual student needs."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "SW",
+            "indicatorName": "Student Work",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Assignments are: always aligned to the rigor and depth of the standards and curriculum content.",
+                  "always aligned to the lesson’s objective and include descriptions of how assessment results will inform future instruction.",
+                  "Students: organize, interpret, analyze, synthesize, and evaluate information rather than reproduce it;",
+                  "draw conclusions, make generalizations, and produce arguments that are supported through extended writing; and",
+                  "connect what they are learning to experiences, observations, feelings, or situations significant in their daily lives, both inside and outside of school."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Assignments are: aligned to the rigor and depth of the standards and curriculum content.",
+                  "aligned to the lesson’s objective and include descriptions of how assessment results will inform future instruction.",
+                  "Assignments require students to: interpret information rather than reproduce it;",
+                  "draw conclusions and support them through writing; and",
+                  "connect what they are learning to prior learning and life experiences."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Assignments require students to: mostly reproduce information;",
+                  "sometimes draw conclusions and support them through writing; and",
+                  "sometimes connect what they are learning to prior learning or life experiences."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "AS",
+            "indicatorName": "Assessment",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher and Students Facilitate the Learning",
+                "descriptors": [
+                  "Assessments: are aligned with the depth and rigor of the state standards and content, including curriculum resources;",
+                  "are designed to provide feedback on progress against objectives;",
+                  "use a variety of question types and formats to gauge student learning and problem-solving;",
+                  "measure student performance in more than three ways (e.g., in the form of a project, experiment, presentation, essay, short answer, or multiple-choice);",
+                  "require extended written tasks as appropriate;",
+                  "include clear illustrations of student progress toward state standards, which students monitor, understand, and articulate; and",
+                  "include descriptions of how assessment results will be used by teachers and students to inform future instruction and learning."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/ Student Ownership of Learning – Teacher Facilitates the Learning",
+                "descriptors": [
+                  "Assessments: are aligned with the depth and rigor of the state standards and content, including curriculum resources;",
+                  "are designed to provide feedback on progress against objectives;",
+                  "use a variety of question types and formats to gauge student learning and problem-solving;",
+                  "measure student performance in more than two ways (e.g., in the form of a project, experiment, presentation, essay, short answer, or multiple choice);",
+                  "require written responses as appropriate; and",
+                  "include performance checks and student reflection on performance throughout the school year."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of Learning – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Assessments: are sometimes aligned with state standards and content, including curriculum resources;",
+                  "are not designed well to provide feedback on progress against objectives;",
+                  "use few question types to gauge student learning;",
+                  "measure student performance in less than two ways (e.g., in the form of a project, experiment, presentation, essay, short answer, or multiple choice); and",
+                  "include performance checks, although the purpose of these checks is not clear."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "ENVIRONMENT",
+        "domainName": "Environment",
+        "indicators": [
+          {
+            "indicatorCode": "ES",
+            "indicatorName": "Expectations",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher and Students Establish the Environment",
+                "descriptors": [
+                  "Teacher engages students in learning with clear and rigorous academic expectations and actively uses aligned and differentiated high-quality materials and resources to ensure access to learning.",
+                  "Students regularly learn from their mistakes and can describe their thinking on what they learned.",
+                  "Teacher creates learning opportunities where all students consistently experience success.",
+                  "Students lead opportunities that support learning.",
+                  "Students take initiative to meet or exceed teacher expectations.",
+                  "Teacher optimizes instructional time to ensure each student meets their learning goals."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher Establishes the Environment",
+                "descriptors": [
+                  "Teacher engages students in learning with clear and rigorous academic expectations and uses aligned high-quality materials and resources for students to access.",
+                  "Teacher encourages students to learn from mistakes.",
+                  "Teacher creates learning opportunities where all students can experience success.",
+                  "Students complete their work according to teacher expectations."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of the Learning Environment – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Teacher expectations are not rigorous for students.",
+                  "Teacher does not create learning opportunities where students can experience success.",
+                  "Student work is rarely completed to meet teacher expectations."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "ESMB",
+            "indicatorName": "Engaging Students and Managing Behavior",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher and Students Establish the Environment",
+                "descriptors": [
+                  "Students are consistently engaged in behaviors that optimize learning and increase time on task.",
+                  "Teacher and students establish commitments for learning and behavior.",
+                  "Teacher consistently uses, and students reinforce, several techniques (e.g., rewards, approval, contingent activities, consequences, etc.) that maintain student engagement and promote a positive classroom environment.",
+                  "Teacher consistently recognizes and motivates positive behaviors and does not allow inconsequential behavior to interrupt the lesson.",
+                  "Teacher addresses individual students who have caused disruptions rather than the entire class.",
+                  "Teacher quickly attends to disruptions with minimal interruption to learning."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher Establishes the Environment",
+                "descriptors": [
+                  "Students are mostly engaged in behaviors that optimize learning and increase time on task.",
+                  "Teacher establishes rules for learning and behavior.",
+                  "Teacher uses a variety of techniques (e.g., rewards, approval, contingent activities, consequences, etc.) that maintain student engagement and promote a positive classroom environment.",
+                  "Teacher often recognizes and motivates positive behaviors and does not allow inconsequential behavior to interrupt the lesson.",
+                  "Teacher addresses students who have caused disruptions, yet sometimes he or she addresses the entire class."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of the Learning Environment – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Students are consistently engaged in behavior that interrupts learning or minimizes time on task.",
+                  "Teacher establishes few rules for learning and behavior.",
+                  "Teacher uses few techniques to maintain student engagement.",
+                  "Teacher does not or inconsistently addresses behavior that interrupts learning.",
+                  "Teacher over-addresses inconsequential behavior."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "ENV",
+            "indicatorName": "Environment",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher and Students Establish the Environment",
+                "descriptors": [
+                  "The classroom: welcomes all students and guests and provides a safe space for all students to take risks and interact with peers.",
+                  "is clearly organized and designed for and with students to promote learning for all.",
+                  "has supplies, equipment, and resources easily and readily accessible to provide opportunities for all students.",
+                  "displays current student work that promotes a positive classroom environment.",
+                  "is arranged to maximize individual and group learning and to reinforce a positive classroom environment."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher Establishes the Environment",
+                "descriptors": [
+                  "The classroom: welcomes all students and guests.",
+                  "is organized to promote learning for all students.",
+                  "has supplies, equipment, and resources accessible to provide opportunities for students.",
+                  "displays current student work.",
+                  "is arranged to promote individual and group learning."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of the Learning Environment – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "The classroom: is somewhat uninviting.",
+                  "is not organized to promote student learning.",
+                  "supplies, equipment, and resources are difficult to access.",
+                  "does not display student work.",
+                  "is not arranged to promote group learning."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "RC",
+            "indicatorName": "Respectful Conditions",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "categoryDescription": "Consistent Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher and Students Establish the Environment",
+                "descriptors": [
+                  "Teacher-student and student-student interactions consistently demonstrate caring, kindness, and respect for one another and celebrate and acknowledge all students’ backgrounds.",
+                  "Teacher seeks out and is receptive to the interests and opinions of all students.",
+                  "Positive relationships and interdependence characterize the classroom."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "categoryDescription": "Some Evidence of Student-Centered Learning/Student Ownership of the Learning Environment – Teacher Establishes the Environment",
+                "descriptors": [
+                  "Teacher-student interactions are generally positive and reflect awareness and consideration of all students’ backgrounds.",
+                  "Teacher and students exhibit respect and kindness for the teacher and each other; classroom is free of unhealthy conflict, sarcasm, and put-downs.",
+                  "Teacher is receptive to the interests and opinions of students."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "categoryDescription": "Minimal Evidence of Student Ownership of the Learning Environment – Heavy Emphasis on Teacher Direction",
+                "descriptors": [
+                  "Teacher does not establish a safe and positive classroom for students.",
+                  "Students do not exhibit respect for the teacher or each other.",
+                  "Teacher and/or student interaction and communication is characterized by unhealthy conflict, sarcasm, or put-downs.",
+                  "Teacher is not receptive to the interests and opinions of students."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "PROFESSIONALISM",
+        "domainName": "Professionalism",
+        "indicators": [
+          {
+            "indicatorCode": "GDP",
+            "indicatorName": "Growing and Developing Professionally",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The educator is prompt, prepared, and participates in professional learning and teacher collaboration meetings, bringing student artifacts (student work) when requested. (Consistently)",
+                  "The educator appropriately attempts to implement new learning in the classroom following professional learning and teacher collaboration meetings. (Consistently)",
+                  "The educator develops and works on a plan for new learning based on an analysis of school improvement plans and new goals, self-assessment, and input from the teacher and school leader observations. (Consistently)",
+                  "The educator participates in self-reflection and growth by selecting specific activities, content knowledge, or pedagogical skills to enhance and improve his/her proficiency. (Consistently)"
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The educator is prompt, prepared, and participates in professional learning and teacher collaboration meetings, bringing student artifacts (student work) when requested. (Regularly)",
+                  "The educator appropriately attempts to implement new learning in the classroom following professional learning and teacher collaboration meetings. (Regularly)",
+                  "The educator develops and works on a plan for new learning based on an analysis of school improvement plans and new goals, self-assessment, and input from the teacher and school leader observations. (Regularly)",
+                  "The educator participates in self-reflection and growth by selecting specific activities, content knowledge, or pedagogical skills to enhance and improve his/her proficiency. (Regularly)"
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The educator is prompt, prepared, and participates in professional learning and teacher collaboration meetings, bringing student artifacts (student work) when requested. (Sometimes)",
+                  "The educator appropriately attempts to implement new learning in the classroom following professional learning and teacher collaboration meetings. (Sometimes)",
+                  "The educator develops and works on a plan for new learning based on an analysis of school improvement plans and new goals, self-assessment, and input from the teacher and school leader observations. (Sometimes)",
+                  "The educator participates in self-reflection and growth by selecting specific activities, content knowledge, or pedagogical skills to enhance and improve his/her proficiency. (Sometimes)"
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "RT",
+            "indicatorName": "Reflecting on Teaching",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The educator makes thoughtful and accurate assessments of his/her lessons’ effectiveness, as evidenced by the self-reflection after each observation and offers specific actions to improve his/her teaching. (Consistently)",
+                  "The educator accepts responsibilities contributing to school improvement. (Consistently)",
+                  "The educator utilizes student achievement data to address the strengths and weaknesses of students and guide instructional decisions. (Consistently)"
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The educator makes thoughtful and accurate assessments of his/her lessons’ effectiveness, as evidenced by the self-reflection after each observation and offers specific actions to improve his/her teaching. (Regularly)",
+                  "The educator accepts responsibilities contributing to school improvement. (Regularly)",
+                  "The educator utilizes student achievement data to address the strengths and weaknesses of students and guide instructional decisions. (Regularly)"
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The educator makes thoughtful and accurate assessments of his/her lessons’ effectiveness, as evidenced by the self-reflection after each observation and offers specific actions to improve his/her teaching. (Sometimes)",
+                  "The educator accepts responsibilities contributing to school improvement. (Sometimes)",
+                  "The educator utilizes student achievement data to address the strengths and weaknesses of students and guide instructional decisions. (Sometimes)"
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "SI",
+            "indicatorName": "School Involvement",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The educator supports school activities and events. (Consistently)"
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The educator supports school activities and events. (Regularly)"
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The educator supports school activities and events. (Sometimes)"
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "SR",
+            "indicatorName": "School Responsibilities",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The educator accepts responsibility and/or assists peers in contributing to a safe and orderly school environment. (Consistently)",
+                  "The educator adheres to system and school policies. (Consistently)",
+                  "The educator keeps timely and professional records. (Consistently)"
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The educator accepts responsibility and/or assists peers in contributing to a safe and orderly school environment. (Regularly)",
+                  "The educator adheres to system and school policies. (Regularly)",
+                  "The educator keeps timely and professional records. (Regularly)"
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The educator accepts responsibility and/or assists peers in contributing to a safe and orderly school environment. (Sometimes)",
+                  "The educator adheres to system and school policies. (Sometimes)",
+                  "The educator keeps timely and professional records. (Sometimes)"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "indicatorExplanations": [
+    {
+      "indicatorCode": "SO",
+      "indicatorName": "Standards and Objectives",
+      "domain": "INSTRUCTION",
+      "explanation": "In many ways, this indicator is the foundation for all other indicators. If the teacher is not clear about the rigor of the standard and what he/she wants students to know and be able to do as a result of the aligned lesson, then the sequence of instruction cannot be appropriately developed or implemented. Both the students and the teacher should understand what is to be accomplished during each lesson. Planning effective lessons aligned to the state content standards is dependent upon the teacher’s ability to create and communicate rigorous and clearly defined learning objectives.",
+      "curriculumConnections": "All lessons should begin with the clear identification of a learning objective aligned to state content standards and the adopted curriculum, when available. Standards and objectives should align with high-quality curriculums (and the accompanying lessons, when available), as these materials are aligned to state content standards and have a clear scope and sequence.",
+      "evidenceOfStudentLearning": [
+        "Students turn the objective into an essential question and return to answer the question during the lesson.",
+        "Students set personal learning goals based on the lesson objective and reflect on progress toward those goals at the end of the lesson.",
+        "Students make connections, individually or in groups, to previous lessons and personal experiences.",
+        "Students deconstruct the objective to determine the criteria for mastery of the objective.",
+        "Students return to the objective of the lesson to analyze their understanding.",
+        "Students assess their work and understanding of the criteria of mastery for the objective.",
+        "Students articulate and explain the lesson to their peers."
+      ],
+      "keyTerms": {
+        "Communicated": "Learning objectives and standards are considered communicated when the objective and standard are written so that students can understand and are understood by all students. Students should be able to articulate what they are learning.",
+        "Connected": "The learning objectives should be a component on a continuum of learning aligned to the standards and accompanying curriculum resources.",
+        "Expectations": "Expectations are the intentional use of learning targets and the pathway to mastery.",
+        "Mastery": "Mastery is the demonstration by students that they are internalizing and meeting the lesson objective.",
+        "Student Work": "All activities, assignments, and products that students work through and complete should align with the lesson objectives. Student work demonstrates each student's progress toward mastery.",
+        "Sub-Objectives": "Sub-objectives are prerequisite skills that students need to learn or be able to demonstrate in order to meet the learning target.",
+        "Referenced": "Learning objectives and standards are referenced when the teacher makes connections between the learning objective and the lesson activities."
+      },
+      "coachingQuestions": [
+        "How do you decide on the standards/objectives you will teach?",
+        "How do you ensure the rigor of the learning is aligned to the rigor of the standard?",
+        "How do you identify the sub-objectives/pre-requisite skills for a lesson?",
+        "How will you build background knowledge for students who need it to ensure they have access to the lesson’s objective?",
+        "How do you decide on the method you will use to communicate the standards/objectives to students?",
+        "How will you know if students understand the standards/objectives?",
+        "How can students have opportunities to set goals and monitor their progress toward the lesson objective?",
+        "How will students utilize and reference the visual of the standards/objectives during a lesson?",
+        "How will the expectations for student performance be communicated to students?",
+        "How will you know students understand the expectations for student performance?",
+        "How will students make connections between previous learning and life experiences and the lesson‘s objective?",
+        "How will you obtain evidence that most or all students have demonstrated mastery of the objective? What will this evidence look like?",
+        "How will students know they have mastered the lesson’s objective?"
+      ]
+    },
+    {
+      "indicatorCode": "MS",
+      "indicatorName": "Motivating Students",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator focuses on a teacher’s ability to organize and present the content to motivate students to learn. For a teacher to develop these types of learning experiences, a teacher must have in-depth knowledge of the students he/she teaches as well as the content and high-quality curriculum being taught. Therefore, this indicator connects strongly to Teacher Knowledge of Students and Teacher Content Knowledge. When a teacher skillfully blends their knowledge of the content and high-quality curriculum with their knowledge of how their students learn, the result is a rigorous, yet motivating learning experience. Both aspects are equally necessary to produce a successful learning experience in which students grow. A motivating lesson without a rigorous challenge does not increase student learning, nor does a rigorous lesson that does not entice students to engage in the learning.",
+      "curriculumConnections": "This indicator articulates a teacher’s ability to bring high-quality curriculum to life for students. Curriculum resources provide a launching pad for teachers to plan motivating and engaging lessons that support intellectual development and provide access for all to rigorous instruction. Understanding how to motivate students using available high-quality curriculum resources is critical in engaging students.",
+      "evidenceOfStudentLearning": [
+        "Students can articulate the purpose of the lesson and why it is important to them.",
+        "Students grapple with concepts and explore the lesson materials.",
+        "Students are motivated to accomplish the task and persevere through the assigned student work.",
+        "Students ask questions, challenge ideas, and inquire about topics.",
+        "Students thoughtfully consider various perspectives/alternatives/solutions, analyzing the pros and cons of each, before selecting one to support.",
+        "Students initiate their own pursuit of answers and solutions.",
+        "Students continue discussion about the learning outside of the designated time for the lesson."
+      ],
+      "keyTerms": {
+        "Curiosity": "Curiosity is a strong desire to learn or know something.",
+        "Engaging": "Engaging refers to explicit attention, curiosity, interest, or passion students demonstrate when learning.",
+        "Exploration": "Exploration means providing students with active learning experiences that include engaging visuals, hands-on experiences, and intellectually captivating content.",
+        "Inquiry": "Inquiry refers to instruction that triggers and activates a student’s curiosity."
+      },
+      "coachingQuestions": [
+        "How do you organize the content of a lesson so that it is personally meaningful, relevant, and intellectually engaging to students?",
+        "How will you ensure the lesson is both rigorous and motivating for all students?",
+        "How do you leverage high-quality curriculum and materials to develop learning experiences that provide opportunities for students to ask questions and explore?",
+        "Why is it important for students to have opportunities to develop their own questions and explore answers for those questions?",
+        "How will students be engaged in learning throughout the lesson and take initiative for their own learning?"
+      ]
+    },
+    {
+      "indicatorCode": "PIC",
+      "indicatorName": "Presenting Instructional Content",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator connects to the method(s) in which content is taught within a lesson. This indicator's descriptors address visuals and a teacher's ability to communicate performance expectations in a concise and logically sequenced manner. Visuals with examples, illustrations, analogies, and labels are essential tools to use when introducing new or rigorous concepts and can lead students to mastery of specific skills more efficiently. However, it may be that all of these are not included in one lesson. It is essential that they are used effectively and appropriately for the content and students taught.",
+      "curriculumConnections": "For this indicator, a teacher must have a deep understanding of the standards and the high-quality curriculum used to teach those standards. Understanding how to implement the curriculum and standards for the students in the classroom is critical. A teacher must be informed on the skills being taught to make instructional decisions about how to best share, inform, scaffold, and present subject matter content.",
+      "evidenceOfStudentLearning": [
+        "Students reference visuals and examples presented during the application of learning.",
+        "Students utilize an example or exemplar to create success criteria, create products of learning, and/or assess their work.",
+        "Students record notes on the steps taken during the teacher model to ensure transfer.",
+        "Students have the opportunity to reflect on their learning orally or in writing.",
+        "Students reference previous anchor charts/visuals and use previously learned strategies fluently and appropriately to support their learning."
+      ],
+      "keyTerms": {
+        "Internal Summaries": "An internal summary is a periodic pause during a lesson to review the steps the teacher and students have taken toward mastery of the daily objective. This pause cues the students into the learning and thinking that has been discussed. Internal summaries are excellent ways to reinforce and clarify ideas that are essential for the students to remember.",
+        "Modeling": "Modeling is an instructional strategy in which the teacher demonstrates a new concept, thinking or learning approach. Students learn by observing and hearing the teacher think through processes out loud.",
+        "Performance Expectations": "Performance expectations are requirements of a student, including expected results, behavior, criteria, and actions necessary to meet the objective or learning target. (Also known as measurement/success criteria).",
+        "Essential Information": "Essential information is information that is extremely important or necessary to a particular lesson, situation, activity, or mastery of the objective.",
+        "Logical Sequencing and Segmenting": "An effective sequence provides the learners with a relationship pattern so that each activity has a definite purpose. Proper sequencing also helps to avoid inconsistencies in the content of the instruction."
+      },
+      "coachingQuestions": [
+        "How do you decide on the types of visuals you will use during a lesson?",
+        "How will these visuals support student learning?",
+        "How do you expect students will use the visuals to support their learning?",
+        "What examples, illustrations, analogies, or labels for new concepts will be used in the lesson? How will these support student learning?",
+        "How do you expect that students will utilize the examples, illustrations, analogies, or labels to support their learning?",
+        "Why is it important for the teacher and student to model performance expectations? How will the performance expectations be modeled in this lesson?",
+        "How does the model of performance expectations provide access to content for all learners?",
+        "How will students clearly know the criteria for their assignments and for what they are to learn?",
+        "When planning a lesson, how do you decide on the sequencing of the instruction within the lesson?",
+        "When planning a lesson, how do you decide on the manner in which the different elements of the lesson will be segmented?",
+        "How do you maintain focus on the learning objectives during a lesson?",
+        "When planning content that is especially rigorous, how does strategic presentation of that content impact students’ learning?"
+      ]
+    },
+    {
+      "indicatorCode": "LS",
+      "indicatorName": "Lesson Structure and Pacing",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator blends time and form as it applies to instruction. It addresses the lesson's effective segmentation so that sufficient time is allocated to all parts of the lesson to best support student learning. Therefore, this indicator connects closely to the descriptor addressing “logical sequencing and segmenting” under Presenting Instructional Content. Teachers must thoughtfully structure and pace lessons so that students maintain motivation while continuously engaging with rigorous content. This intentional planning connects to Motivating Students and Standards and Objectives.",
+      "curriculumConnections": "All lessons should leverage high-quality curriculum guidance and consist of aligned, coherent structures that are organized to meet students’ needs, with time for reflection to ensure student understanding. Teachers should align the coherent structure with their adopted curriculum. Anticipatory sets, direct instruction models, guiding questions, small group assignments, and checks for understanding are often mapped out within curriculum resources for daily lessons. This ensures that the progression of activities is logical and coherent.",
+      "evidenceOfStudentLearning": [
+        "Students set goals and reflect on their learning orally or in writing.",
+        "Students who complete lesson activities early engage in additional high-quality instructional activities.",
+        "Students purposefully and easily move from one lesson activity to another when appropriate.",
+        "Students are aware of time guidelines for their assignments. They monitor and adjust pacing accordingly.",
+        "Students can explain the purpose of classroom routines and transitions."
+      ],
+      "keyTerms": {
+        "Promptly": "Promptly indicates that students are engaged in a meaningful activity connected to the lesson objective at the beginning of the lesson period.",
+        "Coherent": "Coherent signifies a logical connection from one segment of the lesson to the next with a clear progression through the lesson.",
+        "Brisk": "Brisk is a pace that refers to the efficient and effective use of instructional time during the lesson.",
+        "Learning Rates": "Learning Rates refers to the amount of time it may take a student to complete a task."
+      },
+      "coachingQuestions": [
+        "How do you decide on how you will segment different parts of a lesson? How will these segments ensure student progress toward mastery of the lesson objective(s)?",
+        "How do you plan for effective closure and reflection within a lesson? How will students reflect on their progress toward mastering the objective?",
+        "How will the lesson be adjusted to allow for depth and rigor of content and individual student expectations?",
+        "How do you plan to pace the lesson to provide opportunities for students who progress at different rates?",
+        "How do you ensure that instructional time is used efficiently throughout a lesson so that all students remain actively engaged in learning?",
+        "How does the structure of the lesson promote student ownership?",
+        "How does the structure and pacing of the lesson ensure that students maintain motivation while continuously engaging with rigorous content?"
+      ]
+    },
+    {
+      "indicatorCode": "ACT",
+      "indicatorName": "Activities and Materials",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator addresses the variety and appropriateness of activities and materials that a teacher implements during a lesson. In order to fully leverage the high-quality curriculum driven activities and materials toward student ownership and learning, a teacher must first establish a classroom environment that is positive and supportive for all learners. Therefore, this indicator is closely related to the indicators in the Environment domain. When creating a classroom environment that optimizes learning for all students, a teacher must consider both physical aspects of the environment and the classroom atmosphere that will influence the success of and engagement in learning activities to be carried out in daily lessons. After establishing academic classroom expectations that are clear and rigorous, a teacher can fully leverage curriculum driven activities and materials to achieve the learning goals. When students feel welcomed and empowered to take intellectual risks in their classrooms, they can interact with the activities and materials that develop their learning. When applying this indicator to a lesson, it is particularly critical that activities and materials support lesson objectives and are challenging for all students as outlined in the high-quality curriculum guidance. To plan appropriately rigorous activities and materials, a teacher must know the students' needs and interests and ensure that activities and materials are purposeful in supporting students in meeting the learning objective. When planning, a teacher should first identify the desired student outcome/learning objective(s) for the lesson and the lesson success criteria and then plan the activities and materials from the curriculum that support learning for all students. These curriculum based activities and materials should align with students' needs and allow students to engage in deep thinking and problem-solving, ensuring that students have time to learn and apply what was learned.",
+      "curriculumConnections": "The curriculum provides teachers with the “what” of the daily lesson. The activities and materials are part of “how” the content is delivered to maximize student ownership and learning. Once a teacher knows the standard(s) and the content to be taught, she/he can identify an objective for learning and/or utilize objectives identified in the curriculum being used. In planning for effective instruction, a teacher must plan and choose activities that align with the full depth of the rigor of the standard and then leverage the activities and materials to directly and succinctly move students toward mastery of the objective. These activities are often a component of a formative assessment a teacher will use to monitor student learning or scaffold/extend the skill for students at various levels of skill.",
+      "evidenceOfStudentLearning": [
+        "Students share how what they are doing connects with the lesson objective.",
+        "Students explain how the lesson's activities build their understanding and lead toward mastery of the lesson objective(s).",
+        "Students use high-quality activities and materials to construct their understanding and learning.",
+        "Students take initiative to complete and persevere through challenging activities.",
+        "Students are cognitively engaged in tasks that facilitate thinking and interaction.",
+        "Students ask questions and generate ideas for further learning during lesson activities.",
+        "Students learn with and from one another while interacting with each other in collaborative group activities.",
+        "Students complete work that meets the teacher's expectations and demands of the standards and objectives (mastery criteria).",
+        "Students reflect on their progress toward mastery of the objective."
+      ],
+      "keyTerms": {
+        "Activities": "Activities are actions students and teachers take that are designed and deployed by the teacher to create the conditions for learning or the implementation of learning.",
+        "Materials": "Materials are supplies and resources from the high-quality curriculum that a teacher uses to implement practical activities that help students meet the learning objective.",
+        "Supplementary Resources": "Supplementary resources include materials, ideas, examples, textbooks, and videos available to a teacher to enhance and differentiate their lesson to reach all or specific students when not available in the high-quality instructional materials.",
+        "Support, Standards-Based, Challenge, Elicit a Variety of Thinking": "These content-related key terms describe the relationship between a lesson’s activities and materials and the lesson’s objective(s). The activities and materials should provide a succinct path toward mastery with direct alignment with the standards while challenging students and eliciting various thinking. These student responses cannot occur without the teacher having a clear and thorough understanding of the standard(s) and the path toward mastery.",
+        "Relevant, Sustain, Interaction, Evoke, Self-Direction": "These student-centered Key Terms describe the interaction students should have with the lesson’s activities and materials. Effective activities and materials evoke curiosity and suspense and are relevant to students’ lives. Activities and materials should sustain students’ attention both individually and in collaborative groups while providing the opportunity for self-direction."
+      },
+      "coachingQuestions": [
+        "How can you be sure the identified/planned activities and materials support the learning and guide students directly toward mastery of the lesson objective? How do you leverage the high-quality curriculum and materials to plan for activities within a lesson?",
+        "How will you provide challenging activities and materials for all students in your class?",
+        "How will you maintain all students’ attention during the lesson?",
+        "How will you allow for meaningful student-to-student interaction so that students can learn with and from one another?",
+        "What activities and which materials will best set the conditions to evoke student curiosity and suspense?",
+        "How will you provide students with choice that is appropriate and aligned to the lesson objective?",
+        "How will students create and self-monitor their own learning?",
+        "How will you allow for authentic reflection at the close of the learning experience?"
+      ]
+    },
+    {
+      "indicatorCode": "QU",
+      "indicatorName": "Questioning",
+      "domain": "INSTRUCTION",
+      "explanation": "Questioning is a skill that can deepen student understanding and ownership. The rubric descriptors provide a basic framework for the types of questions to ask within a lesson and how teachers lead students in responding to questions. Questions should be aligned to the standards and high-quality curriculum and increase rigor and student ownership. The descriptors within this indicator can, for the most part, be categorized into content-related descriptors, which focus on purposeful alignment with the content, and procedural-related descriptors, which focus on the processes of engaging students in asking and answering questions about their learning. Both categories of descriptors are necessary for optimal student learning. Posing rigorous questions without established procedures for responding does not provide an opportunity for all students to engage in critical thinking. Additionally, clearly established procedures for responding to questions cannot support learning if the posed questions are not rigorous and aligned to the content.",
+      "curriculumConnections": "High-quality curricular materials include questions aligned to the written standards to help teachers ask students questions related to the lesson objective. When high-quality curriculum is available, teachers should review the questions for alignment and rigor. Aligned and rigorous questions provided in curriculum resources can serve as a launch for student discussion and inquiry. Teachers may need to identify additional questions to build background knowledge and scaffold learning for students (considering the sub-objectives/pre-requisite skills for learning). Teachers should plan for how and when they will sequence the use of rigorous, curriculum derived questions throughout the lesson to create opportunities for students to engage in critical thinking about the content and their learning.",
+      "evidenceOfStudentLearning": [
+        "Students respond to a variety of questions throughout the lesson to build an understanding of the lesson objective.",
+        "Students actively discuss responses to questions with partners, small groups, or whole-class discussions (such as Socratic Seminars).",
+        "Students generate individual responses to questions before sharing with other students or the class.",
+        "Students are inquisitive and generate questions to deepen their thinking and learning (including opportunities for students to engage in productive struggle) toward mastery of the learning objective(s).",
+        "Students use each other’s questions to spark additional questions and generate further inquiry.",
+        "Students take the initiative to ask clarifying questions as needed or to push thinking.",
+        "Students question their own work through reflective practices in order to prompt new learning and challenge themselves."
+      ],
+      "keyTerms": {
+        "Question Types": "There are different types of questions that a teacher should plan to use throughout a lesson. When possible, questions should scaffold student thinking and progress toward mastery of the standard as the high-quality curriculum guidance outlines.",
+        "Knowledge and Comprehension Questions": "Knowledge and Comprehension Questions ask for student recall of basic knowledge facts aligned to the standard, when appropriate.",
+        "Application and Analysis Questions": "Application and Analysis Questions require students to apply their understanding of the learning to similar concepts or scenarios.",
+        "Creation and Evaluation Questions": "Creation and Evaluation Questions require students to synthesize their learning and to transfer their learning to create meaning.",
+        "Purposeful": "When questions are purposeful, they intentionally build on the students’ learning and understanding of the lesson objective (sub-objectives/pre-requisite skills considered).",
+        "Sequenced": "Appropriately sequenced questions refer to how a teacher orders questions strategically to scaffold student understanding (sub-objectives/pre-requisite skills considered).",
+        "Rigor": "When purposeful questions are sequenced appropriately in a lesson, students are continuously engaged in rigorous and critical thinking, allowing them to construct their own understanding at a deep level, allowing productive struggle toward meeting the lesson objective(s).",
+        "Active Responses": "Active responses are those that require all students to engage in answering questions through whole group responses, turn and talk opportunities, or writing answers on a white board, among other examples. When sharing perspectives, the learning environment must be safe for students to share their thinking and responses.",
+        "Wait Time": "Providing appropriate wait time between when a question is asked, and students are expected to respond creates opportunities for all students to be engaged in thinking about the content."
+      },
+      "coachingQuestions": [
+        "Why is it essential for you to ask higher-order questions during a lesson?",
+        "How will you plan for questions that increase rigor and student ownership?",
+        "How will you decide on the types and frequency of questions asked during a lesson?",
+        "Why is it essential to plan intentional questions aligned to the lesson's standard/expected outcome/objective?",
+        "What types of questions might you need to ask to gather evidence of students' thinking?",
+        "How will you provide opportunities for all students to respond to your questions?",
+        "How will you ensure that all students have opportunities to answer questions and discuss responses and perspectives with one another?",
+        "How will you ensure that students have the opportunity to interact with each other about their learning?",
+        "How will you ensure wait time is provided for all students during a lesson?",
+        "How will you model ways to generate self-directed questions aligned to the learning for students?",
+        "Why is it essential for students to have opportunities to develop their own questions and search for the answers?"
+      ]
+    },
+    {
+      "indicatorCode": "FEED",
+      "indicatorName": "Academic Feedback",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator focuses on how teachers respond to students' comments and questions. The descriptors in this indicator address the quality of the feedback in supporting student learning instead of feedback that only informs students of the accuracy of their responses. The deepest levels of learning are achieved when meaning is constructed by the learner rather than when knowledge is imparted from the teacher to the learner. Effective feedback prompts student thinking, which is often accomplished by asking questions. Therefore, this indicator is closely related to the Questioning indicator. For feedback to be effective, it must be within a classroom environment that supports intellectual risk-taking, curiosity, and empowerment. The purpose of feedback is twofold: first, to gauge student learning, and second, to adjust instruction based on the current student learning. The descriptors also clarify how feedback is a reciprocal process between teachers and students as well as between students. Feedback is given and received by all involved. It does not only flow from teachers to students.",
+      "curriculumConnections": "Throughout the delivery of a lesson based on high-quality curriculum, teachers should use academic vocabulary that references the language of the standards and that is accurate for the content. As a teacher responds to a student's response or attempt, similar vocabulary should be used. Research shows that feedback has double the impact that regular teaching strategies have on student achievement. Feedback is information that a teacher gives to their students to help them close the gap between where they are now with their work and where they could be. The goal of feedback is to provide students with insight that helps them to improve their performance throughout the lesson.",
+      "evidenceOfStudentLearning": [
+        "There is evidence that student proficiency increases as a result of feedback that is provided.",
+        "Students seek out teacher and peer feedback.",
+        "Students use the feedback given to them to improve their learning and work.",
+        "Students provide their peers feedback using language from the success criteria to support student progress.",
+        "Students engage in academic conversations with the curriculum.",
+        "Students accept feedback, internalize the information provided, and modify their understanding of lesson content in their work (discussions and tangible work products).",
+        "Students articulate how feedback helps them understand where they are in the learning process and where they need to improve.",
+        "Students hold themselves and each other accountable for learning by formulating feedback and sharing their thinking.",
+        "Students use feedback to self-monitor their learning and progression toward their goals.",
+        "Students understand/articulate the role feedback plays in their learning."
+      ],
+      "keyTerms": {
+        "Focused, Frequent, and of High Quality": "High-quality feedback is explicitly aligned to student learning (focused and considers the criteria for success), causes the student to think about their learning (toward mastery of the objective), is provided in a timely manner (frequent; throughout the lesson), and brings the student's attention to the academic language aligned to the lesson's objective and learning expectations (success criteria).",
+        "Circulation": "This practice involves the teacher walking around the classroom and listening as students work individually, in pairs, or during group work. This provides the teacher with the ability to ask and answer questions, listen in to student discussions, and provide feedback to push thinking toward mastery of the objective.",
+        "Teacher-to-Student Feedback": "This type of feedback is teacher-led feedback and can provide a model for students to engage in feedback to one another. Feedback is rooted in the academic language of the standard, objective, and learning expectations (success criteria).",
+        "Student-to-Student Feedback": "In contrast to feedback from teacher to student, this type of feedback is student-led. Students engaging in collaborative learning by providing each other feedback about their work is characteristic of a classroom learning environment that is student-owned and values critical thinking. Feedback is rooted in the academic language of the standard, objective, and learning expectations (success criteria).",
+        "Student-to-Teacher Feedback": "This type of feedback is what the teacher gains from students, both verbally and non-verbally, during the lesson that lets the teacher know what students have learned so far and informs her next steps to continue or push her students' learning toward mastery of the objective."
+      },
+      "coachingQuestions": [
+        "How can you be sure the academic feedback you provide prompts student thinking toward mastery of the objective?",
+        "How can you be sure the academic feedback you provide helps students identify the strengths and next steps in their work?",
+        "How will you move from corrective feedback to feedback that empowers students?",
+        "At what points in the lesson will you be gaining feedback from your students to inform the next steps of instruction?",
+        "What will you look and listen for as you circulate the classroom?",
+        "How will you know if your students have misconceptions about the content or if they are on-track in their learning? What will you do about it?",
+        "How will you use student feedback to adjust your instruction?",
+        "How can you create opportunities for students to provide academic feedback to each other to deepen their learning?",
+        "How can you ensure that the student-to-student feedback is aligned to the standard and learning expectations (success criteria) to master the objective?",
+        "What will you expect to hear in the student-to-student feedback as evidence of high-quality feedback and what will you need to do first to ensure that it takes place?",
+        "How will you structure protocols for student-to-student feedback?",
+        "Where in the lesson are opportune times for students to self-assess in relation to the lesson's success criteria and expectations?",
+        "How will students use feedback to monitor their own learning and progression toward their goals?"
+      ]
+    },
+    {
+      "indicatorCode": "GRP",
+      "indicatorName": "Grouping Students",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator addresses the instructional arrangements of the students during a given lesson. It focuses on how the students will be grouped for the instruction and activities of the lesson and how they will be held accountable for the work they are expected to complete.",
+      "curriculumConnections": "Lessons should be structured in such a way that students have an opportunity to learn from their peers. To ensure high-quality collaboration that is aligned to the rigor of the standard and content, teachers should reference the collaborative practices planned out in their high-quality curriculum. Many curriculum resources are written to provide practices such as small group discussions, activities, and skill practice using questions, problems, and scenarios.",
+      "evidenceOfStudentLearning": [
+        "Students can explain what their expectations look and sound like during their instructional grouping arrangements.",
+        "Students ask questions and seek clarification when unclear of group role, task, and work expectations.",
+        "Students clarify and commit to their individual roles within the instructional group and the consequences of seeing it through.",
+        "Students set goals as well as reflect and evaluate their learning during group and/or individual activities.",
+        "Students take the initiative to develop a plan to solve a task or problem in more than one way.",
+        "Students complete work that meets the teacher's expectations individually and as a group.",
+        "Students reflect on their progress toward mastery of the objective within their group and individually."
+      ],
+      "keyTerms": {
+        "Grouping Arrangements": "Grouping arrangements refers to student grouping compositions including individual, partner, small groups (3-5), or the whole group. There should be intentionality in the grouping arrangements. This is deeply connected to the Teacher Knowledge of Students indicator.",
+        "Efficiency": "Efficiency in learning refers to knowledge gained as a result of instruction, an activity, or discussion toward mastery of the objective.",
+        "Expectations": "Expectations are the intentional use of learning targets and the pathway to mastery.",
+        "Accountability": "When a student assumes accountability, they take responsibility for their role (individual or collective). They seek to clarify what is expected of them and commit to carrying out their task, understanding that they are part of a bigger picture.",
+        "Varied": "When a teacher has varied instructional grouping, they consider the lesson's goal and plan for mixed compositions to ensure access to deep thinking and learning for all groups."
+      },
+      "coachingQuestions": [
+        "How do you decide on the instructional grouping of students during a lesson?",
+        "How does the type of activity or segment within a lesson impact the instructional grouping for that activity or segment?",
+        "Why is it important to think about how you group students in a lesson? That being said, what are things you consider when forming groups (or partners) and why?",
+        "How can you ensure students know what is expected of them so they can take responsibility for their individual roles?",
+        "How can you ensure each role is meaningful and students assume accountability for completing their task(s)?",
+        "How do you model or communicate your expectations to students for their own work and that of the group? How do you check for understanding of the expectations?",
+        "How do you assess the performance of groups and individuals when work is completed in a group setting?",
+        "How do you teach students to make responsible decisions when given the choice to choose their own group?",
+        "How will you ensure that the instructional grouping arrangement and assigned tasks are appropriately rigorous for each member of the group?",
+        "How will you leverage instructional grouping arrangements to promote student ownership in this lesson?"
+      ]
+    },
+    {
+      "indicatorCode": "TCK",
+      "indicatorName": "Teacher Content Knowledge",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator addresses the teacher’s knowledge of the content and high-quality curriculum (if available) that she/he is teaching and her/his ability to implement appropriate strategies to support student learning. Also addressed in this indicator is the teacher’s ability to connect the content being taught to other ideas and concepts.",
+      "curriculumConnections": "High-quality curricular materials along with state academic standards provide teachers with a solid understanding of content. However, to thoroughly teach the content so that student learning experiences are meaningful and relevant, teachers may need to deepen their own understanding. Thoroughly reviewing all curricular materials and teaching resources such as those provided by the state department of education can help teachers develop an understanding of the conceptual underpinnings of the content; furthermore, collaborating with colleagues who teach like courses to share strategies for curricular implementation and effective instructional practices can result in more profound student learning across classrooms.",
+      "evidenceOfStudentLearning": [
+        "Students communicate how the supports from the high-quality curriculum (e.g., graphic organizers) are used to build their understanding of the objective.",
+        "Students label their own thinking as they apply the lesson model to their own work.",
+        "Students are not confused, but rather, are clear about what the lesson objective is, how it is developed, and what they need to do to demonstrate mastery.",
+        "Students make conceptual connections between concepts within the content and with concepts in other content areas.",
+        "Students appropriately and independently use strategies that enhance and support their learning.",
+        "Students understand the relevance of the content and recognize the information as applicable."
+      ],
+      "keyTerms": {
+        "Content Understanding": "This refers to not just knowing the language of the standards, but of a deeper understanding of: Prerequisite skills needed to access grade-level content; Learning progressions within each standard; Relationships between and nuances within various aspects of content, curricular materials, and standards, and What student mastery at the highest level of rigor for the standard looks like.",
+        "Subject-Specific Instructional Strategies": "Subject-specific instructional strategies refer to how content knowledge is effectively taught and learned. Demonstrating above average performance on the Teacher Content Knowledge indicator includes not just knowing what the content is but how to teach it best. This begins with having a deep understanding of the high-quality curricular materials adopted and utilizing the rigorous, conceptual strategies included in that curriculum.",
+        "Key Concepts": "Key concepts and ideas within the content are critical for foundational understanding and conceptually connect with other powerful ideas within and beyond the content. In order for teachers to make these conceptual connections for students, they must have an expert understanding of standards, skills, criteria for mastery, and understandings within their own content, as well as awareness of big ideas in other content areas."
+      },
+      "coachingQuestions": [
+        "How do you prepare yourself to teach (insert the specific topic taught)?",
+        "How will you use the high-quality curricular materials available to you and your students?",
+        "How will you know the subject-specific instructional strategies within the curriculum enhance student learning?",
+        "How will you connect key concepts in the content being taught to more powerful ideas within the content and other disciplines?",
+        "What are some other ideas to which you could have connected during the lesson?",
+        "How will you ensure the content being learned in this lesson is appropriately rigorous for all learners?",
+        "How can you leverage the content and curriculum to promote student ownership?"
+      ]
+    },
+    {
+      "indicatorCode": "TKS",
+      "indicatorName": "Teacher Knowledge of Students",
+      "domain": "INSTRUCTION",
+      "explanation": "This indicator focuses on how well a teacher knows his/her students and their learning styles and interests. Therefore, it is closely connected to the indicator Motivating Students. Teachers should know how individuals and groups of students are best motivated and support each student as they progress toward mastery across the curriculum. A teacher's ability to organize the content in a manner that motivates and connects with students' interests and contexts is essential to supporting students in applying their learning. For content to be personally meaningful to students, there must be a communicated purpose for student learning. Students need to understand why the content or skill being taught is essential for them to master and how it is connected to the world outside of the classroom. Once a teacher plans to make learning personally meaningful and aligned to student background and interests, they can use their knowledge of student learning requirements to scaffold the learning for all students.",
+      "curriculumConnections": "High-quality curriculums often include recommendations for differentiated supports and strategies to support all students' diverse learning needs. Curriculum resources include resources to provide intervention, remediation, and acceleration on various tiers of instruction and ideas on extending and/or challenging thinking around concepts. Additionally, curriculum resources include ideas to support English learners with access to lessons to support language development. Teachers should analyze available student data and work to identify appropriate resources that can be incorporated into lessons so that all students receive appropriate supports. Planning for the use of these resources during instruction is essential. Curricular resources should also include connections to the backgrounds and interests of students in each classroom.",
+      "evidenceOfStudentLearning": [
+        "Students engage in lesson activities with varying supports in order to ensure all students can demonstrate mastery.",
+        "Students connect with the learning and demonstrate a desire to engage with the content.",
+        "Students persist in their work and rigorous learning.",
+        "Students work respectfully with one another in a variety of grouping arrangements.",
+        "Students learn with and from one another while engaged in collaborative group activities.",
+        "Students who complete lesson activities early engage in high-quality instructional activities to extend learning."
+      ],
+      "keyTerms": {
+        "Anticipated Learning Abilities and Needs, Mastery": "Anticipated learning abilities and needs include obstacles that students might face in accessing the learning needed for lesson mastery that the teacher identifies and plans for before delivering the lesson.",
+        "Differentiated Supports and Strategies": "Differentiated supports and strategies refer to the design of lessons that include intentional instructional methods to meet students' diverse academic learning needs. The teacher continually assesses student understanding to monitor progress and adjusts instruction per students' learning needs.",
+        "Interests, Backgrounds": "In addition to ideas or concepts that spark curiosity and excitement, interests include what students like and care about. Backgrounds include the context of the students' home lives outside of school, how they forge familiar and friendly relationships, and what knowledge they carried before they entered courses or grade levels."
+      },
+      "coachingQuestions": [
+        "What learning challenges do you anticipate for your students in this lesson? What type of support will your students need?",
+        "How do you identify your students’ interests and backgrounds and incorporate these into your lessons?",
+        "How do you plan for and provide differentiated supports and strategies within your lessons?",
+        "How will you determine which students are ready for today's content, which need additional support, and which need additional challenge?",
+        "How will you provide differentiated instruction to ensure every student is met where they are and taken to the next level of learning?",
+        "How will you provide opportunities for all learners to have ownership of their learning in this lesson?"
+      ]
+    },
+    {
+      "indicatorCode": "TH",
+      "indicatorName": "Thinking",
+      "domain": "INSTRUCTION",
+      "explanation": "Developing multiple skills in thinking and problem-solving enriches the learner’s ability to manage complex tasks and higher levels of learning. While thinking is a process, problem-solving is the product of that thinking. By providing opportunities for students to practice many different approaches to solving problems as a result of their thinking processes, the teacher empowers students with an important life skill. For students to apply the type of thinking and problem-solving referenced, the teacher must have taught the thinking and problem-solving types that students need to apply. Research shows that there are four main ways that teachers can support students in their thinking: Questioning, Modeling, Responding, and Structuring.",
+      "curriculumConnections": "High-quality curriculum resources and materials provide teachers with activities, questions, and strategies to prompt student thinking and problem-solving related to the lesson content. Curriculum resources and materials may also feature learning activities to make thinking visible such as graphic organizers or thinking maps. Teachers should plan how they will model thinking throughout a lesson and use the components of the curriculum to encourage one or more types of thinking.",
+      "evidenceOfStudentLearning": [
+        "Students persevere through challenging tasks requiring the application of thinking models.",
+        "Students support responses with relevant justification and reasoning.",
+        "Students identify and discuss their individual progress toward mastery of the objective.",
+        "Students make appropriate learning decisions that support their own thinking.",
+        "Students are aware of multiple aspects of a topic and consider different points of view and perspectives to problems and solutions.",
+        "Students are actively using success criteria and comparing it to their student work to check their progress toward mastery and make adjustments as appropriate.",
+        "Students are talking with their peers and/or their teachers about the thinking strategies they are using to solve problems and why those strategies are beneficial."
+      ],
+      "keyTerms": {
+        "Thinking": "Thinking refers to the metacognitive, the awareness and understanding of one’s own thought processes, which is necessary to process and apply content knowledge."
+      },
+      "coachingQuestions": [
+        "How can you model your thinking for students so that it supports their own metacognition in their progression toward lesson mastery?",
+        "How do you plan for activities and/or assignments that provide students with the opportunity to apply their thinking?",
+        "How can you incorporate opportunities for students to apply analytical, creative, practical and research-based thinking?",
+        "What metacognitive process will the activities and student work require of students?",
+        "Where in the lesson will you release the thinking to the students? What do you expect to see and hear?"
+      ]
+    },
+    {
+      "indicatorCode": "PS",
+      "indicatorName": "Problem Solving",
+      "domain": "INSTRUCTION",
+      "explanation": "Developing multiple skills in problem-solving enriches the learner’s ability to manage complex tasks and higher levels of learning. By providing opportunities for students to practice many different approaches to solving problems, the teacher empowers the student with an important life skill. The indicators Thinking and Problem-Solving are closely connected to each other. In fact, effective problem-solving is impossible without the proper thinking skill behind it. One simple way to remember this is that thinking is the process and problem-solving is the product.",
+      "curriculumConnections": "Curriculum resources and materials provide teachers with activities, questions, and strategies to prompt student thinking and problem-solving related to the lesson content. Teachers should utilize the student learning activities provided by the adopted curriculums and consider which require students to engage in and complete student work products that align to the various types of problem-solving.",
+      "evidenceOfStudentLearning": [
+        "Students produce solutions to challenging tasks through engaging in a variety of thinking types.",
+        "Students create clear representations of problems through the application of thinking.",
+        "Students persist in deep engagement in solving problems demonstrating satisfaction when arriving at a solution.",
+        "Students produce products that require thinking and understanding of a specific concept and objective."
+      ],
+      "keyTerms": {
+        "Problem-solving": "Problem-solving refers to the products developed as a result of applying a thinking process to a specific content-related task."
+      },
+      "coachingQuestions": [
+        "What are the student work activities and products that students will engage in during a lesson?",
+        "What types of problem-solving do these student work products require? What types of thinking do these student work activities and products require?",
+        "How will students be actively engaged in problem-solving to demonstrate understanding and mastery of the lesson objective?",
+        "How can your lessons provide opportunities for students to engage in a variety of types of problem-solving tasks?"
+      ]
+    },
+    {
+      "indicatorCode": "IP",
+      "indicatorName": "Instructional Plans",
+      "domain": "PLANNING",
+      "explanation": "Instructional plans contribute to effective and efficient learning experiences for students and, in turn, highly engaged classrooms. Instructional plans are based heavily on state standards, available, adopted, high-quality curriculum resources and materials, and analysis of formative and summative student assessments. Therefore, teachers should incorporate standards, curriculum resources, and assessments into their daily, weekly, and unit instructional planning. This indicator is tightly connected to multiple indicators across all rubric domains. Effective teachers begin planning with the end in mind and develop the lesson objective, which creates a connection to the Standards and Objectives indicator. Then, they plan for how students will demonstrate mastery of the objective, connected to Student Work and Assessment. Finally, they plan the activities and materials to lead students toward success.",
+      "curriculumConnections": "Effective instructional plans are the foundation of impactful teaching and learning and should align with state standards and incorporate high-quality curriculum resources adopted by the school or system. If a system or school provides scripted lessons from a core curriculum, teachers may still need to annotate to meet their students’ individual and group needs. Teachers are expected to use their knowledge of students to make these adjustments when planning lessons without changing the rigor of thinking and learning to meet the standards and lesson objectives.",
+      "evidenceOfStudentLearning": [
+        "Students demonstrate an understanding of the lesson objectives and the connection to the state standards.",
+        "Students authentically engage in the lesson’s activities.",
+        "Students make connections between their background knowledge and the lesson’s activities and materials.",
+        "Students understand how the new learning builds on prior student knowledge and is integrated with other disciplines.",
+        "Students demonstrate autonomy and ownership by making meaningful and relevant choices regarding their learning.",
+        "Students reflect on their progress toward mastery, the learning objective(s), and success criteria.",
+        "Students complete assigned activities and assessments."
+      ],
+      "keyTerms": {
+        "Curriculum": "Refers to a set of lessons that teachers deliver to meet identified learning targets and the texts, materials, content, and other resources that support the learning experience. A high-quality curriculum includes high expectations for students, demonstrates alignment with state standards, and is highly rigorous.",
+        "Relevant": "Relevant means that instructional plans include activities and materials that students can identify or recognize as familiar ideas.",
+        "Integrate": "Integrate means to planning for meaningful and connected learning experiences across content areas.",
+        "Student Work": "Student work refers to measurable products that are the result of standards-based learning activities and make student thinking and learning visible.",
+        "Reflection": "Reflection allows students to think about the learning that they accomplish in any given lesson or day of instruction and their progress toward meeting lesson objectives against identified success criteria.",
+        "Closure": "Closure refers to time at the end of a segment of learning to review what has been learned within the instruction segment.",
+        "Annotated": "Annotated means taking notes to enhance or draw attention to critical components of the curriculum during instructional planning."
+      },
+      "coachingQuestions": [
+        "What annotations do you need to make in your curriculum guides and lesson plans to support mastery for your students?",
+        "What do you want your students to be able to do as a result of your teaching?",
+        "How will students show/demonstrate what they have learned?",
+        "How will you set student-centered goals that are aligned to the state standards?",
+        "What student engagement strategies will work best with the lesson you are planning?",
+        "How will you ensure that all activities, materials, and assessments are aligned to the lesson learning objective, are age appropriate, and pique the interests of all learners?",
+        "How will you intentionally plan to incorporate opportunities to accommodate individual student learning needs?",
+        "How will students have autonomy and ownership of their learning?",
+        "How will you provide appropriate time for student work, student reflection, and lesson closure?"
+      ]
+    },
+    {
+      "indicatorCode": "SW",
+      "indicatorName": "Student Work",
+      "domain": "PLANNING",
+      "explanation": "Effective planning for instruction requires consideration of the content-specific work and assignments students will complete during the lesson. To ensure challenge and rigor, student work assignments should be aligned to state standards, utilize high-quality curriculum materials, and have clearly identified success criteria. The work that teachers plan for students to produce in a lesson should provide opportunities to engage in multiple types of problem-solving and, therefore, multiple types of thinking as a result. Teachers also identify and plan for ways that they will analyze the work students produce against identified success criteria and then use what they learn from their analysis to make future instructional decisions.",
+      "curriculumConnections": "Designing and planning for strong student work requires ensuring that assignments are aligned to content-area standards, utilize high-quality curriculum materials, and have clearly identified success criteria. Teachers can identify student work assignments in adopted curriculum materials that require multiple types of thinking and problem-solving and provide opportunities to connect their learning to other aspects of their lives.",
+      "evidenceOfStudentLearning": [
+        "Students engage in producing work assignments that are challenging and require a variety of thinking types.",
+        "Student work assignments prompt deep thinking beyond simple recall or reproduction.",
+        "Students write about their content-area thinking.",
+        "Student work assignments provide opportunities for students to make connections to their own lives."
+      ],
+      "keyTerms": {
+        "Student Work": "Student work refers to measurable products that are the result of standards-based learning activities and make student thinking and learning visible."
+      },
+      "coachingQuestions": [
+        "How will you design opportunities for students to produce work that is aligned to the rigor and depth of the standards?",
+        "How can you use available high-quality curriculum materials to ensure student work assignments are aligned to the rigor and depth of the standards?",
+        "How will you plan to engage student thinking in organizing, interpreting, analyzing, synthesizing, and evaluating information rather than reproducing work?",
+        "How will you encourage students to engage in high-quality problem-solving so that they can draw conclusions, generalize, and produce arguments through extended writing assignments?",
+        "How will you create opportunities for students to connect what they are learning to experiences, observations, feelings, or situations in their daily lives?",
+        "How will you design student work assignments that encourage students to think beyond learning in the classroom?"
+      ]
+    },
+    {
+      "indicatorCode": "AS",
+      "indicatorName": "Assessment",
+      "domain": "PLANNING",
+      "explanation": "Effective assessment is a fundamental part of instruction and learning. The goal of this section is to provide examples of high-quality assessments and how they should be utilized. An effective assessment plan answers the questions: What do I want my students to be able to do as a result of my teaching? How do I know the students learned what I taught? When these questions are asked and answered regularly, the teacher can effectively plan, diagnose, and intervene on a continual basis to raise student achievement.",
+      "curriculumConnections": "Assessments should align to or be taken directly from the adopted high-quality curriculum. If high-quality curriculum is not available, teachers must pay attention to the scope and sequence of the content and the rigor of the standard in order to assess student learning effectively. Both classroom-level and school-level assessment data help teachers select the subsequent standard and supporting curriculum and materials to use in daily lessons, interventions, and tutoring. Formative assessment data is generated during the lesson.",
+      "evidenceOfStudentLearning": [
+        "Students know what they are learning and how they will be assessed.",
+        "Students self-monitor and engage in learning through metacognitive processes.",
+        "Students take ownership of their learning and self-assess based on clear measurement criteria.",
+        "Students reference clear measurement criteria throughout the lesson.",
+        "Students ask themselves questions to process their learning and check for their understanding."
+      ],
+      "keyTerms": {
+        "Alignment": "The assessments, the objective, the content, and state standards are building and measuring the same skill.",
+        "State Standards": "State standards reflect the knowledge and skills students are expected to learn in a given content area in that state. These standards set clear benchmarks for learning and provide guidance to teachers as they develop learning experiences and lessons.",
+        "Instructional Decisions": "A systematic approach of using student achievement and other data to make decisions regarding instruction during planning and lesson delivery.",
+        "Measurement Criteria": "Measurement criteria define what success looks and sounds like and how it should be assessed; it defines student mastery.",
+        "Methods of Measuring Student Progress": "Practices that help teachers use student performance data and student work to evaluate the effectiveness of their teaching, make informed instructional decisions, and identify which students need additional supports.",
+        "Formative Assessment": "Formative assessment refers to tools, activities, and assessments that identify misconceptions, struggles, and learning gaps during the lesson and are used to determine how to address any identified needs. Some examples of formative assessment are classroom polls, exit tickets, the use of whiteboards to view student understanding, a draft version of a project or paper, or turn and talk with peers.",
+        "Summative Assessment": "Summative assessments evaluate how much a student has learned after a lesson, unit, or benchmarking period. Some examples of summative assessments are formal exams, end-of-unit or chapter questions, a final project or paper, or statewide tests."
+      },
+      "coachingQuestions": [
+        "How will you know the students learned what you taught?",
+        "How will you develop clear measurement criteria aligned to the state standards?",
+        "How will students demonstrate mastery through multiple measures (e.g., project, experiment, presentation, essay, short answer, or multiple-choice test)?",
+        "How will you use assessment to support the needs of individual students?",
+        "How will you check for understanding during the lesson? At the conclusion of the lesson?",
+        "How will you ensure that students understand how they are progressing and provide opportunities to support students’ self-awareness?"
+      ]
+    },
+    {
+      "indicatorCode": "ES",
+      "indicatorName": "Expectations",
+      "domain": "ENVIRONMENT",
+      "explanation": "The descriptors under this indicator directly connect to descriptors in the Instruction domain. In order to fully exceed expectations for the descriptors under Expectations, teachers should have a deep knowledge of the students they are teaching, as well as deep knowledge of standards and high-quality curriculum, in order to ensure that clear and rigorous academic expectations are established. Additionally, students should be taking a visible and active role in leveraging both expectations established by the teacher and by themselves as they are learning. Differentiated instructional methods that are rigorous, appropriate for every student, and create opportunities for all students to experience success can only be implemented when a teacher’s knowledge of students is developed and utilized during instruction. In order for a teacher to fully exceed expectations for this indicator, students must feel safe enough to describe not only what they learned or did not learn, but also their metacognition or thinking. When a teacher regularly reinforces and rewards student’s efforts in self-monitoring their own learning, students can reflect on their own learning and/or provide academic feedback to one another, thereby motivating the students to learn from their mistakes. Additionally, a teacher should ensure that lesson structure and pacing is optimized for all students to progress at different learning rates so that each student meets their learning goals based on the established criteria.",
+      "curriculumConnections": "When a teacher sets clear and rigorous academic expectations that are aligned to grade-appropriate standards and objectives for every student, she/he is also able to fully understand how activities and materials found in high-quality curriculums ensure access to learning. Additionally, a teacher must establish specific student-friendly criteria, which outlines what mastery for learning looks and sounds like and utilize that criteria as a foundation to establish clear expectations for learning. For a teacher to fully exceed expectations, not only is the teacher utilizing the criteria, but students are also utilizing the criteria and taking an active role in guiding expectations for themselves. When students understand the success criteria for the expected learning, they are more likely to engage in the curriculum and master the content.",
+      "evidenceOfStudentLearning": [
+        "Students are encouraged to self-monitor their learning based on clearly established success criteria for the lesson.",
+        "Students can articulate where they are in the progress of learning and know what is needed to experience success.",
+        "Students are not afraid to make mistakes and see the mistakes as learning opportunities.",
+        "Students know that they were successful during the lesson when they accomplish the lesson’s objective.",
+        "Students experience success because the lesson was differentiated for specific needs.",
+        "Students persevere and strive to complete their work.",
+        "Students do not feel rushed in the lesson and have opportunities to develop their understanding."
+      ],
+      "keyTerms": {
+        "Rigorous Academic Expectations": "Teacher communicates success/measurement criteria to set academic expectations for the lesson. Rigor of the objective and criteria is aligned to curriculum as well as the grade-level standard(s). Students can refer to these expectations to self-assess and monitor mastery of the intended objective.",
+        "Describe Thinking": "Students are able to refer to success criteria and provide the metacognition needed to complete the intended task. Students can communicate their strengths and weaknesses as well as strategies needed to be successful.",
+        "Initiative": "Teacher establishes and teaches/models processes that students can follow with little to no teacher direction throughout the lesson. Students refer to success criteria to self-monitor learning as the lesson progresses.",
+        "Optimizes": "Teacher supports and strategies are differentiated and allow for students to progress at different learning rates, as appropriate. Pacing is efficient and effective for all learners. This planning and implementation allows access for all learners.",
+        "Learning Goals": "Students know daily goals and can articulate progression of these goals using success criteria."
+      },
+      "coachingQuestions": [
+        "How do you ensure that academic expectations for students are clear and rigorous? How are the academic expectations aligned to the grade-level standards?",
+        "What is the success criteria for learning? How are both the teacher and the students utilizing the criteria to monitor learning throughout the lesson? What adjustments are being made to ensure students have the opportunity to reach success? What feedback are students providing to one another? How are students making their thinking process visible?",
+        "Why is it important for students to have opportunities to learn from their mistakes? How are students working through their own mistakes and adjusting their learning?",
+        "How will you ensure that all students experience success with the lesson?",
+        "In the lesson, how will students take initiative and persevere with their own work?",
+        "In this lesson, how will students engage in goal setting?",
+        "How will you plan for activities that will optimize time for progression toward goals?"
+      ]
+    },
+    {
+      "indicatorCode": "ESMB",
+      "indicatorName": "Engaging Students and Managing Behavior",
+      "domain": "ENVIRONMENT",
+      "explanation": "Timely and effective management of both student behavior and student engagement is critical for effective instruction and student learning to take place within a classroom. The descriptors under this indicator also directly connect to indicators and descriptors in the Instruction domain. In order for a teacher to fully exceed expectations for the descriptors under this indicator, it should be evident that the teacher has established an environment where students understand how their own actions in the classroom help or hinder learning. Students are self-aware of the connection between their behaviors and their learning, spend time successfully completing assignments, and are engaged either independently or collaboratively with other students. For a teacher to manage student behavior effectively, he/she must establish clear expectations for learning as well as the behaviors associated with success. The teacher should model both academic expectations and behavioral expectations by providing examples and non-examples when presenting instructional content.",
+      "curriculumConnections": "Managing student behavior is critical to keeping the focus in the classroom during lessons on the instruction. Many curriculums include routines and structures embedded in multiple lessons to help build common structures for learning, but it is critical that teachers establish expectations for appropriate behavior and reinforce those expectations to minimize the loss of important instructional time for students.",
+      "evidenceOfStudentLearning": [
+        "Students, in partnership with the teacher, determine the class expectations/rules for appropriate learning behavior.",
+        "Students self-monitor their own behavior based upon clear class learning expectations/rules.",
+        "Students have several coping strategies to use when frustrated and feel comfortable using these in the classroom.",
+        "Students are actively displaying norms through their actions.",
+        "Students provide positive feedback to one another.",
+        "Students remind one another when off task and quickly return to the task at hand.",
+        "Students support one another’s learning by reminding each other of the expectations."
+      ],
+      "keyTerms": {
+        "Optimize": "When students are engaged in optimized learning, they are engaged in the most effective learning strategies possible. While there may be many other strategies that are applicable, the most efficient and effective strategy for student learning must be planned for.",
+        "Contingent Activities": "Contingent activities are high interest, engagement activities that are meant to encourage students, reinforce expected behaviors, and contribute to a positive classroom environment.",
+        "Positive Reinforcement": "Positive reinforcement includes praising students for positive behaviors to encourage and reinforce ideal classroom behavior and interaction.",
+        "Inconsequential Behavior": "Inconsequential behaviors are those that may be bothersome to a teacher but do not disrupt the classroom environment."
+      },
+      "coachingQuestions": [
+        "What strategies do you implement to encourage students to behave appropriately and stay on task during the lesson? How do you involve your students in this process?",
+        "How do you and your students establish class expectations, such as norms, contracts, and rules, to ensure learning is valued?",
+        "What are some techniques you and your students use to maintain appropriate individual and group behavior?",
+        "What types of behaviors do you deem inconsequential and often overlook?",
+        "How do you address specific students while not punishing the entire class?",
+        "Why is it important to attend to interruptions swiftly and firmly while teaching a lesson? How can this impact the learning of others?"
+      ]
+    },
+    {
+      "indicatorCode": "ENV",
+      "indicatorName": "Environment",
+      "domain": "ENVIRONMENT",
+      "explanation": "Classroom environment is a key factor that affects student learning. Therefore, the descriptors for this indicator are very connected to Instruction. Additionally, this indicator is closely connected to the other indicators in the Environment domain such as Expectations, Engaging Students and Managing Behavior, and Respectful Conditions. In order for a teacher to fully exceed expectations for the descriptors under this indicator, it would be evident that the teacher has established a classroom environment that optimizes learning and includes students in creating the physical environment in order to increase the feeling of classroom community, inclusivity, and empowerment. Overall, the classroom environment should be positive and supportive for students in order to optimize learning. A positive classroom environment is one in which all students feel that they belong, are welcome, trust others, and feel encouraged to take on challenges. The classroom environment should promote intellectual risk taking and asking questions of themselves, one another, and the teacher. Such an environment provides relevant content (connected to Presenting Instructional Content), clear learning goals (connected to Standards and Objectives) feedback, opportunities to build social skills, and strategies to help students succeed.",
+      "curriculumConnections": "All students must have access to grade-level content in order for there to be accessible learning in the classroom. Expectations should be set for all students to master the standards at the rigor in which they are written. While content should be presented at grade level for all students, the resources provided in high-quality curriculum should be utilized to provide scaffolds and interventions as needed to provide students with gaps in understanding the opportunity to reach grade-level mastery. Instruction should be planned through the lens of individual students without taking away from the integrity of the curriculum.",
+      "evidenceOfStudentLearning": [
+        "Students are working in collaborative groups, providing and receiving feedback.",
+        "Students are choosing how to utilize the resources and technology they need to master content, as needed.",
+        "Students are producing work that evidence mastery of content.",
+        "Students are reflecting on their progress individually and with other students, as well as asking questions of their teacher and their peers, to clarify gaps in understanding.",
+        "Students are curious about what they are learning, conduct additional research, and question content without being prompted to do so.",
+        "Students are attempting to complete tasks outside their comfort level without fear of failure.",
+        "Students are engaged in trial and error problem-solving in collaboration with their classmates."
+      ],
+      "keyTerms": {
+        "Welcomes": "A classroom that welcomes everyone is one in which all students feel like they belong and are a part of the community that makes up the class. Non-members feel comfortable visiting the classroom because there is an open-door policy, and they feel their presence is acknowledged and that the members of the class are glad they are there. No matter the academic, social, behavioral, or communication needs, all are welcomed and supported in their learning and growth.",
+        "Safe": "When students feel safe, they are free to express their opinions, complete tasks, answer questions, and provide their peers feedback without fear of experiencing humiliation or harm. All students feel that their input is valued.",
+        "Accessible": "When learning and resources that enhance learning are accessible, the classroom is organized in a way that all students know where to find the resources they need. Additionally, the learning is differentiated so that all students have access to the content based on their learning style and level. Students are able to maximize their learning. All students should have the same ease of access to materials and content. Students must also have the same opportunities to participate in and showcase their learning in a way that allows them to make both qualitative and quantitative gains at the same pace as their peers.",
+        "Opportunities": "When students are given opportunities, they are provided with tasks, support, and collaborative structures that allow them to show evidence of mastery. They are also able to own their learning and can push themselves beyond mastery.",
+        "Student Work": "Student work includes any product that a student says, does, makes, or writes that allows them to show evidence of mastery or progress toward mastery. This includes any verbal contribution a student makes to their own learning.",
+        "Positive": "A positive classroom environment is one in which mistakes are seen as opportunities for growth and where each person feels valued and engaged at a level that encourages them to perform their best. Each person is uplifted by the success of every other person in the class. There is an expectation that all students will succeed, and their success will be celebrated."
+      },
+      "coachingQuestions": [
+        "How do you ensure that all students in your classroom feel welcomed and that they are in a safe environment for learning and academic risk taking?",
+        "How do you organize your classroom so that all students have access to the supplies, technology, and other resources they need to master content?",
+        "Why is it important for all students to have their work showcased and displayed in the classroom? How do you determine which work to display?",
+        "How does your room arrangement help to create a positive classroom environment and maximize student collaboration and learning?",
+        "Why is it important for students to be able to take risks and how do you facilitate this in your classroom?",
+        "How do you ensure that a positive classroom environment is maintained?"
+      ]
+    },
+    {
+      "indicatorCode": "RC",
+      "indicatorName": "Respectful Conditions",
+      "domain": "ENVIRONMENT",
+      "explanation": "A respectful environment in the classroom facilitates learning and is connected to Instruction. Additionally, a sustainable, positive classroom environment begins with respectful conditions. In order for a teacher to fully exceed expectations for the descriptors under this indicator, it would be visible that there is an atmosphere that has moved beyond simply focusing on the interaction between students and the teacher. Instead, the classroom should reflect an atmosphere of mutual respect where students are also treating each other with respect. The result is a classroom where more learning takes place as students feel safe, motivated, and respected. Achieving this atmosphere takes effort on the part of the teacher as well as the students. Teachers most often set this in motion when they develop a set of expectations for how everyone might treat one another in the classroom. Engaging the students in developing these expectations promotes additional ownership for students in their learning environment. Then it is key that the teacher consistently models these expectations for the students and provides praise when other students model these expectations. The teacher-to-student and student-to-student interactions demonstrate overall care, kindness, and respect for one another and celebrate all student backgrounds. Positive relationships and interdependence characterize the classroom by students working in groups and providing praise and positive feedback to each other to celebrate successes. Additionally, students are making positive personal connections with one another and are comfortable in challenging one another’s ideas. These interdependent characteristics tremendously impact learning and facilitate a strong environment that further facilitates positive student motivation as well as thinking and problem-solving.",
+      "curriculumConnections": "In order to build a strong environment and respectful conditions for learning, it is critical that teachers use high-quality curriculum and content that is inclusive of a variety of different backgrounds. Teachers must also know their students’ needs, abilities, and interests in order to plan appropriate and engaging activities aligned to the curriculum. This will foster respectful conditions in the classroom environment, and it also creates a safe place that promotes learning for all students.",
+      "evidenceOfStudentLearning": [
+        "Students actively display the expected norms such as acknowledging other viewpoints or ideas.",
+        "Students make personal and positive connections with one another throughout lessons.",
+        "Students respond, without teacher prompting, to each other with affirmative comments and cheer for each other when correct responses are provided.",
+        "Students are comfortable respectfully challenging content and/or their peers’ ideas around the content.",
+        "Students feel safe to express their opinions and interests in the classroom.",
+        "Students are patient and respectful with each other."
+      ],
+      "keyTerms": {
+        "Interests and Opinions of All Students": "In planning for lessons, teachers should take into consideration how all students will best relate to the content they are learning.",
+        "Foster Positive Interactions": "Fostering positive interactions refers to the teacher encouraging and promoting the development of effective communication skills among his/her students.",
+        "Receptive": "Teachers must be willing to consider or accept new suggestions or ideas from students.",
+        "Interdependence": "Interdependence refers to students understanding or recognizing that their individual success is linked to the success of others. Students support and challenge each other throughout tasks to ensure collective success."
+      },
+      "coachingQuestions": [
+        "How do students respectfully challenge each other when they have differing views?",
+        "Why is it important to foster positive student-to-student interactions to promote care, kindness, and respect in the classroom?",
+        "Are students empowered to make decisions? How do you know?",
+        "Why is it important to know what students are interested in?",
+        "How does showing respect facilitate student interdependence?",
+        "In this lesson, how are students going to work together to extend each other’s thinking?"
+      ]
+    }
+  ],
+  "evaluationGuidance": {
+    "preConference": {
+      "purpose": "The purpose of the pre-conference is to ensure that the teacher and the observer are able to connect prior to an announced observation. Observers conduct a pre-conference meeting to obtain pertinent background information about the lesson plan, students involved, and to address any potential areas of concern before the lesson. During the pre-conference, the teacher being observed engages in a coaching conversation with the observer. As part of this conversation, the observer asks questions about the lesson plan, grouping structures, classroom configuration, specific students, and any other topics that will help them with context for the observation. The teacher provides background information, including the makeup of the students in the class; the context of this lesson in the larger unit plan; assessment information; extenuating circumstances; and evidence of planning with the rubric.",
+      "teacherTips": [
+        "Submit your lesson plan to the observer at least 24 hours in advance of the scheduled pre-conference.",
+        "Be open to engage in a conversation about your classroom and the individual students in your classroom.",
+        "Be prepared to talk through your lesson with your observer.",
+        "Be prepared to answer clarifying questions the observer may ask.",
+        "Be an active listener, including writing down any suggestions that the observer provides.",
+        "Ask questions of the observer to ensure your understanding.",
+        "Use the pre-conference as an opportunity to learn about effective instruction, as it is a time to reflect on your own personal growth."
+      ],
+      "sampleQuestions": [
+        "What is the objective of my lesson? Is the objective aligned with state standards?",
+        "What do I expect the students to know and be able to do by the end of the lesson?",
+        "Where is this lesson in the context of the unit plan in the high-quality curriculum?",
+        "What are the prerequisite skills (sub-objectives) that the students have to know in order to be successful?",
+        "How will I know that students have mastered the objectives in this lesson?",
+        "What is the criteria for mastery of the objective?",
+        "How have I planned for opportunities for all students to engage in activities and materials aligned with the lesson objectives?",
+        "How will I differentiate instruction in order to address a variety of learning styles?",
+        "How will I group students to enhance lesson outcomes?",
+        "What have I been working on to improve my instruction this year?",
+        "What are my plans for assessment, lesson closure, and student reflection?"
+      ]
+    },
+    "postConference": {
+      "purpose": "The purpose of the post-conference is to provide teachers opportunities to self-reflect on their lessons with guidance and support from the observer/evaluator who conducted the observation. This guidance should be provided through the use of leading questions by the observer, along with the identification of an area of reinforcement (relative strength of the lesson) and an area of refinement (area in which the observer needs to help the teacher improve). Therefore, the focus of the post conference is on two indicators and descriptors from the rubric as opposed to multiple areas. By focusing on just two areas, teachers have the opportunity to segment their own learning with support from a school leader or teacher leader.",
+      "keyComponents": [
+        "Introduction: Greeting, establish length, review process and purpose, ask general impression question, analyze student work.",
+        "Reinforcement Area: Identification of strength, teacher reflection questions, specific evidence from lesson.",
+        "Refinement Area: Identification of growth area, teacher reflection questions, specific evidence from lesson.",
+        "Recommended Action & Guided Practice: Specific recommendation for improvement and opportunity for teacher to practice.",
+        "Closing: Recap, share ratings, sign documentation."
+      ],
+      "scoringRubric": {
+        "reinforcementArea": {
+          "exemplary": "Identifies an indicator and descriptor (from the rubric) where the lesson was most accomplished. Utilizes language from a descriptor aligned to the indicator identified. Makes intentional and explicit connections to other indicators and the impact on student achievement in the reinforcement area.",
+          "proficient": "Identifies an indicator and descriptor (from the rubric) where the lesson was At Expectations. Utilizes some language from a descriptor aligned to the indicator identified. Makes connections to other indicators and the impact on student achievement in the reinforcement area.",
+          "unsatisfactory": "Identifies an indicator and/or descriptor (from the rubric) where the lesson was not At Expectations. Reinforcement area is ambiguous (references multiple indicators and/or descriptors; may have unclear or non-specific evidence)."
+        },
+        "refinementArea": {
+          "exemplary": "Explicitly identifies an indicator and aligned descriptor (from the rubric) where the lesson could be strengthened. Refinement area is explicitly clear and utilizes the language from a descriptor aligned to the indicator identified. Makes intentional and explicit connections to increasing impact on student achievement and other indicators in the rubric.",
+          "proficient": "Identifies an indicator and aligned descriptor (from the rubric) where the lesson could be strengthened. Refinement area utilizes the language from a descriptor aligned to the indicator identified. Makes connections to impact on student achievement and other indicators in the rubric.",
+          "unsatisfactory": "Does not address a needed area of improvement aligned to the rubric. Refinement area is ambiguous (references multiple indicators and/or descriptors; may have unclear or non-specific evidence; may have a disconnected or unattainable recommendation)."
+        }
+      }
+    },
+    "coachingContinuum": {
+      "overview": "Each teacher shall develop a professional growth plan collaboratively with the evaluator/observer or another coach based on an area of refinement identified through the first observation. An informal observation targeted to the specific refinement area shall be conducted at least two, not more than six, weeks following the post-conference.",
+      "pgpCriteria": [
+        "Aligned to the teacher’s post-conference refinement goal/objective",
+        "Includes a student need that connects the refinement goal/instructional practice to student impact",
+        "Scaffolds or extends the teacher’s post-conference recommended action",
+        "Includes differentiated activities based on teacher knowledge and skill level",
+        "Includes teacher and student look-fors to measure progress/impact",
+        "Includes opportunities for the teacher to reflect and identify next steps",
+        "Includes an informal observation (e.g., learning walk or walkthrough)"
+      ]
+    }
+  },
+  "researchBasis": {
+    "nietFoundation": "The Louisiana Educator Rubric is grounded in the NIET’s Teaching and Learning Standards Rubric, which is based on 20 years of research and experience across 21 states.",
+    "keyResearch": [
+      "Applebee, A. N., Adler, M., & Flihan, S. (2007).",
+      "Hattie, J. (2009). Visible learning: A synthesis of over 800 meta-analyses relating to achievement.",
+      "Marzano, R. J. (2007). The art and science of teaching: A comprehensive framework for effective instruction.",
+      "Danielson, C. (2007). Enhancing professional practice: A framework for teaching.",
+      "Pianta, R. C., & Hamre, B. K. (2009). Conceptualization, measurement, and improvement of classroom processes: Standardized observation can provide the basis for effective teacher professional development."
+    ]
+  },
+  "specializedRoles": {
+    "alternativeSchoolEducators": {
+      "planning": "Alternative educators can clearly articulate how lesson plans are developed for the alternative setting (long range “unit” plans, short range clusters of plans) that provide an opportunity to positively impact students no matter the timeframe of attendance in their classroom.",
+      "instruction": "Alternative educators clearly and deliberately use individualized strategies to deliver instruction to students. Group work or partnering may be very minimal given the lack of overlap in instructional needs.",
+      "environment": "Based on student IEPs (especially students with behavior plans), learning and teaching techniques and methods may seem non-traditional, but student work products from the lesson indicate progress toward mastery."
+    },
+    "specialEducationEducators": {
+      "planning": "Goals are measurable and explicit, aligned to state standards or student IEPs, and designed to clearly identify the gap between present level of performance and grade level performance.",
+      "instruction": "Learning objectives (short-term) will be tied to areas of deficit that lead toward mastering state content standards by the end of the year. A clear connection between the state standard(s) or the IEP goals/objectives is evident.",
+      "environment": "Based on student IEPs (especially students with behavior plans), learning and teaching techniques and methods may seem non-traditional, but student work products from the lesson indicate progress toward mastery."
+    },
+    "interventionists": {
+      "planning": "Interventionist can clearly articulate how the intervention “group” of students has been identified as aligned to areas of deficit, rather than state content standards.",
+      "instruction": "Learning objectives will be tied to an area of deficit instead of a state content standard. Interventionist can clearly articulate the sub-skills of focus that are needed to support student learning.",
+      "environment": "Interventionist may not have a dedicated classroom, and thus displaying student work may not be expected. The classroom is arranged to support identified skill-based activities."
+    },
+    "librarianMediaSpecialists": {
+      "planning": "There is evidence of the LMS meeting regularly with classroom teachers to determine learning goals and the resources that will best support student progress.",
+      "instruction": "The LMS can explicitly communicate the ALA (American Library Association) standards and their place in the school library/media center.",
+      "environment": "There is clear evidence of organization of the library/media center resources and equipment available to teachers and students."
+    }
+  }
+}

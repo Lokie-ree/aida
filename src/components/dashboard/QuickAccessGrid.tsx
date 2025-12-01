@@ -2,13 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  BookOpen, 
-  Users, 
-  Lightbulb, 
-  TrendingUp,
+import {
+  BookOpen,
   ArrowRight,
-  FileCheck,
   MessageSquare
 } from "lucide-react";
 import { spacing } from "@/lib/spacing";
@@ -37,34 +33,26 @@ export interface QuickAccessGridProps {
 
 const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAccessItem[] => [
   {
-    id: "coach",
-    label: "Conversational Coach",
-    description: "Start a new coaching session",
-    icon: <MessageSquare className="h-6 w-6" />,
+    id: "frameworks",
+    label: "Browse Frameworks",
+    description: "Explore 10 Louisiana-aligned AI frameworks",
+    icon: <BookOpen className="h-6 w-6" />,
     onClick: () => {},
     variant: "default"
   },
   {
-    id: "frameworks",
-    label: "Frameworks",
-    description: "10 Louisiana Standards-aligned frameworks",
+    id: "saved-frameworks",
+    label: "My Saved Frameworks",
+    description: "Access your saved frameworks",
     icon: <BookOpen className="h-6 w-6" />,
     onClick: () => {},
     variant: "outline"
   },
   {
-    id: "alignment-scorecard",
-    label: "Alignment Scorecard",
-    description: "Analyze content against Louisiana Standards",
-    icon: <FileCheck className="h-6 w-6" />,
-    onClick: () => {},
-    variant: "outline"
-  },
-  {
-    id: "progress",
-    label: "Your AI Journey",
-    description: "Track time saved and confidence gained",
-    icon: <TrendingUp className="h-6 w-6" />,
+    id: "feedback",
+    label: "Share Feedback",
+    description: "Help us improve with your testimonial",
+    icon: <MessageSquare className="h-6 w-6" />,
     onClick: () => {},
     variant: "outline"
   }
@@ -95,14 +83,12 @@ export function QuickAccessGrid({
   // Override default onClick handlers if provided
   const finalItems = processedItems.map(item => {
     switch (item.id) {
-      case "coach":
-        return { ...item, onClick: () => navigate('/coach') };
       case "frameworks":
-        return { ...item, onClick: onNavigateToFrameworks || item.onClick };
-      case "alignment-scorecard":
-        return { ...item, onClick: () => navigate('/alignment-scorecard') };
-      case "progress":
-        return { ...item, onClick: onNavigateToProgress || (() => navigate('/time-tracking')) };
+        return { ...item, onClick: onNavigateToFrameworks || (() => navigate('/frameworks')) };
+      case "saved-frameworks":
+        return { ...item, onClick: () => navigate('/frameworks?filter=saved') };
+      case "feedback":
+        return { ...item, onClick: () => navigate('/testimonials/submit') };
       default:
         return item;
     }
@@ -113,14 +99,14 @@ export function QuickAccessGrid({
       initial="initial"
       animate="animate"
       variants={staggerChildren}
-      className={`bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
+      className={`rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
     >
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground font-heading mb-2">Navigate AI with Confidence</h2>
-        <p className="text-muted-foreground text-base leading-relaxed">Your platform-agnostic AI guidance hub - works with ANY tool you use</p>
+        <h2 className="text-2xl font-bold text-foreground font-heading mb-2">Get Started</h2>
+        <p className="text-muted-foreground text-base leading-relaxed">Explore Louisiana-aligned frameworks to improve your AI prompts</p>
       </div>
 
-      <div className={`grid grid-cols-1 sm:grid-cols-2 ${spacing.gridGap}`}>
+      <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${spacing.gridGap}`}>
         {finalItems.map((item) => (
           <motion.div
             key={item.id}

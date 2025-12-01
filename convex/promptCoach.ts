@@ -146,11 +146,11 @@ export const sendMessage = action({
       namespace: "louisiana_standards",
       query: searchTerms,
       limit: 3,
-      filters: [{ name: "contentType", value: "louisiana_standard" }]
+      filters: { contentType: "louisiana_standard" } as any
     });
 
     const relevantStandards = standardResults
-      .map((r) => r.content[0]?.text)
+      .map((r) => r.content?.[0]?.text)
       .filter(Boolean)
       .join("\n\n");
 

@@ -9,11 +9,18 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  Filter, 
-  Grid, 
-  List, 
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
+import {
+  Search,
+  Filter,
+  Grid,
+  List,
   Sparkles,
   ArrowRight,
   Clock
@@ -31,7 +38,8 @@ type ModuleFilter = "all" | "ai-basics-hub" | "instructional-expert-hub";
 
 function FrameworkLibrary() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState(""); // Immediate input value
+  const [searchQuery, setSearchQuery] = useState(""); // Debounced search query
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [moduleFilter, setModuleFilter] = useState<ModuleFilter>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -39,6 +47,16 @@ function FrameworkLibrary() {
   const [lerDomainFilter, setLerDomainFilter] = useState<string>("all");
   const [louisianaStandardsFilter, setLouisianaStandardsFilter] = useState<string>("all");
   const [selectedFramework, setSelectedFramework] = useState<string | null>(null); // Stores frameworkId string (e.g., "AIB-001")
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // Debounce search input (300ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   // Queries
   const frameworks = useQuery(api.frameworks.getAllFrameworks, {
@@ -220,18 +238,18 @@ function FrameworkLibrary() {
 
   // Get personalized recommendations based on user profile
   const recommendedFrameworks = useMemo(() => {
-    if (!userProfile?.subject || !frameworks) return [];
-    
+    if (!userProfile?.subject || userProfile.subject.trim() === "" || !frameworks) return [];
+
     // Filter frameworks that match user's subject (via tags or category)
     return frameworks
       .filter(framework => {
-        const subjectLower = userProfile.subject?.toLowerCase() || "";
+        const subjectLower = userProfile.subject?.toLowerCase().trim() || "";
         const categoryLower = framework.category?.toLowerCase() || "";
         const tagsLower = framework.tags?.map(t => t.toLowerCase()).join(" ") || "";
         const challengeLower = framework.challenge?.toLowerCase() || "";
-        
+
         // Check if subject appears in category, tags, or challenge
-        return categoryLower.includes(subjectLower) || 
+        return categoryLower.includes(subjectLower) ||
                tagsLower.includes(subjectLower) ||
                challengeLower.includes(subjectLower);
       })
@@ -292,8 +310,8 @@ function FrameworkLibrary() {
         >
           <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between ${spacing.gridGap}`}>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground font-heading">Framework Library</h1>
-              <p className="text-muted-foreground mt-2 text-base">
+              <h1 className="text-3xl md:text-4xl font-bold font-heading">Framework Library</h1>
+              <p className="text-muted-foreground mt-2">
                 Browse AI guidance frameworks designed for Louisiana educators
               </p>
             </div>
@@ -306,7 +324,7 @@ function FrameworkLibrary() {
         </motion.div>
 
         {/* Personalized Recommendations Banner */}
-        {userProfile?.subject && recommendedFrameworks.length > 0 && (
+        {userProfile?.subject && userProfile.subject.trim() !== "" && recommendedFrameworks.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -322,7 +340,7 @@ function FrameworkLibrary() {
                     </h3>
                     <p className="text-muted-foreground mb-4 text-sm">
                       These frameworks are popular with educators teaching {userProfile.subject}
-                      {userProfile.gradeLevel && ` at ${userProfile.gradeLevel} level`}
+                      {userProfile.gradeLevel && userProfile.gradeLevel.trim() !== "" && ` at ${userProfile.gradeLevel} level`}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {recommendedFrameworks.map((fw) => (
@@ -370,7 +388,7 @@ function FrameworkLibrary() {
                       className="flex items-center gap-1 min-w-0 max-w-full"
                     >
                       <span className="truncate">{fw.title}</span>
-                      <ArrowRight className="h-3 w-3 shrink-0" />
+                      <ArrowRight className="h-4 w-4 shrink-0" />
                     </Button>
                   ))}
                 </div>
@@ -408,7 +426,7 @@ function FrameworkLibrary() {
                       className="flex items-center gap-1"
                     >
                       {fw.title}
-                      <ArrowRight className="h-3 w-3" />
+                      <ArrowRight className="h-4 w-4" />
                     </Button>
                   ))}
                 </div>
@@ -467,17 +485,29 @@ function FrameworkLibrary() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search frameworks..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   className="pl-10 h-11 w-full"
                 />
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Mobile Filter Button - Only visible below lg breakpoint */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="h-11 lg:hidden"
+                  aria-label="Open filters"
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
                   className="h-11"
+                  aria-label="Grid view"
                 >
                   <Grid className="h-4 w-4" />
                 </Button>
@@ -486,6 +516,7 @@ function FrameworkLibrary() {
                   size="sm"
                   onClick={() => setViewMode("list")}
                   className="h-11"
+                  aria-label="List view"
                 >
                   <List className="h-4 w-4" />
                 </Button>
@@ -546,7 +577,7 @@ function FrameworkLibrary() {
                     <p className="text-muted-foreground mb-4">
                       Try searching for: "lesson planning", "assessment", "parent communication"
                     </p>
-                    <Button onClick={() => setSearchQuery("")} variant="outline">
+                    <Button onClick={() => { setSearchInput(""); setSearchQuery(""); }} variant="outline">
                       Clear search
                     </Button>
                   </>
@@ -615,6 +646,39 @@ function FrameworkLibrary() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Sheet */}
+      <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+        <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5 text-primary" />
+              Filters
+            </SheetTitle>
+            <SheetDescription>
+              Filter frameworks by module, category, difficulty, and more
+            </SheetDescription>
+          </SheetHeader>
+          <div className="mt-6">
+            <FrameworkFilters
+              moduleFilter={moduleFilter}
+              categoryFilter={categoryFilter}
+              difficultyFilter={difficultyFilter}
+              lerDomainFilter={lerDomainFilter}
+              louisianaStandardsFilter={louisianaStandardsFilter}
+              onModuleChange={(value) => setModuleFilter(value as ModuleFilter)}
+              onCategoryChange={setCategoryFilter}
+              onDifficultyChange={setDifficultyFilter}
+              onLerDomainChange={setLerDomainFilter}
+              onLouisianaStandardsChange={setLouisianaStandardsFilter}
+              categories={categories}
+              difficulties={difficulties}
+              lerDomains={lerDomains}
+              hasLouisianaStandards={hasLouisianaStandards}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
 
       {/* Framework Detail Modal */}
       {selectedFramework && (

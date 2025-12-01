@@ -74,14 +74,14 @@ export function WorkflowStatus({ workflowId }: WorkflowStatusProps) {
   }
 
   if (statusType === "error" || statusType === "failed") {
-    const errorMessage = statusData.error || "An error occurred during analysis";
-    
+    const errorMessage = statusData.error || "We encountered an issue analyzing your content. Please try again, or contact support if the problem continues.";
+
     return (
       <Card className="border-red-200 bg-red-50/50 dark:bg-red-950/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-red-700 dark:text-red-400">
             <XCircle className="h-5 w-5" />
-            Analysis Failed
+            Analysis Issue
           </CardTitle>
         </CardHeader>
         <CardContent>
