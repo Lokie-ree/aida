@@ -357,7 +357,7 @@ describe("Beta Signup", () => {
       });
       expect(res.success).toBe(true);
       expect(res.betaSignupId).toBeDefined();
-      expect(res.betaProgramId).toBeDefined();
+      // betaProgramId removed in December 2025 beta cleanup
     });
   });
 

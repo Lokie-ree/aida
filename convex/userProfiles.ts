@@ -5,7 +5,6 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { authComponent } from "./auth";
-import { requireAdmin } from "./authorization";
 import { api } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
 
@@ -196,34 +195,8 @@ export const updateUserProfile = mutation({
   },
 });
 
-// Query: Get all user profiles (admin only)
-export const getAllUserProfiles = query({
-  args: {},
-  returns: v.array(v.object({
-    _id: v.id("userProfiles"),
-    userId: v.string(),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-    gradeLevel: v.optional(v.string()),
-    role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-  })),
-  handler: async (ctx) => {
-    await requireAdmin(ctx);
-
-    const profiles = await ctx.db
-      .query("userProfiles")
-      .collect();
-
-    return profiles.map((profile) => ({
-      _id: profile._id,
-      userId: profile.userId,
-      school: profile.school,
-      subject: profile.subject,
-      gradeLevel: profile.gradeLevel,
-      role: profile.role,
-    }));
-  },
-});
+// Admin function removed for beta - not needed for 4 beta testers
+// Re-add post-beta if admin dashboard is needed
 
 /**
  * @deprecated Use initializeNewUser() instead
@@ -275,10 +248,9 @@ export const initializeProfileForBeta = mutation({
 export const initializeNewUser = mutation({
   args: {},
   returns: v.union(
-    v.object({ 
+    v.object({
       success: v.boolean(),
       profileId: v.id("userProfiles"),
-      betaProgramId: v.id("betaProgram"),
       message: v.string()
     }),
     v.object({
@@ -328,38 +300,6 @@ export const initializeNewUser = mutation({
       return { success: false, message: `Beta signup status is '${betaSignup.status}', not 'approved'` };
     }
 
-    // Check if betaProgram already exists for this user
-    let betaProgram = await ctx.db
-      .query("betaProgram")
-      .withIndex("by_user", (q) => q.eq("userId", user._id))
-      .first();
-
-    // Create betaProgram record if it doesn't exist
-    // This happens when user clicks magic link after approval
-    let betaProgramId: Id<"betaProgram">;
-    if (!betaProgram) {
-      betaProgramId = await ctx.db.insert("betaProgram", {
-        userId: user._id,
-        status: "invited",
-        invitedAt: betaSignup.signupDate || Date.now(),
-        joinedAt: undefined, // Set when onboarding completes
-        onboardingStep: 0,
-        onboardingCompleted: false,
-        frameworksTried: 0,
-        totalTimeSaved: 0,
-        innovationsShared: 0,
-        weeklyEngagementCount: 0,
-      });
-    } else {
-      betaProgramId = betaProgram._id;
-      // Update status to "invited" if it was in a different state
-      if (betaProgram.status !== "invited") {
-        await ctx.db.patch(betaProgram._id, {
-          status: "invited",
-        });
-      }
-    }
-
     // Create user profile with data from betaSignup
     const profileId = await ctx.db.insert("userProfiles", {
       userId: user._id,
@@ -369,13 +309,12 @@ export const initializeNewUser = mutation({
       role: "teacher",
     });
 
-    console.log("initializeNewUser: SUCCESS", { profileId, betaProgramId, userId: user._id });
+    console.log("initializeNewUser: SUCCESS", { profileId, userId: user._id });
 
-    return { 
+    return {
       success: true,
-      profileId, 
-      betaProgramId, 
-      message: "User initialized successfully" 
+      profileId,
+      message: "User initialized successfully"
     };
   },
 });

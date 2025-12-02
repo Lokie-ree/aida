@@ -476,11 +476,13 @@ import { rag } from "./rag";
 ### Searching RAG
 
 ```typescript
-const results = await rag.search(ctx, query, {
-  filters: {
-    subject: "ela",
-    gradeLevel: "3",
-  },
+const results = await rag.search(ctx, {
+  namespace: "louisiana_standards",
+  query: query,
+  filters: [
+    { name: "subject", value: "ela" },
+    { name: "gradeLevel", value: "3" }
+  ],
   limit: 10,
 });
 ```
@@ -495,12 +497,17 @@ See `convex/ragService.ts` for search helper functions.
 await rag.add(ctx, {
   namespace: "louisiana_standards",
   text: standardText,
+  filterValues: [
+    { name: "contentType", value: "louisiana_standard" },
+    { name: "subject", value: "ela" },
+    { name: "gradeLevel", value: "3" },
+    { name: "standardCode", value: "RL.3.1" }
+  ],
   metadata: {
-    contentType: "louisiana_standard",
-    subject: "ela",
-    gradeLevel: "3",
-    standardCode: "RL.3.1",
-  },
+    // Optional: Additional non-searchable metadata
+    importedAt: Date.now(),
+    sourceFile: "la-ela.md"
+  }
 });
 ```
 

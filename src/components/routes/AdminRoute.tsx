@@ -1,8 +1,9 @@
 import React from 'react';
-import { AdminDashboard } from '../admin/AdminDashboard';
+import { Navigate } from 'react-router-dom';
 
 const AdminRoute: React.FC = () => {
-  return <AdminDashboard />;
+  // Admin functionality removed - redirect to dashboard
+  return <Navigate to="/dashboard" replace />;
 };
 
 export default AdminRoute;

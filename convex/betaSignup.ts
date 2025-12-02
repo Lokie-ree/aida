@@ -84,12 +84,9 @@ export const signupForBeta = mutation({
       betaProgramId: "beta-v1",
     });
 
-    // Send welcome email (no platform credentials yet - user will receive magic link after approval)
-    await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
-      email: args.email,
-      name: args.name,
-      school: args.school,
-    });
+    // Email sending removed during cleanup - welcome email functionality disabled
+    // TODO: Implement email service if welcome emails are needed
+    console.log(`[Beta Signup] New signup: ${args.email} (${args.name || 'No name'})`);
 
     return {
       success: true,
@@ -486,7 +483,6 @@ export const recoverDeletedUser = mutation({
     success: v.boolean(),
     message: v.string(),
     betaSignupId: v.optional(v.id("betaSignups")),
-    betaProgramId: v.optional(v.id("betaProgram")),
   }),
   handler: async (ctx, args) => {
     try {
@@ -501,7 +497,6 @@ export const recoverDeletedUser = mutation({
           success: false,
           message: "User already exists in betaSignups table",
           betaSignupId: undefined,
-          betaProgramId: undefined,
         };
       }
 
@@ -518,25 +513,12 @@ export const recoverDeletedUser = mutation({
         notes: "Recovered from accidental deletion",
       });
 
-      // Create beta program record
-      const betaProgramId = await ctx.db.insert("betaProgram", {
-        userId: args.userId,
-        status: "active",
-        invitedAt: signupDate,
-        joinedAt: signupDate,
-        onboardingStep: 0,
-        onboardingCompleted: false,
-        frameworksTried: 0,
-        totalTimeSaved: 0,
-        innovationsShared: 0,
-        weeklyEngagementCount: 0,
-      });
+      // Note: betaProgram table removed during cleanup - user profile should be created separately if needed
 
       return {
         success: true,
         message: "User data recovered successfully",
         betaSignupId,
-        betaProgramId,
       };
     } catch (error) {
       console.error("Error recovering user data:", error);
@@ -544,7 +526,6 @@ export const recoverDeletedUser = mutation({
         success: false,
         message: `Failed to recover user data: ${error instanceof Error ? error.message : 'Unknown error'}`,
         betaSignupId: undefined,
-        betaProgramId: undefined,
       };
     }
   },

@@ -217,32 +217,8 @@ describe("User Profiles", () => {
     test.skip("syncExistingUsers - function removed", async () => {});
   });
 
-  describe("getAllUserProfiles", () => {
-    test("returns empty array when not authenticated", async () => {
-      // getAllUserProfiles requires admin access, so it should throw when not authenticated
-      await expect(
-        t.query(api.userProfiles.getAllUserProfiles)
-      ).rejects.toThrow();
-    });
-
-    test("non-admin is forbidden", async () => {
-      const asUser = t.withIdentity({ name: "Normal User", email: "user@example.com" });
-      await expect(asUser.query(api.userProfiles.getAllUserProfiles, {} as any)).rejects.toThrow();
-    });
-
-    test("admin can list profiles", async () => {
-      // seed two profiles
-      await t.run(async (ctx) => {
-        await ctx.db.insert("userProfiles", { userId: "u1", school: "S1", subject: "Math" });
-        await ctx.db.insert("userProfiles", { userId: "u2", school: "S2", subject: "ELA" });
-      });
-      const asAdmin = t.withIdentity({ name: "Admin User", email: "admin@resend.dev" });
-      await ensureAdminProfile(asAdmin);
-      const profiles = await asAdmin.query(api.userProfiles.getAllUserProfiles);
-      expect(Array.isArray(profiles)).toBe(true);
-      expect(profiles.length).toBeGreaterThanOrEqual(2);
-    });
-  });
+  // Admin function getAllUserProfiles removed for December 2025 beta
+  // Not needed for 4 beta testers - re-add post-beta if admin dashboard is needed
 
   describe("profile data structure", () => {
     test("can insert profile data directly via database", async () => {

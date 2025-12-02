@@ -1,7 +1,4 @@
 import { Navigate } from 'react-router-dom';
-import { useQuery } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { LoadingSpinner } from '../shared/LoadingStates';
 
 /**
  * SmartRedirect Component
@@ -14,19 +11,8 @@ import { LoadingSpinner } from '../shared/LoadingStates';
  * instead of being redirected to the regular dashboard.
  */
 function SmartRedirect() {
-  const isAdmin = useQuery(api.admin.checkIsAdmin);
-
-  // Show loading while checking admin status
-  if (isAdmin === undefined) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
-  // Redirect based on admin status
-  return <Navigate to={isAdmin ? "/admin" : "/dashboard"} replace />;
+  // Admin functionality removed - always redirect to dashboard
+  return <Navigate to="/dashboard" replace />;
 }
 
 export default SmartRedirect;

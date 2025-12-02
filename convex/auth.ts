@@ -48,20 +48,14 @@ export const createAuth = (
       crossDomain({ siteUrl }),
       // The Convex plugin is required for Convex compatibility
       convex(),
-      // Magic Link plugin for passwordless authentication
+      // Magic Link plugin for passwordless authentication via Resend
       magicLink({
         sendMagicLink: async ({ email, url, token }, request) => {
-          // Use centralized email action from email.ts
-          const actionCtx = requireActionCtx(ctx);
-          try {
-            await actionCtx.runAction(api.email.sendMagicLinkEmail, {
-              email,
-              url,
-            });
-          } catch (error) {
-            console.error("Error sending magic link email:", error);
-            // Don't throw - Better Auth will handle the error
-          }
+          // Send magic link email via Resend component
+          await requireActionCtx(ctx).runAction(api.email.sendMagicLinkEmail, {
+            email,
+            url,
+          });
         },
         expiresIn: 300, // 5 minutes for regular sign-in requests
         disableSignUp: false, // Allow account creation on first magic link click

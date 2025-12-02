@@ -31,7 +31,6 @@ interface NavigationProps {
 export function Navigation({ className }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const navigate = useNavigate();
-  const isAdmin = useQuery(api.admin.checkIsAdmin);
   const loggedInUser = useQuery(api.auth.loggedInUser);
 
   const navigationItems = [
@@ -39,39 +38,13 @@ export function Navigation({ className }: NavigationProps) {
       path: "/coach",
       label: "Coach",
       icon: MessageSquare,
-      description: "AI Instructional Coach"
+      description: "Louisiana-aligned prompt coaching"
     },
     {
       path: "/dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
       description: "Overview and quick start"
-    },
-    {
-      path: "/frameworks",
-      label: "Frameworks",
-      icon: BookOpen,
-      description: "Browse AI guidance frameworks"
-    },
-    {
-      path: "/alignment-scorecard",
-      label: "Alignment Scorecard",
-      icon: FileCheck,
-      description: "Analyze content against Louisiana Standards"
-    },
-    // GRASSROOTS LAUNCH: Community features hidden for 5-user launch
-    // Deprioritized until scaling to 30-100 users (code stays in place)
-    // {
-    //   path: "/community",
-    //   label: "Community",
-    //   icon: Users,
-    //   description: "Innovations and testimonials"
-    // },
-    {
-      path: "/time-tracking",
-      label: "Time Tracking",
-      icon: Clock,
-      description: "Track your productivity gains"
     },
     {
       path: "/profile",
@@ -81,16 +54,14 @@ export function Navigation({ className }: NavigationProps) {
     }
   ];
 
-  // Admin-only navigation items
-  const adminItems = [
-    {
-      path: "/admin",
-      label: "Admin",
-      icon: Shield,
-      description: "Manage platform and content",
-      isAdmin: true
-    }
-  ];
+  // Post-beta features removed for December 2025 launch:
+  // - Frameworks library
+  // - Alignment scorecard
+  // - Time tracking
+  // - Admin dashboard
+  // See git history to restore
+
+  const adminItems: any[] = [];
 
   return (
     <>

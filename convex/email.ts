@@ -287,59 +287,14 @@ export const sendWeeklyEmailsToAllUsers = action({
   }),
   handler: async (ctx, args) => {
     try {
-      // Feature flag: Check if weekly emails are enabled (default: false for grassroots launch)
-      const isEnabled = (process.env.WEEKLY_EMAILS_ENABLED ?? "false") === "true";
-      if (!isEnabled) {
-        console.log("Weekly emails disabled via WEEKLY_EMAILS_ENABLED env var (grassroots launch mode)");
-        return { success: true, emailsSent: 0 };
-      }
+      // Feature flag: Disabled for December 2025 beta
+      // Requires betaProgram and frameworks tables (removed in beta cleanup)
+      // Re-enable post-beta when scaling to 30-100 users
+      console.log("Weekly emails disabled - feature removed for December 2025 beta");
+      return { success: true, emailsSent: 0 };
 
-      // Get all active beta users
-      const betaUsers = await ctx.runQuery(api.betaProgram.getAllBetaUsers, {});
-      
-      // Get this week's featured framework (get full details)
-      const frameworks = await ctx.runQuery(api.frameworks.getAllFrameworks, { 
-        status: "published" 
-      });
-      
-      if (frameworks.length === 0) {
-        console.log("No frameworks available for weekly email");
-        return { success: false, emailsSent: 0 };
-      }
-      
-      // Select a random framework for this week and get full details
-      const randomFramework = frameworks[Math.floor(Math.random() * frameworks.length)];
-      const featuredFramework = await ctx.runQuery(api.frameworks.getFrameworkById, {
-        frameworkId: randomFramework.frameworkId
-      });
-      
-      if (!featuredFramework) {
-        console.log("Could not get framework details");
-        return { success: false, emailsSent: 0 };
-      }
-      
-      let emailsSent = 0;
-      
-      for (const user of betaUsers) {
-        try {
-          await ctx.runAction(api.email.sendWeeklyPromptEmail, {
-            userEmail: user.email,
-            userName: user.name || "Educator",
-            frameworkTitle: featuredFramework.title,
-            frameworkId: featuredFramework.frameworkId,
-            samplePrompt: featuredFramework.samplePrompt,
-            timeEstimate: featuredFramework.timeEstimate,
-            difficultyLevel: featuredFramework.difficultyLevel,
-            weekNumber: Math.ceil((Date.now() - new Date("2025-10-15").getTime()) / (7 * 24 * 60 * 60 * 1000)),
-          });
-          emailsSent++;
-        } catch (error) {
-          console.error(`Failed to send weekly email to ${user.email}:`, error);
-        }
-      }
-      
-      console.log(`Weekly emails sent successfully: ${emailsSent}/${betaUsers.length}`);
-      return { success: true, emailsSent };
+      // Code commented out - depends on deleted tables (betaProgram, frameworks)
+      // See git history to restore when ready to scale
     } catch (error) {
       console.error("Error sending weekly emails:", error);
       throw new Error("Failed to send weekly emails");
