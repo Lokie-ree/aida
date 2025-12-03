@@ -21,19 +21,20 @@ export default function PromptCoach() {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl h-[calc(100vh-4rem)] flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+    <div className="container mx-auto p-4 max-w-6xl h-[calc(100dvh-4rem)] flex flex-col">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Prompt Coach</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Prompt Coach</h1>
+          <p className="text-sm md:text-base text-muted-foreground">
             Your Louisiana-aligned instructional design partner.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
           <Button 
             variant={activeTab === "chat" ? "default" : "outline"}
             onClick={() => setActiveTab("chat")}
-            className="gap-2"
+            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
+            size="sm"
           >
             <MessageSquare className="h-4 w-4" />
             Coach
@@ -41,12 +42,17 @@ export default function PromptCoach() {
           <Button 
             variant={activeTab === "library" ? "default" : "outline"}
             onClick={() => setActiveTab("library")}
-            className="gap-2"
+            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
+            size="sm"
           >
             <Library className="h-4 w-4" />
             My Prompts
           </Button>
-          <Button onClick={handleStartNew} className="gap-2">
+          <Button 
+            onClick={handleStartNew} 
+            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
+            size="sm"
+          >
             <PlusCircle className="h-4 w-4" />
             New Session
           </Button>

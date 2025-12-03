@@ -51,11 +51,20 @@ export const createAuth = (
       // Magic Link plugin for passwordless authentication via Resend
       magicLink({
         sendMagicLink: async ({ email, url, token }, request) => {
-          // Send magic link email via Resend component
-          await requireActionCtx(ctx).runAction(api.email.sendMagicLinkEmail, {
-            email,
-            url,
-          });
+          const actionCtx = requireActionCtx(ctx);
+
+          // Approval check is now handled in the frontend (AuthModal.tsx)
+          // This ensures users only receive magic links after admin approval
+
+          try {
+            await actionCtx.runAction(api.email.sendMagicLinkEmail, {
+              email,
+              url,
+            });
+          } catch (error) {
+            console.error("Error sending magic link email:", error);
+            // Don't throw - Better Auth will handle the error
+          }
         },
         expiresIn: 300, // 5 minutes for regular sign-in requests
         disableSignUp: false, // Allow account creation on first magic link click

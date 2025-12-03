@@ -1,6 +1,6 @@
 /**
  * ✅ ACTIVE - Used in production
- * Functions: sendBetaWelcomeEmail, sendPlatformAccessEmail, sendMagicLinkEmail
+ * Functions: sendBetaWelcomeEmail, sendPlatformAccessEmail, sendMagicLinkEmail, sendApprovalNotificationEmail
  * 🚫 FEATURE-FLAGGED: sendWeeklyPromptEmail, sendWeeklyEmailsToAllUsers (disabled for grassroots launch, enable at 30-100 users)
  */
 "use node";
@@ -286,19 +286,15 @@ export const sendWeeklyEmailsToAllUsers = action({
     emailsSent: v.number(),
   }),
   handler: async (ctx, args) => {
-    try {
-      // Feature flag: Disabled for December 2025 beta
-      // Requires betaProgram and frameworks tables (removed in beta cleanup)
-      // Re-enable post-beta when scaling to 30-100 users
-      console.log("Weekly emails disabled - feature removed for December 2025 beta");
-      return { success: true, emailsSent: 0 };
+    // Feature flag: Disabled for December 2025 beta
+    // Requires betaProgram and frameworks tables (removed in beta cleanup)
+    // Re-enable post-beta when scaling to 30-100 users
+    console.log("Weekly emails disabled - feature removed for December 2025 beta");
+    return { success: true, emailsSent: 0 };
 
-      // Code commented out - depends on deleted tables (betaProgram, frameworks)
-      // See git history to restore when ready to scale
-    } catch (error) {
-      console.error("Error sending weekly emails:", error);
-      throw new Error("Failed to send weekly emails");
-    }
+    // Code commented out - depends on deleted tables (betaProgram, frameworks)
+    // See git history to restore when ready to scale
+    // When re-enabling, add try-catch error handling around the email sending logic
   },
 });
 
@@ -333,14 +329,15 @@ export const sendMagicLinkEmail = action({
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.email,
-        subject: "Your Pelican AI Magic Link",
+        subject: "Your Pelican AI sign-in link (expires in 5 min)",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h1 style="color: #1e40af;">Pelican AI</h1>
-            <p>Click the link below to sign in to your account:</p>
+            <p>Hey there! 👋</p>
+            <p>Click the button below to sign in and start creating Louisiana-aligned prompts:</p>
             <p><a href="${args.url}" style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Sign In</a></p>
             <p style="color: #6b7280; font-size: 14px;">This link will expire in 5 minutes.</p>
-            <p style="color: #6b7280; font-size: 14px;">If you didn't request this link, you can safely ignore this email.</p>
+            <p style="color: #6b7280; font-size: 14px;">Questions? Just reply—I read every one.<br>– Pelican AI Team</p>
           </div>
         `,
         replyTo: REPLY_TO,
@@ -356,6 +353,75 @@ export const sendMagicLinkEmail = action({
         return { success: false, emailId: "test-mode-error" };
       }
       throw new Error("Failed to send magic link email");
+    }
+  },
+});
+
+/**
+ * Action: Send approval notification email.
+ * 
+ * Sent when admin approves a beta signup. Notifies user they're approved
+ * and provides a link to the sign-in page where they can request a magic link.
+ * 
+ * This is a simpler approach than backend-initiated magic links, which don't
+ * work reliably with Better Auth's cross-domain setup.
+ * 
+ * @param email - Recipient email address
+ * @param name - Optional recipient name (defaults to "Educator")
+ * 
+ * @returns Object containing success status and email ID
+ */
+export const sendApprovalNotificationEmail = action({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+  },
+  returns: v.object({
+    success: v.boolean(),
+    emailId: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    try {
+      // In test mode, only allow @resend.dev addresses
+      if (isTestMode && !args.email.endsWith("@resend.dev")) {
+        console.warn(`Test mode: Skipping approval notification email to ${args.email} (not a @resend.dev test address)`);
+        return { success: true, emailId: "test-mode-skipped" };
+      }
+
+      // Get the frontend URL for the sign-in link
+      const siteUrl = process.env.SITE_URL || "http://localhost:5173";
+      const displayName = args.name || "Educator";
+
+      // Send approval notification email using Resend
+      const emailId = await resend.sendEmail(ctx, {
+        from: FROM_ADDRESS,
+        to: args.email,
+        subject: "You're in! Sign in to Pelican AI",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #1e40af;">Pelican AI</h1>
+            <p>Hey ${displayName}! 👋</p>
+            <p>Great news - your beta access has been approved!</p>
+            <p>You're one of a small group of Louisiana educators helping shape Pelican AI. Your feedback will directly influence how this tool supports teachers across the state.</p>
+            <p>Ready to get started? Click below to sign in:</p>
+            <p><a href="${siteUrl}" style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Sign In to Pelican AI</a></p>
+            <p style="color: #6b7280; font-size: 14px;">On the sign-in page, enter your email address and we'll send you a secure link to access your account.</p>
+            <p style="color: #6b7280; font-size: 14px;">Questions? Just reply to this email—I read every one.<br>– Pelican AI Team</p>
+          </div>
+        `,
+        replyTo: REPLY_TO,
+      });
+
+      console.log("Approval notification email sent successfully to:", args.email);
+      return { success: true, emailId };
+    } catch (error) {
+      console.error("Error sending approval notification email:", error);
+      // In test mode, don't throw - just log and continue
+      if (isTestMode) {
+        console.warn("Test mode: Approval notification email sending failed, but continuing execution");
+        return { success: false, emailId: "test-mode-error" };
+      }
+      throw new Error("Failed to send approval notification email");
     }
   },
 });

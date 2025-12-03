@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,11 +9,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { User, School, BookOpen, GraduationCap, MapPin, Shield } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { User, School, BookOpen, GraduationCap, MapPin, Shield, ArrowRight } from "lucide-react";
 import { LoadingSpinner } from "../shared/LoadingStates";
 import { toast } from "sonner";
 
 function ProfileSettings() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { message?: string; returnTo?: string } | null;
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     school: "",
@@ -52,9 +57,14 @@ function ProfileSettings() {
         gradeLevel: formData.gradeLevel || undefined,
         role: formData.role,
       });
-      
+
       setIsEditing(false);
       toast.success("Profile updated successfully!");
+
+      // Navigate back to intended destination after profile completion
+      if (state?.returnTo) {
+        navigate(state.returnTo);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile. Please try again.");
@@ -87,6 +97,14 @@ function ProfileSettings() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {/* Profile Completion Alert */}
+      {state?.message && (
+        <Alert>
+          <ArrowRight className="h-4 w-4" />
+          <AlertDescription>{state.message}</AlertDescription>
+        </Alert>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

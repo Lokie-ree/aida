@@ -82,7 +82,6 @@ export const createUserProfile = mutation({
     subject: v.optional(v.string()),
     gradeLevel: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-    isTestData: v.optional(v.boolean()), // NEW: Optional test data flag
   },
   returns: v.id("userProfiles"),
   handler: async (ctx, args) => {
@@ -331,7 +330,6 @@ export const createUserProfileForUserId = mutation({
     subject: v.optional(v.string()),
     gradeLevel: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
-    isTestData: v.optional(v.boolean()), // NEW: Optional test data flag
   },
   returns: v.id("userProfiles"),
   handler: async (ctx, args) => {

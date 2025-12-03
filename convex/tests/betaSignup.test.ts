@@ -144,7 +144,6 @@ describe("Beta Signup", () => {
           email: "temp@example.com",
           status: "pending",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
         await ctx.db.delete(tempId);
         return tempId;
@@ -166,13 +165,11 @@ describe("Beta Signup", () => {
           email: `pending-${Date.now()}@example.com`,
           status: "pending",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
         await ctx.db.insert("betaSignups", {
           email: `approved-${Date.now()}@example.com`,
           status: "approved",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
       });
 
@@ -197,7 +194,6 @@ describe("Beta Signup", () => {
           name: "Pending User",
           status: "pending",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
       });
 
@@ -254,7 +250,6 @@ describe("Beta Signup", () => {
           email: "temp-approve@example.com",
           status: "pending",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
         await ctx.db.delete(tempId);
         return tempId;
@@ -296,7 +291,6 @@ describe("Beta Signup", () => {
           email: em,
           status: "approved",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
       });
       const res = await t.mutation(api.betaSignup.resendPlatformAccessEmail, { email: em });
@@ -357,7 +351,6 @@ describe("Beta Signup", () => {
       });
       expect(res.success).toBe(true);
       expect(res.betaSignupId).toBeDefined();
-      // betaProgramId removed in December 2025 beta cleanup
     });
   });
 
@@ -368,7 +361,6 @@ describe("Beta Signup", () => {
           email: `temp-${Date.now()}@example.com`,
           status: "pending",
           signupDate: Date.now(),
-          betaProgramId: "beta-v1",
         });
         await ctx.db.delete(tempId);
         return tempId;

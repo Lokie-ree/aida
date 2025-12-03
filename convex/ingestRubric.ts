@@ -144,11 +144,16 @@ export const batchIngestRubric = action({
       }
     }
 
+    // Calculate total: sum of all performance levels from indicators,
+    // plus optional LEADS system and rubric metadata
+    const indicatorsTotal = args.indicators.reduce(
+      (sum, ind) => sum + ind.performanceLevels.length,
+      0 // Start with 0, add optional counts separately
+    );
+    const optionalCounts = (args.leadsSystem ? 1 : 0) + (args.rubricMetadata ? 1 : 0);
+    
     return {
-      total: args.indicators.reduce(
-        (sum, ind) => sum + ind.performanceLevels.length,
-        (args.leadsSystem ? 1 : 0) + (args.rubricMetadata ? 1 : 0)
-      ),
+      total: indicatorsTotal + optionalCounts,
       successCount,
       errorCount,
       errors: errors.slice(0, 10),

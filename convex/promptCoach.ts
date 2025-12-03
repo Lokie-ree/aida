@@ -186,24 +186,58 @@ export const sendMessage = action({
     const searchTerms = args.message;
 
     // Search for Louisiana Student Standards
-    const { results: standardResults } = await rag.search(ctx, {
-      namespace: "louisiana_standards",
-      query: searchTerms,
-      limit: 5, // Increased from 3 to 5
-      filters: [
-        { name: "contentType", value: "louisiana_standard" }
-      ]
-    });
+    // If namespace doesn't exist yet (e.g., data not ingested), return empty results
+    let standardResults: Array<{ content: Array<{ text: string }>; score: number }> = [];
+    try {
+      const searchResult = await rag.search(ctx, {
+        namespace: "louisiana_standards",
+        query: searchTerms,
+        limit: 5, // Increased from 3 to 5
+        filters: [
+          { name: "contentType", value: "louisiana_standard" }
+        ]
+      });
+      standardResults = searchResult.results;
+    } catch (error) {
+      // If namespace doesn't exist yet (e.g., not ingested), continue without standards
+      console.warn("Louisiana standards namespace not found, continuing without standards context");
+    }
 
     // Search for Louisiana Educator Rubric indicators
-    const { results: rubricResults } = await rag.search(ctx, {
-      namespace: "louisiana_standards", // Same namespace, different contentType
-      query: searchTerms,
-      limit: 4, // Get top 4 relevant LER indicators
-      filters: [
-        { name: "contentType", value: "rubric_indicator" }
-      ]
-    });
+    // Rubric data is stored in multiple namespaces:
+    // - louisiana_rubric_system (LEADS system and overview)
+    // - louisiana_rubric_instruction, planning, environment, professionalism (domain-specific)
+    // Search across all rubric namespaces and combine results
+    const rubricNamespaces = [
+      "louisiana_rubric_system",
+      "louisiana_rubric_instruction",
+      "louisiana_rubric_planning",
+      "louisiana_rubric_environment",
+      "louisiana_rubric_professionalism",
+    ];
+    
+    const allRubricResults = [];
+    for (const namespace of rubricNamespaces) {
+      try {
+        const { results } = await rag.search(ctx, {
+          namespace,
+          query: searchTerms,
+          limit: 2, // Get top 2 from each namespace
+          filters: [
+            { name: "contentType", value: "rubric_indicator" }
+          ]
+        });
+        allRubricResults.push(...results);
+      } catch (error) {
+        // If a namespace doesn't exist yet (e.g., not ingested), skip it
+        console.warn(`Rubric namespace ${namespace} not found, skipping`);
+      }
+    }
+    
+    // Sort by score (highest first) and take top 4
+    const rubricResults = allRubricResults
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
 
     const relevantStandards = standardResults
       .map((r) => r.content?.[0]?.text)

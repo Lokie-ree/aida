@@ -9,6 +9,7 @@ import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { LoadingPage } from "./components/shared/LoadingStates";
 import { authClient } from "./lib/auth-client";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import CoachRoute from "./components/routes/CoachRoute";
 
 // Lazy load route components for code splitting
 const SmartRedirect = lazy(() => import("./components/routes/SmartRedirect"));
@@ -37,7 +38,7 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col bg-background">
+          <div className="min-h-[100dvh] flex flex-col bg-background">
             {/* Skip link for accessibility */}
             <a
               href="#main-content"
@@ -57,7 +58,9 @@ export default function App() {
                       path="/coach"
                       element={
                         <ProtectedRoute>
-                          <PromptCoach />
+                          <CoachRoute>
+                            <PromptCoach />
+                          </CoachRoute>
                         </ProtectedRoute>
                       }
                     />

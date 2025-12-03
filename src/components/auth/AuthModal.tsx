@@ -31,11 +31,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
   const [emailValue, setEmailValue] = useState("");
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
   const navigate = useNavigate();
-  
-  // Query beta signup status when email is entered (for sign-up mode)
+
+  // Query beta signup status when email is entered (for both sign-in and sign-up modes)
   const betaSignup = useQuery(
     api.betaSignup.getBetaSignupByEmail,
-    flow === "signUp" && emailValue.trim() ? { email: emailValue.trim() } : "skip"
+    emailValue.trim() ? { email: emailValue.trim() } : "skip"
   );
   
   // Update flow when initialMode prop changes
@@ -66,15 +66,38 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
 
     try {
       if (flow === "signIn") {
-        // Sign-in mode: Send magic link
-        console.log("Sending magic link for:", data.email);
+        // Sign-in mode: Check approval status BEFORE sending magic link
+        if (!betaSignup) {
+          toast.error("No account found. Please sign up for the beta first.");
+          setFlow("signUp");
+          return;
+        }
+
+        if (betaSignup.status === "pending") {
+          toast.info("Your application is pending approval. We'll notify you via email once approved.");
+          onClose();
+          form.reset();
+          setEmailValue("");
+          return;
+        }
+
+        if (betaSignup.status === "rejected") {
+          toast.error("Your application was not approved. Please contact support if you believe this is an error.");
+          onClose();
+          form.reset();
+          setEmailValue("");
+          return;
+        }
+
+        // Only proceed if approved
+        console.log("Sending magic link for approved user:", data.email);
         const result = await authClient.signIn.magicLink({
           email: data.email,
           callbackURL: "/dashboard",
         });
-        
+
         console.log("Magic link result:", result);
-        
+
         if (result && 'data' in result && result.data) {
           console.log("Magic link sent successfully");
           toast.success("Check your email for a magic link to sign in");

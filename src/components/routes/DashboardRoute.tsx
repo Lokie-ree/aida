@@ -55,13 +55,6 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     }
   }, [session, userProfile, betaSignup, initializeUser]);
 
-  // Auto-show onboarding modal when on /onboarding route
-  React.useEffect(() => {
-    if (window.location.pathname === "/onboarding") {
-      onShowOnboarding();
-    }
-  }, [onShowOnboarding]);
-
   if (session === undefined) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -102,25 +95,13 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   const user = {
     name: session?.user?.name || "Educator",
     email: session?.user?.email || "",
-    school: userProfile?.school || "Not specified",
-    subject: userProfile?.subject || "Not specified"
-  };
-
-  // Default stats (no backend tracking for beta)
-  const stats = {
-    frameworksTried: 0,
-    timeSaved: 0,
-    innovationsShared: 0,
-    weeklyStreak: 0,
+    school: userProfile?.school || undefined,
+    subject: userProfile?.subject || undefined,
+    gradeLevel: userProfile?.gradeLevel || undefined
   };
 
   return (
-    <Dashboard 
-      user={user}
-      stats={stats}
-      recentFrameworks={[]}
-      weeklyGoal={60}
-    />
+    <Dashboard user={user} />
   );
 };
 

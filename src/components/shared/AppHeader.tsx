@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { SignOutButton } from "@/components/shared/SignOutButton";
 import { AuthModal } from "@/components/auth/AuthModal";
-import { Menu, X, Users, LogIn, BookOpen, Home } from "lucide-react";
+import { Menu, X, Users, LogIn, BotMessageSquare, Home } from "lucide-react";
 
 interface AppHeaderProps {
   onGetStartedClick?: () => void;
@@ -113,17 +113,17 @@ export function AppHeader({
                 Dashboard
               </Button>
               <Button 
-                variant={isActiveRoute('/frameworks') ? "secondary" : "ghost"}
+                variant={isActiveRoute('/coach') ? "secondary" : "ghost"}
                 size="sm"
-                onClick={() => handleNavigation('/frameworks')}
+                onClick={() => handleNavigation('/coach')}
                 className={`text-sm px-4 py-2 h-auto transition-all duration-200 ${
-                  isActiveRoute('/frameworks') 
+                  isActiveRoute('/coach') 
                     ? 'bg-primary/10 text-primary font-medium shadow-sm' 
                     : 'hover:bg-primary/5 hover:text-primary'
                 }`}
               >
-                <BookOpen className="h-4 w-4 mr-2" />
-                Frameworks
+                <BotMessageSquare className="h-4 w-4 mr-2" />
+                Coach
               </Button>
               {/* Community feature hidden for MVP launch (needs 30-100 users) */}
               {/* <Button 
@@ -229,20 +229,20 @@ export function AppHeader({
                             </div>
                           </Button>
                           <Button
-                            variant={isActiveRoute('/frameworks') ? "secondary" : "ghost"}
+                            variant={isActiveRoute('/coach') ? "secondary" : "ghost"}
                             size="lg"
-                            onClick={() => handleNavigation('/frameworks')}
+                            onClick={() => handleNavigation('/coach')}
                             className={`w-full justify-start gap-3 h-12 transition-all duration-200 ${
-                              isActiveRoute('/frameworks') 
+                              isActiveRoute('/coach') 
                                 ? 'bg-primary/10 text-primary font-medium shadow-sm' 
                                 : 'hover:bg-primary/5 hover:text-primary'
                             }`}
                           >
-                            <BookOpen className="h-5 w-5" />
+                            <BotMessageSquare className="h-5 w-5" />
                             <div className="text-left">
-                              <div className="font-medium">Frameworks</div>
+                              <div className="font-medium">Prompt Coach</div>
                               <div className="text-xs text-muted-foreground">
-                                Browse AI frameworks
+                                Get Louisiana-aligned prompts
                               </div>
                             </div>
                           </Button>

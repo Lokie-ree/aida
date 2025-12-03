@@ -1,7 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { BookOpen } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import GradientText from "@/components/shared/GradientText";
 import { spacing } from "@/lib/spacing";
 
@@ -10,23 +9,14 @@ export interface WelcomeHeroProps {
     name?: string;
     school?: string;
     subject?: string;
-  };
-  userProgress?: {
-    frameworksTried: number;
-    timeSaved: number;
-    weeklyStreak: number;
+    gradeLevel?: string;
   };
   onPrimaryAction?: () => void;
-  primaryActionText?: string;
-  primaryActionIcon?: React.ReactNode;
 }
 
-export function WelcomeHero({ 
-  user, 
-  userProgress,
+export function WelcomeHero({
+  user,
   onPrimaryAction,
-  primaryActionText = "Start Learning AI Frameworks",
-  primaryActionIcon = <BookOpen className="h-5 w-5" />
 }: WelcomeHeroProps) {
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -40,66 +30,29 @@ export function WelcomeHero({
     }
   };
 
-  // Personalized messaging based on user progress and context
+  // Personalized messaging focused on prompt generation
   const getPersonalizedMessage = () => {
-    if (!userProgress) {
-      return user.school && user.subject 
-        ? `Ready to explore AI frameworks for ${user.subject} education at ${user.school}`
-        : "Ready to explore AI frameworks for Louisiana education";
+    if (user.school && user.subject && user.gradeLevel) {
+      return `Let's create Louisiana-aligned prompts for your ${user.subject} students`;
     }
 
-    const { frameworksTried, timeSaved, weeklyStreak } = userProgress;
-    const hoursSaved = Math.round(timeSaved / 60 * 10) / 10;
-
-    // New user (no frameworks tried)
-    if (frameworksTried === 0) {
-      return user.subject 
-        ? `Let's get you started with AI frameworks designed for ${user.subject} teachers`
-        : "Let's get you started with AI frameworks designed for Louisiana educators";
+    if (user.subject && user.gradeLevel) {
+      return `Ready to create Louisiana-aligned prompts for Grade ${user.gradeLevel} ${user.subject}`;
     }
 
-    // Beginner (1-3 frameworks)
-    if (frameworksTried <= 3) {
-      return user.subject
-        ? `Great start! You've tried ${frameworksTried} framework${frameworksTried > 1 ? 's' : ''} for ${user.subject} education`
-        : `Great start! You've tried ${frameworksTried} framework${frameworksTried > 1 ? 's' : ''} - keep building your AI confidence`;
+    if (user.subject) {
+      return `Ready to generate Louisiana-aligned prompts for ${user.subject} education`;
     }
 
-    // Intermediate (4-8 frameworks)
-    if (frameworksTried <= 8) {
-      return user.subject
-        ? `You're building momentum! ${frameworksTried} frameworks tried for ${user.subject} education${hoursSaved > 0 ? ` and ${hoursSaved}h saved` : ''}`
-        : `You're building momentum! ${frameworksTried} frameworks tried${hoursSaved > 0 ? ` and ${hoursSaved}h saved` : ''}`;
-    }
-
-    // Advanced (9+ frameworks)
-    return user.subject
-      ? `You're an AI champion! ${frameworksTried} frameworks mastered for ${user.subject} education${hoursSaved > 0 ? ` and ${hoursSaved}h saved` : ''}`
-      : `You're an AI champion! ${frameworksTried} frameworks mastered${hoursSaved > 0 ? ` and ${hoursSaved}h saved` : ''}`;
+    return "Ready to create Louisiana-aligned prompts for your classroom";
   };
 
   const getMotivationalSubtext = () => {
-    if (!userProgress) return null;
-
-    const { frameworksTried, weeklyStreak } = userProgress;
-
-    if (frameworksTried === 0) {
-      return "Every expert was once a beginner. Let's start your AI journey!";
-    }
-
-    if (weeklyStreak >= 3) {
-      return "🔥 You're on fire! Keep that streak going!";
-    }
-
-    if (frameworksTried >= 5) {
-      return "You're becoming a confident AI user - keep exploring!";
-    }
-
-    return "Every framework you try builds your AI confidence!";
+    return "Your personal AI coach for Louisiana Educator Rubric-aligned teaching";
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial="initial"
       animate="animate"
       variants={staggerChildren}
@@ -107,7 +60,7 @@ export function WelcomeHero({
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Left: Personal Welcome */}
-        <motion.div 
+        <motion.div
           variants={fadeInUp}
           className="flex-1 min-w-0"
         >
@@ -118,7 +71,7 @@ export function WelcomeHero({
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <GradientText 
+              <GradientText
                 as="span"
                 colors={['#0ea5e9', '#1e40af']}
                 className="!mx-0 !inline-flex !px-0 !py-0 !rounded-none !cursor-default font-bold font-heading"
@@ -131,14 +84,14 @@ export function WelcomeHero({
             <p className="text-muted-foreground text-base">
               {getPersonalizedMessage()}
             </p>
-            {getMotivationalSubtext() && (
-              <p className="text-primary/80 text-xs sm:text-sm font-medium mt-1">
-                {getMotivationalSubtext()}
-              </p>
-            )}
-            {user.school && user.subject && (
+            <p className="text-primary/80 text-xs sm:text-sm font-medium mt-1">
+              {getMotivationalSubtext()}
+            </p>
+            {user.school && user.subject && user.gradeLevel && (
               <p className="text-muted-foreground text-xs mt-1">
-                <span className="font-medium">{user.subject} Teacher</span>
+                <span className="font-medium">Grade {user.gradeLevel}</span>
+                <span className="mx-2">•</span>
+                <span className="font-medium">{user.subject}</span>
                 <span className="mx-2">•</span>
                 <span>{user.school}</span>
               </p>
@@ -146,18 +99,18 @@ export function WelcomeHero({
           </div>
         </motion.div>
 
-        {/* Right: Primary Action */}
-        <motion.div 
+        {/* Right: Primary Action - Start Coach */}
+        <motion.div
           variants={fadeInUp}
           className="flex-shrink-0"
         >
-          <Button 
+          <Button
             size="lg"
             className="h-12 px-6 bg-primary hover:bg-primary/90 text-base font-semibold"
             onClick={onPrimaryAction}
           >
-            {primaryActionIcon}
-            <span className="ml-2">{primaryActionText}</span>
+            <MessageSquare className="h-5 w-5" />
+            <span className="ml-2">Start Creating Prompts</span>
           </Button>
         </motion.div>
       </div>

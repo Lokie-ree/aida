@@ -21,6 +21,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   // Save prompt dialog state
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
@@ -118,20 +119,20 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     ];
 
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-8 space-y-6">
-        <div className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-blue-600/10 p-5 rounded-full ring-2 ring-blue-500/20">
-          <Bot className="h-14 w-14 text-blue-600" />
+      <div className="flex flex-col items-center justify-center h-full text-center p-4 md:p-8 space-y-4 md:space-y-6 overflow-y-auto">
+        <div className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20 mt-4 md:mt-0">
+          <Bot className="h-10 w-10 md:h-14 md:w-14 text-blue-600" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold">Welcome to Prompt Coach</h2>
-          <p className="text-muted-foreground max-w-2xl text-base">
+          <h2 className="text-2xl md:text-3xl font-bold">Welcome to Prompt Coach</h2>
+          <p className="text-muted-foreground max-w-2xl text-sm md:text-base">
             Built by Louisiana teachers, for Louisiana teachers. I'll help you craft prompts aligned to
             <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
             <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
           </p>
         </div>
 
-        <div className="w-full max-w-2xl space-y-3">
+        <div className="w-full max-w-2xl space-y-3 pb-8 md:pb-0">
           <p className="text-sm text-muted-foreground font-medium">Try these examples:</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {starterPrompts.map((prompt, idx) => {
@@ -141,8 +142,8 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                   key={idx}
                   onClick={() => {
                     onStartNew();
-                    // After conversation is created, we'll pre-fill this message
-                    // For now, just start the conversation
+                    setInputValue(prompt.text);
+                    setTimeout(() => inputRef.current?.focus(), 100);
                   }}
                   className="text-left p-4 rounded-lg border bg-card hover:bg-accent hover:border-primary/50 transition-all group"
                 >
@@ -333,6 +334,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
       <div className="p-4 border-t bg-background">
         <div className="flex gap-2">
           <Input
+            ref={inputRef}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}

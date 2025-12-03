@@ -31,7 +31,6 @@ const applicationTables = {
       v.literal("rejected")
     ),
     signupDate: v.number(),
-    betaProgramId: v.string(),
     notes: v.optional(v.string()),
   }).index("by_email", ["email"])
     .index("by_status", ["status"])

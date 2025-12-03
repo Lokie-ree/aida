@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "mcp__plugin_compounding-engineering_context7__resolve-library-id",
+      "mcp__plugin_compounding-engineering_context7__get-library-docs",
+      "SlashCommand(/compounding-engineering:plan_review plans/beta-launch-readiness-comprehensive.md)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
