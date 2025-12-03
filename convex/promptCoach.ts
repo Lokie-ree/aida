@@ -186,22 +186,41 @@ export const sendMessage = action({
     const searchTerms = args.message;
 
     // Search for Louisiana Student Standards
-    // If namespace doesn't exist yet (e.g., data not ingested), return empty results
-    let standardResults: Array<{ content: Array<{ text: string }>; score: number }> = [];
-    try {
-      const searchResult = await rag.search(ctx, {
-        namespace: "louisiana_standards",
-        query: searchTerms,
-        limit: 5, // Increased from 3 to 5
-        filters: [
-          { name: "contentType", value: "louisiana_standard" }
-        ]
-      });
-      standardResults = searchResult.results;
-    } catch (error) {
-      // If namespace doesn't exist yet (e.g., not ingested), continue without standards
-      console.warn("Louisiana standards namespace not found, continuing without standards context");
+    // Standards data is stored in subject-specific namespaces:
+    // - louisiana_standards_ela
+    // - louisiana_standards_math
+    // - louisiana_standards_science
+    // - louisiana_standards_social_studies
+    // Search across all subject namespaces and combine results
+    const standardNamespaces = [
+      "louisiana_standards_ela",
+      "louisiana_standards_math",
+      "louisiana_standards_science",
+      "louisiana_standards_social_studies",
+    ];
+    
+    const allStandardResults = [];
+    for (const namespace of standardNamespaces) {
+      try {
+        const { results } = await rag.search(ctx, {
+          namespace,
+          query: searchTerms,
+          limit: 2, // Get top 2 from each namespace
+          filters: [
+            { name: "contentType", value: "louisiana_standard" }
+          ]
+        });
+        allStandardResults.push(...results);
+      } catch (error) {
+        // If a namespace doesn't exist yet (e.g., not ingested), skip it
+        console.warn(`Standards namespace ${namespace} not found, skipping`);
+      }
     }
+    
+    // Sort by score (highest first) and take top 5
+    const standardResults = allStandardResults
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
 
     // Search for Louisiana Educator Rubric indicators
     // Rubric data is stored in multiple namespaces:
