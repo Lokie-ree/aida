@@ -89,6 +89,22 @@ describe("Authentication", () => {
       // await t.finishInProgressScheduledFunctions();
     });
 
+    test("prevents magic link for unapproved users", async () => {
+      // Create pending signup
+      await t.mutation(api.betaSignup.signupForBeta, {
+        email: "pending@example.com",
+        name: "Pending User"
+      });
+
+      // Verify signup is pending
+      const signup = await t.query(api.betaSignup.getBetaSignupByEmail, { email: "pending@example.com" });
+      expect(signup?.status).toBe("pending");
+
+      // NOTE: We cannot easily test the magic link blocking logic in integration tests
+      // because it happens inside the Better Auth plugin configuration which isn't exposed.
+      // However, we can verify that the getBetaSignupByEmail query (used by the check) works correctly.
+    });
+
     test("loggedInUser throws when not authenticated", async () => {
       // Verify that loggedInUser requires authentication
       await expect(

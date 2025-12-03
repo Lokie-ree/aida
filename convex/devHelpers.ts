@@ -1,30 +1,32 @@
 /**
  * 🧪 DEV HELPERS - For development and testing only
- * Functions: quickApproveAndSendMagicLink
+ * Functions: quickApproveAndNotify, completeTestFlow
  */
-import { action, mutation } from "./_generated/server";
+import { action } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 
 /**
- * DEV HELPER: Quick approve and send magic link
+ * DEV HELPER: Quick approve and send notification
  * 
  * This is a convenience function for testing the beta approval flow.
- * It approves a beta signup and immediately sends a magic link.
+ * It approves a beta signup and sends an approval notification email.
  * 
  * Usage in Convex dashboard:
  * 1. Go to Functions tab
- * 2. Select "devHelpers:quickApproveAndSendMagicLink"
+ * 2. Select "devHelpers:quickApproveAndNotify"
  * 3. Enter: { "email": "test@resend.dev" }
  * 4. Run
  * 
  * This will:
  * - Find the beta signup by email
  * - Approve it
- * - Send the magic link
+ * - Send the notification email
  * - Return the result
+ * 
+ * FLOW: User receives notification → Goes to sign-in page → Requests magic link
  */
-export const quickApproveAndSendMagicLink = action({
+export const quickApproveAndNotify = action({
   args: {
     email: v.string(),
   },
@@ -34,7 +36,7 @@ export const quickApproveAndSendMagicLink = action({
     signupId: v.optional(v.string()),
   }),
   handler: async (ctx, args): Promise<{ success: boolean; message: string; signupId?: string }> => {
-    console.log(`[quickApproveAndSendMagicLink] Starting for email: ${args.email}`);
+    console.log(`[quickApproveAndNotify] Starting for email: ${args.email}`);
     
     // Find the beta signup by email
     const signup: { _id: string; email: string; name?: string; status: string } | null = await ctx.runQuery(api.betaSignup.getBetaSignupByEmail, {
@@ -48,61 +50,47 @@ export const quickApproveAndSendMagicLink = action({
       };
     }
     
-    console.log(`[quickApproveAndSendMagicLink] Found signup: ${signup._id}, status: ${signup.status}`);
+    console.log(`[quickApproveAndNotify] Found signup: ${signup._id}, status: ${signup.status}`);
     
-    // If already approved, just send the magic link
+    // If already approved, just resend the notification
     if (signup.status === "approved") {
-      console.log(`[quickApproveAndSendMagicLink] Signup already approved, sending magic link`);
-      const result: { success: boolean; message: string } = await ctx.runAction(api.betaSignup.sendMagicLinkForApproval, {
+      console.log(`[quickApproveAndNotify] Signup already approved, resending notification`);
+      const result = await ctx.runAction(api.email.sendApprovalNotificationEmail, {
         email: args.email,
         name: signup.name,
       });
       return {
-        ...result,
+        success: result.success,
+        message: result.success 
+          ? `User already approved. Notification resent to ${args.email}`
+          : `User already approved but notification failed`,
         signupId: signup._id,
       };
     }
     
-    // Approve the signup
-    console.log(`[quickApproveAndSendMagicLink] Approving signup`);
+    // Approve the signup (this triggers notification email automatically)
+    console.log(`[quickApproveAndNotify] Approving signup`);
     const approveResult: { success: boolean; message: string } = await ctx.runMutation(api.betaSignup.approveBetaSignup, {
       signupId: signup._id as any,
     });
     
-    if (!approveResult.success) {
-      return {
-        ...approveResult,
-        signupId: signup._id,
-      };
-    }
-    
-    // Wait a moment for the scheduler to process
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Send the magic link
-    console.log(`[quickApproveAndSendMagicLink] Sending magic link`);
-    const magicLinkResult: { success: boolean; message: string } = await ctx.runAction(api.betaSignup.sendMagicLinkForApproval, {
-      email: args.email,
-      name: signup.name,
-    });
-    
     return {
-      success: magicLinkResult.success,
-      message: magicLinkResult.success 
-        ? `Approved and magic link sent to ${args.email}`
-        : `Approved but failed to send magic link: ${magicLinkResult.message}`,
+      success: approveResult.success,
+      message: approveResult.success 
+        ? `Approved and notification sent to ${args.email}. User should sign in from the website.`
+        : approveResult.message,
       signupId: signup._id,
     };
   },
 });
 
 /**
- * DEV HELPER: Complete test flow - signup, approve, send magic link
+ * DEV HELPER: Complete test flow - signup, approve, send notification
  * 
  * This runs the entire flow in one action for easy testing:
  * 1. Creates a beta signup (if it doesn't exist)
  * 2. Approves it
- * 3. Sends the magic link
+ * 3. Sends notification email (user will request magic link from sign-in page)
  * 
  * Usage in Convex dashboard:
  * 1. Go to Functions tab
@@ -159,7 +147,7 @@ export const completeTestFlow = action({
       };
     }
     
-    // Step 2: Approve if not already approved
+    // Step 2: Approve if not already approved (this triggers notification email)
     if (signup.status !== "approved") {
       steps.push("Approving signup");
       const approveResult = await ctx.runMutation(api.betaSignup.approveBetaSignup, {
@@ -172,35 +160,23 @@ export const completeTestFlow = action({
           steps,
         };
       }
-      steps.push("Signup approved");
-      // Wait for scheduler
-      await new Promise(resolve => setTimeout(resolve, 500));
+      steps.push("Signup approved - notification email scheduled");
     } else {
       steps.push("Signup already approved");
+      // Resend notification for already approved users
+      steps.push("Resending notification email");
+      await ctx.runAction(api.email.sendApprovalNotificationEmail, {
+        email: args.email,
+        name: signup.name || args.name,
+      });
     }
     
-    // Step 3: Send magic link
-    steps.push("Sending magic link");
-    const magicLinkResult = await ctx.runAction(api.betaSignup.sendMagicLinkForApproval, {
-      email: args.email,
-      name: signup.name || args.name,
-    });
-    
-    if (!magicLinkResult.success) {
-      return {
-        success: false,
-        message: `Flow completed but magic link failed: ${magicLinkResult.message}`,
-        steps,
-      };
-    }
-    
-    steps.push("Magic link sent");
+    steps.push("User should check email and sign in from website");
     
     return {
       success: true,
-      message: `Complete test flow finished! Check email ${args.email} for magic link.`,
+      message: `Complete test flow finished! User ${args.email} should check email and sign in from the website.`,
       steps,
     };
   },
 });
-

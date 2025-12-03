@@ -16,8 +16,7 @@ import {
   ArrowRight,
   ArrowLeft,
   ExternalLink,
-  Mail,
-  Clock
+  Mail
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -36,10 +35,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
   });
 
   const userProfile = useQuery(api.userProfiles.getUserProfile);
-  const frameworks = useQuery(api.frameworks.getAllFrameworks, { status: "published" });
   const updateProfile = useMutation(api.userProfiles.updateUserProfile);
-  const updateOnboardingProgress = useMutation(api.betaProgram.updateOnboardingProgress);
-  const recordWeeklyEngagement = useMutation(api.betaProgram.recordWeeklyEngagement);
 
   // Pre-populate profile data from user profile
   React.useEffect(() => {
@@ -92,22 +88,14 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
 
     if (currentStep === 2) {
       // Complete onboarding (final step)
-      try {
-        await updateOnboardingProgress({ step: 2 });
-        await recordWeeklyEngagement();
-        toast.success("Onboarding complete! Welcome to Pelican AI!");
-        // Close modal and redirect to dashboard
-        onComplete();
-        // Redirect to dashboard if currently on /onboarding route
-        if (window.location.pathname === "/onboarding") {
-          window.location.href = "/dashboard";
-        }
-        return;
-      } catch (error) {
-        console.error("Error completing onboarding:", error);
-        toast.error("Failed to complete onboarding. Please try again.");
-        return;
+      toast.success("Onboarding complete! Welcome to Pelican AI!");
+      // Close modal and redirect to dashboard
+      onComplete();
+      // Redirect to dashboard if currently on /onboarding route
+      if (window.location.pathname === "/onboarding") {
+        window.location.href = "/dashboard";
       }
+      return;
     }
 
     setCurrentStep(currentStep + 1);
@@ -288,30 +276,21 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {frameworks?.slice(0, 4).map((framework) => (
-                    <Card key={framework._id} className="cursor-pointer hover:shadow-md transition-shadow">
-                      <CardContent className="p-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              {framework.module === "ai-basics-hub" ? "AI Basics" : "Instructional Expert"}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {framework.difficultyLevel}
-                            </Badge>
-                          </div>
-                          <h4 className="font-semibold">{framework.title}</h4>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {framework.challenge}
-                          </p>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="h-4 w-4" />
-                            <span>{framework.timeEstimate} min</span>
-                          </div>
+                  <Card className="cursor-pointer hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            Get Started
+                          </Badge>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        <h4 className="font-semibold">Try the Prompt Coach</h4>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          Start a conversation to generate Louisiana-aligned prompts for your lessons
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
                 
                 <div className="text-center">

@@ -1,12 +1,31 @@
 /**
  * ✅ ACTIVE - Used in production
  * Functions: signupForBeta, getBetaSignupByEmail, approveBetaSignup, getPendingSignups
+ *
+ * ADMIN GUIDE: How to approve beta signups in Convex Dashboard
+ * =============================================================
+ * Option 1 (RECOMMENDED): Use the adminApproveBetaSignup action
+ *   1. Go to Functions tab in Convex dashboard
+ *   2. Search for "betaSignup:adminApproveBetaSignup"
+ *   3. Enter: { "email": "user@example.com" }
+ *   4. Click "Run" - this will approve AND send notification email
+ *
+ * Option 2: Use the updateSignupStatus mutation
+ *   1. Find the signup in Data tab -> betaSignups table
+ *   2. Copy the _id
+ *   3. Go to Functions -> betaSignup:updateSignupStatus
+ *   4. Enter: { "signupId": "<paste_id_here>", "status": "approved" }
+ *   5. Click "Run" - this will approve AND send notification email
+ *
+ * ⚠️ DO NOT manually patch the status field in the Data tab!
+ *    This will NOT send the notification email to the user.
+ *
+ * FLOW: User receives notification email -> Clicks link to sign-in page ->
+ *       Enters email -> Receives magic link -> Clicks to complete sign-in
  */
 import { mutation, action, query } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { createAuth, authComponent } from "./auth";
-import { requireActionCtx } from "@convex-dev/better-auth/utils";
 
 /**
  * Public mutation for beta program signup.
@@ -18,8 +37,6 @@ import { requireActionCtx } from "@convex-dev/better-auth/utils";
  * 
  * @param {string} args.email - Beta tester's email address (must be unique)
  * @param {string} [args.name] - Beta tester's name (optional)
- * @param {string} [args.school] - School name (optional, used for profile)
- * @param {string} [args.subject] - Subject taught (optional, used for profile)
  * 
  * @returns {Object} Result containing:
  *   - success: boolean indicating signup status
@@ -42,7 +59,6 @@ export const signupForBeta = mutation({
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
-    isTestData: v.optional(v.boolean()), // NEW: Optional test data flag
   },
   returns: v.object({
     success: v.boolean(),
@@ -74,22 +90,19 @@ export const signupForBeta = mutation({
     }
 
     // Create new beta signup
+    // Store trimmed email to ensure consistency with queries
     const signupId = await ctx.db.insert("betaSignups", {
-      email: args.email,
+      email: args.email.trim(),
       name: args.name || "",
-      school: args.school || "",
-      subject: args.subject || "",
+      school: args.school,
+      subject: args.subject,
       status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
-      betaProgramId: "beta-v1",
     });
 
-    // Send welcome email (no platform credentials yet - user will receive magic link after approval)
-    await ctx.scheduler.runAfter(1000, api.email.sendBetaWelcomeEmail, {
-      email: args.email,
-      name: args.name,
-      school: args.school,
-    });
+    // Email sending removed during cleanup - welcome email functionality disabled
+    // TODO: Implement email service if welcome emails are needed
+    console.log(`[Beta Signup] New signup: ${args.email} (${args.name || 'No name'})`);
 
     return {
       success: true,
@@ -142,156 +155,16 @@ export const updateSignupStatus = mutation({
     });
 
 
-    // If status is being changed to "approved", trigger magic link sending
+    // If status is being changed to "approved", send notification email
     if (args.status === "approved" && previousStatus !== "approved") {
-      console.log(`[updateSignupStatus] Status changed to approved, scheduling magic link for: ${existingDoc.email}`);
-      await ctx.scheduler.runAfter(100, api.betaSignup.sendMagicLinkForApproval, {
+      console.log(`[updateSignupStatus] Status changed to approved, sending notification for: ${existingDoc.email}`);
+      await ctx.scheduler.runAfter(100, api.email.sendApprovalNotificationEmail, {
         email: existingDoc.email,
         name: existingDoc.name,
       });
     }
     
     return null;
-  },
-});
-
-/**
- * Action to send magic link via Convex HTTP endpoint
- * 
- * Calls the Better Auth HTTP endpoint registered in http.ts.
- * This is the proper way to trigger Better Auth from Convex actions.
- */
-export const sendMagicLinkForApproval = action({
-  args: {
-    email: v.string(),
-    name: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    message: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    
-    try {
-      // Get the Convex site URL - this is where the HTTP endpoints are registered
-      // In production: https://xxx.convex.site
-      // In local dev: http://localhost:5174 (or check CONVEX_SITE_URL)
-      // SITE_URL is the frontend URL, we need the Convex site URL
-      let convexSiteUrl = process.env.CONVEX_SITE_URL || process.env.VITE_CONVEX_SITE_URL;
-      if (!convexSiteUrl) {
-        // Fallback: try to construct from CONVEX_URL if available
-        const convexUrl = process.env.CONVEX_URL;
-        if (convexUrl) {
-          // Convert https://xxx.convex.cloud to https://xxx.convex.site
-          convexSiteUrl = convexUrl.replace(/\.convex\.cloud/, ".convex.site");
-        } else {
-          throw new Error("CONVEX_SITE_URL or VITE_CONVEX_SITE_URL environment variable not set. Set it with: npx convex env set CONVEX_SITE_URL <your-site-url>");
-        }
-      }
-
-      // The HTTP endpoint is at /api/auth/sign-in/magic-link
-      // This endpoint is registered in http.ts via authComponent.registerRoutes
-      const betterAuthEndpoint = `${convexSiteUrl}/api/auth/sign-in/magic-link`;
-      
-
-      // Get the frontend URL for callback URLs
-      // Better Auth will use this to construct the full redirect URL
-      const frontendUrl = process.env.SITE_URL || "http://localhost:5173";
-      
-      const response = await fetch(betterAuthEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Add origin header to match trusted origins in auth.ts
-          "Origin": frontendUrl,
-        },
-        body: JSON.stringify({
-          email: args.email,
-          name: args.name,
-          // Use full URLs for callbacks to ensure proper redirection
-          callbackURL: `${frontendUrl}/dashboard`,
-          newUserCallbackURL: `${frontendUrl}/onboarding`,
-        }),
-      });
-
-      const responseText = await response.text();
-
-      if (!response.ok) {
-        let errorMessage = response.statusText;
-        try {
-          const errorJson = JSON.parse(responseText);
-          errorMessage = errorJson.message || errorJson.error || errorMessage;
-        } catch {
-          errorMessage = responseText || errorMessage;
-        }
-        
-        console.error(`[sendMagicLinkForApproval] HTTP error: ${response.status} - ${errorMessage}`);
-        return {
-          success: false,
-          message: `Failed to send magic link: ${errorMessage}`,
-        };
-      }
-
-      return {
-        success: true,
-        message: "Magic link sent successfully",
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      const errorStack = error instanceof Error ? error.stack : undefined;
-      console.error(`[sendMagicLinkForApproval] Exception: ${errorMessage}`);
-      if (errorStack) {
-        console.error(`[sendMagicLinkForApproval] Stack: ${errorStack.substring(0, 500)}`);
-      }
-      
-      return {
-        success: false,
-        message: `Failed to send magic link: ${errorMessage}`,
-      };
-    }
-  },
-});
-
-/**
- * TEST ACTION: Manually trigger magic link for a beta signup
- * 
- * This can be called directly from the Convex dashboard function runner
- * to test the magic link flow without needing admin UI access.
- * 
- * Usage in Convex dashboard:
- * 1. Go to Functions tab
- * 2. Select "betaSignup:testSendMagicLink"
- * 3. Enter: { "email": "user@example.com" }
- * 4. Run
- */
-export const testSendMagicLink = action({
-  args: {
-    email: v.string(),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    message: v.string(),
-  }),
-  handler: async (ctx, args): Promise<{ success: boolean; message: string }> => {    
-    // Find the beta signup by email
-    const signup: { _id: string; email: string; name?: string; status: string } | null = await ctx.runQuery(api.betaSignup.getBetaSignupByEmail, {
-      email: args.email,
-    });
-    
-    if (!signup) {
-      return {
-        success: false,
-        message: `No beta signup found for email: ${args.email}`,
-      };
-    }
-        
-    // Send the magic link
-    const result: { success: boolean; message: string } = await ctx.runAction(api.betaSignup.sendMagicLinkForApproval, {
-      email: args.email,
-      name: signup.name,
-    });
-    
-    return result;
   },
 });
 
@@ -311,32 +184,23 @@ export const approveBetaSignup = mutation({
       return { success: false, message: "Beta signup not found" };
     }
 
-
     // Update beta signup status
     await ctx.db.patch(args.signupId, { 
       status: "approved",
       notes: args.notes 
     });
 
-    console.log(`[approveBetaSignup] Status updated to approved`);
+    console.log(`[approveBetaSignup] Status updated to approved for: ${signup.email}`);
 
-    // Note: We don't create betaProgram here because the user doesn't exist yet.
-    // betaProgram will be created in initializeNewUser when the user clicks the magic link
-    // and Better Auth creates their account.
-
-    // Send magic link email via Better Auth API
-    // Use runAfter with a small delay to ensure the mutation completes first
-    console.log(`[approveBetaSignup] Scheduling sendMagicLinkForApproval for email: ${signup.email}`);
-    await ctx.scheduler.runAfter(100, api.betaSignup.sendMagicLinkForApproval, {
+    // Send approval notification email (user will request magic link from frontend)
+    await ctx.scheduler.runAfter(100, api.email.sendApprovalNotificationEmail, {
       email: signup.email,
       name: signup.name,
     });
 
-    console.log(`[approveBetaSignup] Scheduled action completed, returning success`);
-
     return {
       success: true,
-      message: "Beta signup approved. User will receive a magic link to access the platform."
+      message: "Beta signup approved. User will receive a notification email to sign in."
     };
   },
 });
@@ -364,10 +228,8 @@ export const getPendingSignups = query({
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
     signupDate: v.number(),
-    betaProgramId: v.string(),
     status: v.string(),
     notes: v.optional(v.string()),
-    isTestData: v.optional(v.boolean()), // NEW: Added test data flag
   })),
   handler: async (ctx) => {
     return await ctx.db
@@ -389,9 +251,7 @@ export const getBetaSignupById = query({
       subject: v.optional(v.string()),
       status: v.string(),
       signupDate: v.number(),
-      betaProgramId: v.string(),
       notes: v.optional(v.string()),
-      isTestData: v.optional(v.boolean()), // NEW: Added test data flag
     }),
     v.null()
   ),
@@ -412,9 +272,7 @@ export const getBetaSignupByEmail = query({
       subject: v.optional(v.string()),
       status: v.string(),
       signupDate: v.number(),
-      betaProgramId: v.string(),
       notes: v.optional(v.string()),
-      isTestData: v.optional(v.boolean()),
     }),
     v.null()
   ),
@@ -438,9 +296,7 @@ export const getAllBetaSignups = query({
     subject: v.optional(v.string()),
     status: v.string(),
     signupDate: v.number(),
-    betaProgramId: v.string(),
     notes: v.optional(v.string()),
-    isTestData: v.optional(v.boolean()), // NEW: Added test data flag
   })),
   handler: async (ctx) => {
     return await ctx.db.query("betaSignups").collect();
@@ -486,14 +342,15 @@ export const recoverDeletedUser = mutation({
     success: v.boolean(),
     message: v.string(),
     betaSignupId: v.optional(v.id("betaSignups")),
-    betaProgramId: v.optional(v.id("betaProgram")),
   }),
   handler: async (ctx, args) => {
     try {
       // Check if user already exists (prevent duplicate recovery)
+      // Use trimmed email for consistency
+      const trimmedEmail = args.email.trim();
       const existingSignup = await ctx.db
         .query("betaSignups")
-        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .withIndex("by_email", (q) => q.eq("email", trimmedEmail))
         .unique();
 
       if (existingSignup) {
@@ -501,42 +358,28 @@ export const recoverDeletedUser = mutation({
           success: false,
           message: "User already exists in betaSignups table",
           betaSignupId: undefined,
-          betaProgramId: undefined,
         };
       }
 
       // Create beta signup record
+      // Store trimmed email to ensure consistency with queries
       const signupDate = args.originalSignupDate || Date.now();
       const betaSignupId = await ctx.db.insert("betaSignups", {
-        email: args.email,
+        email: trimmedEmail,
         name: args.name || args.email.split('@')[0],
         school: args.school || "",
         subject: args.subject || "",
         status: "approved", // User already has account
         signupDate: signupDate,
-        betaProgramId: "beta-v1",
         notes: "Recovered from accidental deletion",
       });
 
-      // Create beta program record
-      const betaProgramId = await ctx.db.insert("betaProgram", {
-        userId: args.userId,
-        status: "active",
-        invitedAt: signupDate,
-        joinedAt: signupDate,
-        onboardingStep: 0,
-        onboardingCompleted: false,
-        frameworksTried: 0,
-        totalTimeSaved: 0,
-        innovationsShared: 0,
-        weeklyEngagementCount: 0,
-      });
+      // Note: betaProgram table removed during cleanup - user profile should be created separately if needed
 
       return {
         success: true,
         message: "User data recovered successfully",
         betaSignupId,
-        betaProgramId,
       };
     } catch (error) {
       console.error("Error recovering user data:", error);
@@ -544,7 +387,6 @@ export const recoverDeletedUser = mutation({
         success: false,
         message: `Failed to recover user data: ${error instanceof Error ? error.message : 'Unknown error'}`,
         betaSignupId: undefined,
-        betaProgramId: undefined,
       };
     }
   },
@@ -573,10 +415,11 @@ export const resendPlatformAccessEmail = mutation({
     message: string;
   }> => {
     try {
-      // Find beta signup by email
+      // Find beta signup by email (trim for consistency)
+      const trimmedEmail = args.email.trim();
       const signup = await ctx.db
         .query("betaSignups")
-        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .withIndex("by_email", (q) => q.eq("email", trimmedEmail))
         .first();
       
       if (!signup) {
@@ -593,21 +436,87 @@ export const resendPlatformAccessEmail = mutation({
         };
       }
       
-      // Send magic link via Better Auth API
-      await ctx.scheduler.runAfter(0, api.betaSignup.sendMagicLinkForApproval, {
+      // Send approval notification email (user will request magic link from frontend)
+      await ctx.scheduler.runAfter(0, api.email.sendApprovalNotificationEmail, {
         email: signup.email,
         name: signup.name,
       });
       
       return {
         success: true,
-        message: "Magic link sent successfully. Check your email for the access link.",
+        message: "Notification email sent. Check your email for instructions to sign in.",
       };
     } catch (error) {
       console.error("Error resending platform access email:", error);
       return {
         success: false,
         message: `Failed to resend email: ${error instanceof Error ? error.message : 'Unknown error'}`
+      };
+    }
+  },
+});
+
+/**
+ * ADMIN ACTION: Approve beta signup by email address
+ *
+ * This is the easiest way for admins to approve beta signups from the Convex dashboard.
+ * Just provide the email address and it will:
+ * 1. Find the beta signup
+ * 2. Update status to "approved"
+ * 3. Send notification email (user will request magic link from sign-in page)
+ *
+ * Usage in Convex dashboard:
+ * 1. Go to Functions tab
+ * 2. Search for "betaSignup:adminApproveBetaSignup"
+ * 3. Enter: { "email": "user@example.com" }
+ * 4. Click "Run"
+ *
+ * @param {string} email - Email address of the user to approve
+ * @returns {Object} Success status and message
+ */
+export const adminApproveBetaSignup = action({
+  args: { email: v.string() },
+  returns: v.object({
+    success: v.boolean(),
+    message: v.string(),
+  }),
+  handler: async (ctx, args): Promise<{ success: boolean; message: string }> => {
+    try {
+      // Find the beta signup by email
+      const signup = await ctx.runQuery(api.betaSignup.getBetaSignupByEmail, {
+        email: args.email,
+      });
+
+      if (!signup) {
+        return {
+          success: false,
+          message: `No beta signup found for email: ${args.email}`,
+        };
+      }
+
+      if (signup.status === "approved") {
+        return {
+          success: false,
+          message: `User ${args.email} is already approved. Use resendPlatformAccessEmail to resend the notification if needed.`,
+        };
+      }
+
+      // Update status to approved using the mutation (this will trigger notification email)
+      await ctx.runMutation(api.betaSignup.updateSignupStatus, {
+        signupId: signup._id,
+        status: "approved",
+        notes: "Approved by admin via adminApproveBetaSignup",
+      });
+
+      return {
+        success: true,
+        message: `Successfully approved ${args.email}. Notification email sent - user will sign in from the website.`,
+      };
+    } catch (error) {
+      console.error("[adminApproveBetaSignup] Error:", error);
+      return {
+        success: false,
+        message: `Failed to approve signup: ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
   },

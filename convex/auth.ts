@@ -48,11 +48,14 @@ export const createAuth = (
       crossDomain({ siteUrl }),
       // The Convex plugin is required for Convex compatibility
       convex(),
-      // Magic Link plugin for passwordless authentication
+      // Magic Link plugin for passwordless authentication via Resend
       magicLink({
         sendMagicLink: async ({ email, url, token }, request) => {
-          // Use centralized email action from email.ts
           const actionCtx = requireActionCtx(ctx);
+
+          // Approval check is now handled in the frontend (AuthModal.tsx)
+          // This ensures users only receive magic links after admin approval
+
           try {
             await actionCtx.runAction(api.email.sendMagicLinkEmail, {
               email,

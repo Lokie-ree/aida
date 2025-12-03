@@ -9,16 +9,12 @@ import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { LoadingPage } from "./components/shared/LoadingStates";
 import { authClient } from "./lib/auth-client";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import CoachRoute from "./components/routes/CoachRoute";
 
 // Lazy load route components for code splitting
 const SmartRedirect = lazy(() => import("./components/routes/SmartRedirect"));
 const DashboardRoute = lazy(() => import("./components/routes/DashboardRoute"));
-const FrameworkLibrary = lazy(() => import("./components/framework/FrameworkLibrary"));
-//const InnovationList = lazy(() => import("./components/community/InnovationList"));
-const AlignmentScorecard = lazy(() => import("./components/alignment/AlignmentScorecard"));
 const ProfileSettings = lazy(() => import("./components/dashboard/ProfileSettings"));
-const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
-const TimeTracking = lazy(() => import("./components/dashboard/TimeTracking"));
 const LandingPage = lazy(() => import("./components/shared/LandingPage"));
 const PromptCoach = lazy(() => import("./components/coach/PromptCoach"));
 
@@ -42,7 +38,7 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col bg-background">
+          <div className="min-h-[100dvh] flex flex-col bg-background">
             {/* Skip link for accessibility */}
             <a
               href="#main-content"
@@ -58,77 +54,31 @@ export default function App() {
                 <Suspense fallback={<LoadingPage />}>
                   <Routes>
                     <Route path="/" element={<SmartRedirect />} />
-                    <Route 
-                      path="/coach" 
+                    <Route
+                      path="/coach"
                       element={
                         <ProtectedRoute>
-                          <PromptCoach />
+                          <CoachRoute>
+                            <PromptCoach />
+                          </CoachRoute>
                         </ProtectedRoute>
-                      } 
+                      }
                     />
-                    <Route 
-                      path="/onboarding" 
-                      element={
-                        <ProtectedRoute>
-                          <DashboardRoute onShowOnboarding={() => setShowOnboarding(true)} />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/dashboard" 
+                    <Route
+                      path="/dashboard"
                       element={
                         <ProtectedRoute>
                           <DashboardRoute onShowOnboarding={() => setShowOnboarding(true)} />
                         </ProtectedRoute>
-                      } 
+                      }
                     />
-                    <Route 
-                      path="/frameworks" 
-                      element={
-                        <ProtectedRoute>
-                          <FrameworkLibrary />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/frameworks/:frameworkId" 
-                      element={
-                        <ProtectedRoute>
-                          <FrameworkLibrary />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/alignment-scorecard" 
-                      element={
-                        <ProtectedRoute>
-                          <AlignmentScorecard />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/profile" 
+                    <Route
+                      path="/profile"
                       element={
                         <ProtectedRoute>
                           <ProfileSettings />
                         </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/admin" 
-                      element={
-                        <ProtectedRoute requireAdmin={true}>
-                          <AdminRoute />
-                        </ProtectedRoute>
-                      } 
-                    />
-                    <Route 
-                      path="/time-tracking" 
-                      element={
-                        <ProtectedRoute>
-                          <TimeTracking />
-                        </ProtectedRoute>
-                      } 
+                      }
                     />
                   </Routes>
                 </Suspense>

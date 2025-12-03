@@ -14,9 +14,6 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
   // ConvexBetterAuthProvider handles token sync automatically
   // Since we're inside <Authenticated>, queries are safe to call
   const userProfile = useQuery(api.userProfiles.getUserProfile);
-  const betaStatus = useQuery(api.betaProgram.getBetaStatus);
-  const frameworks = useQuery(api.frameworks.getAllFrameworks, {});
-  const betaStats = useQuery(api.betaProgram.getBetaStats, {});
   const betaSignup = useQuery(
     api.betaSignup.getBetaSignupByEmail,
     session?.user?.email ? { email: session.user.email } : "skip"
@@ -58,20 +55,7 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     }
   }, [session, userProfile, betaSignup, initializeUser]);
 
-  // Auto-show onboarding modal when on /onboarding route, but only if onboarding isn't completed
-  React.useEffect(() => {
-    if (window.location.pathname === "/onboarding") {
-      // Only show onboarding if it's not completed
-      if (betaStatus && !betaStatus.onboardingCompleted) {
-        onShowOnboarding();
-      } else if (betaStatus && betaStatus.onboardingCompleted) {
-        // Redirect to dashboard if onboarding is already completed
-        window.history.replaceState({}, "", "/dashboard");
-      }
-    }
-  }, [onShowOnboarding, betaStatus]);
-
-  if (session === undefined || frameworks === undefined || betaStats === undefined) {
+  if (session === undefined) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <motion.div
@@ -107,41 +91,17 @@ const DashboardRoute: React.FC<DashboardRouteProps> = ({ onShowOnboarding }) => 
     );
   }
 
-  // Check if user needs onboarding
-  // Show onboarding if:
-  // 1. User has profile but onboarding not completed (betaStatus exists but onboardingCompleted is false)
-  // 2. User just initialized (profile exists but onboarding hasn't started)
-  const needsOnboarding = 
-    (userProfile && betaStatus && !betaStatus.onboardingCompleted) ||
-    (userProfile && betaStatus && betaStatus.status === "invited");
-
   // Use real user profile data
   const user = {
     name: session?.user?.name || "Educator",
     email: session?.user?.email || "",
-    school: userProfile?.school || "Not specified",
-    subject: userProfile?.subject || "Not specified"
+    school: userProfile?.school || undefined,
+    subject: userProfile?.subject || undefined,
+    gradeLevel: userProfile?.gradeLevel || undefined
   };
-
-  const stats = {
-    frameworksTried: betaStats?.frameworksTried || 0,
-    timeSaved: betaStats?.totalTimeSaved || 0,
-    innovationsShared: betaStats?.innovationsShared || 0,
-    weeklyStreak: betaStats?.weeklyEngagementStreak || 0,
-  };
-
-  // Show onboarding for new users
-  if (needsOnboarding) {
-    onShowOnboarding();
-  }
 
   return (
-    <Dashboard 
-      user={user}
-      stats={stats}
-      recentFrameworks={frameworks.slice(0, 5)}
-      weeklyGoal={60}
-    />
+    <Dashboard user={user} />
   );
 };
 

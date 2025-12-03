@@ -12,41 +12,16 @@ export interface DashboardProps {
     name?: string;
     school?: string;
     subject?: string;
+    gradeLevel?: string;
     email?: string;
   };
-  stats: {
-    frameworksTried: number;
-    timeSaved: number; // in minutes
-    innovationsShared: number;
-    weeklyStreak: number;
-  };
-  recentFrameworks: Array<{
-    _id: string;
-    frameworkId: string;
-    title: string;
-    module: "ai-basics-hub" | "instructional-expert-hub";
-    category: string;
-    tags: string[];
-    challenge: string;
-    timeEstimate: number;
-    difficultyLevel: "beginner" | "intermediate" | "advanced";
-    usageCount: number;
-    averageRating?: number;
-  }>;
-  weeklyGoal?: number; // in minutes
-  onShowOnboarding?: () => void;
 }
 
-export function Dashboard({ 
-  user, 
-  stats, 
-  recentFrameworks,
-  weeklyGoal = 180, // 3 hours default
-}: DashboardProps) {
+export function Dashboard({ user }: DashboardProps) {
   const navigate = useNavigate();
 
-  // Navigation handlers
-  const handleNavigateToFrameworks = () => navigate('/frameworks');
+  // Navigation handler - focus on core product: Prompt Coach
+  const handleStartCoach = () => navigate('/coach');
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -55,14 +30,12 @@ export function Dashboard({
         <div className="mb-6">
           <WelcomeHero
             user={user}
-            userProgress={stats}
-            onPrimaryAction={handleNavigateToFrameworks}
-            primaryActionText="Browse AI Frameworks"
+            onPrimaryAction={handleStartCoach}
           />
         </div>
 
         {/* Profile Completion Prompt */}
-        {(!user.school || !user.subject) && (
+        {(!user.school || !user.subject || !user.gradeLevel) && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,7 +46,7 @@ export function Dashboard({
               <AlertDescription>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <span className="text-sm sm:text-base">
-                    Complete your profile to get personalized framework recommendations.
+                    Complete your profile to personalize your coaching experience.
                   </span>
                   <Button
                     size="sm"
@@ -89,11 +62,11 @@ export function Dashboard({
           </motion.div>
         )}
 
-        {/* Quick Access Grid - Beta Simplified Version */}
+        {/* Quick Access - Conversational Coach Focus */}
         <div className="mb-6">
           <QuickAccessGrid
-            userStats={stats}
-            onNavigateToFrameworks={handleNavigateToFrameworks}
+            onStartCoach={handleStartCoach}
+            user={user}
           />
         </div>
       </div>

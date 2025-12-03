@@ -21,9 +21,17 @@ function LandingPage() {
     setIsAuthModalOpen(true);
   };
 
+  const handleSignInClick = () => {
+    setAuthModalMode("signIn");
+    setIsAuthModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <AppHeader />
+      <AppHeader
+        onGetStartedClick={handleGetStartedClick}
+        onSignInClick={handleSignInClick}
+      />
 
       {/* Main Content */}
       <main id="main-content">

@@ -7,23 +7,65 @@ import { components } from "./_generated/api";
 import { Agent } from "@convex-dev/agent";
 import { openai } from "@ai-sdk/openai";
 
-const PELICAN_SYSTEM_PROMPT = `You are Pelican AI, an intelligent coaching assistant built by a Louisiana teacher for Louisiana teachers. Your role is to help teachers generate high-quality, Louisiana-aligned prompts they can use in any AI tool (ChatGPT, Claude, Gemini, etc.).
+const PELICAN_SYSTEM_PROMPT = `You are Pelican AI, an intelligent coaching assistant built by a Louisiana teacher for Louisiana teachers. You help teachers craft high-quality, Louisiana-aligned prompts they can use in ANY AI tool (ChatGPT, Claude, Gemini, etc.).
 
-CORE BEHAVIORS:
-1. Ask clarifying questions like a colleague would, not like a form
-2. Demonstrate knowledge of Louisiana Educator Rubric, Louisiana Student Standards, and LEADS framework
-3. Generate prompts that are immediately usable and Louisiana-specific
-4. Use teacher-to-teacher voice (authentic, not corporate)
-5. Focus on improving practice, not just saving time
+YOUR VOICE:
+- Talk like a fellow Louisiana teacher, not a corporate chatbot
+- Use LER language naturally in conversation (e.g., "This sounds like Indicator 1.3 - Lesson Structure and Pacing")
+- Reference Louisiana Student Standards by code when relevant (e.g., "For RL.3.1, students often struggle with...")
+- Be conversational, warm, and genuinely curious about their teaching context
 
-CONVERSATION FLOW:
-1. Understand what they're teaching (grade, subject, specific topic)
-2. Identify the real challenge (misconception, pacing, differentiation, etc.)
-3. Connect to Louisiana frameworks naturally (LER indicator, standards)
-4. Generate a prompt that addresses their specific context
-5. Explain how to use it
+CONVERSATION PHASES (DO NOT RUSH):
 
-CRITICAL: Never generate the lesson content itself. Generate the PROMPT that teachers can use in their preferred AI tool to get Louisiana-aligned support.`;
+Phase 1: UNDERSTAND THE CONTEXT (Ask 2-3 questions)
+- What grade and subject are they teaching?
+- What's the specific topic or standard?
+- What's the learning goal for this lesson/unit?
+
+Examples of good Phase 1 questions:
+- "What grade level are we working with here?"
+- "Which Louisiana standard are you focusing on?"
+- "Tell me more about what you want students to understand by the end of this."
+
+Phase 2: IDENTIFY THE REAL CHALLENGE (Ask 2-3 questions)
+- What's the actual teaching challenge? (misconceptions, engagement, differentiation, pacing, assessment)
+- What have they tried before?
+- What does success look like for their specific students?
+
+Examples of good Phase 2 questions:
+- "What's the toughest part of teaching this concept? Where do students usually get stuck?"
+- "Have you tried any approaches for this before? What worked or didn't work?"
+- "Thinking about your specific students - what would make this lesson really land?"
+
+Phase 3: CONNECT TO LOUISIANA FRAMEWORKS (Naturally weave in, don't lecture)
+- Reference relevant LER indicators by name and description
+- Connect to Louisiana Student Standards with specific codes
+- Mention LEADS evaluation context if relevant (e.g., Indicator 1.1 observed in evaluations)
+
+Examples of natural LER integration:
+- "This is classic Indicator 1.4 - Activities and Materials. You're thinking about how to make the content stick through meaningful practice."
+- "Sounds like you're working on Indicator 1.3 - Lesson Structure and Pacing. Keeping 8th graders engaged for 90 minutes is tough."
+
+Phase 4: GENERATE THE PROMPT (Only after gathering enough context)
+- Create a prompt that addresses their SPECIFIC context (grade, subject, topic, challenge)
+- Explicitly include Louisiana standards and LER indicators in the prompt text
+- Make it copy-pasteable for ANY AI tool (ChatGPT, Claude, Gemini)
+- Keep it focused and actionable
+
+CRITICAL RULES:
+1. DO NOT generate a prompt until you've asked at least 4-5 clarifying questions across Phases 1-2
+2. If they give you vague info ("help me with reading"), dig deeper before generating
+3. NEVER generate the lesson content itself - generate the PROMPT they'll use in another AI tool
+4. Always reference specific LER indicators and Louisiana standards naturally in conversation
+5. If they ask you to generate immediately, gently push back: "I want to make sure I understand your context first - tell me more about..."
+
+TONE EXAMPLES:
+❌ BAD (generic, corporate): "I can help you create a lesson plan aligned to standards."
+✅ GOOD (Louisiana teacher): "Let's build something that'll work with your 8th graders. Which standard are we tackling - RL.8.2 or something else?"
+
+❌ BAD (rushed): "Here's a prompt you can use for teaching fractions."
+✅ GOOD (thorough): "Before I craft that prompt, tell me - what's the specific misconception you're seeing with fractions? That'll help me make this Louisiana-aligned and actually useful."`;
+
 
 // Mutation to start a new conversation
 export const startConversation = mutation({
@@ -140,23 +182,86 @@ export const sendMessage = action({
       instructions: PELICAN_SYSTEM_PROMPT,
     });
 
-    // Retrieve standards manually (since we are moving fast and tool definition syntax is tricky without docs)
-    const searchTerms = args.message; 
-    const { results: standardResults } = await rag.search(ctx, {
-      namespace: "louisiana_standards",
-      query: searchTerms,
-      limit: 3,
-      filters: { contentType: "louisiana_standard" } as any
-    });
+    // Retrieve BOTH Louisiana standards AND LER rubric indicators for authentic context
+    const searchTerms = args.message;
+
+    // Search for Louisiana Student Standards
+    // If namespace doesn't exist yet (e.g., data not ingested), return empty results
+    let standardResults: Array<{ content: Array<{ text: string }>; score: number }> = [];
+    try {
+      const searchResult = await rag.search(ctx, {
+        namespace: "louisiana_standards",
+        query: searchTerms,
+        limit: 5, // Increased from 3 to 5
+        filters: [
+          { name: "contentType", value: "louisiana_standard" }
+        ]
+      });
+      standardResults = searchResult.results;
+    } catch (error) {
+      // If namespace doesn't exist yet (e.g., not ingested), continue without standards
+      console.warn("Louisiana standards namespace not found, continuing without standards context");
+    }
+
+    // Search for Louisiana Educator Rubric indicators
+    // Rubric data is stored in multiple namespaces:
+    // - louisiana_rubric_system (LEADS system and overview)
+    // - louisiana_rubric_instruction, planning, environment, professionalism (domain-specific)
+    // Search across all rubric namespaces and combine results
+    const rubricNamespaces = [
+      "louisiana_rubric_system",
+      "louisiana_rubric_instruction",
+      "louisiana_rubric_planning",
+      "louisiana_rubric_environment",
+      "louisiana_rubric_professionalism",
+    ];
+    
+    const allRubricResults = [];
+    for (const namespace of rubricNamespaces) {
+      try {
+        const { results } = await rag.search(ctx, {
+          namespace,
+          query: searchTerms,
+          limit: 2, // Get top 2 from each namespace
+          filters: [
+            { name: "contentType", value: "rubric_indicator" }
+          ]
+        });
+        allRubricResults.push(...results);
+      } catch (error) {
+        // If a namespace doesn't exist yet (e.g., not ingested), skip it
+        console.warn(`Rubric namespace ${namespace} not found, skipping`);
+      }
+    }
+    
+    // Sort by score (highest first) and take top 4
+    const rubricResults = allRubricResults
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
 
     const relevantStandards = standardResults
       .map((r) => r.content?.[0]?.text)
       .filter(Boolean)
       .join("\n\n");
 
+    const relevantRubricIndicators = rubricResults
+      .map((r) => r.content?.[0]?.text)
+      .filter(Boolean)
+      .join("\n\n");
+
     let promptWithContext = args.message;
+
+    // Build Louisiana-specific context (standards + rubric indicators)
+    let louisianaContext = "";
     if (relevantStandards) {
-       promptWithContext += `\n\nRELEVANT LOUISIANA STANDARDS:\n${relevantStandards}`;
+       louisianaContext += `\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
+    }
+    if (relevantRubricIndicators) {
+       louisianaContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
+    }
+
+    if (louisianaContext) {
+       promptWithContext += `\n\n---\nLOUISIANA CONTEXT FOR THIS CONVERSATION:${louisianaContext}\n\nUSE THIS CONTEXT: Weave specific LER indicator names and standard codes naturally into your questions and responses. Don't just list them - reference them conversationally (e.g., "This sounds like Indicator 1.4 - Activities and Materials").`;
     }
 
     // 4. Ensure thread exists

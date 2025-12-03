@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
+  MessageSquare,
   BookOpen,
   ArrowRight,
-  MessageSquare
+  User
 } from "lucide-react";
 import { spacing } from "@/lib/spacing";
 
@@ -20,53 +21,53 @@ export interface QuickAccessItem {
 
 export interface QuickAccessGridProps {
   items?: QuickAccessItem[];
-  onNavigateToFrameworks?: () => void;
-  onNavigateToProgress?: () => void;
-  userStats?: {
-    frameworksTried: number;
-    timeSaved: number;
-    innovationsShared: number;
-    weeklyStreak: number;
+  onStartCoach?: () => void;
+  user?: {
+    name?: string;
+    school?: string;
+    subject?: string;
+    gradeLevel?: string;
   };
   className?: string;
 }
 
-const getDefaultItems = (userStats?: QuickAccessGridProps['userStats']): QuickAccessItem[] => [
+const getDefaultItems = (
+  user?: QuickAccessGridProps['user']
+): QuickAccessItem[] => [
   {
-    id: "frameworks",
-    label: "Browse Frameworks",
-    description: "Explore 10 Louisiana-aligned AI frameworks",
-    icon: <BookOpen className="h-6 w-6" />,
+    id: "coach",
+    label: "Prompt Coach",
+    description: "Create Louisiana-aligned prompts with AI guidance",
+    icon: <MessageSquare className="h-6 w-6" />,
     onClick: () => {},
     variant: "default"
   },
   {
-    id: "saved-frameworks",
-    label: "My Saved Frameworks",
-    description: "Access your saved frameworks",
+    id: "library",
+    label: "My Prompts",
+    description: "View and manage your saved prompts",
     icon: <BookOpen className="h-6 w-6" />,
     onClick: () => {},
     variant: "outline"
   },
   {
-    id: "feedback",
-    label: "Share Feedback",
-    description: "Help us improve with your testimonial",
-    icon: <MessageSquare className="h-6 w-6" />,
+    id: "profile",
+    label: "My Profile",
+    description: `${user?.gradeLevel && user?.subject ? `Grade ${user.gradeLevel} ${user.subject}` : "Complete your teaching profile"}`,
+    icon: <User className="h-6 w-6" />,
     onClick: () => {},
     variant: "outline"
   }
 ];
 
-export function QuickAccessGrid({ 
+export function QuickAccessGrid({
   items,
-  onNavigateToFrameworks,
-  onNavigateToProgress,
-  userStats,
+  onStartCoach,
+  user,
   className = ""
 }: QuickAccessGridProps) {
   const navigate = useNavigate();
-  const defaultItems = getDefaultItems(userStats);
+  const defaultItems = getDefaultItems(user);
   const processedItems = items || defaultItems;
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -83,12 +84,12 @@ export function QuickAccessGrid({
   // Override default onClick handlers if provided
   const finalItems = processedItems.map(item => {
     switch (item.id) {
-      case "frameworks":
-        return { ...item, onClick: onNavigateToFrameworks || (() => navigate('/frameworks')) };
-      case "saved-frameworks":
-        return { ...item, onClick: () => navigate('/frameworks?filter=saved') };
-      case "feedback":
-        return { ...item, onClick: () => navigate('/testimonials/submit') };
+      case "coach":
+        return { ...item, onClick: onStartCoach || (() => navigate('/coach')) };
+      case "library":
+        return { ...item, onClick: () => navigate('/coach?view=library') };
+      case "profile":
+        return { ...item, onClick: () => navigate('/profile') };
       default:
         return item;
     }
@@ -102,8 +103,10 @@ export function QuickAccessGrid({
       className={`rounded-2xl ${spacing.card} border border-primary/20 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}
     >
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground font-heading mb-2">Get Started</h2>
-        <p className="text-muted-foreground text-base leading-relaxed">Explore Louisiana-aligned frameworks to improve your AI prompts</p>
+        <h2 className="text-2xl font-bold text-foreground font-heading mb-2">Quick Access</h2>
+        <p className="text-muted-foreground text-base leading-relaxed">
+          Get started with your Louisiana-aligned prompt coaching
+        </p>
       </div>
 
       <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${spacing.gridGap}`}>
@@ -118,31 +121,31 @@ export function QuickAccessGrid({
             <Button
               variant={item.variant || "outline"}
               className={`w-full h-auto ${spacing.card} flex items-center gap-4 hover:shadow-xl transition-all duration-300 cursor-pointer min-w-0 ${
-                item.variant === "default" 
-                  ? "bg-primary hover:bg-primary/90 text-white border-primary shadow-md" 
+                item.variant === "default"
+                  ? "bg-primary hover:bg-primary/90 text-white border-primary shadow-md"
                   : "hover:border-primary/50 hover:bg-primary/5 border-2"
               }`}
               onClick={item.onClick}
             >
               <div className={`p-3 rounded-lg transition-all duration-300 flex-shrink-0 ${
-                item.variant === "default" 
-                  ? "bg-white/20 group-hover:bg-white/30" 
+                item.variant === "default"
+                  ? "bg-white/20 group-hover:bg-white/30"
                   : "bg-primary/10 group-hover:bg-primary/20"
               }`}>
                 {item.icon}
               </div>
-              
+
               <div className="flex-1 text-left min-w-0 overflow-hidden">
                 <div className="font-semibold text-lg mb-1 truncate">{item.label}</div>
                 <div className={`text-sm line-clamp-2 overflow-hidden ${
-                  item.variant === "default" 
-                    ? "text-white/80" 
+                  item.variant === "default"
+                    ? "text-white/80"
                     : "text-muted-foreground group-hover:text-foreground"
                 }`}>
                   {item.description}
                 </div>
               </div>
-              
+
               <ArrowRight className={`h-5 w-5 transition-all duration-300 group-hover:translate-x-1 flex-shrink-0 ${
                 item.variant === "default" ? "text-white/80" : "text-muted-foreground group-hover:text-primary"
               }`} />

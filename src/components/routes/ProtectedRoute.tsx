@@ -21,31 +21,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     ? (session as any).user 
     : undefined;
   
-  // Always call useQuery (hooks must be called unconditionally)
-  // But we only use the result if requireAdmin is true
-  const isAdminQueryResult = useQuery(api.admin.checkIsAdmin);
-  
-  // Safely convert query result to boolean
-  // useQuery returns undefined when loading, boolean when loaded
-  // Check for error objects or unexpected types before using
-  let isAdmin = false;
-  let isAdminLoading = false;
-  
-  if (requireAdmin) {
-    // Use strict equality checks to avoid type coercion issues
-    if (isAdminQueryResult === undefined || isAdminQueryResult === null) {
-      isAdminLoading = true;
-    } else if (isAdminQueryResult === true || isAdminQueryResult === false) {
-      isAdmin = isAdminQueryResult === true;
-      isAdminLoading = false;
-    } else {
-      // If it's not undefined, null, or boolean (e.g., error object), default to false
-      isAdmin = false;
-      isAdminLoading = false;
-    }
-  }
+  // Admin functionality removed - always return false for admin checks
+  const isAdmin = false;
 
-  if (isLoading || isAdminLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner size="lg" />
