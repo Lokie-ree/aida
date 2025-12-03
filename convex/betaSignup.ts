@@ -90,8 +90,9 @@ export const signupForBeta = mutation({
     }
 
     // Create new beta signup
+    // Store trimmed email to ensure consistency with queries
     const signupId = await ctx.db.insert("betaSignups", {
-      email: args.email,
+      email: args.email.trim(),
       name: args.name || "",
       school: args.school,
       subject: args.subject,
@@ -345,9 +346,11 @@ export const recoverDeletedUser = mutation({
   handler: async (ctx, args) => {
     try {
       // Check if user already exists (prevent duplicate recovery)
+      // Use trimmed email for consistency
+      const trimmedEmail = args.email.trim();
       const existingSignup = await ctx.db
         .query("betaSignups")
-        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .withIndex("by_email", (q) => q.eq("email", trimmedEmail))
         .unique();
 
       if (existingSignup) {
@@ -359,9 +362,10 @@ export const recoverDeletedUser = mutation({
       }
 
       // Create beta signup record
+      // Store trimmed email to ensure consistency with queries
       const signupDate = args.originalSignupDate || Date.now();
       const betaSignupId = await ctx.db.insert("betaSignups", {
-        email: args.email,
+        email: trimmedEmail,
         name: args.name || args.email.split('@')[0],
         school: args.school || "",
         subject: args.subject || "",
@@ -411,10 +415,11 @@ export const resendPlatformAccessEmail = mutation({
     message: string;
   }> => {
     try {
-      // Find beta signup by email
+      // Find beta signup by email (trim for consistency)
+      const trimmedEmail = args.email.trim();
       const signup = await ctx.db
         .query("betaSignups")
-        .withIndex("by_email", (q) => q.eq("email", args.email))
+        .withIndex("by_email", (q) => q.eq("email", trimmedEmail))
         .first();
       
       if (!signup) {

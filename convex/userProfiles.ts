@@ -284,9 +284,10 @@ export const initializeNewUser = mutation({
     }
 
     // Get beta signup data
+    // Trim email to ensure consistency (signupForBeta stores trimmed emails)
     const betaSignup = await ctx.db
       .query("betaSignups")
-      .withIndex("by_email", (q) => q.eq("email", user.email))
+      .withIndex("by_email", (q) => q.eq("email", user.email.trim()))
       .first();
 
     if (!betaSignup) {
