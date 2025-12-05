@@ -2,8 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Last Updated:** December 1, 2024 (Post product-refocus to conversational coaching)
-**Major Change:** Framework library is now SECONDARY; Conversational Prompt Coach is the PRIMARY product (see VISION.md)
+**Last Updated:** December 3, 2024 (Beta launch preparation complete)
+**Major Change:** Conversational Prompt Coach optimized for STEM beta testers with LER short code integration
 
 ## Project Overview
 
@@ -67,6 +67,24 @@ See `VISION.md` for complete product vision and strategic context.
 
 ## 📋 DECEMBER BETA DEPLOYMENT (Dec 9-28, 2024)
 
+### Beta Tester Profile
+
+**5 Louisiana K-12 Educators:**
+- Middle/high school science teacher
+- Middle school math teacher
+- Media specialist/library science
+- STEM teacher
+- Special education teacher
+
+**Common Pain Points:**
+- Internalizing curriculum resources (GLEs, Louisiana standards)
+- Analyzing assessment data (LEAP, formative assessments)
+- Identifying highly effective teacher/student actions from the Louisiana Educator Rubric
+- Differentiation for IEP students
+- Evidence collection for LEADS observations
+
+**Critical Design Decision:** All UI elements, starter prompts, and system prompt examples are STEM/SPED-focused to match beta tester needs.
+
 ### Beta Success Criteria
 
 **Primary Goal:** Validate that the conversational coaching experience feels intelligent and Louisiana-specific.
@@ -79,9 +97,9 @@ See `VISION.md` for complete product vision and strategic context.
 5. Provide feedback on prompt quality and coaching experience
 
 **Success Metrics:**
-- All 4 beta testers generate at least 2 prompts ✅
+- All 5 beta testers generate at least 2 prompts ✅
 - 75%+ of prompts rated "helpful" (thumbs up) ✅
-- At least 8 prompts marked "worked in my classroom" ✅
+- At least 10 prompts marked "worked in my classroom" ✅
 - Qualitative feedback confirms "intelligent coaching" feel ✅
 
 ### Pre-Launch Checklist
@@ -235,9 +253,12 @@ Convex uses three function types:
    - **NOT NEEDED FOR WEEK 1 BETA** - Frameworks provide immediate value
 
 3. **AI Agent Integration**: Conversational coach uses `@convex-dev/agent`
-   - Stateful chat threads with system prompts
-   - Louisiana-specific context (see `PELICAN_SYSTEM_PROMPT` in `convex/promptCoach.ts`)
-   - **NOT NEEDED FOR WEEK 1 BETA** - Ship in Week 2-3
+   - Stateful chat threads with Louisiana-specific system prompts
+   - LER short codes (SO, TKS, PIC, etc.) used instead of numeric indicators for teacher familiarity
+   - Multi-task recognition (lesson planning, assessment analysis, curriculum internalization, LER evidence, etc.)
+   - 4-phase coaching flow: Understand Task → Identify Challenge → Connect Frameworks → Generate Prompt
+   - See `PELICAN_SYSTEM_PROMPT` in `convex/promptCoach.ts` for complete implementation
+   - ✅ **LIVE AND READY FOR BETA**
 
 4. **Authentication**: Better Auth integration
    - User sessions managed by `@convex-dev/better-auth`
@@ -565,9 +586,17 @@ The platform's core differentiator is rubric integration. All features must be *
 
 **Performance Levels:** Each indicator has descriptors for Unsatisfactory (Level 1), Proficient (Level 3), and Exemplary (Level 5).
 
+**LER Short Codes (CRITICAL - Always Use These):**
+- **INSTRUCTION**: SO (Standards/Objectives), MS (Motivating Students), PIC (Presenting Instructional Content), LS (Lesson Structure/Pacing), ACT (Activities/Materials), QU (Questioning), FEED (Academic Feedback), GRP (Grouping Students), TCK (Teacher Content Knowledge), TKS (Teacher Knowledge of Students), TH (Thinking), PS (Problem Solving)
+- **PLANNING**: IP (Instructional Plans), SW (Student Work), AS (Assessment)
+- **ENVIRONMENT**: ES (Expectations), ESMB (Engaging Students/Managing Behavior), ENV (Environment), RC (Respectful Conditions)
+- **PROFESSIONALISM**: GDP (Growing/Developing Professionally), RT (Reflecting on Teaching), SI (School Involvement), SR (School Responsibilities)
+
+**Short Codes in Code**: Always reference indicators by short code (e.g., "SO - Standards and Objectives", "TKS - Teacher Knowledge of Students") instead of numeric identifiers (e.g., "Indicator 1.1", "Indicator 1.10"). Teachers are more familiar with short codes from LEADS observations.
+
 **Integration in Seeded Frameworks:** The 10 seeded frameworks in `convex/seedFrameworks.ts` already include LER context via `formatLERContext()` function. This provides Louisiana-specific definitions without needing RAG.
 
-See `knowledge/la-ler-rubric.md` for full rubric text.
+See `knowledge/la-ler-rubric.md` for full rubric text and `knowledge/la-rubric-evaluation-handbook.json` for complete short code mappings.
 
 ### Louisiana Student Standards (LSS)
 

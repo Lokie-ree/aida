@@ -8,6 +8,61 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Beta Launch Preparation - Coach UX & System Prompt Enhancements
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** December 3, 2025
+
+**Impact:** Optimized Conversational Prompt Coach for STEM/SPED beta testers with improved mobile UX, reliable save functionality, and Louisiana-specific LER short code integration.
+
+**Key Changes:**
+
+**Chat Interface Improvements:**
+- ✅ **Starter Prompts Optimized:** Changed from generic ELA/Math to STEM/SPED-focused examples
+  - "Analyze LEAP data to identify misconceptions" (Assessment Data)
+  - "Differentiate science lab for IEP students" (Special Education)
+  - "Highly effective actions for PIC in STEM" (LER Evidence)
+  - "Internalize 7th grade math standards (GLEs)" (Curriculum Mastery)
+- ✅ **Pre-fill Functionality Fixed:** Added setTimeout(150ms) to ensure conversation creation before populating input field
+- ✅ **Mobile UX Enhanced:** Shortened prompts from 60-100 characters to 30-50 characters for mobile screens
+- ✅ **Save Button Always Available:** Removed heuristic detection - save button now appears on ALL assistant messages to prevent prompt loss
+
+**System Prompt Enhancements (convex/promptCoach.ts):**
+- ✅ **LER Short Code Integration:** Replaced numeric indicators with teacher-familiar short codes
+  - Before: "Indicator 1.1", "Indicator 1.10"
+  - After: "SO - Standards and Objectives", "TKS - Teacher Knowledge of Students"
+- ✅ **Complete Short Code Reference:** Added organized list of all 23 LER indicators by domain
+  - INSTRUCTION (12): SO, MS, PIC, LS, ACT, QU, FEED, GRP, TCK, TKS, TH, PS
+  - PLANNING (3): IP, SW, AS
+  - ENVIRONMENT (4): ES, ESMB, ENV, RC
+  - PROFESSIONALISM (4): GDP, RT, SI, SR
+- ✅ **Multi-Task Recognition:** Expanded from lesson planning focus to recognize diverse teaching tasks
+  - Lesson planning, assessment data analysis, curriculum internalization
+  - LER evidence gathering, differentiation, parent communication
+  - Professional reflection and growth planning
+- ✅ **4-Phase Coaching Flow Enhanced:**
+  - Phase 1: "UNDERSTAND THE TASK AND CONTEXT" (not just lesson context)
+  - Phase 2: "IDENTIFY THE REAL CHALLENGE" with varied prompts
+  - Phase 3: "CONNECT TO LOUISIANA FRAMEWORKS" with short codes
+  - Phase 4: "GENERATE THE PROMPT" only after sufficient context
+
+**Documentation Updates:**
+- ✅ **CLAUDE.md:** Updated with LER short code guidance, beta tester profiles, multi-task recognition
+- ✅ **beta-launch-7day-critical-path.md:** Marked Day 1 fixes as completed, updated acceptance criteria
+
+**Beta Tester Alignment:**
+- Middle/high science, middle school math, media specialist, STEM, special education teachers
+- Pain points addressed: curriculum internalization, assessment analysis, LEADS observation evidence
+
+**Files Modified:**
+- `src/components/coach/ChatInterface.tsx` (lines 98-119, 143-150, 305-314)
+- `convex/promptCoach.ts` (lines 10-89)
+- `CLAUDE.md` (multiple sections)
+- `plans/beta-launch-7day-critical-path.md` (multiple sections)
+
+---
+
 ### Documentation Updates - README, Landing Page, and Changelog
 
 **Status:** ✅ **COMPLETED**

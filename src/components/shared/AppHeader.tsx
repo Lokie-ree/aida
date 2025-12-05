@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { SignOutButton } from "@/components/shared/SignOutButton";
 import { AuthModal } from "@/components/auth/AuthModal";
-import { Menu, X, Users, LogIn, BotMessageSquare, Home } from "lucide-react";
+import { Menu, X, Users, LogIn, BotMessageSquare, Home, PlusCircle, Library } from "lucide-react";
 
 interface AppHeaderProps {
   onGetStartedClick?: () => void;
@@ -16,20 +16,24 @@ interface AppHeaderProps {
     name?: string;
     email?: string;
   };
+  onCoachAction?: (action: 'newSession' | 'viewLibrary') => void;
 }
 
-export function AppHeader({ 
-  onGetStartedClick, 
-  onSignInClick, 
+export function AppHeader({
+  onGetStartedClick,
+  onSignInClick,
   showAuthButtons = true,
   showNavigation = false,
-  currentUser
+  currentUser,
+  onCoachAction
 }: AppHeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<"signIn" | "signUp">("signUp");
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isOnCoachRoute = location.pathname === '/coach';
 
   const handleGetStartedClick = () => {
     if (onGetStartedClick) {
@@ -210,13 +214,59 @@ export function AppHeader({
                       {showNavigation ? (
                         // Authenticated user mobile menu
                         <>
+                          {/* Coach Route Quick Actions */}
+                          {isOnCoachRoute && onCoachAction && (
+                            <>
+                              <div className="px-1 py-2">
+                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                  Quick Actions
+                                </div>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="lg"
+                                onClick={() => {
+                                  onCoachAction('newSession');
+                                  setIsMobileMenuOpen(false);
+                                }}
+                                className="w-full justify-start gap-3 h-12 hover:bg-primary/5 hover:text-primary"
+                              >
+                                <PlusCircle className="h-5 w-5" />
+                                <div className="text-left">
+                                  <div className="font-medium">New Coaching Session</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    Start a fresh conversation
+                                  </div>
+                                </div>
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="lg"
+                                onClick={() => {
+                                  onCoachAction('viewLibrary');
+                                  setIsMobileMenuOpen(false);
+                                }}
+                                className="w-full justify-start gap-3 h-12 hover:bg-primary/5 hover:text-primary"
+                              >
+                                <Library className="h-5 w-5" />
+                                <div className="text-left">
+                                  <div className="font-medium">View My Prompts</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    Browse saved prompts
+                                  </div>
+                                </div>
+                              </Button>
+                              <div className="border-t my-2" />
+                            </>
+                          )}
+
                           <Button
                             variant={isActiveRoute('/dashboard') ? "secondary" : "ghost"}
                             size="lg"
                             onClick={() => handleNavigation('/dashboard')}
                             className={`w-full justify-start gap-3 h-12 transition-all duration-200 ${
-                              isActiveRoute('/dashboard') 
-                                ? 'bg-primary/10 text-primary font-medium shadow-sm' 
+                              isActiveRoute('/dashboard')
+                                ? 'bg-primary/10 text-primary font-medium shadow-sm'
                                 : 'hover:bg-primary/5 hover:text-primary'
                             }`}
                           >
@@ -233,8 +283,8 @@ export function AppHeader({
                             size="lg"
                             onClick={() => handleNavigation('/coach')}
                             className={`w-full justify-start gap-3 h-12 transition-all duration-200 ${
-                              isActiveRoute('/coach') 
-                                ? 'bg-primary/10 text-primary font-medium shadow-sm' 
+                              isActiveRoute('/coach')
+                                ? 'bg-primary/10 text-primary font-medium shadow-sm'
                                 : 'hover:bg-primary/5 hover:text-primary'
                             }`}
                           >
