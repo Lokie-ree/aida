@@ -3,7 +3,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, InfoBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, Card, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface PlatformAccessEmailProps {
   email: string;
@@ -17,89 +17,87 @@ export function PlatformAccessEmail({
 }: PlatformAccessEmailProps) {
   return (
     <BaseEmailTemplate
-      previewText="You're in - Let's get started"
+      previewText="Your Pelican AI access is ready"
       headerTitle={`Welcome ${name}!`}
-      headerSubtitle="Your access is ready"
+      headerSubtitle="Let's start your first coaching conversation"
     >
       <Text style={textStyles.paragraph}>
-        You're in! Your platform access is ready—no application, no approval process. 
-        You're one of 5 Louisiana educators building this together.
+        Your access to Pelican AI is ready! Click the button below to log in and start
+        your first coaching conversation.
       </Text>
 
       {/* Magic Link CTA */}
-      {magicLinkUrl && (
-        <Section style={ctaSection}>
-          <CTAButton href={magicLinkUrl}>
-            Access Platform
-          </CTAButton>
-        </Section>
-      )}
-
-      {!magicLinkUrl && (
-        <Section style={ctaSection}>
-          <CTAButton href="https://pelicanai.org">
-            Access Platform
-          </CTAButton>
-        </Section>
-      )}
-
-      <Text style={textStyles.paragraph}>
-        Once you access the platform, you'll complete a brief onboarding to personalize
-        your experience.
-      </Text>
-
-      {/* Next Steps */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>Getting Started</Heading>
-        <Text style={listItem}>
-          1. Click the magic link above to access the platform
-        </Text>
-        <Text style={listItem}>
-          2. Complete your profile setup during onboarding
-        </Text>
-        <Text style={listItem}>
-          3. Explore our AI guidance frameworks
-        </Text>
+      <Card>
         {magicLinkUrl && (
-          <Text style={listItem}>
-            4. If the link expires, you can request a new one from the sign-in page
+          <Section style={ctaSection}>
+            <CTAButton href={magicLinkUrl}>
+              Log In to Pelican AI
+            </CTAButton>
+          </Section>
+        )}
+
+        {!magicLinkUrl && (
+          <Section style={ctaSection}>
+            <CTAButton href="https://pelicanai.org">
+              Log In to Pelican AI
+            </CTAButton>
+          </Section>
+        )}
+
+        {magicLinkUrl && (
+          <Text style={helperText}>
+            This link is valid for 24 hours. If it expires, request a new one from the login page.
           </Text>
         )}
-      </InfoBox>
+      </Card>
 
-      {/* Building Together */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>We're Building This Together</Heading>
+      {/* What to Do Next */}
+      <Heading style={textStyles.h2}>What to Do Next</Heading>
+      <Text style={listItem}>
+        1. <strong>Click the login button above</strong> to access Pelican AI
+      </Text>
+      <Text style={listItem}>
+        2. <strong>Complete your profile</strong> (grade level, subject, school)—this helps personalize your coaching
+      </Text>
+      <Text style={listItem}>
+        3. <strong>Start a conversation</strong> - just describe a lesson you're teaching this week
+      </Text>
+      <Text style={listItem}>
+        4. <strong>Get a Louisiana-aligned prompt</strong> you can use in ChatGPT, Claude, Gemini, or any AI tool
+      </Text>
+
+      {/* What Makes This Different */}
+      <Card>
+        <Heading style={textStyles.h2}>What Makes This Different</Heading>
         <Text style={textStyles.paragraph}>
-          <strong>We're Not Waiting for LDOE.</strong> Louisiana educators need practical 
-          AI guidance NOW. That's why you're one of 5 educators starting this with me.
+          Pelican AI isn't another AI tool to learn. It's an intelligent coaching layer that helps
+          you use the tools you already have (ChatGPT, Claude, Gemini) more effectively.
         </Text>
         <Text style={textStyles.paragraph}>
-          Your honest feedback ("Did this save time or waste it?") literally shapes 
-          everything we build next. With 5 users, every voice matters.
+          <strong>Louisiana-Specific Intelligence:</strong> Every generated prompt demonstrates
+          knowledge of Louisiana Educator Rubric, Louisiana Student Standards, and LEADS evaluation framework.
         </Text>
-      </InfoBox>
+      </Card>
 
       <Text style={textStyles.paragraph}>
-        <strong>Questions?</strong> Just reply to this email or text me. This is 
-        grassroots—real conversations, not automated support tickets.
+        <strong>Questions?</strong> Just reply to this email. This is grassroots—we're building
+        it together.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Thanks for being part of this journey,
+        See you inside,
         <br />
         Randall
         <br />
-        <em>Louisiana educators building for Louisiana educators</em>
+        <em>Louisiana educator building this for Louisiana educators</em>
       </Text>
     </BaseEmailTemplate>
   );
 }
 
-
 const ctaSection = {
   textAlign: "center" as const,
-  margin: "32px 0",
+  margin: "24px 0",
 };
 
 const listItem = {
@@ -109,5 +107,11 @@ const listItem = {
   margin: "8px 0",
 };
 
-export default PlatformAccessEmail;
+const helperText = {
+  color: "#6b7280",
+  fontSize: "13px",
+  textAlign: "center" as const,
+  margin: "12px 0 0 0",
+};
 
+export default PlatformAccessEmail;

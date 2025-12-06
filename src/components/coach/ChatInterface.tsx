@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery, useAction, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, User, Bot, Loader2, Save, MessageSquare, Copy, GraduationCap, BookOpen, Calculator, Scale, Target, Sparkles, Lightbulb, MessageCircle, Search } from "lucide-react";
+import { Send, User, Bot, Loader2, Save, MessageSquare, Copy, GraduationCap, BookOpen, Scale, Target, Sparkles, Lightbulb, MessageCircle, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { motion } from "framer-motion";
+import { spacing } from "@/lib/spacing";
 
 interface ChatInterfaceProps {
   conversationId: Id<"promptConversations"> | null;
@@ -20,8 +21,9 @@ interface ChatInterfaceProps {
 export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   // Save prompt dialog state
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
@@ -35,12 +37,25 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
   const sendMessage = useAction(api.promptCoach.sendMessage);
   const savePromptMutation = useMutation(api.promptCoach.savePrompt);
 
-  // Auto-scroll to bottom
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  // Simple scroll to bottom - using native scrolling instead of Radix
+  const scrollToBottom = useCallback(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
-  }, [conversation?.messages, isSending]);
+  }, []);
+
+  // Scroll when messages change
+  const messageCount = conversation?.messages?.length ?? 0;
+  const prevMessageCountRef = useRef(0);
+  
+  useEffect(() => {
+    if (messageCount > prevMessageCountRef.current) {
+      // Small delay to ensure DOM is updated
+      const timer = setTimeout(scrollToBottom, 100);
+      prevMessageCountRef.current = messageCount;
+      return () => clearTimeout(timer);
+    }
+  }, [messageCount, scrollToBottom]);
 
   const handleSend = async () => {
     if (!inputValue.trim() || !conversationId) return;
@@ -94,94 +109,116 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     }
   };
 
+  // Empty state - no conversation started
   if (!conversationId) {
     const starterPrompts = [
       {
-        icon: BookOpen,
-        text: "Help me teach RL.8.1 (citing textual evidence) - my students struggle with this",
-        category: "ELA Standard"
-      },
-      {
-        icon: Calculator,
-        text: "I need to differentiate instruction for multi-digit multiplication (4.NBT.B.5)",
-        category: "Math Standard"
-      },
-      {
-        icon: Scale,
-        text: "I'm working on Indicator 1.3 - my lesson pacing always feels off",
-        category: "LER Alignment"
+        icon: Search,
+        text: "Analyze LEAP data to identify misconceptions",
+        category: "Assessment Data"
       },
       {
         icon: Target,
-        text: "My 6th graders won't engage with argumentative writing - need fresh ideas",
-        category: "Engagement Challenge"
+        text: "Differentiate science lab for IEP students",
+        category: "Special Education"
+      },
+      {
+        icon: Scale,
+        text: "Highly effective actions for PIC in STEM",
+        category: "LER Evidence"
+      },
+      {
+        icon: BookOpen,
+        text: "Internalize 7th grade math standards",
+        category: "Curriculum Mastery"
       }
     ];
 
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-4 md:p-8 space-y-4 md:space-y-6 overflow-y-auto">
-        <div className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20 mt-4 md:mt-0">
-          <Bot className="h-10 w-10 md:h-14 md:w-14 text-blue-600" />
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl md:text-3xl font-bold">Welcome to Prompt Coach</h2>
-          <p className="text-muted-foreground max-w-2xl text-sm md:text-base">
-            Built by Louisiana teachers, for Louisiana teachers. I'll help you craft prompts aligned to
-            <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
-            <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
-          </p>
-        </div>
+      <div className="flex flex-col h-full overflow-hidden">
+        {/* Welcome content */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center overflow-y-auto relative">
+          {/* Subtle decorative background */}
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-600/5 rounded-full blur-3xl" />
 
-        <div className="w-full max-w-2xl space-y-3 pb-8 md:pb-0">
-          <p className="text-sm text-muted-foreground font-medium">Try these examples:</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {starterPrompts.map((prompt, idx) => {
-              const IconComponent = prompt.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    onStartNew();
-                    setInputValue(prompt.text);
-                    setTimeout(() => inputRef.current?.focus(), 100);
-                  }}
-                  className="text-left p-4 rounded-lg border bg-card hover:bg-accent hover:border-primary/50 transition-all group"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <IconComponent className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{prompt.category}</p>
-                      <p className="text-sm text-foreground">{prompt.text}</p>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
+          <div className={spacing.sectionGapSmall + " relative z-10 w-full max-w-3xl"}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="bg-linear-to-br from-blue-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20 mx-auto w-fit"
+            >
+              <Bot className="h-10 w-10 md:h-12 md:w-12 text-blue-600" />
+            </motion.div>
+
+            <div className="space-y-1">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                Welcome to Prompt Coach
+              </h2>
+              <p className="text-muted-foreground text-xs md:text-sm px-2">
+                Built by Louisiana teachers, for Louisiana teachers. Craft prompts aligned to
+                <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
+                <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground font-medium">
+                Try these examples:
+              </p>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${spacing.gridGapSmall} items-stretch`}>
+                {starterPrompts.map((prompt, idx) => {
+                  const IconComponent = prompt.icon;
+                  return (
+                    <motion.button
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: idx * 0.1 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        onStartNew();
+                        setTimeout(() => {
+                          setInputValue(prompt.text);
+                          inputRef.current?.focus();
+                        }, 150);
+                      }}
+                      className="text-left p-3 md:p-4 rounded-lg border-2 bg-linear-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 border-primary/20 hover:border-primary/40 transition-all duration-300 group shadow-sm hover:shadow-md h-full"
+                    >
+                      <div className="flex items-start gap-2 md:gap-3">
+                        <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors shadow-sm shrink-0">
+                          <IconComponent className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 space-y-0.5 min-w-0">
+                          <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider">{prompt.category}</p>
+                          <p className="text-xs md:text-sm text-foreground font-medium leading-snug">{prompt.text}</p>
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <p className="text-[10px] md:text-xs text-muted-foreground max-w-lg mx-auto">
+              I'll ask clarifying questions to understand your context, then generate a Louisiana-aligned prompt
+              you can use in ChatGPT, Claude, Gemini, or any AI tool.
+            </p>
           </div>
         </div>
-
-        <Button onClick={onStartNew} size="lg" className="gap-2 mt-4">
-          <MessageSquare className="h-4 w-4" />
-          Start Coaching Session
-        </Button>
-
-        <p className="text-xs text-muted-foreground max-w-lg">
-          I'll ask clarifying questions to understand your context, then generate a Louisiana-aligned prompt
-          you can use in ChatGPT, Claude, Gemini, or any AI tool.
-        </p>
       </div>
     );
   }
 
-  // Determine conversation phase based on message count and content
+  // Determine conversation phase
   const getConversationPhase = () => {
     if (!conversation?.messages || conversation.messages.length === 0) {
       return { phase: "starting", label: "Ready to start", icon: MessageCircle, color: "bg-gray-100 dark:bg-gray-800" };
     }
 
-    const messageCount = conversation.messages.length;
+    const msgCount = conversation.messages.length;
     const hasPrompt = conversation.messages.some(msg =>
       msg.role === "assistant" && (
         msg.content.includes("PROMPT:") ||
@@ -193,41 +230,47 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
 
     if (hasPrompt) {
       return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200" };
-    } else if (messageCount >= 6) {
-      return { phase: "generating", label: "Preparing Your Prompt", icon: Target, color: "bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-200" };
-    } else if (messageCount >= 3) {
+    } else if (msgCount >= 6) {
+      return { phase: "generating", label: "Preparing Your Prompt", icon: Target, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
+    } else if (msgCount >= 3) {
       return { phase: "clarifying", label: "Identifying Your Challenge", icon: Search, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
     } else {
-      return { phase: "understanding", label: "Understanding Your Context", icon: MessageCircle, color: "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200" };
+      return { phase: "understanding", label: "Understanding Your Context", icon: MessageCircle, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
     }
   };
 
   const currentPhase = getConversationPhase();
 
   return (
-    <div className="flex flex-col h-full bg-card rounded-lg border shadow-sm">
-      {/* Conversation Phase Header */}
-      {conversation && conversation.messages.length > 0 && (
-        <div className="border-b px-4 py-3 bg-muted/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className={cn("flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full", currentPhase.color)}>
-                <currentPhase.icon className="h-3.5 w-3.5" />
-                {currentPhase.label}
+    <div className="flex flex-col h-full">
+      {/* Chat card */}
+      <div className="flex-1 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
+        {/* Conversation Phase Header */}
+        {conversation && conversation.messages.length > 0 && (
+          <div className="border-b px-3 md:px-4 py-2 md:py-3 bg-muted/30 shrink-0">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}>
+                  <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                  {currentPhase.label}
+                </div>
+                <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:inline">
+                  {currentPhase.phase === "completed"
+                    ? "Ready to copy and use in any AI tool"
+                    : "Louisiana standards & rubric being searched"}
+                </span>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {currentPhase.phase === "completed"
-                  ? "Ready to copy and use in any AI tool"
-                  : "Louisiana standards & rubric being searched"}
-              </span>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <ScrollArea className="flex-1 p-4">
+      {/* Messages Area - Using native overflow instead of Radix ScrollArea */}
+      <div 
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto p-3 md:p-4"
+      >
         <div className="space-y-6 pb-4">
-          {/* Louisiana context indicator at top */}
+          {/* Louisiana context indicator */}
           {conversation?.messages && conversation.messages.length === 0 && (
             <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
               <div className="flex items-start gap-3">
@@ -246,7 +289,6 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           )}
 
           {conversation?.messages.map((msg, idx) => {
-            // Detect if this message contains a generated prompt (heuristic: contains "PROMPT:" or is long and structured)
             const isPrompt = msg.role === "assistant" && (
               msg.content.includes("PROMPT:") ||
               msg.content.includes("**PROMPT:**") ||
@@ -259,41 +301,41 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
               <div
                 key={idx}
                 className={cn(
-                  "flex w-full gap-3",
+                  "flex w-full gap-2 md:gap-4",
                   msg.role === "user" ? "flex-row-reverse" : "flex-row"
                 )}
               >
                 <div
                   className={cn(
-                    "flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border",
+                    "flex h-7 w-7 md:h-8 md:w-8 shrink-0 select-none items-center justify-center rounded-full border shadow-sm",
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-primary text-primary-foreground border-primary/30"
                       : isPrompt
-                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white border-blue-400"
+                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400"
                         : "bg-muted border-border"
                   )}
                 >
-                  {msg.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  {msg.role === "user" ? <User className="h-3.5 w-3.5 md:h-4 md:w-4" /> : <Bot className="h-3.5 w-3.5 md:h-4 md:w-4" />}
                 </div>
 
                 <div className={cn(
-                  "flex flex-col gap-2 max-w-[80%]",
+                  "flex flex-col gap-2 max-w-[90%] md:max-w-[85%]",
                   msg.role === "user" ? "items-end" : "items-start"
                 )}>
                   {isPrompt && (
-                    <div className="flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
                       <Sparkles className="h-3.5 w-3.5" />
                       <span>Louisiana-Aligned Prompt Generated</span>
                     </div>
                   )}
                   <div
                     className={cn(
-                      "rounded-lg px-4 py-3 text-sm whitespace-pre-wrap",
+                      "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground"
                         : isPrompt
-                          ? "bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border-2 border-blue-200 dark:border-blue-800 text-foreground"
-                          : "bg-muted text-foreground"
+                          ? "bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
+                          : "bg-muted text-foreground border border-border"
                     )}
                   >
                     {msg.content}
@@ -301,14 +343,24 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
 
                   {msg.role === "assistant" && (
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleCopy(msg.content)} title="Copy to clipboard">
-                        <Copy className="h-3 w-3" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 hover:bg-primary/10"
+                        onClick={() => handleCopy(msg.content)}
+                        title="Copy to clipboard"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
                       </Button>
-                      {isPrompt && (
-                        <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => openSaveDialog(msg.content)} title="Save to library">
-                          <Save className="h-3 w-3" />
-                        </Button>
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 hover:bg-primary/10"
+                        onClick={() => openSaveDialog(msg.content)}
+                        title="Save to library"
+                      >
+                        <Save className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -317,21 +369,23 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           })}
           
           {isSending && (
-            <div className="flex w-full gap-3">
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-gradient-to-br from-blue-500 to-purple-600 text-white border-blue-400">
+            <div className="flex w-full gap-4">
+              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-sm">
                 <Bot className="h-4 w-4" />
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Loader2 className="h-3 w-3 animate-spin" />
-                <span>Searching Louisiana standards and rubric...</span>
+              <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border">
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                <span className="text-sm text-muted-foreground">Searching Louisiana standards and rubric...</span>
               </div>
             </div>
           )}
-          <div ref={scrollRef} />
+          
+          <div ref={messagesEndRef} />
         </div>
-      </ScrollArea>
+      </div>
 
-      <div className="p-4 border-t bg-background">
+      {/* Input Area */}
+      <div className="p-3 md:p-4 border-t bg-background">
         <div className="flex gap-2">
           <Input
             ref={inputRef}
@@ -340,66 +394,67 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
             onKeyDown={handleKeyDown}
             placeholder="Example: I'm teaching RL.5.3 and students confuse character traits with feelings..."
             disabled={isSending}
-            className="flex-1"
+            className="flex-1 text-xs md:text-sm"
           />
-          <Button onClick={handleSend} disabled={isSending || !inputValue.trim()}>
+          <Button onClick={handleSend} disabled={isSending || !inputValue.trim()} size="sm" className="shrink-0">
             {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </Button>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2 px-1">
-          <Lightbulb className="h-3.5 w-3.5" />
-          <span>Tip: Mention your grade level, Louisiana standard code, or teaching challenge for best results</span>
+        <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground mt-2 px-1">
+          <Lightbulb className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0" />
+          <span className="line-clamp-2 md:line-clamp-1">Tip: Mention your grade level, Louisiana standard code, or teaching challenge for best results</span>
         </div>
       </div>
 
-      <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Save to My Prompts</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label>Prompt Content</Label>
-              <Textarea 
-                value={promptToSave} 
-                onChange={(e) => setPromptToSave(e.target.value)} 
-                className="h-32"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+        {/* Save Dialog */}
+        <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Save to My Prompts</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>Grade Level</Label>
-                <Input 
-                  placeholder="e.g. 8th Grade" 
-                  value={saveContext.grade}
-                  onChange={(e) => setSaveContext({...saveContext, grade: e.target.value})}
+                <Label>Prompt Content</Label>
+                <Textarea 
+                  value={promptToSave} 
+                  onChange={(e) => setPromptToSave(e.target.value)} 
+                  className="h-32"
                 />
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Grade Level</Label>
+                  <Input 
+                    placeholder="e.g. 8th Grade" 
+                    value={saveContext.grade}
+                    onChange={(e) => setSaveContext({...saveContext, grade: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subject</Label>
+                  <Input 
+                    placeholder="e.g. Math" 
+                    value={saveContext.subject}
+                    onChange={(e) => setSaveContext({...saveContext, subject: e.target.value})}
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
-                <Label>Subject</Label>
+                <Label>Topic</Label>
                 <Input 
-                  placeholder="e.g. Math" 
-                  value={saveContext.subject}
-                  onChange={(e) => setSaveContext({...saveContext, subject: e.target.value})}
+                  placeholder="e.g. Systems of Equations" 
+                  value={saveContext.topic}
+                  onChange={(e) => setSaveContext({...saveContext, topic: e.target.value})}
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label>Topic</Label>
-              <Input 
-                placeholder="e.g. Systems of Equations" 
-                value={saveContext.topic}
-                onChange={(e) => setSaveContext({...saveContext, topic: e.target.value})}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsSaveDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSavePrompt}>Save Prompt</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsSaveDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleSavePrompt}>Save Prompt</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }
-

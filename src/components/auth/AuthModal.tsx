@@ -197,7 +197,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
         <DialogHeader className="relative">
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#1e40af]">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-linear-to-br from-[#0ea5e9] to-[#1e40af]">
                 <span className="text-white font-bold text-sm">P</span>
               </div>
               <span className="text-xl font-bold text-foreground">

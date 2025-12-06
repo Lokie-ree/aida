@@ -35,7 +35,7 @@ export function CTASection({ onGetStartedClick }: CTASectionProps) {
           variants={staggerChildren}
         >
           <motion.div variants={fadeInUp}>
-            <Card className="text-center relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <Card className="text-center relative overflow-hidden bg-linear-to-br from-primary/5 to-primary/10 border-primary/20">
               <BorderBeam 
                 size={100} 
                 duration={6}

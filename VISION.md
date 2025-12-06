@@ -1,8 +1,8 @@
 # Pelican AI: Product Vision & North Star
 
-**Last Updated**: November 29, 2024  
-**Status**: REFOCUSED - Back to Core Vision  
-**Launch Target**: December 9, 2024
+**Last Updated**: November 29, 2025
+**Status**: REFOCUSED - Back to Core Vision
+**Launch Target**: December 9, 2025
 
 ---
 
@@ -138,7 +138,7 @@ We're promising: "Better aligned, more thoughtful, Louisiana-specific prompts th
 
 ---
 
-## The December Beta (Dec 9-28)
+## The December 2025 Beta (Dec 9-28)
 
 ### **Beta Tester Experience**
 

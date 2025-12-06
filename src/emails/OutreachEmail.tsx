@@ -16,7 +16,7 @@ import {
   Link,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, ActionBox, InfoBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, Card, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface OutreachEmailProps {
   recipientName?: string;
@@ -50,7 +50,7 @@ export function OutreachEmail({
       </Text>
 
       {/* Value Proposition */}
-      <ActionBox>
+      <Card>
         <Heading style={textStyles.h2}>Save 3-5 Hours Per Week</Heading>
         <Text style={textStyles.paragraph}>
           Our AI guidance frameworks are designed to save you real time:
@@ -67,10 +67,10 @@ export function OutreachEmail({
         <Text style={textStyles.paragraph}>
           Every framework aligns with Louisiana standards and includes ethical guardrails for responsible AI use.
         </Text>
-      </ActionBox>
+      </Card>
 
       {/* Louisiana-Specific Value */}
-      <InfoBox>
+      <Card>
         <Heading style={textStyles.h2}>Built for Louisiana Educators, by Louisiana Educators</Heading>
         <Text style={textStyles.paragraph}>
           Unlike generic AI tools, Pelican AI understands:
@@ -90,15 +90,15 @@ export function OutreachEmail({
         <Text style={textStyles.paragraph}>
           Our guidance frameworks aren't just prompts—they're strategic frameworks that help you navigate AI confidently while maintaining academic integrity.
         </Text>
-      </InfoBox>
+      </Card>
 
       {/* Platform-Agnostic Emphasis */}
-      <InfoBox>
+      <Card>
         <Heading style={textStyles.h2}>Works with ANY AI Tool You Already Have</Heading>
         <Text style={textStyles.paragraph}>
           We're not asking you to learn another platform. We teach you how to get better results from the AI tools your district already provides—whether that's MagicSchool AI, Brisk, SchoolAI, Gemini, or others.
         </Text>
-      </InfoBox>
+      </Card>
 
       {/* CTA */}
       <div style={ctaSection}>

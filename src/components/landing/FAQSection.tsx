@@ -60,7 +60,7 @@ export function FAQSection() {
           {faqs.map((faq, index) => (
             <motion.div key={index} variants={fadeInUp}>
               <Card 
-                className="cursor-pointer hover:shadow-md transition-shadow bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden"
+                className="cursor-pointer hover:shadow-md transition-shadow bg-linear-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden"
                 onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
                 role="button"
                 tabIndex={0}

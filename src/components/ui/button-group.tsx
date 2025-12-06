@@ -1,35 +1,22 @@
-import * as React from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 
-interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: "horizontal" | "vertical";
-  spacing?: "none" | "sm" | "md" | "lg";
+interface ButtonGroupProps {
+  children: React.ReactNode;
+  spacing?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ className, orientation = "horizontal", spacing = "sm", ...props }, ref) => {
-    const spacingClasses = {
-      none: "",
-      sm: orientation === "horizontal" ? "gap-2" : "gap-y-2",
-      md: orientation === "horizontal" ? "gap-3" : "gap-y-3", 
-      lg: orientation === "horizontal" ? "gap-4" : "gap-y-4",
-    };
+const spacingClasses = {
+  sm: "gap-2",
+  md: "gap-3",
+  lg: "gap-4",
+};
 
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "flex",
-          orientation === "vertical" && "flex-col",
-          spacingClasses[spacing],
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-);
-
-ButtonGroup.displayName = "ButtonGroup";
-
-export { ButtonGroup };
+export function ButtonGroup({ children, spacing = "md", className }: ButtonGroupProps) {
+  return (
+    <div className={cn("flex items-center", spacingClasses[spacing], className)}>
+      {children}
+    </div>
+  );
+}

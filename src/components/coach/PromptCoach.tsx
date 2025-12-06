@@ -1,72 +1,106 @@
-import React, { useState, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { authClient } from "@/lib/auth-client";
 import { ChatInterface } from "./ChatInterface";
 import { PromptLibrary } from "./PromptLibrary";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { PlusCircle, MessageSquare, Library } from "lucide-react";
+import { AppHeader, type NavConfig } from "@/components/navigation";
 import { Id } from "../../../convex/_generated/dataModel";
+import { spacing } from "@/lib/spacing";
+import { MessageSquare, Library, PlusCircle, User, LogOut } from "lucide-react";
 
 export default function PromptCoach() {
-  const [activeTab, setActiveTab] = useState<"chat" | "library">("chat");
+  const [activeView, setActiveView] = useState<"chat" | "library">("chat");
   const [currentConversationId, setCurrentConversationId] = useState<Id<"promptConversations"> | null>(null);
+  const navigate = useNavigate();
 
   const startConversation = useMutation(api.promptCoach.startConversation);
-  
-  const handleStartNew = async () => {
+
+  const handleStartNew = useCallback(async () => {
     const newId = await startConversation({ title: "New Coaching Session" });
     setCurrentConversationId(newId);
-    setActiveTab("chat");
+    setActiveView("chat");
+  }, [startConversation]);
+
+  const handleLogoClick = () => {
+    setCurrentConversationId(null);
+    setActiveView("chat");
   };
 
-  return (
-    <div className="container mx-auto p-4 max-w-6xl h-[calc(100dvh-4rem)] flex flex-col">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Prompt Coach</h1>
-          <p className="text-sm md:text-base text-muted-foreground">
-            Your Louisiana-aligned instructional design partner.
-          </p>
-        </div>
-        <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-          <Button 
-            variant={activeTab === "chat" ? "default" : "outline"}
-            onClick={() => setActiveTab("chat")}
-            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
-            size="sm"
-          >
-            <MessageSquare className="h-4 w-4" />
-            Coach
-          </Button>
-          <Button 
-            variant={activeTab === "library" ? "default" : "outline"}
-            onClick={() => setActiveTab("library")}
-            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
-            size="sm"
-          >
-            <Library className="h-4 w-4" />
-            My Prompts
-          </Button>
-          <Button 
-            onClick={handleStartNew} 
-            className="gap-2 flex-1 md:flex-none whitespace-nowrap"
-            size="sm"
-          >
-            <PlusCircle className="h-4 w-4" />
-            New Session
-          </Button>
-        </div>
-      </div>
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    navigate("/");
+  };
 
-      <div className="flex-1 overflow-hidden">
-        {activeTab === "chat" ? (
-          <ChatInterface conversationId={currentConversationId} onStartNew={handleStartNew} />
-        ) : (
-          <PromptLibrary onSelectPrompt={(prompt) => console.log("Selected prompt", prompt)} />
-        )}
-      </div>
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
+
+  const navConfig: NavConfig = useMemo(
+    () => ({
+      navItems: [
+        {
+          label: "Coach",
+          icon: MessageSquare,
+          onClick: () => setActiveView("chat"),
+          active: activeView === "chat",
+        },
+        {
+          label: "My Prompts",
+          icon: Library,
+          onClick: () => setActiveView("library"),
+          active: activeView === "library",
+        },
+        {
+          label: "New Session",
+          icon: PlusCircle,
+          onClick: handleStartNew,
+          variant: "ghost" as const,
+        },
+      ],
+      actions: [
+        {
+          label: "Profile",
+          icon: User,
+          onClick: handleProfileClick,
+          showLabel: false,
+        },
+        {
+          label: "Sign Out",
+          icon: LogOut,
+          onClick: handleSignOut,
+          showLabel: true,
+        },
+      ],
+      showThemeToggle: true,
+    }),
+    [activeView, handleStartNew]
+  );
+
+  return (
+    <div className="h-dvh flex flex-col bg-background">
+      <AppHeader config={navConfig} onLogoClick={handleLogoClick} />
+
+      <main className="flex-1 overflow-hidden flex flex-col">
+        <div className={`${spacing.chartContainer} w-full flex-1 flex flex-col ${spacing.container} py-4`}>
+          <div className="flex-1 overflow-hidden">
+            {activeView === "chat" ? (
+              <ChatInterface
+                conversationId={currentConversationId}
+                onStartNew={handleStartNew}
+              />
+            ) : (
+              <PromptLibrary
+                onSelectPrompt={(prompt) => {
+                  console.log("Selected prompt", prompt);
+                  setActiveView("chat");
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
-

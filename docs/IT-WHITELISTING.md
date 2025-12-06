@@ -1,12 +1,24 @@
 # IT Whitelisting Guide for Pelican AI
 
-**Last Updated:** November 2025
+**Last Updated:** December 5, 2025
 
 ---
 
 ## Overview
 
-Pelican AI (pelicanai.org) is an educational platform designed specifically for Louisiana K-12 educators. The platform provides AI guidance frameworks, teaching resources, and professional development tools aligned with Louisiana state standards.
+Pelican AI (pelicanai.org) is an intelligent coaching assistant designed specifically for Louisiana K-12 educators. The platform helps teachers generate high-quality, Louisiana-aligned prompts for use in any AI tool (ChatGPT, Claude, Gemini, etc.). 
+
+**What Pelican AI Does:**
+- Provides conversational coaching to help teachers create better prompts
+- Demonstrates knowledge of Louisiana Educator Rubric (LER), Louisiana Student Standards (LSS), and LEADS evaluation framework
+- Generates copy-pasteable prompts that work in teachers' preferred AI tools
+- Focuses on improving instructional practice, not replacing existing AI tools
+
+**What Pelican AI Does NOT Do:**
+- Does NOT replace ChatGPT, Claude, or Gemini
+- Does NOT generate lesson content directly
+- Does NOT collect student data
+- Does NOT require students to access the platform
 
 **Purpose:** This guide helps IT administrators whitelist pelicanai.org in Content Keeper, CK Express, and Mosyle filtering systems.
 
@@ -14,11 +26,24 @@ Pelican AI (pelicanai.org) is an educational platform designed specifically for 
 
 ## Why Pelican AI Should Be Whitelisted
 
-- **Educational Purpose:** Designed exclusively for K-12 educators
+- **Educational Purpose:** Designed exclusively for Louisiana K-12 educators
 - **CIPA Compliant:** Educational content with appropriate safeguards
-- **Louisiana Standards Aligned:** Supports state curriculum requirements
-- **Teacher Productivity Tool:** Reduces administrative burden for educators
-- **No Student Data Collection:** Platform is designed for teacher use only
+- **Louisiana-Specific Intelligence:** Demonstrates knowledge of Louisiana Educator Rubric (LER), Louisiana Student Standards (LSS), and LEADS evaluation framework
+- **Teacher Coaching Tool:** Helps teachers use AI tools more effectively within Louisiana education context
+- **Platform-Agnostic:** Works with any AI tool teachers already use (ChatGPT, Claude, Gemini, etc.)
+- **No Student Data Collection:** Platform is designed for teacher use only - students never access the site
+- **Improves Practice:** Focuses on better-aligned, more thoughtful instructional prompts, not just time-saving
+
+### Important Clarification: "AI" in Domain Name
+
+**Why the domain name includes "AI":**
+- Pelican AI helps teachers create prompts for use in AI tools (ChatGPT, Claude, Gemini)
+- The platform itself uses AI to provide intelligent coaching conversations
+- However, Pelican AI is **NOT** a student-facing AI chatbot or content generator
+- It's a **coaching assistant** that helps teachers use AI tools more effectively
+- Think of it as "AI coaching for teachers" rather than "AI for students"
+
+**If your filter blocks "AI" related sites:** Please consider whitelisting pelicanai.org as an exception, as it serves a legitimate educational coaching purpose for teachers, not students.
 
 ---
 
@@ -102,7 +127,8 @@ After whitelisting, verify access:
    - Navigate to `https://pelicanai.org`
    - Verify the site loads completely
    - Test login functionality
-   - Verify all features work (frameworks, dashboard, etc.)
+   - Verify conversational coach interface works
+   - Test prompt generation and saving functionality
 
 2. **Check for Blocked Resources:**
    - Open browser developer tools (F12)
@@ -142,8 +168,9 @@ After whitelisting, verify access:
 
 Pelican AI should be classified as:
 - **Primary Category:** Education
-- **Secondary Categories:** Professional Development, Teacher Resources
-- **Content Rating:** General (G) - Educational content for adults
+- **Secondary Categories:** Professional Development, Teacher Resources, Educational Technology
+- **Content Rating:** General (G) - Educational content for adults (teachers only)
+- **Specific Focus:** Louisiana K-12 education, instructional coaching, AI prompt generation
 
 ### Compliance
 
@@ -189,8 +216,9 @@ pelicanai.org
 **Why pelicanai.org Might Be Blocked:**
 - The domain may not be in the categorization database yet (new site)
 - Automated categorization may have miscategorized it
-- The word "AI" in the domain might trigger certain filters
-- Content analysis might flag it incorrectly
+- The word "AI" in the domain might trigger certain filters that block AI-related sites
+- Content analysis might flag it incorrectly as a student-facing AI tool
+- May be confused with AI chatbots or content generators (Pelican AI is a coaching assistant, not a content generator)
 
 ### Mosyle MDM
 
@@ -203,7 +231,8 @@ pelicanai.org
 **Why pelicanai.org Might Be Blocked:**
 - Not in the safelist
 - Miscategorized by automated systems
-- Policy may block "AI" related sites by default
+- Policy may block "AI" related sites by default (even though Pelican AI is a coaching tool, not a student-facing AI)
+- May be incorrectly flagged as a content generator or chatbot platform
 
 ---
 
@@ -255,13 +284,16 @@ pelicanai.org
 
 1. **Contact IT Department**
    - Provide this IT Whitelisting Guide
-   - Explain the educational purpose
+   - Explain that Pelican AI is a coaching assistant that helps teachers create better prompts for use in ChatGPT, Claude, Gemini, etc.
+   - Clarify that it's NOT a replacement for those tools, but a coaching layer
+   - Emphasize Louisiana-specific educational purpose (LER, LSS, LEADS alignment)
    - Request whitelisting for teacher/admin user groups
 
 2. **Provide Documentation**
    - Share this IT Whitelisting Guide
-   - Provide information about the site's educational purpose
-   - Explain CIPA/COPPA compliance
+   - Explain the conversational coaching experience
+   - Clarify platform-agnostic approach (works with any AI tool)
+   - Explain CIPA/COPPA compliance and teacher-only access
 
 3. **Follow Up**
    - Test access after whitelisting
@@ -275,9 +307,11 @@ pelicanai.org
 ### Meta Tags for Categorization
 
 The educational meta tags we've added help filtering systems' automated categorization engines understand that pelicanai.org is:
-- An educational resource
-- Designed for K-12 educators
+- An intelligent coaching assistant for Louisiana K-12 educators
+- Designed to help teachers use AI tools more effectively (not replace them)
+- Focused on Louisiana-specific education context (LER, LSS, LEADS)
 - Compliant with educational content standards
+- Teacher-only platform (no student access)
 
 **However:** These tags only help with **automated categorization**. If a site is manually blacklisted or the filter uses URL-based blocking, meta tags won't help.
 
@@ -353,5 +387,5 @@ If the site is miscategorized, IT can:
 
 ---
 
-*Last Updated: November 2025*
+*Last Updated: December 5, 2025*
 
