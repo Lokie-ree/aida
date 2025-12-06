@@ -72,7 +72,8 @@ export const batchIngestRubric = action({
             { name: "subject", value: "all" },
             { name: "gradeLevel", value: "all" },
             { name: "standardCode", value: "LEADS_SYSTEM" },
-            { name: "cognitiveDepth", value: "application" }
+            { name: "cognitiveDepth", value: "application" },
+            { name: "userId", value: "system" }
           ],
         });
         successCount++;
@@ -99,7 +100,8 @@ export const batchIngestRubric = action({
             { name: "subject", value: "all" },
             { name: "gradeLevel", value: "all" },
             { name: "standardCode", value: "LER_OVERVIEW" },
-            { name: "cognitiveDepth", value: "application" }
+            { name: "cognitiveDepth", value: "application" },
+            { name: "userId", value: "system" }
           ],
         });
         successCount++;
@@ -127,7 +129,8 @@ export const batchIngestRubric = action({
               { name: "subject", value: "all" }, // Rubric applies to all subjects
               { name: "gradeLevel", value: "all" }, // Rubric applies to all grades
               { name: "standardCode", value: `${indicator.domain}_${indicator.indicatorCode}_L${level.level}` },
-              { name: "cognitiveDepth", value: "application" }
+              { name: "cognitiveDepth", value: "application" },
+            { name: "userId", value: "system" }
             ],
           });
 
