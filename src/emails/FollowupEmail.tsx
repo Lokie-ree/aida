@@ -16,7 +16,7 @@ import {
   Link,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, ActionBox, InfoBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, Card, CTAButton, textStyles } from "./BaseEmailTemplate";
 
 interface FollowupEmailProps {
   recipientName?: string;
@@ -40,7 +40,7 @@ export function FollowupEmail({
       </Text>
 
       {/* Light Touch Value Focus */}
-      <InfoBox>
+      <Card>
         <Heading style={textStyles.h2}>3 Ways Pelican AI Helps Louisiana Educators</Heading>
         <Text style={listItem}>
           <strong>1. Save Time:</strong> 3-5 hours per week on planning and prep tasks
@@ -51,10 +51,10 @@ export function FollowupEmail({
         <Text style={listItem}>
           <strong>3. Platform-Agnostic:</strong> Works with ANY AI tool—MagicSchool AI, Brisk, SchoolAI, Gemini, etc.
         </Text>
-      </InfoBox>
+      </Card>
 
       {/* Real Example */}
-      <ActionBox>
+      <Card>
         <Heading style={textStyles.h2}>Try This Example Right Now</Heading>
         <Text style={textStyles.paragraph}>
           Copy this prompt and paste it into any AI tool you have access to:
@@ -77,10 +77,10 @@ export function FollowupEmail({
         <Text style={textStyles.paragraph}>
           This framework saves 7-12 minutes per lesson. With 5-10 lessons per week, that's 35-120 minutes saved.
         </Text>
-      </ActionBox>
+      </Card>
 
       {/* Social Proof */}
-      <InfoBox>
+      <Card>
         <Heading style={textStyles.h2}>What Louisiana Educators Are Saying</Heading>
         <Text style={testimonialStyle}>
           "I finally feel confident using AI tools. The Louisiana-specific guidance makes all the difference."
@@ -88,7 +88,7 @@ export function FollowupEmail({
         <Text style={testimonialAuthor}>
           — Middle School Teacher, Jefferson Parish
         </Text>
-      </InfoBox>
+      </Card>
 
       {/* Soft CTA */}
       <div style={ctaSection}>

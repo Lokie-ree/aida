@@ -1,6 +1,6 @@
 # IT Whitelisting Guide for Pelican AI
 
-**Last Updated:** December 2025
+**Last Updated:** December 5, 2025
 
 ---
 
@@ -387,5 +387,5 @@ If the site is miscategorized, IT can:
 
 ---
 
-*Last Updated: November 2025*
+*Last Updated: December 5, 2025*
 

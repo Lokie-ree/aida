@@ -3,7 +3,7 @@ import {
   Link,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, ActionBox, InfoBox, HighlightBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, Card, textStyles } from "./BaseEmailTemplate";
 
 interface BetaWelcomeEmailProps {
   name?: string;
@@ -16,111 +16,101 @@ export function BetaWelcomeEmail({
 }: BetaWelcomeEmailProps) {
   return (
     <BaseEmailTemplate
-      previewText="Ready to dive in? - Pelican AI"
-      headerTitle="You're one of 5 educators building this together"
-      headerSubtitle="Let's get started!"
+      previewText="Welcome to Pelican AI - Your Louisiana Coaching Assistant"
+      headerTitle="Welcome to Pelican AI Beta"
+      headerSubtitle="Intelligent coaching for Louisiana teachers"
     >
       <Text style={textStyles.paragraph}>Hi {name},</Text>
 
       <Text style={textStyles.paragraph}>
-        You're one of 5 Louisiana educators I'm starting with. No formal beta 
-        program, no complex onboarding—just practical AI guidance that works with 
-        ANY tool you already use (ChatGPT, Gemini, MagicSchool AI, etc.).
+        You're one of 5 Louisiana educators helping shape Pelican AI—an intelligent
+        coaching assistant that helps you generate Louisiana-aligned prompts for ANY
+        AI tool you already use (ChatGPT, Claude, Gemini, etc.).
       </Text>
 
       <Text style={textStyles.paragraph}>
-        <strong>We're Not Waiting for LDOE.</strong> Louisiana educators need 
-        confidence using AI NOW, not when official guidance arrives. That's why 
-        we're building this together—platform-agnostic frameworks that save you 
-        real time.
+        <strong>This is NOT another AI tool to learn.</strong> It's a coaching layer
+        that helps you use the tools you already have more effectively, with Louisiana-specific
+        intelligence built in (LER, LSS, LEADS).
       </Text>
 
+      {/* Try It Now Card */}
+      <Card>
+        <Heading style={textStyles.h2}>🎯 Try Your First Coaching Conversation</Heading>
+        <Text style={textStyles.paragraph}>
+          Think of a lesson you're teaching this week. Then:
+        </Text>
+        <Text style={listItem}>
+          <strong>1. Log in to Pelican AI</strong> (link coming in your next email)
+        </Text>
+        <Text style={listItem}>
+          <strong>2. Start a conversation</strong> - just describe what you're teaching
+        </Text>
+        <Text style={listItem}>
+          <strong>3. Answer a few clarifying questions</strong> (like a colleague would ask)
+        </Text>
+        <Text style={listItem}>
+          <strong>4. Get a Louisiana-aligned prompt</strong> you can copy/paste into ChatGPT, Claude, or any AI tool
+        </Text>
+        <Text style={textStyles.paragraph}>
+          <strong>That's it.</strong> The conversation should feel natural, not like filling out a form.
+        </Text>
+      </Card>
 
-      {/* Immediate Action Box */}
-      <ActionBox>
-        <Heading style={textStyles.h2}>🎯 Try This Right Now (Seriously, Right Now)</Heading>
-        <Text style={textStyles.paragraph}>
-          Before you attend any training or read lengthy documentation, you can 
-          use Pelican AI today. Here's how:
-        </Text>
-        <Text style={listItem}>
-          <strong>1. Click this link</strong> → <Link href="https://docs.google.com/document/d/1yv9sBUXL84U1X1DQ0NxAILBrflGThOFbBePNv4uHUsc/edit" style={ctaLink}>
-            Lesson Objective Unpacker & Success Criteria Builder
-          </Link>
-        </Text>
-        <Text style={listItem}>
-          <strong>2. Copy the sample prompt</strong> (it's ready to use)
-        </Text>
-        <Text style={listItem}>
-          <strong>3. Paste it into ANY AI tool</strong> you have access to (MagicSchool AI, Gemini, ChatGPT, etc.)
-        </Text>
-        <Text style={listItem}>
-          <strong>4. Unpack a lesson objective and create student-friendly success criteria in 3 minutes</strong> instead of 10-15 minutes
-        </Text>
-        <Text style={textStyles.paragraph}>
-          <strong>That's it.</strong> You'll save 7-12 minutes on your very first try—and you do this for EVERY lesson you plan.
-        </Text>
-      </ActionBox>
+      {/* What's Next */}
+      <Heading style={textStyles.h2}>What Happens Next?</Heading>
+      <Text style={listItem}>
+        • <strong>Today:</strong> Your login link is coming in a separate email
+      </Text>
+      <Text style={listItem}>
+        • <strong>This Week:</strong> Generate 2-3 prompts for real lessons you're teaching
+      </Text>
+      <Text style={listItem}>
+        • <strong>Next Week:</strong> Use those prompts in your preferred AI tool and tell me how it went
+      </Text>
+      <Text style={listItem}>
+        • <strong>Throughout December:</strong> Help me understand what makes the coaching feel intelligent vs. robotic
+      </Text>
 
-      {/* What's Next Section */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>What Happens Next?</Heading>
-        <Text style={listItem}>
-          • <strong>Today:</strong> Your platform access email is coming shortly with a login link
-        </Text>
-        <Text style={listItem}>
-          • <strong>Right Now:</strong> Try the framework linked above—no need to wait!
-        </Text>
-        <Text style={listItem}>
-          • <strong>This Week:</strong> Explore 10 frameworks designed for your role (see personalized recommendations below)
-        </Text>
-        <Text style={listItem}>
-          • <strong>Your Feedback:</strong> Tell me honestly—did this save time or waste it? Your feedback literally shapes everything.
+      {/* What We're Testing */}
+      <Card>
+        <Heading style={textStyles.h2}>📚 What We're Testing</Heading>
+        <Text style={textStyles.paragraph}>
+          <strong>Primary Question:</strong> Does the conversational coaching experience feel
+          like an intelligent colleague who understands Louisiana education?
         </Text>
         <Text style={textStyles.paragraph}>
-          <strong>No structured timeline. No pressure.</strong> Use what helps, tell me what doesn't. We're building this together.
-        </Text>
-      </InfoBox>
-
-      {/* What You Get */}
-      <HighlightBox>
-        <Heading style={textStyles.h2}>📚 What You're Getting</Heading>
-        <Text style={textStyles.paragraph}>
-          <strong>10 Frameworks Ready to Use:</strong>
+          <strong>What Makes a Good Prompt Coach:</strong>
         </Text>
         <Text style={listItem}>
-          ✓ <strong>3 Advanced Louisiana-Specific</strong> - Lesson alignment, curriculum internalization, contextualization
+          ✓ Asks clarifying questions like a colleague, not a form
         </Text>
         <Text style={listItem}>
-          ✓ <strong>7 Essential Productivity</strong> - Document summarization, email drafting, meeting notes, standards unpacking, misconceptions, rubrics
+          ✓ Demonstrates knowledge of Louisiana standards, LER indicators, and LEADS
         </Text>
-        <Text style={textStyles.paragraph}>
-          <strong>Platform-Agnostic:</strong> Copy-paste into ANY AI tool you already use. No new platform to learn.
+        <Text style={listItem}>
+          ✓ Generates prompts that actually work in your preferred AI tool
         </Text>
-        <Text style={textStyles.paragraph}>
-          <strong>Louisiana-Aligned:</strong> Every framework references Louisiana standards and educator rubric.
+        <Text style={listItem}>
+          ✓ Feels authentic and teacher-to-teacher, not corporate EdTech
         </Text>
-        <Text style={textStyles.paragraph}>
-          <Link href="https://pelicanai.org/frameworks" style={ctaLink}>
-            <strong>→ Browse All 10 Frameworks</strong>
-          </Link>
-        </Text>
-      </HighlightBox>
+      </Card>
 
       {/* Real Talk */}
       <Text style={textStyles.paragraph}>
-        <strong>Real Talk:</strong> With 5 users, your feedback matters more than anything. 
-        Did this framework save you 10 minutes or waste 5? Tell me. That's how we figure 
-        out what actually works for Louisiana educators.
+        <strong>Real Talk:</strong> With 5 beta testers, your feedback literally shapes
+        everything. Did the coach ask the right clarifying questions? Did the generated
+        prompt actually help? Tell me honestly—that's how we build something Louisiana
+        teachers actually want to use.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        <strong>Questions? Confusion? Ideas?</strong> Just reply to this email or text me. 
-        This is grassroots—we're building it together.
+        <strong>Questions? Confusion? Ideas?</strong> Just reply to this email. This is
+        grassroots—we're building it together.
       </Text>
 
       <Text style={textStyles.paragraph}>
-        Thanks for being one of the 5 to start this with me,
+        Thanks for being one of the first 5,
         <br />
         Randall
         <br />
@@ -132,13 +122,6 @@ export function BetaWelcomeEmail({
 
 // Styles specific to this email template
 
-const ctaLink = {
-  color: "#0ea5e9",
-  textDecoration: "none",
-  fontWeight: "bold",
-  fontSize: "16px",
-};
-
 const listItem = {
   color: "#374151",
   fontSize: "14px",
@@ -146,12 +129,4 @@ const listItem = {
   margin: "8px 0",
 };
 
-const smallText = {
-  color: "#6b7280",
-  fontSize: "13px",
-  lineHeight: "18px",
-  margin: "8px 0 0",
-};
-
 export default BetaWelcomeEmail;
-

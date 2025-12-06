@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Last Updated:** December 3, 2024 (Beta launch preparation complete)
+**Last Updated:** December 3, 2025 (Beta launch preparation complete)
 **Major Change:** Conversational Prompt Coach optimized for STEM beta testers with LER short code integration
 
 ## Project Overview
@@ -65,7 +65,7 @@ See `VISION.md` for complete product vision and strategic context.
 
 ---
 
-## 📋 DECEMBER BETA DEPLOYMENT (Dec 9-28, 2024)
+## 📋 DECEMBER BETA DEPLOYMENT (Dec 9-28, 2025)
 
 ### Beta Tester Profile
 

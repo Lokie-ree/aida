@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { AppHeader } from "@/components/shared/AppHeader";
+import { useState, useMemo } from "react";
+import { LogIn, UserPlus } from "lucide-react";
+import { AppHeader, type NavConfig } from "@/components/navigation";
 import { PrivacyPolicyModal } from "@/components/shared/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/shared/TermsOfServiceModal";
 import { HeroSection } from "@/components/landing/HeroSection";
@@ -26,12 +27,33 @@ function LandingPage() {
     setIsAuthModalOpen(true);
   };
 
+  const navConfig: NavConfig = useMemo(
+    () => ({
+      actions: [
+        {
+          label: "Sign In",
+          icon: LogIn,
+          onClick: handleSignInClick,
+          variant: "ghost" as const,
+          showLabel: true,
+        },
+        {
+          label: "Get Started",
+          icon: UserPlus,
+          onClick: handleGetStartedClick,
+          variant: "default" as const,
+          showLabel: true,
+        },
+      ],
+      showThemeToggle: false,
+    }),
+    []
+  );
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <AppHeader
-        onGetStartedClick={handleGetStartedClick}
-        onSignInClick={handleSignInClick}
-      />
+      {/* Header */}
+      <AppHeader config={navConfig} logoHref="/" animated />
 
       {/* Main Content */}
       <main id="main-content">
@@ -61,21 +83,18 @@ function LandingPage() {
                 Navigate AI with Confidence
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Platform-agnostic guidance frameworks designed specifically for Louisiana educators. Learn to use ANY AI tool effectively with ethical guardrails aligned to Louisiana standards.
+                Platform-agnostic guidance frameworks designed specifically for Louisiana educators.
               </p>
             </div>
 
             {/* Product Links */}
             <div>
-              <h3 className="font-semibold mb-4 text-foreground">
-                Product
-              </h3>
+              <h3 className="font-semibold mb-4 text-foreground">Product</h3>
               <ul className="space-y-2">
                 <li>
                   <button 
                     onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
-                    aria-label="Navigate to How It Works section"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     How It Works
                   </button>
@@ -83,8 +102,7 @@ function LandingPage() {
                 <li>
                   <button 
                     onClick={handleGetStartedClick}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
-                    aria-label="Get Started"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     Get Started
                   </button>
@@ -94,21 +112,21 @@ function LandingPage() {
 
             {/* Resources Links */}
             <div>
-              <h3 className="font-semibold mb-4 text-foreground">
-                Resources
-              </h3>
+              <h3 className="font-semibold mb-4 text-foreground">Resources</h3>
               <ul className="space-y-2">
                 <li>
                   <button 
                     onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2"
-                    aria-label="Navigate to FAQ section"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     FAQ
                   </button>
                 </li>
                 <li>
-                  <a href="mailto:hello@pelicanai.org" className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center">
+                  <a 
+                    href="mailto:hello@pelicanai.org" 
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
                     Contact Us
                   </a>
                 </li>
@@ -117,15 +135,12 @@ function LandingPage() {
 
             {/* Legal Links */}
             <div>
-              <h3 className="font-semibold mb-4 text-foreground">
-                Legal
-              </h3>
+              <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
               <ul className="space-y-2">
                 <li>
                   <button 
                     onClick={() => setIsPrivacyModalOpen(true)}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center"
-                    aria-label="Open Privacy Policy"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     Privacy Policy
                   </button>
@@ -133,8 +148,7 @@ function LandingPage() {
                 <li>
                   <button 
                     onClick={() => setIsTermsModalOpen(true)}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors h-[45px] min-w-[45px] px-2 py-2 inline-flex items-center"
-                    aria-label="Open Terms of Service"
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     Terms of Service
                   </button>
@@ -154,19 +168,15 @@ function LandingPage() {
         </div>
       </footer>
 
-      {/* Privacy Policy Modal */}
+      {/* Modals */}
       <PrivacyPolicyModal 
         isOpen={isPrivacyModalOpen} 
         onClose={() => setIsPrivacyModalOpen(false)} 
       />
-
-      {/* Terms of Service Modal */}
       <TermsOfServiceModal 
         isOpen={isTermsModalOpen} 
         onClose={() => setIsTermsModalOpen(false)} 
       />
-
-      {/* Auth Modal */}
       <AuthModal 
         isOpen={isAuthModalOpen} 
         onClose={() => setIsAuthModalOpen(false)}

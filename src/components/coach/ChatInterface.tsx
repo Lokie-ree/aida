@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
+import { spacing } from "@/lib/spacing";
 
 interface ChatInterfaceProps {
   conversationId: Id<"promptConversations"> | null;
@@ -134,81 +135,79 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     ];
 
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-3 md:p-8 space-y-4 md:space-y-6 overflow-y-auto relative">
-        {/* Subtle decorative background */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-600/5 rounded-full blur-3xl" />
+      <div className="flex flex-col h-full overflow-hidden">
+        {/* Welcome content */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center overflow-y-auto relative">
+          {/* Subtle decorative background */}
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-600/5 rounded-full blur-3xl" />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="relative z-10 bg-gradient-to-br from-blue-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20"
-        >
-          <Bot className="h-10 w-10 md:h-14 md:w-14 text-blue-600" />
-        </motion.div>
+          <div className={spacing.sectionGapSmall + " relative z-10 w-full max-w-3xl"}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="bg-linear-to-br from-blue-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20 mx-auto w-fit"
+            >
+              <Bot className="h-10 w-10 md:h-12 md:w-12 text-blue-600" />
+            </motion.div>
 
-        <div className="space-y-1 md:space-y-2 relative z-10">
-          <h2 className="text-xl md:text-3xl font-bold text-foreground">
-            Welcome to Prompt Coach
-          </h2>
-          <p className="text-muted-foreground max-w-2xl text-xs md:text-base px-2">
-            Built by Louisiana teachers, for Louisiana teachers. I'll help you craft prompts aligned to
-            <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
-            <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
-          </p>
-        </div>
+            <div className="space-y-1">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                Welcome to Prompt Coach
+              </h2>
+              <p className="text-muted-foreground text-xs md:text-sm px-2">
+                Built by Louisiana teachers, for Louisiana teachers. Craft prompts aligned to
+                <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
+                <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
+              </p>
+            </div>
 
-        <div className="w-full max-w-3xl space-y-2 md:space-y-3 pb-20 md:pb-0 relative z-10">
-          <p className="text-xs md:text-sm text-muted-foreground font-medium">
-            Try these examples:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-4">
-            {starterPrompts.map((prompt, idx) => {
-              const IconComponent = prompt.icon;
-              return (
-                <motion.button
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    onStartNew();
-                    setTimeout(() => {
-                      setInputValue(prompt.text);
-                      inputRef.current?.focus();
-                    }, 150);
-                  }}
-                  className="text-left p-3 md:p-5 rounded-lg md:rounded-xl border-2 bg-gradient-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 border-primary/20 hover:border-primary/40 transition-all duration-300 group shadow-sm hover:shadow-md"
-                >
-                  <div className="flex items-start gap-2 md:gap-3">
-                    <div className="p-2 md:p-2.5 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors shadow-sm">
-                      <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                    </div>
-                    <div className="flex-1 space-y-0.5 md:space-y-1">
-                      <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider">{prompt.category}</p>
-                      <p className="text-xs md:text-base text-foreground font-medium leading-snug">{prompt.text}</p>
-                    </div>
-                  </div>
-                </motion.button>
-              );
-            })}
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground font-medium">
+                Try these examples:
+              </p>
+              <div className={`grid grid-cols-1 md:grid-cols-2 ${spacing.gridGapSmall} items-stretch`}>
+                {starterPrompts.map((prompt, idx) => {
+                  const IconComponent = prompt.icon;
+                  return (
+                    <motion.button
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: idx * 0.1 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        onStartNew();
+                        setTimeout(() => {
+                          setInputValue(prompt.text);
+                          inputRef.current?.focus();
+                        }, 150);
+                      }}
+                      className="text-left p-3 md:p-4 rounded-lg border-2 bg-linear-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 border-primary/20 hover:border-primary/40 transition-all duration-300 group shadow-sm hover:shadow-md h-full"
+                    >
+                      <div className="flex items-start gap-2 md:gap-3">
+                        <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors shadow-sm shrink-0">
+                          <IconComponent className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 space-y-0.5 min-w-0">
+                          <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider">{prompt.category}</p>
+                          <p className="text-xs md:text-sm text-foreground font-medium leading-snug">{prompt.text}</p>
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <p className="text-[10px] md:text-xs text-muted-foreground max-w-lg mx-auto">
+              I'll ask clarifying questions to understand your context, then generate a Louisiana-aligned prompt
+              you can use in ChatGPT, Claude, Gemini, or any AI tool.
+            </p>
           </div>
         </div>
-
-        <div className="relative z-10 hidden md:block">
-          <Button onClick={onStartNew} size="lg" className="gap-2">
-            <MessageSquare className="h-4 w-4" />
-            Start Coaching Session
-          </Button>
-        </div>
-
-        <p className="text-[10px] md:text-xs text-muted-foreground max-w-lg relative z-10 px-4">
-          I'll ask clarifying questions to understand your context, then generate a Louisiana-aligned prompt
-          you can use in ChatGPT, Claude, Gemini, or any AI tool.
-        </p>
       </div>
     );
   }
@@ -243,25 +242,27 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
   const currentPhase = getConversationPhase();
 
   return (
-    <div className="flex flex-col h-full bg-card rounded-lg border shadow-sm">
-      {/* Conversation Phase Header */}
-      {conversation && conversation.messages.length > 0 && (
-        <div className="border-b px-3 md:px-4 py-2 md:py-3 bg-muted/30">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2 md:gap-3">
-              <div className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}>
-                <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                {currentPhase.label}
+    <div className="flex flex-col h-full">
+      {/* Chat card */}
+      <div className="flex-1 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
+        {/* Conversation Phase Header */}
+        {conversation && conversation.messages.length > 0 && (
+          <div className="border-b px-3 md:px-4 py-2 md:py-3 bg-muted/30 shrink-0">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}>
+                  <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                  {currentPhase.label}
+                </div>
+                <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:inline">
+                  {currentPhase.phase === "completed"
+                    ? "Ready to copy and use in any AI tool"
+                    : "Louisiana standards & rubric being searched"}
+                </span>
               </div>
-              <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:inline">
-                {currentPhase.phase === "completed"
-                  ? "Ready to copy and use in any AI tool"
-                  : "Louisiana standards & rubric being searched"}
-              </span>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Messages Area - Using native overflow instead of Radix ScrollArea */}
       <div 
@@ -310,7 +311,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground border-primary/30"
                       : isPrompt
-                        ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white border-blue-400"
+                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400"
                         : "bg-muted border-border"
                   )}
                 >
@@ -333,7 +334,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground"
                         : isPrompt
-                          ? "bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
+                          ? "bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
                           : "bg-muted text-foreground border border-border"
                     )}
                   >
@@ -369,7 +370,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           
           {isSending && (
             <div className="flex w-full gap-4">
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-gradient-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-sm">
+              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-sm">
                 <Bot className="h-4 w-4" />
               </div>
               <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border">
@@ -405,54 +406,55 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
         </div>
       </div>
 
-      {/* Save Dialog */}
-      <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Save to My Prompts</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label>Prompt Content</Label>
-              <Textarea 
-                value={promptToSave} 
-                onChange={(e) => setPromptToSave(e.target.value)} 
-                className="h-32"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
+        {/* Save Dialog */}
+        <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Save to My Prompts</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>Grade Level</Label>
-                <Input 
-                  placeholder="e.g. 8th Grade" 
-                  value={saveContext.grade}
-                  onChange={(e) => setSaveContext({...saveContext, grade: e.target.value})}
+                <Label>Prompt Content</Label>
+                <Textarea 
+                  value={promptToSave} 
+                  onChange={(e) => setPromptToSave(e.target.value)} 
+                  className="h-32"
                 />
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Grade Level</Label>
+                  <Input 
+                    placeholder="e.g. 8th Grade" 
+                    value={saveContext.grade}
+                    onChange={(e) => setSaveContext({...saveContext, grade: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subject</Label>
+                  <Input 
+                    placeholder="e.g. Math" 
+                    value={saveContext.subject}
+                    onChange={(e) => setSaveContext({...saveContext, subject: e.target.value})}
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
-                <Label>Subject</Label>
+                <Label>Topic</Label>
                 <Input 
-                  placeholder="e.g. Math" 
-                  value={saveContext.subject}
-                  onChange={(e) => setSaveContext({...saveContext, subject: e.target.value})}
+                  placeholder="e.g. Systems of Equations" 
+                  value={saveContext.topic}
+                  onChange={(e) => setSaveContext({...saveContext, topic: e.target.value})}
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label>Topic</Label>
-              <Input 
-                placeholder="e.g. Systems of Equations" 
-                value={saveContext.topic}
-                onChange={(e) => setSaveContext({...saveContext, topic: e.target.value})}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsSaveDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSavePrompt}>Save Prompt</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsSaveDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleSavePrompt}>Save Prompt</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }

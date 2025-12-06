@@ -3,7 +3,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { BaseEmailTemplate, InfoBox, HighlightBox, CTAButton, SecondaryButton, textStyles } from "./BaseEmailTemplate";
+import { BaseEmailTemplate, Card, CTAButton, SecondaryButton, textStyles } from "./BaseEmailTemplate";
 
 interface WeeklyPromptEmailProps {
   userName: string;
@@ -85,18 +85,18 @@ export const WeeklyPromptEmail = ({
       </Text>
 
       {/* Grassroots Feedback */}
-      <InfoBox>
+      <Card>
         <Heading style={textStyles.h2}>Your Feedback Shapes Everything</Heading>
         <Text style={textStyles.paragraph}>
-          <strong>We're Not Waiting for LDOE.</strong> Louisiana educators are building 
+          <strong>We're Not Waiting for LDOE.</strong> Louisiana educators are building
           practical AI guidance NOW. You're one of 5 educators starting this with me.
         </Text>
         <Text style={textStyles.paragraph}>
-          <strong>Just reply to this email:</strong> Did this save you time? Confuse you? 
-          What would make it better? With 5 users, every piece of feedback literally shapes 
+          <strong>Just reply to this email:</strong> Did this save you time? Confuse you?
+          What would make it better? With 5 users, every piece of feedback literally shapes
           what we build next.
         </Text>
-      </InfoBox>
+      </Card>
     </BaseEmailTemplate>
   );
 };

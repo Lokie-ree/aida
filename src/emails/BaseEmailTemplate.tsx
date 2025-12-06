@@ -51,9 +51,7 @@ export function BaseEmailTemplate({
           {/* Footer */}
           <Section style={footer}>
             <Text style={footerText}>
-              <strong>Pelican AI</strong> - Navigate AI with Confidence
-              <br />
-              Built with Louisiana educators, for Louisiana educators
+              Created with 💙 by educators for educators
             </Text>
             <Text style={footerText}>
               <Link href="https://pelicanai.org" style={link}>
@@ -72,20 +70,8 @@ export function BaseEmailTemplate({
 }
 
 // Reusable styled components
-export const InfoBox = ({ children, ...props }: any) => (
-  <Section style={infoBox} {...props}>
-    {children}
-  </Section>
-);
-
-export const HighlightBox = ({ children, ...props }: any) => (
-  <Section style={highlightBox} {...props}>
-    {children}
-  </Section>
-);
-
-export const ActionBox = ({ children, ...props }: any) => (
-  <Section style={actionBox} {...props}>
+export const Card = ({ children, ...props }: any) => (
+  <Section style={card} {...props}>
     {children}
   </Section>
 );
@@ -110,7 +96,7 @@ export const SecondaryButton = ({ href, children, ...props }: any) => (
 
 // Base styles
 const main = {
-  backgroundColor: "#f6f9fc",
+  backgroundColor: "#ffffff",
   fontFamily:
     '"Lexend", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
 };
@@ -171,30 +157,12 @@ const paragraph = {
   margin: "16px 0",
 };
 
-const infoBox = {
-  backgroundColor: "#f8fafc",
+const card = {
+  backgroundColor: "#ffffff",
   border: "1px solid #e2e8f0",
   borderRadius: "8px",
-  padding: "20px",
+  padding: "24px",
   margin: "24px 0",
-};
-
-const highlightBox = {
-  backgroundColor: "#eff6ff",
-  border: "1px solid #0ea5e9",
-  borderRadius: "8px",
-  padding: "20px",
-  margin: "24px 0",
-  borderLeft: "4px solid #0ea5e9",
-};
-
-const actionBox = {
-  backgroundColor: "#fef3c7",
-  border: "2px solid #f59e0b",
-  borderRadius: "8px",
-  padding: "20px",
-  margin: "24px 0",
-  borderLeft: "4px solid #f59e0b",
 };
 
 const credentialsBox = {
@@ -207,7 +175,7 @@ const credentialsBox = {
 };
 
 const button = {
-  backgroundColor: "#0ea5e9",
+  backgroundColor: "#0284c7",
   borderRadius: "6px",
   color: "#ffffff",
   fontSize: "16px",
@@ -221,9 +189,9 @@ const button = {
 
 const secondaryButton = {
   backgroundColor: "#ffffff",
-  border: "1px solid #0ea5e9",
+  border: "1px solid #0284c7",
   borderRadius: "6px",
-  color: "#0ea5e9",
+  color: "#0284c7",
   fontSize: "16px",
   fontWeight: "bold",
   textDecoration: "none",
@@ -251,7 +219,7 @@ const footerText = {
 };
 
 const link = {
-  color: "#0ea5e9",
+  color: "#0284c7",
   textDecoration: "none",
 };
 

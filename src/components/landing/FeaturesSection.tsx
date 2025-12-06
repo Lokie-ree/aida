@@ -58,7 +58,7 @@ export function FeaturesSection() {
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={fadeInUp}>
-              <Card className="h-full hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden group">
+              <Card className="h-full hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-primary/5 to-primary/10 border-primary/20 relative overflow-hidden group">
                 <BorderBeam 
                   size={80} 
                   duration={8} 
