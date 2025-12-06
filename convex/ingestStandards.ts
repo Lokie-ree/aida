@@ -102,7 +102,8 @@ export const batchIngestStandards = action({
               { name: "subject", value: standard.subject },
               { name: "gradeLevel", value: standard.gradeLevel },
               { name: "standardCode", value: standard.code },
-              { name: "cognitiveDepth", value: standard.cognitiveDepth || "recall" }
+              { name: "cognitiveDepth", value: standard.cognitiveDepth || "recall" },
+              { name: "userId", value: "system" } // Public standards, not user-specific
             ],
           });
 
