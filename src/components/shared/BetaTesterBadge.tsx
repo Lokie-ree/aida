@@ -1,3 +1,4 @@
+Plugin checks - convexClient: function crossDomainClient: function magicLinkClient: function
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";

@@ -1,3 +1,4 @@
+
 import { createAuthClient } from "better-auth/react";
 import {
   convexClient,
@@ -65,10 +66,11 @@ try {
     plugins,
   });
 
-  console.info("createAuthClient returned:", typeof authClient, authClient ? Object.keys(authClient).slice(0, 5) : "null/undefined");
+  console.info("createAuthClient returned:", typeof authClient, authClient ? Object.keys(authClient).slice(0, 10) : "null/undefined");
 
   // Validate the client was created successfully
-  if (!authClient || typeof authClient !== 'object') {
+  // Note: Better Auth client can be a function with methods attached (functions are objects in JS)
+  if (!authClient) {
     throw new Error(`Failed to create auth client - got: ${typeof authClient}`);
   }
 } catch (error) {
