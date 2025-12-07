@@ -25,6 +25,10 @@ export default defineConfig(({ mode }) => ({
       'class-variance-authority',
       'clsx',
       'tailwind-merge',
+      'better-auth',
+      'better-auth/react',
+      '@convex-dev/better-auth/react',
+      '@convex-dev/better-auth/client/plugins',
     ],
   },
   build: {
@@ -53,7 +57,13 @@ export default defineConfig(({ mode }) => ({
           ],
           'animation-vendor': ['framer-motion'],
           'convex-vendor': ['convex', '@convex-dev/better-auth', '@convex-dev/rag', '@convex-dev/resend'],
-          'auth-vendor': ['better-auth'],
+          'auth-vendor': [
+            'better-auth',
+            'better-auth/react',
+            'better-auth/client/plugins',
+            '@convex-dev/better-auth/react',
+            '@convex-dev/better-auth/client/plugins',
+          ],
           'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
           'chart-vendor': ['recharts'],
           'table-vendor': ['@tanstack/react-table'],
@@ -71,6 +81,13 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: mode === 'production',
         drop_debugger: mode === 'production',
+        // Preserve function names for Better Auth to prevent "a.create is not a function" errors
+        keep_fnames: true,
+      },
+      mangle: {
+        // Preserve class names and function names for Better Auth
+        keep_fnames: true,
+        keep_classnames: true,
       },
     },
     // Optimize asset handling
