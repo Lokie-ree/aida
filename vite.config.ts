@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
       'tailwind-merge',
       'better-auth',
       'better-auth/react',
+      'better-auth/client/plugins',
       '@convex-dev/better-auth/react',
       '@convex-dev/better-auth/client/plugins',
     ],

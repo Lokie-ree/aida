@@ -49,18 +49,27 @@ if (!convexSiteUrl) {
 let authClient;
 try {
   console.info("Initializing Better Auth client with baseURL:", convexSiteUrl, "page:", typeof window !== "undefined" ? window.location.origin : "ssr");
+
+  // Debug: Check plugin functions
+  console.info("Plugin checks - convexClient:", typeof convexClient, "crossDomainClient:", typeof crossDomainClient, "magicLinkClient:", typeof magicLinkClient);
+
+  const plugins = [
+    convexClient(),
+    crossDomainClient(),
+    magicLinkClient(),
+  ];
+  console.info("Plugins initialized:", plugins.map((p, i) => `[${i}]: ${typeof p}`).join(", "));
+
   authClient = createAuthClient({
     baseURL: convexSiteUrl,
-    plugins: [
-      convexClient(),
-      crossDomainClient(),
-      magicLinkClient(),
-    ],
+    plugins,
   });
-  
+
+  console.info("createAuthClient returned:", typeof authClient, authClient ? Object.keys(authClient).slice(0, 5) : "null/undefined");
+
   // Validate the client was created successfully
   if (!authClient || typeof authClient !== 'object') {
-    throw new Error('Failed to create auth client');
+    throw new Error(`Failed to create auth client - got: ${typeof authClient}`);
   }
 } catch (error) {
   console.error('Error creating auth client:', error);
