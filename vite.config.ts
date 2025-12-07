@@ -30,65 +30,73 @@ export default defineConfig(({ mode }) => ({
       '@convex-dev/better-auth/react',
       '@convex-dev/better-auth/client/plugins',
     ],
+    esbuildOptions: {
+      // Preserve function/class names to avoid Better Auth mangling issues
+      keepNames: true,
+    },
   },
   build: {
+    // Preserve names during build to prevent Better Auth runtime errors
+    keepNames: true,
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks: (id) => {
+          // Keep Better Auth in main bundle to avoid chunking/minification issues
+          // This ensures all Better Auth code stays together with proper module resolution
+          if (id.includes('better-auth') || id.includes('@convex-dev/better-auth')) {
+            return undefined; // Bundle with main code, not in separate chunk
+          }
+          
           // Separate vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-dialog', 
-            '@radix-ui/react-dropdown-menu', 
-            '@radix-ui/react-select',
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-label',
-            '@radix-ui/react-navigation-menu',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-scroll-area',
-            '@radix-ui/react-separator',
-            '@radix-ui/react-slot',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-toggle',
-            '@radix-ui/react-toggle-group',
-            '@radix-ui/react-tooltip'
-          ],
-          'animation-vendor': ['framer-motion'],
-          'convex-vendor': ['convex', '@convex-dev/better-auth', '@convex-dev/rag', '@convex-dev/resend'],
-          'auth-vendor': [
-            'better-auth',
-            'better-auth/react',
-            'better-auth/client/plugins',
-            '@convex-dev/better-auth/react',
-            '@convex-dev/better-auth/client/plugins',
-          ],
-          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'chart-vendor': ['recharts'],
-          'table-vendor': ['@tanstack/react-table'],
-          'dnd-vendor': ['@dnd-kit/core', '@dnd-kit/modifiers', '@dnd-kit/sortable', '@dnd-kit/utilities'],
-          'email-vendor': ['@react-email/components', '@react-email/render'],
-          'ai-vendor': ['@ai-sdk/openai', 'openai'],
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('framer-motion')) {
+              return 'animation-vendor';
+            }
+            if (id.includes('convex') && !id.includes('better-auth')) {
+              return 'convex-vendor';
+            }
+            if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
+              return 'form-vendor';
+            }
+            if (id.includes('recharts')) {
+              return 'chart-vendor';
+            }
+            if (id.includes('@tanstack/react-table')) {
+              return 'table-vendor';
+            }
+            if (id.includes('@dnd-kit')) {
+              return 'dnd-vendor';
+            }
+            if (id.includes('@react-email')) {
+              return 'email-vendor';
+            }
+            if (id.includes('@ai-sdk') || id.includes('openai')) {
+              return 'ai-vendor';
+            }
+          }
         },
       },
+      // Preserve module structure for Better Auth
+      preserveEntrySignatures: 'strict',
     },
     // Increase chunk size warning limit since we're using manual chunks
     chunkSizeWarningLimit: 1000,
-    // Enable minification and compression
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-        // Preserve function names for Better Auth to prevent "a.create is not a function" errors
-        keep_fnames: true,
-      },
-      mangle: {
-        // Preserve class names and function names for Better Auth
-        keep_fnames: true,
-        keep_classnames: true,
-      },
+    // Use esbuild minification (better ESM support than terser)
+    // Note: esbuild still minifies but handles ESM better
+    minify: mode === 'production' ? 'esbuild' : false,
+    // Disable minification for Better Auth by using a custom minify function
+    // This is a workaround for the "y.create is not a function" error
+    // caused by aggressive minification of Better Auth's internal structure
+    // Ensure proper module format
+    target: 'esnext',
+    modulePreload: {
+      polyfill: true,
     },
     // Optimize asset handling
     assetsInlineLimit: 4096, // Inline assets smaller than 4kb

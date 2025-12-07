@@ -36,6 +36,7 @@ export const createAuth = (
       siteUrl,
       "http://localhost:5173", // Frontend dev server
       "http://localhost:5174", // Alternative port
+      "http://localhost:4173", // Vite preview default port
     ],
     database: authComponent.adapter(ctx),
     // Configure simple, non-verified email/password to get started
