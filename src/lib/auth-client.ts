@@ -12,12 +12,22 @@ if (typeof createAuthClient !== 'function') {
   );
 }
 
+function sanitizeBaseUrl(raw?: string) {
+  if (!raw) return undefined;
+  const trimmed = raw.trim().replace(/\/+$/, ""); // remove trailing slash
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+  // If protocol missing, assume https
+  return `https://${trimmed}`;
+}
+
 // Get Convex Site URL from environment variable
 // Fallback: derive from VITE_CONVEX_URL if VITE_CONVEX_SITE_URL is not set
-let convexSiteUrl = import.meta.env.VITE_CONVEX_SITE_URL;
+let convexSiteUrl = sanitizeBaseUrl(import.meta.env.VITE_CONVEX_SITE_URL);
 
 if (!convexSiteUrl) {
-  const convexUrl = import.meta.env.VITE_CONVEX_URL;
+  const convexUrl = sanitizeBaseUrl(import.meta.env.VITE_CONVEX_URL);
   if (convexUrl) {
     // Derive site URL from Convex URL (replace .convex.cloud with .convex.site)
     convexSiteUrl = convexUrl.replace(/\.convex\.cloud$/, ".convex.site");
@@ -38,6 +48,7 @@ if (!convexSiteUrl) {
 // Create auth client with error handling
 let authClient;
 try {
+  console.info("Initializing Better Auth client with baseURL:", convexSiteUrl, "page:", typeof window !== "undefined" ? window.location.origin : "ssr");
   authClient = createAuthClient({
     baseURL: convexSiteUrl,
     plugins: [
