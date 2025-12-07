@@ -1,17 +1,9 @@
-
 import { createAuthClient } from "better-auth/react";
 import {
   convexClient,
   crossDomainClient,
 } from "@convex-dev/better-auth/client/plugins";
 import { magicLinkClient } from "better-auth/client/plugins";
-
-// Validate createAuthClient is available
-if (typeof createAuthClient !== 'function') {
-  throw new Error(
-    'createAuthClient is not a function. This may indicate a bundling issue with better-auth/react.'
-  );
-}
 
 function sanitizeBaseUrl(raw?: string) {
   if (!raw) return undefined;
@@ -46,38 +38,15 @@ if (!convexSiteUrl) {
   }
 }
 
-// Create auth client with error handling
-let authClient;
-try {
-  console.info("Initializing Better Auth client with baseURL:", convexSiteUrl, "page:", typeof window !== "undefined" ? window.location.origin : "ssr");
-
-  // Debug: Check plugin functions
-  console.info("Plugin checks - convexClient:", typeof convexClient, "crossDomainClient:", typeof crossDomainClient, "magicLinkClient:", typeof magicLinkClient);
-
-  const plugins = [
+// Create auth client
+// Note: createAuthClient returns a function with methods attached (functions are objects in JS)
+const authClient = createAuthClient({
+  baseURL: convexSiteUrl,
+  plugins: [
     convexClient(),
     crossDomainClient(),
     magicLinkClient(),
-  ];
-  console.info("Plugins initialized:", plugins.map((p, i) => `[${i}]: ${typeof p}`).join(", "));
-
-  authClient = createAuthClient({
-    baseURL: convexSiteUrl,
-    plugins,
-  });
-
-  console.info("createAuthClient returned:", typeof authClient, authClient ? Object.keys(authClient).slice(0, 10) : "null/undefined");
-
-  // Validate the client was created successfully
-  // Note: Better Auth client can be a function with methods attached (functions are objects in JS)
-  if (!authClient) {
-    throw new Error(`Failed to create auth client - got: ${typeof authClient}`);
-  }
-} catch (error) {
-  console.error('Error creating auth client:', error);
-  throw new Error(
-    `Failed to initialize Better Auth client: ${error instanceof Error ? error.message : String(error)}`
-  );
-}
+  ],
+});
 
 export { authClient };
