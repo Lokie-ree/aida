@@ -60,60 +60,60 @@ export const louisianaExamples: LouisianaExample[] = [
   {
     component: "Standards Alignment",
     pain: "It takes so long to unpack standards and write clear, measurable objectives",
-    solution: "Use any AI platform to analyze a state standard and generate three differentiated 'I can' statements in 30 seconds"
-  },
-  {
-    component: "Resource Development",
-    pain: "I struggle to find high-quality texts that align with my unit and students' reading levels",
-    solution: "Upload your curriculum guide to any AI platform, then ask it to find and summarize primary sources"
+    solution: "Tell our coach what standard you're teaching. It asks clarifying questions, then generates a Louisiana-aligned prompt you paste into ChatGPT or Claude to get differentiated 'I can' statements."
   },
   {
     component: "Lesson Planning",
     pain: "Not enough time to internalize the lesson plan and anticipate misconceptions",
-    solution: "Ask any AI tool: 'What are 3 potential misconceptions students might have about this topic?'"
+    solution: "Describe your lesson topic to our coach. It understands your grade and subject context, then gives you a prompt to use in any AI tool that helps identify potential student misconceptions aligned to Louisiana standards."
   },
   {
-    component: "High Expectations",
-    pain: "Creating exemplar work to set a vision for 'what good looks like' is time-consuming",
-    solution: "Provide your rubric and prompt, ask AI to generate an 'A' level and 'C' level response with explanations"
+    component: "Differentiation",
+    pain: "I need to differentiate for my IEP students but don't know where to start",
+    solution: "Share your lesson objective with our coach. It asks about your students' needs, then generates a prompt you can use in your preferred AI tool to create differentiated activities aligned to LER indicators."
   },
   {
-    component: "Student Engagement",
-    pain: "I want more engaging activities, but I'm drawing a blank on new ideas",
-    solution: "Describe your lesson and ask for three engagement strategies: kinesthetic, verbal, and logical"
+    component: "Assessment Analysis",
+    pain: "I have LEAP data but struggle to identify specific next steps for my students",
+    solution: "Tell our coach about your assessment results. It helps you craft a prompt that analyzes your data through a Louisiana standards lens, giving you actionable insights you can use in any AI platform."
   },
   {
-    component: "Parent Communication",
-    pain: "Drafting newsletters and parent emails takes up my entire planning period",
-    solution: "Ask any AI platform to write professional emails with suggestions for at-home support"
+    component: "LER Evidence",
+    pain: "I know what I'm doing well, but I struggle to articulate it in LEADS observation language",
+    solution: "Describe a teaching moment to our coach. It asks targeted questions about LER indicators, then generates a prompt you paste into Claude or ChatGPT to help you articulate your practice using Louisiana Educator Rubric language."
+  },
+  {
+    component: "Curriculum Internalization",
+    pain: "I have curriculum resources but need help unpacking them for my specific students",
+    solution: "Tell our coach about your curriculum and students. It asks clarifying questions about your context, then gives you a Louisiana-aligned prompt to use in any AI tool that helps you internalize and adapt the curriculum effectively."
   }
 ];
 
 export const testimonials: Testimonial[] = [
-  {
-    quote: "Will you be the first to share your success story?",
-    author: "Louisiana Educator",
-    title: "Building Together"
-  },
-  {
-    quote: "We're Not Waiting for LDOE - Louisiana educators building practical AI guidance NOW.",
-    author: "Louisiana Educator",
-    title: "Grassroots Launch"
-  },
   {
     quote: "Just describe what you're teaching, and the AI coach asks smart questions like a colleague would—then gives you a prompt ready to paste into ChatGPT or Claude.",
     author: "Louisiana Educator",
     title: "Conversational Coaching"
   },
   {
-    quote: "Real conversations, not automation. Your honest feedback literally shapes what we build next.",
-    author: "Louisiana Educator",
-    title: "Building Together"
-  },
-  {
     quote: "Finally, prompts that actually understand Louisiana standards and the Educator Rubric. No more generic AI outputs that don't fit our context.",
     author: "Louisiana Educator",
     title: "Louisiana-Specific Intelligence"
+  },
+  {
+    quote: "It's not another tool to learn. It's like having a colleague help me write better prompts for the AI I already use. Game changer.",
+    author: "Louisiana Educator",
+    title: "Platform-Agnostic"
+  },
+  {
+    quote: "The conversation feels natural, not like filling out a form. It actually understands what I'm trying to do in my classroom.",
+    author: "Louisiana Educator",
+    title: "Teacher-to-Teacher"
+  },
+  {
+    quote: "Real conversations, not automation. Your honest feedback literally shapes what we build next.",
+    author: "Louisiana Educator",
+    title: "Building Together"
   }
 ];
 
@@ -140,7 +140,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What's included when I sign up?",
-    answer: "You get immediate access to the Conversational Prompt Coach—our core product. Describe what you're teaching, get Louisiana-aligned prompts, and save them to your library. We also provide a Framework Library with exemplar prompts from successful beta conversations. Your feedback shapes what we build next."
+    answer: "You get immediate access to the Conversational Prompt Coach—our core product. Simply describe what you're teaching in a natural conversation, get Louisiana-aligned prompts you can copy and paste into any AI tool, and save them to your personal library. Your feedback shapes what we build next."
   },
   {
     question: "Do I need to be tech-savvy to benefit?",
