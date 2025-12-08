@@ -4,7 +4,7 @@ import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, User, Bot, Loader2, Save, MessageSquare, Copy, GraduationCap, BookOpen, Scale, Target, Sparkles, Lightbulb, MessageCircle, Search } from "lucide-react";
+import { Send, User, Bot, Loader2, Save, MessageSquare, Copy, GraduationCap, BookOpen, Scale, Target, Sparkles, Lightbulb, MessageCircle, Search, ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -29,10 +29,12 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [promptToSave, setPromptToSave] = useState<string>("");
   const [saveContext, setSaveContext] = useState({ grade: "", subject: "", topic: "" });
+  const [promptRatings, setPromptRatings] = useState<Map<number, "positive" | "negative">>(new Map());
 
   const conversation = useQuery(api.promptCoach.getConversation, 
     conversationId ? { conversationId } : "skip"
   );
+  const userProfile = useQuery(api.userProfiles.getUserProfile);
   
   const sendMessage = useAction(api.promptCoach.sendMessage);
   const savePromptMutation = useMutation(api.promptCoach.savePrompt);
@@ -83,22 +85,37 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
+    toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
   };
 
   const openSaveDialog = (text: string) => {
     setPromptToSave(text);
+    // Pre-fill with profile context
+    setSaveContext({
+      grade: userProfile?.gradeLevel || "",
+      subject: userProfile?.subject || "",
+      topic: "", // Still manual
+    });
     setIsSaveDialogOpen(true);
   };
 
   const handleSavePrompt = async () => {
     if (!conversationId) return;
     
+    // Find the rating for this prompt (if any)
+    const messageIndex = conversation?.messages.findIndex(msg => 
+      msg.role === "assistant" && msg.content === promptToSave
+    );
+    const rating = messageIndex !== undefined && messageIndex !== -1 
+      ? promptRatings.get(messageIndex) 
+      : undefined;
+    
     try {
       await savePromptMutation({
         conversationId,
         promptText: promptToSave,
-        context: saveContext
+        context: saveContext,
+        rating,
       });
       toast.success("Prompt saved to your library");
       setIsSaveDialogOpen(false);
@@ -107,6 +124,19 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
       console.error("Failed to save prompt:", error);
       toast.error("Failed to save prompt");
     }
+  };
+
+  const handleRating = (messageIndex: number, rating: "positive" | "negative") => {
+    setPromptRatings(prev => {
+      const newMap = new Map(prev);
+      // Toggle if same rating clicked, otherwise set new rating
+      if (newMap.get(messageIndex) === rating) {
+        newMap.delete(messageIndex);
+      } else {
+        newMap.set(messageIndex, rating);
+      }
+      return newMap;
+    });
   };
 
   // Empty state - no conversation started
@@ -343,6 +373,28 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
 
                   {msg.role === "assistant" && (
                     <div className="flex gap-2">
+                      {isPrompt && (
+                        <>
+                          <Button
+                            variant={promptRatings.get(idx) === "positive" ? "default" : "ghost"}
+                            size="icon"
+                            className="h-7 w-7 hover:bg-primary/10"
+                            onClick={() => handleRating(idx, "positive")}
+                            title="This prompt is helpful"
+                          >
+                            <ThumbsUp className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant={promptRatings.get(idx) === "negative" ? "default" : "ghost"}
+                            size="icon"
+                            className="h-7 w-7 hover:bg-primary/10"
+                            onClick={() => handleRating(idx, "negative")}
+                            title="This prompt needs improvement"
+                          >
+                            <ThumbsDown className="h-3.5 w-3.5" />
+                          </Button>
+                        </>
+                      )}
                       <Button
                         variant="ghost"
                         size="icon"
@@ -402,7 +454,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
         </div>
         <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground mt-2 px-1">
           <Lightbulb className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0" />
-          <span className="line-clamp-2 md:line-clamp-1">Tip: Mention your grade level, Louisiana standard code, or teaching challenge for best results</span>
+          <span className="line-clamp-2 md:line-clamp-1">Tip: Press Enter to send • Mention your grade level, Louisiana standard code, or teaching challenge for best results</span>
         </div>
       </div>
 
