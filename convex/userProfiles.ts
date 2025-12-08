@@ -33,6 +33,8 @@ export const getUserProfile = query({
     subject: v.optional(v.string()),
     gradeLevel: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
+    onboardingComplete: v.optional(v.boolean()),
+    onboardingCompletedAt: v.optional(v.number()),
   }), v.null()),
   handler: async (ctx) => {
     // ConvexBetterAuthProvider handles token sync automatically
@@ -68,6 +70,8 @@ export const getUserProfile = query({
       subject: profile.subject,
       gradeLevel: profile.gradeLevel,
       role: profile.role,
+      onboardingComplete: profile.onboardingComplete,
+      onboardingCompletedAt: profile.onboardingCompletedAt,
     };
   },
 });
@@ -171,6 +175,11 @@ export const updateUserProfile = mutation({
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .first();
 
+    // Check if profile is complete (has required fields)
+    const isComplete = !!(args.gradeLevel && args.subject);
+    const wasComplete = !!(profile?.gradeLevel && profile?.subject);
+    const shouldMarkComplete = isComplete && !wasComplete;
+
     if (!profile) {
       // Create profile if it doesn't exist
       await ctx.db.insert("userProfiles", {
@@ -179,6 +188,8 @@ export const updateUserProfile = mutation({
         subject: args.subject,
         gradeLevel: args.gradeLevel,
         role: args.role || "teacher",
+        onboardingComplete: isComplete ? true : undefined,
+        onboardingCompletedAt: isComplete ? Date.now() : undefined,
       });
     } else {
       // Update existing profile
@@ -187,6 +198,10 @@ export const updateUserProfile = mutation({
         subject: args.subject,
         gradeLevel: args.gradeLevel,
         role: args.role,
+        ...(shouldMarkComplete && {
+          onboardingComplete: true,
+          onboardingCompletedAt: Date.now(),
+        }),
       });
     }
 
@@ -305,7 +320,7 @@ export const initializeNewUser = mutation({
       userId: user._id,
       school: betaSignup.school,
       subject: betaSignup.subject,
-      gradeLevel: undefined,
+      gradeLevel: betaSignup.gradeLevel,
       role: "teacher",
     });
 

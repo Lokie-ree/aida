@@ -59,6 +59,7 @@ export const signupForBeta = mutation({
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
+    gradeLevel: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -96,6 +97,7 @@ export const signupForBeta = mutation({
       name: args.name || "",
       school: args.school,
       subject: args.subject,
+      gradeLevel: args.gradeLevel,
       status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
     });
@@ -227,6 +229,7 @@ export const getPendingSignups = query({
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
+    gradeLevel: v.optional(v.string()),
     signupDate: v.number(),
     status: v.string(),
     notes: v.optional(v.string()),
@@ -249,6 +252,7 @@ export const getBetaSignupById = query({
       name: v.optional(v.string()),
       school: v.optional(v.string()),
       subject: v.optional(v.string()),
+      gradeLevel: v.optional(v.string()),
       status: v.string(),
       signupDate: v.number(),
       notes: v.optional(v.string()),
@@ -270,6 +274,7 @@ export const getBetaSignupByEmail = query({
       name: v.optional(v.string()),
       school: v.optional(v.string()),
       subject: v.optional(v.string()),
+      gradeLevel: v.optional(v.string()),
       status: v.string(),
       signupDate: v.number(),
       notes: v.optional(v.string()),
@@ -294,6 +299,7 @@ export const getAllBetaSignups = query({
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
+    gradeLevel: v.optional(v.string()),
     status: v.string(),
     signupDate: v.number(),
     notes: v.optional(v.string()),
