@@ -90,9 +90,8 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
           className="mb-12 max-w-3xl mx-auto"
         >
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-primary">
-            Platform-agnostic guidance frameworks for Louisiana educators. 
-            <span className="text-foreground font-semibold"> Save 3-5 hours per week</span> with 
-            <span className="text-foreground font-semibold"> ethical AI use</span> on any tool your district provides.
+            An intelligent coaching assistant that helps you generate <span className="text-foreground font-semibold">Louisiana-aligned prompts</span> for any AI tool. 
+            <span className="text-foreground font-semibold"> Just describe what you're teaching</span>, and our coach asks clarifying questions like a colleague—then gives you a prompt ready to paste into ChatGPT, Claude, or whatever you already use.
           </p>
         </motion.div>
 
@@ -112,7 +111,7 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
             <ArrowRight className="ml-3 h-5 w-5" />
           </Button>
           <p className="text-sm text-muted-foreground text-center sm:text-left">
-            Free for Louisiana educators • Start using AI frameworks today
+            Free for Louisiana educators • Start your first conversation today
           </p>
         </motion.div>
 

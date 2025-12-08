@@ -44,9 +44,8 @@ export function LouisianaExamplesSection() {
             </GradientText>
           </motion.div>
           <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-primary">
-            Start with the <span className="text-foreground font-semibold">Lesson Objective Unpacker</span>—saving you 7-12 minutes per lesson. 
-            Then explore <span className="text-foreground font-semibold">frameworks for email drafting, differentiation, parent communication, and more</span>. 
-            We continuously add new frameworks based on feedback from Louisiana educators.
+            Describe your teaching challenge in a natural conversation. Our coach asks clarifying questions like a colleague would, then generates a <span className="text-foreground font-semibold">Louisiana-aligned prompt you can copy and paste into any AI tool</span>—ChatGPT, Claude, Gemini, or whatever your district provides. 
+            <span className="text-foreground font-semibold"> No forms, no dropdowns, just intelligent coaching</span> that understands Louisiana's context.
           </motion.p>
         </motion.div>
 

@@ -9,6 +9,23 @@ import { openai } from "@ai-sdk/openai";
 
 const PELICAN_SYSTEM_PROMPT = `You are Pelican AI, an intelligent coaching assistant built by a Louisiana teacher for Louisiana teachers. You help teachers generate high-quality, Louisiana-aligned prompts for ANY teaching task - lesson planning, assessment data analysis, parent communication, grading rubrics, IEP accommodations, internalizing curriculum resources, identifying highly effective teacher/student actions from the rubric, and more. These prompts work in ChatGPT, Claude, Gemini, or any AI tool.
 
+COACHING APPROACH (Louisiana Adult Learning Principles):
+Apply these research-based principles when coaching Louisiana educators:
+
+1. ACTIVE PARTICIPATION: Don't just generate - ask follow-up questions, invite reflection, engage them in thinking through the problem
+2. CONNECTION TO EXPERIENCE: Ask "What have you tried before?" and "How does this connect to what's worked in your classroom?"
+3. SELF-DIRECTION: Offer choices ("Would you like me to focus on differentiation or assessment alignment?"), don't mandate approaches
+4. GOAL ORIENTATION: Connect everything to their stated goals, school improvement priorities, and student outcomes
+5. RELEVANCE: Every suggestion must tie directly to their classroom practice tomorrow - no abstract theory
+6. RESPECT FOR EXPERTISE: Acknowledge what they already know. You're a thought partner helping them think through challenges, not an expert lecturing a novice
+
+QUESTIONING STANCE (Model Louisiana coaching practices):
+- Use "How do you..." questions that assume competence
+- Ask about PROCESS, not compliance: "What's your approach to..." not "Do you do X?"
+- Invite reflection: "What would success look like for your specific students?"
+- Validate before probing: "That sounds like a solid approach. Tell me more about..."
+- When they mention challenges, dig into the WHY: "What makes that tricky with your students?"
+
 YOUR VOICE:
 - Talk like a fellow Louisiana teacher, not a corporate chatbot
 - Use LER short codes naturally in conversation (e.g., "This sounds like LS - Lesson Structure and Pacing" or "You're working on PIC - Presenting Instructional Content")
@@ -280,6 +297,24 @@ export const sendMessage = action({
       .sort((a, b) => b.score - a.score)
       .slice(0, 4);
 
+    // Search for coaching questions (colleague conversation modeling)
+    // These questions model Louisiana's coaching approach and help guide the conversation
+    let coachingQuestionResults: typeof allRubricResults = [];
+    try {
+      const { results } = await rag.search(ctx, {
+        namespace: "louisiana_rubric_coaching",
+        query: searchTerms,
+        limit: 3,
+        filters: [
+          { name: "contentType", value: "coaching_questions" }
+        ]
+      });
+      coachingQuestionResults = results;
+    } catch (error) {
+      // Coaching namespace may not exist yet, skip gracefully
+      console.warn(`Coaching namespace not found, skipping`);
+    }
+
     const relevantStandards = standardResults
       .map((r) => r.content?.[0]?.text)
       .filter(Boolean)
@@ -290,9 +325,14 @@ export const sendMessage = action({
       .filter(Boolean)
       .join("\n\n");
 
+    const relevantCoachingQuestions = coachingQuestionResults
+      .map((r) => r.content?.[0]?.text)
+      .filter(Boolean)
+      .join("\n\n");
+
     let promptWithContext = args.message;
 
-    // Build Louisiana-specific context (standards + rubric indicators)
+    // Build Louisiana-specific context (standards + rubric indicators + coaching questions)
     let louisianaContext = "";
     if (relevantStandards) {
        louisianaContext += `\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
@@ -300,9 +340,12 @@ export const sendMessage = action({
     if (relevantRubricIndicators) {
        louisianaContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
     }
+    if (relevantCoachingQuestions) {
+       louisianaContext += `\n\nLOUISIANA COACHING QUESTIONS (use these as models for your follow-up questions):\n${relevantCoachingQuestions}`;
+    }
 
     if (louisianaContext) {
-       promptWithContext += `\n\n---\nLOUISIANA CONTEXT FOR THIS CONVERSATION:${louisianaContext}\n\nUSE THIS CONTEXT: Weave specific LER indicator names and standard codes naturally into your questions and responses. Don't just list them - reference them conversationally (e.g., "This sounds like Indicator 1.4 - Activities and Materials").`;
+       promptWithContext += `\n\n---\nLOUISIANA CONTEXT FOR THIS CONVERSATION:${louisianaContext}\n\nUSE THIS CONTEXT: Weave specific LER indicator short codes and standard codes naturally into your questions and responses. Use the coaching questions as models for how to ask reflective, colleague-style follow-ups. Don't lecture - ask questions that help them think through their practice.`;
     }
 
     // 4. Ensure thread exists
@@ -370,6 +413,7 @@ export const savePrompt = mutation({
       topic: v.optional(v.string()),
       challenge: v.optional(v.string()),
     }),
+    rating: v.optional(v.union(v.literal("positive"), v.literal("negative"))),
   },
   handler: async (ctx, args) => {
     const user = await authComponent.getAuthUser(ctx);
@@ -380,6 +424,10 @@ export const savePrompt = mutation({
       conversationId: args.conversationId,
       promptText: args.promptText,
       context: args.context,
+      feedback: args.rating ? {
+        rating: args.rating,
+        workedInClassroom: false,
+      } : undefined,
       isExemplar: false,
       createdAt: Date.now(),
     });
@@ -435,6 +483,29 @@ export const toggleWorkedInClassroom = mutation({
             feedback: {
                 ...currentFeedback,
                 workedInClassroom: args.worked
+            }
+        });
+    }
+});
+
+// Mutation to set prompt rating
+export const setPromptRating = mutation({
+    args: { promptId: v.id("generatedPrompts"), rating: v.union(v.literal("positive"), v.literal("negative")) },
+    handler: async (ctx, args) => {
+        const user = await authComponent.getAuthUser(ctx);
+        if (!user) throw new Error("Not authenticated");
+
+        const prompt = await ctx.db.get(args.promptId);
+        if (!prompt || prompt.userId !== user._id) {
+            throw new Error("Prompt not found or access denied");
+        }
+
+        const currentFeedback = prompt.feedback || { workedInClassroom: false, rating: "positive" };
+
+        await ctx.db.patch(args.promptId, {
+            feedback: {
+                ...currentFeedback,
+                rating: args.rating
             }
         });
     }

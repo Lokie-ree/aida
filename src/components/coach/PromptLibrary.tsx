@@ -3,9 +3,21 @@ import { api } from "../../../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Trash2, CheckCircle, Copy } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface PromptLibraryProps {
   onSelectPrompt: (prompt: any) => void;
@@ -15,11 +27,13 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
   const prompts = useQuery(api.promptCoach.getSavedPrompts);
   const deletePrompt = useMutation(api.promptCoach.deleteSavedPrompt);
   const toggleWorked = useMutation(api.promptCoach.toggleWorkedInClassroom);
+  const [deleteId, setDeleteId] = useState<any>(null);
 
   const handleDelete = async (id: any) => {
     try {
       await deletePrompt({ promptId: id });
       toast.success("Prompt deleted");
+      setDeleteId(null);
     } catch (error) {
       toast.error("Failed to delete prompt");
     }
@@ -27,7 +41,7 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
+    toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
   };
 
   const handleToggleWorked = async (id: any, currentStatus: boolean) => {
@@ -57,9 +71,12 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
             <Copy className="h-8 w-8 text-muted-foreground" />
           </div>
           <h3 className="text-xl font-semibold">No saved prompts yet</h3>
-          <p className="text-muted-foreground mt-2 max-w-sm">
+          <p className="text-muted-foreground mt-2 max-w-sm mb-4">
             Start a coaching session to generate and save high-quality, Louisiana-aligned prompts.
           </p>
+          <Button onClick={() => onSelectPrompt(null)}>
+            Start Coaching Session
+          </Button>
         </div>
       </div>
     );
@@ -97,7 +114,9 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
                   title="Worked in classroom"
                 >
                   <CheckCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only">Worked</span>
+                  {prompt.feedback?.workedInClassroom && (
+                    <span className="text-xs">Worked</span>
+                  )}
                 </Button>
               </div>
               <div className="flex gap-1">
@@ -105,15 +124,36 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
                   <Copy className="h-3.5 w-3.5" />
                   <span className="sr-only">Copy</span>
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                  onClick={() => handleDelete(prompt._id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  <span className="sr-only">Delete</span>
-                </Button>
+                <AlertDialog open={deleteId === prompt._id} onOpenChange={(open: boolean) => !open && setDeleteId(null)}>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => setDeleteId(prompt._id)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this prompt?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. The prompt will be permanently removed from your library.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(prompt._id)}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </CardFooter>
           </Card>

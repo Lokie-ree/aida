@@ -83,7 +83,7 @@ function LandingPage() {
                 Navigate AI with Confidence
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Platform-agnostic guidance frameworks designed specifically for Louisiana educators.
+                An intelligent coaching assistant that helps Louisiana educators generate better prompts for any AI tool.
               </p>
             </div>
 

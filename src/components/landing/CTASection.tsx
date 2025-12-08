@@ -56,9 +56,8 @@ export function CTASection({ onGetStartedClick }: CTASectionProps) {
                   </GradientText>
                 </motion.div>
                 <motion.p variants={fadeInUp} className="text-xl mb-8 text-muted-foreground leading-relaxed font-primary">
-                  Access <span className="text-foreground font-semibold">platform-agnostic AI guidance frameworks</span> that save 
-                  <span className="text-foreground font-semibold"> 3-5 hours per week</span>. Use with any AI tool your district provides. 
-                  <span className="text-foreground font-semibold"> Start saving time today.</span>
+                  Start a conversation about what you're teaching. Get <span className="text-foreground font-semibold">Louisiana-aligned prompts</span> you can use in any AI tool—ChatGPT, Claude, Gemini, or whatever your district provides. 
+                  <span className="text-foreground font-semibold"> No new tools to learn, just better prompts</span> that improve your practice.
                 </motion.p>
                 <motion.div variants={fadeInUp}>
                   <Button
