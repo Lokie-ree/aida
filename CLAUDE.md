@@ -210,14 +210,15 @@ src/              # React frontend
 ├── App.tsx       # Root component with routing
 └── main.tsx      # Application entry point
 
-knowledge/        # Louisiana education data (markdown source files)
-├── schemas/      # JSON schemas for data validation
-├── la-ela.md     # Louisiana ELA standards
-├── la-math.md    # Louisiana Math standards
-└── la-ler-rubric.md # Louisiana Educator Rubric
+knowledge/        # Louisiana education data (JSON source files for RAG ingestion)
+├── la-ela-standards.json          # Louisiana ELA standards
+├── la-math-standards.json         # Louisiana Math standards
+├── la-science-standards.json      # Louisiana Science standards (NGSS-aligned)
+├── la-social-studies-standards.json # Louisiana Social Studies standards
+└── la-rubric-evaluation-handbook.json # Louisiana Educator Rubric (LER) with coaching questions
 
 docs/             # Technical documentation
-└── RAG_PLAN.md   # RAG implementation plan (Phase 2-3, NOT Week 1)
+└── IT-WHITELISTING.md   # IT security whitelisting guide
 ```
 
 ### Convex Backend Architecture
@@ -242,9 +243,9 @@ Convex uses three function types:
 
 1. **RAG Integration**: All Louisiana Student Standards and Educator Rubric data is embedded in Convex RAG
    - See `convex/rag.ts` for RAG initialization (6 filters: contentType, subject, gradeLevel, standardCode, cognitiveDepth, userId)
-   - See `docs/RAG_PLAN.md` for comprehensive RAG architecture and implementation plan
-   - **CRITICAL**: RAG filters are OR-ed together; use composite filters for AND operations (see RAG_PLAN.md Technical Constraints)
-   - **NOT NEEDED FOR WEEK 1 BETA** - Defer to Phase 2
+   - Ingestion actions: `convex/ingestStandards.ts`, `convex/ingestRubric.ts`
+   - **CRITICAL**: RAG filters are OR-ed together; use composite filters for AND operations
+   - CLI tool: `pnpm ingest-rag` for batch ingestion (calls Convex actions)
 
 2. **Workflow System**: Multi-step processes use `@convex-dev/workflow`
    - Example: Alignment Scorecard workflow (`convex/alignmentSteps.ts`)
@@ -470,11 +471,9 @@ export const getStatus = query({
 - Workflows are deterministic - no `fetch()` or `Math.random()` directly in handler
 - For long-running workflows, use `workflow.cleanup()` to manage state
 
-## RAG (Retrieval-Augmented Generation)
+## RAG API Reference
 
-**⚠️ NOT NEEDED FOR WEEK 1 BETA LAUNCH**
-
-**CRITICAL:** Read `docs/RAG_PLAN.md` before working on RAG features. This is the comprehensive technical plan for Louisiana Student Standards and Louisiana Educator Rubric integration.
+For overview of RAG namespaces, content types, and usage in the Prompt Coach, see **Working with RAG** section above.
 
 ### RAG Instance
 
@@ -484,19 +483,10 @@ Initialized in `convex/rag.ts` and exported for use across backend:
 import { rag } from "./rag";
 ```
 
-**Filters (6 total):**
-- `contentType`: "louisiana_standard", "framework", "user_content"
-- `subject`: "ela", "math", "science", "social_studies"
-- `gradeLevel`: "K", "1", "2", ..., "12"
-- `standardCode`: Parsed standard identifier (e.g., "RL.3.1")
-- `cognitiveDepth`: "recall", "application", "synthesis"
-- `userId`: For user-specific content
-
-**IMPORTANT:** Filters are OR-ed together. For AND operations, use composite filter values or post-filtering in actions.
-
 ### Searching RAG
 
 ```typescript
+// Search Louisiana Student Standards
 const results = await rag.search(ctx, {
   namespace: "louisiana_standards",
   query: query,
@@ -506,15 +496,24 @@ const results = await rag.search(ctx, {
   ],
   limit: 10,
 });
+
+// Search coaching questions for conversation modeling
+const coachingResults = await rag.search(ctx, {
+  namespace: "louisiana_rubric_coaching",
+  query: searchTerms,
+  filters: [{ name: "contentType", value: "coaching_questions" }],
+  limit: 5,
+});
 ```
 
 See `convex/ragService.ts` for search helper functions.
 
 ### Adding to RAG
 
-**For bulk ingestion, use Workflows** (see `docs/RAG_PLAN.md` Phase 1 for LSS standards ingestion plan):
+Use ingestion actions for bulk data loading:
 
 ```typescript
+// In convex/ingestStandards.ts
 await rag.add(ctx, {
   namespace: "louisiana_standards",
   text: standardText,
@@ -524,24 +523,10 @@ await rag.add(ctx, {
     { name: "gradeLevel", value: "3" },
     { name: "standardCode", value: "RL.3.1" }
   ],
-  metadata: {
-    // Optional: Additional non-searchable metadata
-    importedAt: Date.now(),
-    sourceFile: "la-ela.md"
-  }
 });
 ```
 
-### RAG Status
-
-- **Phase 0:** ✅ COMPLETE - RAG consolidation (single instance)
-- **Phase 1:** 🟡 IN PROGRESS - LSS standards JSON conversion and ingestion
-- **Phase 2:** ⏳ PENDING - Louisiana Educator Rubric integration
-- **Phase 3:** ⏳ PENDING - RAG service extensions and workflow updates
-
-**Decision:** Defer RAG work until Week 2-3. Framework library provides immediate value without RAG dependency.
-
-See `docs/RAG_PLAN.md` for detailed implementation plan and rubric integration requirements.
+**IMPORTANT:** Filters are OR-ed together. For AND operations, use composite filter values or post-filtering.
 
 ## Code Conventions
 
@@ -596,7 +581,7 @@ The platform's core differentiator is rubric integration. All features must be *
 
 **Integration in Seeded Frameworks:** The 10 seeded frameworks in `convex/seedFrameworks.ts` already include LER context via `formatLERContext()` function. This provides Louisiana-specific definitions without needing RAG.
 
-See `knowledge/la-ler-rubric.md` for full rubric text and `knowledge/la-rubric-evaluation-handbook.json` for complete short code mappings.
+See `knowledge/la-rubric-evaluation-handbook.json` for full rubric text, coaching questions, and short code mappings.
 
 ### Louisiana Student Standards (LSS)
 
@@ -609,7 +594,7 @@ See `knowledge/la-ler-rubric.md` for full rubric text and `knowledge/la-rubric-e
 - ELA: `RL.3.1` (Reading Literature, Grade 3, Standard 1)
 - Math: `3.NBT.A.1` (Grade 3, Number & Operations in Base Ten, Cluster A, Standard 1)
 
-See `knowledge/` folder for complete standards markdown files.
+See `knowledge/` folder for complete standards JSON files (ELA, Math, Science, Social Studies).
 
 ## Environment Variables
 
@@ -687,13 +672,25 @@ The Prompt Coach is the core product. When making changes:
 
 ### Working with RAG
 
-**Status:** RAG infrastructure is set up with Louisiana Student Standards and Louisiana Educator Rubric data.
+**Status:** RAG infrastructure is set up with Louisiana Student Standards, Louisiana Educator Rubric, and Louisiana Leader Handbook data.
 
-**Location:** `convex/rag.ts` initializes the RAG instance with 6 filters:
-- `contentType`: "louisiana_standard", "framework", "user_content"
-- `subject`: "ela", "math", "science", "social_studies"
-- `gradeLevel`: "K", "1", "2", ..., "12"
-- `standardCode`: Standard identifier (e.g., "RL.3.1")
+**Location:** `convex/rag.ts` initializes the RAG instance with 6 filters.
+
+**Two Namespaces:**
+1. `louisiana_standards` - Louisiana Student Standards (ELA, Math, Science, Social Studies)
+2. `louisiana_rubric_coaching` - LER indicators, coaching questions, and Leader Handbook content
+
+**Content Types (via `contentType` filter):**
+- `louisiana_standard` - Individual Louisiana Student Standards
+- `rubric_indicator` - LER indicator descriptions with performance levels
+- `coaching_questions` - Research-based coaching questions from LER and Leader Handbook
+- `framework` - AI guidance frameworks
+- `user_content` - User-generated content
+
+**Other Filters:**
+- `subject`: "ela", "math", "science", "social_studies", "all"
+- `gradeLevel`: "K", "1", "2", ..., "12", "all"
+- `standardCode`: Standard identifier (e.g., "RL.3.1", "SO_COACHING", "LEADER_1A_COACHING")
 - `cognitiveDepth`: "recall", "application", "synthesis"
 - `userId`: For user-specific content
 
@@ -701,13 +698,31 @@ The Prompt Coach is the core product. When making changes:
 When generating prompts, the coach uses RAG to:
 1. Search for relevant Louisiana standards based on grade/subject/topic
 2. Retrieve LER indicator descriptions for alignment
-3. Find exemplar prompts from previous successful conversations
+3. **Search coaching questions** for "colleague conversation" modeling
+4. Find exemplar prompts from previous successful conversations
+
+**Coaching Questions RAG Search:**
+```typescript
+// In convex/promptCoach.ts sendMessage action
+const { results } = await rag.search(ctx, {
+  namespace: "louisiana_rubric_coaching",
+  query: searchTerms,
+  limit: 3,
+  filters: [{ name: "contentType", value: "coaching_questions" }]
+});
+```
 
 **Key points:**
 - RAG filters are OR-ed; use composite filters for AND operations
 - 256 results max per search (design queries to narrow efficiently)
 - Embeddings use OpenAI `text-embedding-3-small`
-- LER language preserved exactly in embeddings for authenticity
+- LER/Leader Handbook language preserved exactly for authenticity
+
+**Data Ingestion (Production):**
+- `convex/ingestStandards.ts` - Louisiana Student Standards
+- `convex/ingestRubric.ts` - LER indicators and coaching questions
+- `convex/ingestLeaderHandbook.ts` - Leader Handbook coaching strategies
+- `scripts/ingest-rag.ts` - CLI tool for batch ingestion (calls Convex actions)
 
 ### Git Workflow
 
@@ -733,8 +748,8 @@ When generating prompts, the coach uses RAG to:
 ## Known Issues & Limitations
 
 ### Current Status (Post-Refocus)
-✅ **Conversational Coach:** Live and working
-🚧 **RAG Integration:** Infrastructure ready, but data not yet ingested (see `docs/RAG_INGESTION_PLAN.md`)
+✅ **Conversational Coach:** Live and working with Adult Learning Principles
+✅ **RAG Integration:** Infrastructure ready with ingestion actions (run `pnpm ingest-rag` for dev data)
 ✅ **User Profiles:** Working
 ✅ **Authentication:** Better Auth integrated
 
