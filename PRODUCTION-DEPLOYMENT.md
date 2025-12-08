@@ -1,6 +1,6 @@
 # Production Deployment Reference
 
-**Last Updated:** December 6, 2025
+**Last Updated:** December 6, 2025 (Updated for backend Convex function ingestion)
 
 ## Production Environment
 
@@ -33,39 +33,59 @@ RESEND_WEBHOOK_SECRET=<your-secret>
 RESEND_TEST_MODE=false
 ```
 
-## RAG Ingestion Fix Required
-
-The ingestion code needs `userId` filter added to `convex/ingestRubric.ts` in **3 locations**.
-
-Add this line to each `filterValues` array:
-```typescript
-{ name: "userId", value: "system" }
-```
-
-**Locations:**
-1. Line ~75 (LEADS System)
-2. Line ~102 (Rubric Overview)
-3. Line ~130 (Rubric Indicators)
-
 ## RAG Ingestion to Production
 
+RAG ingestion is performed by backend Convex functions (actions). The ingestion script is a local helper that calls these backend functions.
+
+### Backend Functions
+
+The backend Convex actions that perform ingestion are:
+- **`convex/ingestStandards.ts`** - Contains `batchIngestStandards` action
+- **`convex/ingestRubric.ts`** - Contains `batchIngestRubric` action
+
+These are the functions that actually perform the RAG ingestion in production.
+
+### Local Helper Script
+
+The script **`scripts/ingest-rag.ts`** is a local helper that:
+- Reads JSON files from `knowledge/` directory
+- Transforms data to match function signatures
+- Calls the backend Convex actions via `ConvexHttpClient`
+- Handles retry logic and error reporting
+
+**Important:** The script runs locally on your machine and calls the backend functions. It does not run in production.
+
+### Prerequisites
+
+1. Ensure you're authenticated to Convex production:
+   ```bash
+   npx convex deploy --prod
+   ```
+
+2. Verify production environment variables are set (especially `OPENAI_API_KEY`):
+   ```bash
+   npx convex env list --prod
+   ```
+
+3. Ensure JSON files exist in `knowledge/` directory on your local machine
+
+### Ingestion Method
+
+Run the local script with production Convex URL:
+
 ```bash
-# Create temporary production env file
-cat > .env.prod.temp << 'EOF'
-VITE_CONVEX_URL=https://outgoing-partridge-914.convex.cloud
-EOF
+# Set production Convex URL
+export CONVEX_URL=https://outgoing-partridge-914.convex.cloud
 
-# Swap env files
-cp .env.local .env.local.backup
-cp .env.prod.temp .env.local
-
-# Run ingestion
+# Run local script (calls backend functions in production)
 pnpm ingest-rag
-
-# Restore dev environment
-cp .env.local.backup .env.local
-rm .env.prod.temp .env.local.backup
 ```
+
+**How it works:**
+1. Script reads JSON files from `knowledge/` directory (local)
+2. Script transforms data to match backend function signatures
+3. Script calls backend Convex actions (`batchIngestStandards` and `batchIngestRubric`) via HTTP
+4. Backend functions execute in production and perform RAG ingestion
 
 **Expected results:**
 - 455 ELA standards
@@ -85,8 +105,12 @@ rm .env.prod.temp .env.local.backup
 
 ## Troubleshooting
 
-**White page:** Check Vercel env vars, trigger new build (not redeploy)
+**RAG ingestion fails:** 
+- Verify `OPENAI_API_KEY` is set in Convex production: `npx convex env get OPENAI_API_KEY --prod`
+- Check Convex logs: `npx convex logs --prod`
+- Ensure JSON files exist in `knowledge/` directory
 
-**RAG ingestion fails:** Verify OPENAI_API_KEY in Convex production
-
-**Auth issues:** Verify SITE_URL matches domain, check trustedOrigins in `convex/auth.ts`
+**Auth issues:** 
+- Verify `SITE_URL` matches domain in Convex production
+- Check `trustedOrigins` in `convex/auth.ts`
+- Verify `BETTER_AUTH_SECRET` is set in production
