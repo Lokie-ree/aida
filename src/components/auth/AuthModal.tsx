@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { 
@@ -44,10 +45,12 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
   }, [initialMode]);
 
   const form = useForm<AuthFormData>({
+    // @ts-expect-error - Zod version mismatch between zod and @hookform/resolvers
     resolver: zodResolver(authFormSchema),
     defaultValues: {
       email: "",
       name: "",
+      gradeLevel: undefined,
     },
   });
 
@@ -91,9 +94,13 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
 
         // Only proceed if approved
         console.log("Sending magic link for approved user:", data.email);
+        // Construct absolute URL for callback
+        const callbackURL = typeof window !== "undefined" 
+          ? `${window.location.origin}/coach`
+          : "/coach";
         const result = await authClient.signIn.magicLink({
           email: data.email,
-          callbackURL: "/dashboard",
+          callbackURL,
         });
 
         console.log("Magic link result:", result);
@@ -144,6 +151,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
               name: data.name || undefined,
               school: undefined,
               subject: undefined,
+              gradeLevel: data.gradeLevel || undefined,
             }),
             timeoutPromise,
           ]) as any;
@@ -228,24 +236,65 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
             <Form {...form}>
               <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
                 {flow === "signUp" && (
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (optional)</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter your name"
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name (optional)</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your name"
+                              disabled={submitting}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="gradeLevel"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Grade Level (optional)</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
                             disabled={submitting}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select grade level" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Pre-K">Pre-K</SelectItem>
+                              <SelectItem value="K">Kindergarten</SelectItem>
+                              <SelectItem value="1">1st Grade</SelectItem>
+                              <SelectItem value="2">2nd Grade</SelectItem>
+                              <SelectItem value="3">3rd Grade</SelectItem>
+                              <SelectItem value="4">4th Grade</SelectItem>
+                              <SelectItem value="5">5th Grade</SelectItem>
+                              <SelectItem value="6">6th Grade</SelectItem>
+                              <SelectItem value="7">7th Grade</SelectItem>
+                              <SelectItem value="8">8th Grade</SelectItem>
+                              <SelectItem value="9">9th Grade</SelectItem>
+                              <SelectItem value="10">10th Grade</SelectItem>
+                              <SelectItem value="11">11th Grade</SelectItem>
+                              <SelectItem value="12">12th Grade</SelectItem>
+                              <SelectItem value="Multiple">Multiple Grades</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
                 )}
                 <FormField
                   control={form.control}
