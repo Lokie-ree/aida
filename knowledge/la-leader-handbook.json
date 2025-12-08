@@ -1,0 +1,1658 @@
+{
+  "metadata": {
+    "title": "Louisiana Leader Rubric & Evaluation Handbook",
+    "source": "Louisiana Department of Education",
+    "releaseDate": "April 2024",
+    "totalPages": 148,
+    "description": "A comprehensive guide defining effective school leadership and leader-centered practices for Louisiana school leaders, developed in partnership with NIET.",
+    "targetAudience": "School principals, assistant principals, and other school-based administrators in Louisiana"
+  },
+  "leadsSystem": {
+    "name": "Louisiana Educator Advancement and Development System (LEADS)",
+    "overview": "Louisiana's improved Educator Evaluation System builds upon and supports education initiatives across the state. The process and leadership practices supported by evaluation will be implemented through the structures of instructional leadership teams and teacher collaboration and will support the implementation of high-quality instructional materials that have been adopted across the state.",
+    "keyObjectives": [
+      "Use research-based teaching and leadership standards that provide clear descriptions of practice across a range of indicators.",
+      "Provide high-quality feedback to teachers and leaders that is actionable, detailed, and timely.",
+      "Support the continuous improvement of teaching and learning using materials teachers use every day in classrooms.",
+      "Offer opportunities for teamwork and collaboration that help educators to develop their practice.",
+      "Provide differentiated follow-up coaching and support based on refinement areas.",
+      "Enable educators to reflect on their practice and share their views as part of the evaluation process."
+    ],
+    "threeProvenStrategies": [
+      {
+        "name": "Instructional Leadership Team (ILT)",
+        "description": "The instructional leadership team consists of the principal, assistant principals and teacher leaders. This team is responsible for building and sustaining instructional excellence and a culture of continuous learning school-wide by analyzing student work and data, modeling lessons, leading learning, and providing feedback to teaching teams and individual teachers."
+      },
+      {
+        "name": "Teacher Collaboration (TC)",
+        "description": "Teacher collaboration is a structured time for teachers to meet and collaborate with colleagues. The purpose of teacher collaboration is to analyze student work and academic data to identify what students know, can do, and need; strengthen content knowledge through practice-based learning; and create or adjust lesson plans to respond to data."
+      },
+      {
+        "name": "Career Pipeline (CP)",
+        "description": "Louisiana supports high-quality induction, support, and feedback for novice teachers through career pipeline. Novice teachers receive intensive, ongoing support from mentors who have been trained on identifying needs, providing feedback, and coaching new teachers."
+      }
+    ],
+    "leadershipBeliefs": [
+      "School leadership matters and has a significant impact on the quality of teaching and student learning.",
+      "Effective school leaders set high expectations for students and adults, monitor progress, and intervene when those expectations are not met.",
+      "All school leaders, regardless of their current level of performance, can improve their practice through the use of high-quality professional learning and job-embedded support.",
+      "Assessments of school leader effectiveness must be comprehensive, grounded in observed student and adult behavior, and focused on the impact of school leadership practices.",
+      "Each evaluation system component is grounded in research about effective leadership practices."
+    ]
+  },
+  "definitions": {
+    "Acceleration": "Just-in-time tutoring and support that strategically connects unfinished learning from prior grades or courses with new learning, rather than isolated skill practice or prerequisite review.",
+    "Expectations/Success Criteria": "Concrete indicators of learning performance, such as descriptions, rubrics, or work exemplars, that make it clear to students what counts as quality work or achievement.",
+    "High-Quality Instructional Materials (HQIM)": "Instructional content that is fully aligned to state content standards and builds content knowledge by providing a coherent sequence of content. High-quality instructional materials are often referred to as curriculum.",
+    "Instructional Leadership Team (ILT)": "The group of school-level leaders who guide the instructional work of the school. Members of the ILT vary across schools but often include the principal, assistant principals, master teachers, content leaders, instructional coaches, and teacher leaders.",
+    "School Leaders": "Individuals in a school building who exercise instructional leadership. School leaders can include assistant principals, deans, master teachers, content leaders, instructional coaches, and teacher leaders.",
+    "Teacher Collaboration (TC)": "Structured time for teams of teachers to collaborate around instruction. Collaboration time is utilized in a variety of ways, including data analysis and action planning, lesson internalization, and practice-based professional learning."
+  },
+  "rubric": {
+    "name": "Louisiana Leader Rubric (LLR)",
+    "releaseDate": "April 2024",
+    "overview": "The Louisiana Leader Rubric was designed through a partnership between the Louisiana Department of Education (LDOE) and the National Institute for Excellence in Teaching (NIET) to directly support improvements in school leadership. By clearly defining effective leadership and leader-centered practices, this rubric provides school leaders with a roadmap for strengthening their practice, facilitating high-quality coaching, and fostering collaboration around best leadership practices.",
+    "performanceLevelGuidance": "Performance definitions are provided at levels 5, 3, and 1. Evaluators can score performance at levels 2 or 4 based on evidence and their professional judgment. A rating of 2 often occurs when examination of the evidence is stronger than unsatisfactory, but there is not enough specific evidence to merit a proficient rating. A rating of 4 often occurs when many of the descriptors in the proficient level are evident and strong, but there is not enough evidence or consistency to merit an exemplary rating of 5. These ratings should always be based on close evaluation of evidence, including observations, data analysis, and stakeholder feedback.",
+    "domains": [
+      {
+        "domain": "MISSION_VISION_GOALS",
+        "domainName": "School Mission, Vision, and Strategic Goal Setting",
+        "domainNumber": 1,
+        "indicators": [
+          {
+            "indicatorCode": "GSM",
+            "indicatorName": "Goal-Setting and Monitoring",
+            "indicatorNumber": "1.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops and implements data-driven school and team goals, and monitors progress using action plans.",
+                  "The school leader consistently and effectively disaggregates data by student group (e.g., students with disabilities, English Learners, economically disadvantaged students) to identify patterns of underperformance and uses this information to develop targeted goals.",
+                  "The school leader consistently and effectively uses a variety of data to inform decisions, including academic data (e.g., universal screening, formative, interim, and summative assessments), as well as non-academic data (e.g., student attendance, chronic absenteeism, student discipline, student surveys, teacher attendance, family engagement).",
+                  "The school leader consistently and effectively develops a plan with specific student-centered interventions based on data and monitors and supports the effectiveness of the interventions.",
+                  "The school leader consistently and effectively involves teachers in data analysis and planning for intervention, which they then effectively implement in their own classrooms."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops and implements data-driven school and team goals, and monitors progress using action plans.",
+                  "The school leader usually and effectively disaggregates data by student group (e.g., students with disabilities, English Learners, economically disadvantaged students) to identify patterns of underperformance and uses this information to develop targeted goals.",
+                  "The school leader usually and effectively uses a variety of data to inform decisions, including academic data (e.g., universal screening, formative, interim, and summative assessments), as well as non-academic data (e.g., student attendance, chronic absenteeism, student discipline, student surveys, teacher attendance, family engagement).",
+                  "The school leader usually and effectively develops a plan with specific student-centered interventions based on data and monitors and supports the effectiveness of the interventions.",
+                  "The school leader usually and effectively involves teachers in data analysis and planning for intervention, which they then effectively implement in their own classrooms."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops and implements data-driven school and team goals, and monitors progress using action plans.",
+                  "The school leader inconsistently and/or ineffectively disaggregates data by student group (e.g., students with disabilities, English Learners, economically disadvantaged students) to identify patterns of underperformance and uses this information to develop targeted goals.",
+                  "The school leader inconsistently and/or ineffectively uses a variety of data to inform decisions, including academic data (e.g., universal screening, formative, interim, and summative assessments), as well as non-academic data (e.g., student attendance, chronic absenteeism, student discipline, student surveys, teacher attendance, family engagement).",
+                  "The school leader inconsistently and/or ineffectively develops a plan with specific student-centered interventions based on data and monitors and supports the effectiveness of the interventions.",
+                  "The school leader inconsistently and/or ineffectively involves teachers in data analysis and planning for intervention, which they then effectively implement in their own classrooms."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "CMV",
+            "indicatorName": "Communication of Mission, Vision, and Goals",
+            "indicatorNumber": "1.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively establishes a vision for the school by presenting a compelling picture of success founded on shared values and beliefs.",
+                  "The school leader consistently and effectively communicates the mission, vision, and goals to all stakeholders in ways that foster stakeholder investment.",
+                  "The school leader consistently and effectively aligns the mission, vision, and goals to school instructional priorities and high-quality curriculum."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively establishes a vision for the school by presenting a compelling picture of success founded on shared values and beliefs.",
+                  "The school leader usually and effectively communicates the mission, vision, and goals to all stakeholders in ways that foster stakeholder investment.",
+                  "The school leader usually and effectively aligns the mission, vision, and goals to school instructional priorities and high-quality curriculum."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively establishes a vision for the school by presenting a compelling picture of success founded on shared values and beliefs.",
+                  "The school leader inconsistently and/or ineffectively communicates the mission, vision, and goals to all stakeholders in ways that foster stakeholder investment.",
+                  "The school leader inconsistently and/or ineffectively aligns the mission, vision, and goals to school instructional priorities and high-quality curriculum."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "EXP",
+            "indicatorName": "Expectations",
+            "indicatorNumber": "1.3",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively advocates for success for all students, especially those who have been historically underserved and marginalized, including students from low-income families, students with disabilities, English Learners, and students of color.",
+                  "The school leader consistently and effectively establishes high and demanding academic standards aligned to state standards and high-quality curriculum.",
+                  "The school leader consistently and effectively models expectations for students and adults."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively advocates for success for all students, especially those who have been historically underserved and marginalized, including students from low-income families, students with disabilities, English Learners, and students of color.",
+                  "The school leader usually and effectively establishes high and demanding academic standards aligned to state standards and high-quality curriculum.",
+                  "The school leader usually and effectively models expectations for students and adults."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively advocates for success for all students, especially those who have been historically underserved and marginalized, including students from low-income families, students with disabilities, English Learners, and students of color.",
+                  "The school leader inconsistently and/or ineffectively establishes high and demanding academic standards aligned to state standards and high-quality curriculum.",
+                  "The school leader inconsistently and/or ineffectively models expectations for students and adults."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "INSTRUCTIONAL_LEADERSHIP",
+        "domainName": "Instructional Leadership",
+        "domainNumber": 2,
+        "indicators": [
+          {
+            "indicatorCode": "CA",
+            "indicatorName": "Curriculum and Assessment",
+            "indicatorNumber": "2.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively supports the use of a system of high-quality instructional materials aligned to state standards.",
+                  "The school leader consistently and effectively ensures objectives and expectations for learning are clear and aligned to the depth and rigor of the state standards and high-quality instructional materials.",
+                  "The school leader consistently and effectively implements formative and summative assessment systems to track student progress toward mastery and inform instructional decisions and interventions.",
+                  "The school leader consistently and effectively provides professional learning on effective curriculum implementation for all instructional staff.",
+                  "The school leader consistently and effectively implements TC and ILT structures that focus on effective curriculum and assessment implementation, including analysis of student work, to inform professional learning and enhance instructional practice."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively supports the use of a system of high-quality instructional materials aligned to state standards.",
+                  "The school leader usually and effectively ensures objectives and expectations for learning are clear and aligned to the depth and rigor of the state standards and high-quality instructional materials.",
+                  "The school leader usually and effectively implements formative and summative assessment systems to track student progress toward mastery and inform instructional decisions and interventions.",
+                  "The school leader usually and effectively provides professional learning on effective curriculum implementation for all instructional staff.",
+                  "The school leader usually and effectively implements TC and ILT structures that focus on effective curriculum and assessment implementation, including analysis of student work, to inform professional learning and enhance instructional practice."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively supports the use of a system of high-quality instructional materials aligned to state standards.",
+                  "The school leader inconsistently and/or ineffectively ensures objectives and expectations for learning are clear and aligned to the depth and rigor of the state standards and high-quality instructional materials.",
+                  "The school leader inconsistently and/or ineffectively implements formative and summative assessment systems to track student progress toward mastery and inform instructional decisions and interventions.",
+                  "The school leader inconsistently and/or ineffectively provides professional learning on effective curriculum implementation for all instructional staff.",
+                  "The school leader inconsistently and/or ineffectively implements TC and ILT structures that focus on effective curriculum and assessment implementation, including analysis of student work, to inform professional learning and enhance instructional practice."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "TE",
+            "indicatorName": "Teacher Effectiveness",
+            "indicatorNumber": "2.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops a leadership team that can use the evaluation system with fidelity.",
+                  "The school leader consistently and effectively uses observational data in coaching conversations and formal evaluations to support teachers to improve.",
+                  "The school leader consistently and effectively provides evidence-based feedback grounded in state standards, high-quality instructional materials, and a deep understanding of the rubric and other state-approved tools.",
+                  "The school leader consistently and effectively develops differentiated professional learning or coaching plans based on individual teacher needs using data from the evaluation system.",
+                  "The school leader consistently and effectively provides formal and informal opportunities for teachers to collaborate on effective instruction through ILT and TC structures."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops a leadership team that can use the evaluation system with fidelity.",
+                  "The school leader usually and effectively uses observational data in coaching conversations and formal evaluations to support teachers to improve.",
+                  "The school leader usually and effectively provides evidence-based feedback grounded in state standards, high-quality instructional materials, and a deep understanding of the rubric and other state-approved tools.",
+                  "The school leader usually and effectively develops differentiated professional learning or coaching plans based on individual teacher needs using data from the evaluation system.",
+                  "The school leader usually and effectively provides formal and informal opportunities for teachers to collaborate on effective instruction through ILT and TC structures."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops a leadership team that can use the evaluation system with fidelity.",
+                  "The school leader inconsistently and/or ineffectively uses observational data in coaching conversations and formal evaluations to support teachers to improve.",
+                  "The school leader inconsistently and/or ineffectively provides evidence-based feedback grounded in state standards, high-quality instructional materials, and a deep understanding of the rubric and other state-approved tools.",
+                  "The school leader inconsistently and/or ineffectively develops differentiated professional learning or coaching plans based on individual teacher needs using data from the evaluation system.",
+                  "The school leader inconsistently and/or ineffectively provides formal and informal opportunities for teachers to collaborate on effective instruction through ILT and TC structures."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "MSN",
+            "indicatorName": "Meeting Student Needs",
+            "indicatorNumber": "2.3",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively uses data to inform intervention and acceleration to support student success.",
+                  "The school leader consistently and effectively implements a system for identifying and monitoring student intervention and acceleration.",
+                  "The school leader consistently and effectively ensures teachers adjust instruction to meet individual student needs, using differentiation supports in HQIM.",
+                  "The school leader consistently and effectively ensures all students, including students with disabilities and English Learners, have access to rigorous, on-grade-level curriculum and instruction."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively uses data to inform intervention and acceleration to support student success.",
+                  "The school leader usually and effectively implements a system for identifying and monitoring student intervention and acceleration.",
+                  "The school leader usually and effectively ensures teachers adjust instruction to meet individual student needs, using differentiation supports in HQIM.",
+                  "The school leader usually and effectively ensures all students, including students with disabilities and English Learners, have access to rigorous, on-grade-level curriculum and instruction."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively uses data to inform intervention and acceleration to support student success.",
+                  "The school leader inconsistently and/or ineffectively implements a system for identifying and monitoring student intervention and acceleration.",
+                  "The school leader inconsistently and/or ineffectively ensures teachers adjust instruction to meet individual student needs, using differentiation supports in HQIM.",
+                  "The school leader inconsistently and/or ineffectively ensures all students, including students with disabilities and English Learners, have access to rigorous, on-grade-level curriculum and instruction."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "IF",
+            "indicatorName": "Instructional Focus",
+            "indicatorNumber": "2.4",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops a school schedule that maximizes time for instruction.",
+                  "The school leader consistently and effectively establishes a leader schedule that prioritizes instructional leadership and school goals.",
+                  "The school leader consistently and effectively ensures all instructional staff have access to HQIM, plans for its implementation, and monitors its use.",
+                  "The school leader consistently and effectively makes decisions aligned to the instructional focus and school goals.",
+                  "The school leader consistently and effectively distributes leadership responsibilities across the leadership team to maintain an instructional focus.",
+                  "The school leader consistently and effectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops a school schedule that maximizes time for instruction.",
+                  "The school leader usually and effectively establishes a leader schedule that prioritizes instructional leadership and school goals.",
+                  "The school leader usually and effectively ensures all instructional staff have access to HQIM, plans for its implementation, and monitors its use.",
+                  "The school leader usually and effectively makes decisions aligned to the instructional focus and school goals.",
+                  "The school leader usually and effectively distributes leadership responsibilities across the leadership team to maintain an instructional focus.",
+                  "The school leader usually and effectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops a school schedule that maximizes time for instruction.",
+                  "The school leader inconsistently and/or ineffectively establishes a leader schedule that prioritizes instructional leadership and school goals.",
+                  "The school leader inconsistently and/or ineffectively ensures all instructional staff have access to HQIM, plans for its implementation, and monitors its use.",
+                  "The school leader inconsistently and/or ineffectively makes decisions aligned to the instructional focus and school goals.",
+                  "The school leader inconsistently and/or ineffectively distributes leadership responsibilities across the leadership team to maintain an instructional focus.",
+                  "The school leader inconsistently and/or ineffectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "CAPACITY_BUILDING",
+        "domainName": "Capacity Building",
+        "domainNumber": 3,
+        "indicators": [
+          {
+            "indicatorCode": "RP",
+            "indicatorName": "Reflective Practices",
+            "indicatorNumber": "3.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively engages in transparent self-reflection with evaluator, leadership team, and staff.",
+                  "The school leader consistently and effectively sets rigorous goals focused on the school's most critical needs and follows through on commitments to achieve them.",
+                  "The school leader consistently and effectively adjusts action plans and strategies based on feedback and data.",
+                  "The school leader consistently and effectively collaborates with system leadership to address issues and achieve goals."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively engages in transparent self-reflection with evaluator, leadership team, and staff.",
+                  "The school leader usually and effectively sets rigorous goals focused on the school's most critical needs and follows through on commitments to achieve them.",
+                  "The school leader usually and effectively adjusts action plans and strategies based on feedback and data.",
+                  "The school leader usually and effectively collaborates with system leadership to address issues and achieve goals."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively engages in transparent self-reflection with evaluator, leadership team, and staff.",
+                  "The school leader inconsistently and/or ineffectively sets rigorous goals focused on the school's most critical needs and follows through on commitments to achieve them.",
+                  "The school leader inconsistently and/or ineffectively adjusts action plans and strategies based on feedback and data.",
+                  "The school leader inconsistently and/or ineffectively collaborates with system leadership to address issues and achieve goals."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "LD",
+            "indicatorName": "Leadership Development",
+            "indicatorNumber": "3.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops school leaders to use observational data in coaching conversations and formal evaluations to support teacher improvement.",
+                  "The school leader consistently and effectively fosters school leader reflection through collaboration and/or coaching.",
+                  "The school leader consistently and effectively establishes a career pipeline system to identify, develop, and support teacher leaders.",
+                  "The school leader consistently and effectively provides opportunities for staff to engage in professional learning to enhance their practice."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops school leaders to use observational data in coaching conversations and formal evaluations to support teacher improvement.",
+                  "The school leader usually and effectively fosters school leader reflection through collaboration and/or coaching.",
+                  "The school leader usually and effectively establishes a career pipeline system to identify, develop, and support teacher leaders.",
+                  "The school leader usually and effectively provides opportunities for staff to engage in professional learning to enhance their practice."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops school leaders to use observational data in coaching conversations and formal evaluations to support teacher improvement.",
+                  "The school leader inconsistently and/or ineffectively fosters school leader reflection through collaboration and/or coaching.",
+                  "The school leader inconsistently and/or ineffectively establishes a career pipeline system to identify, develop, and support teacher leaders.",
+                  "The school leader inconsistently and/or ineffectively provides opportunities for staff to engage in professional learning to enhance their practice."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "CP",
+            "indicatorName": "Collaborative Practices",
+            "indicatorNumber": "3.3",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively implements structured collaboration around examining student learning through ILT and TC.",
+                  "The school leader consistently and effectively ensures teacher collaboration is meaningful and teachers actively contribute to the process, including data analysis and action planning, lesson internalization, and practice-based learning.",
+                  "The school leader consistently and effectively monitors the quality of TC and ILT content and makes adjustments based on teacher and student learning needs."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively implements structured collaboration around examining student learning through ILT and TC.",
+                  "The school leader usually and effectively ensures teacher collaboration is meaningful and teachers actively contribute to the process, including data analysis and action planning, lesson internalization, and practice-based learning.",
+                  "The school leader usually and effectively monitors the quality of TC and ILT content and makes adjustments based on teacher and student learning needs."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively implements structured collaboration around examining student learning through ILT and TC.",
+                  "The school leader inconsistently and/or ineffectively ensures teacher collaboration is meaningful and teachers actively contribute to the process, including data analysis and action planning, lesson internalization, and practice-based learning.",
+                  "The school leader inconsistently and/or ineffectively monitors the quality of TC and ILT content and makes adjustments based on teacher and student learning needs."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "CI",
+            "indicatorName": "Continuous Improvement",
+            "indicatorNumber": "3.4",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively implements an induction and/or mentoring system that provides support for new and/or struggling staff.",
+                  "The school leader consistently and effectively provides job-embedded professional learning for all staff, aligned to their individual needs and coaching plans.",
+                  "The school leader consistently and effectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively implements an induction and/or mentoring system that provides support for new and/or struggling staff.",
+                  "The school leader usually and effectively provides job-embedded professional learning for all staff, aligned to their individual needs and coaching plans.",
+                  "The school leader usually and effectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively implements an induction and/or mentoring system that provides support for new and/or struggling staff.",
+                  "The school leader inconsistently and/or ineffectively provides job-embedded professional learning for all staff, aligned to their individual needs and coaching plans.",
+                  "The school leader inconsistently and/or ineffectively demonstrates knowledge and applies principles of adult learning in planning and delivering professional development."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+        "domainName": "School and Community Environment",
+        "domainNumber": 4,
+        "indicators": [
+          {
+            "indicatorCode": "SA",
+            "indicatorName": "School Atmosphere",
+            "indicatorNumber": "4.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively implements systems to ensure the campus is safe and positive for all students and staff.",
+                  "The school leader consistently and effectively manages conflict to build effective working relationships.",
+                  "The school leader consistently and effectively implements a structure that allows school leaders to collaborate and work as a leadership team."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively implements systems to ensure the campus is safe and positive for all students and staff.",
+                  "The school leader usually and effectively manages conflict to build effective working relationships.",
+                  "The school leader usually and effectively implements a structure that allows school leaders to collaborate and work as a leadership team."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively implements systems to ensure the campus is safe and positive for all students and staff.",
+                  "The school leader inconsistently and/or ineffectively manages conflict to build effective working relationships.",
+                  "The school leader inconsistently and/or ineffectively implements a structure that allows school leaders to collaborate and work as a leadership team."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "CE",
+            "indicatorName": "Community Engagement",
+            "indicatorNumber": "4.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops and maintains relationships with stakeholders (families, community members, business leaders, etc.).",
+                  "The school leader consistently and effectively communicates with stakeholders in a manner that enhances student learning.",
+                  "The school leader consistently and effectively provides services and programming to support student success and family engagement during school hours and beyond.",
+                  "The school leader consistently and effectively provides varied opportunities for diverse groups of stakeholders to engage with and support the school."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops and maintains relationships with stakeholders (families, community members, business leaders, etc.).",
+                  "The school leader usually and effectively communicates with stakeholders in a manner that enhances student learning.",
+                  "The school leader usually and effectively provides services and programming to support student success and family engagement during school hours and beyond.",
+                  "The school leader usually and effectively provides varied opportunities for diverse groups of stakeholders to engage with and support the school."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops and maintains relationships with stakeholders (families, community members, business leaders, etc.).",
+                  "The school leader inconsistently and/or ineffectively communicates with stakeholders in a manner that enhances student learning.",
+                  "The school leader inconsistently and/or ineffectively provides services and programming to support student success and family engagement during school hours and beyond.",
+                  "The school leader inconsistently and/or ineffectively provides varied opportunities for diverse groups of stakeholders to engage with and support the school."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "DIS",
+            "indicatorName": "Discipline",
+            "indicatorNumber": "4.3",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively develops and implements a campus-wide discipline system and behavior plan.",
+                  "The school leader consistently and effectively handles student misconduct in a positive and fair manner with appropriate consequences.",
+                  "The school leader consistently and effectively develops students' problem-solving skills and focuses on restorative practices.",
+                  "The school leader consistently and effectively coaches teachers on effective classroom management and discipline to minimize office referrals."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively develops and implements a campus-wide discipline system and behavior plan.",
+                  "The school leader usually and effectively handles student misconduct in a positive and fair manner with appropriate consequences.",
+                  "The school leader usually and effectively develops students' problem-solving skills and focuses on restorative practices.",
+                  "The school leader usually and effectively coaches teachers on effective classroom management and discipline to minimize office referrals."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively develops and implements a campus-wide discipline system and behavior plan.",
+                  "The school leader inconsistently and/or ineffectively handles student misconduct in a positive and fair manner with appropriate consequences.",
+                  "The school leader inconsistently and/or ineffectively develops students' problem-solving skills and focuses on restorative practices.",
+                  "The school leader inconsistently and/or ineffectively coaches teachers on effective classroom management and discipline to minimize office referrals."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "AHQ",
+            "indicatorName": "Access to High-Quality Education",
+            "indicatorNumber": "4.4",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively implements systems to ensure all students have access to effective teachers.",
+                  "The school leader consistently and effectively ensures students have learning opportunities with appropriate academic and social supports.",
+                  "The school leader consistently and effectively assists teachers and students in identifying resources (such as Title I services, social workers, etc.) to support students' academic and social needs."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively implements systems to ensure all students have access to effective teachers.",
+                  "The school leader usually and effectively ensures students have learning opportunities with appropriate academic and social supports.",
+                  "The school leader usually and effectively assists teachers and students in identifying resources (such as Title I services, social workers, etc.) to support students' academic and social needs."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively implements systems to ensure all students have access to effective teachers.",
+                  "The school leader inconsistently and/or ineffectively ensures students have learning opportunities with appropriate academic and social supports.",
+                  "The school leader inconsistently and/or ineffectively assists teachers and students in identifying resources (such as Title I services, social workers, etc.) to support students' academic and social needs."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "RS",
+            "indicatorName": "Responsiveness to Stakeholders",
+            "indicatorNumber": "4.5",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively demonstrates commitment to all students in the school's mission, vision, and goals.",
+                  "The school leader consistently and effectively incorporates community history and values in curriculum and instruction.",
+                  "The school leader consistently and effectively develops school organizational structures to empower staff and the community."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively demonstrates commitment to all students in the school's mission, vision, and goals.",
+                  "The school leader usually and effectively incorporates community history and values in curriculum and instruction.",
+                  "The school leader usually and effectively develops school organizational structures to empower staff and the community."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively demonstrates commitment to all students in the school's mission, vision, and goals.",
+                  "The school leader inconsistently and/or ineffectively incorporates community history and values in curriculum and instruction.",
+                  "The school leader inconsistently and/or ineffectively develops school organizational structures to empower staff and the community."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "PROFESSIONALISM_INTEGRITY",
+        "domainName": "Professionalism and Integrity",
+        "domainNumber": 5,
+        "indicators": [
+          {
+            "indicatorCode": "PN",
+            "indicatorName": "Professional Norms",
+            "indicatorNumber": "5.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively creates an open, productive, caring, professional, and trusting environment among students, staff, families, and community.",
+                  "The school leader consistently and effectively holds self and others accountable for student success."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively creates an open, productive, caring, professional, and trusting environment among students, staff, families, and community.",
+                  "The school leader usually and effectively holds self and others accountable for student success."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively creates an open, productive, caring, professional, and trusting environment among students, staff, families, and community.",
+                  "The school leader inconsistently and/or ineffectively holds self and others accountable for student success."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "PB",
+            "indicatorName": "Professional Behavior",
+            "indicatorNumber": "5.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively behaves in a respectful and responsible manner, demonstrating integrity, trust, collaboration, perseverance, and continuous improvement.",
+                  "The school leader consistently and effectively makes decisions that are child-centered."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively behaves in a respectful and responsible manner, demonstrating integrity, trust, collaboration, perseverance, and continuous improvement.",
+                  "The school leader usually and effectively makes decisions that are child-centered."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively behaves in a respectful and responsible manner, demonstrating integrity, trust, collaboration, perseverance, and continuous improvement.",
+                  "The school leader inconsistently and/or ineffectively makes decisions that are child-centered."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "POL",
+            "indicatorName": "Policy",
+            "indicatorNumber": "5.3",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively understands and implements school and system policies.",
+                  "The school leader consistently and effectively ensures compliance with federal, state, and local laws and regulations."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively understands and implements school and system policies.",
+                  "The school leader usually and effectively ensures compliance with federal, state, and local laws and regulations."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively understands and implements school and system policies.",
+                  "The school leader inconsistently and/or ineffectively ensures compliance with federal, state, and local laws and regulations."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "domain": "SCHOOL_OPERATIONS",
+        "domainName": "School Operations/Management",
+        "domainNumber": 6,
+        "indicators": [
+          {
+            "indicatorCode": "AO",
+            "indicatorName": "Administrative Operations",
+            "indicatorNumber": "6.1",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively manages school governance processes effectively.",
+                  "The school leader consistently and effectively recruits, hires, and retains a diverse staff of qualified educators.",
+                  "The school leader consistently and effectively ensures staff are productive and focused on meeting the needs of all students."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively manages school governance processes effectively.",
+                  "The school leader usually and effectively recruits, hires, and retains a diverse staff of qualified educators.",
+                  "The school leader usually and effectively ensures staff are productive and focused on meeting the needs of all students."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively manages school governance processes effectively.",
+                  "The school leader inconsistently and/or ineffectively recruits, hires, and retains a diverse staff of qualified educators.",
+                  "The school leader inconsistently and/or ineffectively ensures staff are productive and focused on meeting the needs of all students."
+                ]
+              }
+            ]
+          },
+          {
+            "indicatorCode": "FPM",
+            "indicatorName": "Fiscal and Physical Management",
+            "indicatorNumber": "6.2",
+            "performanceLevels": [
+              {
+                "level": 5,
+                "levelName": "Exemplary",
+                "levelDescription": "Significantly Above Expectations",
+                "descriptors": [
+                  "The school leader consistently and effectively acquires and manages resources to support student learning and community engagement.",
+                  "The school leader consistently and effectively uses data to inform resource allocation decisions."
+                ]
+              },
+              {
+                "level": 3,
+                "levelName": "Proficient",
+                "levelDescription": "At Expectations",
+                "descriptors": [
+                  "The school leader usually and effectively acquires and manages resources to support student learning and community engagement.",
+                  "The school leader usually and effectively uses data to inform resource allocation decisions."
+                ]
+              },
+              {
+                "level": 1,
+                "levelName": "Unsatisfactory",
+                "levelDescription": "Significantly Below Expectations",
+                "descriptors": [
+                  "The school leader inconsistently and/or ineffectively acquires and manages resources to support student learning and community engagement.",
+                  "The school leader inconsistently and/or ineffectively uses data to inform resource allocation decisions."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "indicatorExplanations": [
+    {
+      "indicatorCode": "GSM",
+      "indicatorName": "Goal-Setting and Monitoring",
+      "indicatorNumber": "1.1",
+      "domain": "MISSION_VISION_GOALS",
+      "explanation": "Effective school leaders set clear, measurable, data-driven goals and monitor progress systematically. This includes disaggregating data by student subgroups to identify and address equity gaps, using multiple data sources beyond just academic assessments, and engaging teachers in the goal-setting and monitoring process.",
+      "descriptorExplanations": {
+        "dataDriverGoals": "School leaders develop goals based on analysis of multiple data points. Goals are specific, measurable, and aligned to school improvement priorities. Action plans include clear steps, timelines, and responsible parties.",
+        "disaggregation": "Data is analyzed by student subgroups (students with disabilities, English Learners, economically disadvantaged, racial/ethnic groups) to identify achievement gaps and target interventions accordingly.",
+        "varietyOfData": "Leaders use both academic data (universal screening, formative assessments, interim assessments, summative assessments) and non-academic data (attendance, chronic absenteeism, discipline, surveys, family engagement metrics).",
+        "interventionPlanning": "Based on data analysis, leaders develop specific intervention plans with student-centered strategies and monitor the effectiveness of those interventions over time.",
+        "teacherInvolvement": "Teachers are active participants in analyzing data, planning interventions, and implementing strategies in their classrooms. This builds collective ownership of goals."
+      },
+      "evidenceExamples": [
+        "School improvement plan with data-driven SMART goals disaggregated by student subgroups",
+        "Action plans with specific interventions, timelines, and progress monitoring checkpoints",
+        "ILT and TC meeting agendas and notes showing data analysis protocols",
+        "Intervention tracking systems with student progress data",
+        "Teacher-created classroom action plans aligned to school goals",
+        "Data wall or dashboard displaying progress toward goals"
+      ],
+      "coachingQuestions": [
+        "How do you determine which data points are most critical for goal-setting?",
+        "What process do you use to disaggregate data and identify equity gaps?",
+        "How do you involve teachers in the goal-setting and monitoring process?",
+        "What systems do you have in place to track intervention effectiveness?",
+        "How frequently do you review progress toward goals, and what adjustments do you make based on that review?",
+        "How do you communicate progress toward goals with stakeholders?",
+        "What non-academic data do you collect and how does it inform your decision-making?",
+        "How do you ensure interventions are student-centered rather than program-centered?"
+      ]
+    },
+    {
+      "indicatorCode": "CMV",
+      "indicatorName": "Communication of Mission, Vision, and Goals",
+      "indicatorNumber": "1.2",
+      "domain": "MISSION_VISION_GOALS",
+      "explanation": "School leaders must establish and communicate a compelling vision that inspires and unites all stakeholders. The mission, vision, and goals should be clearly connected to instructional priorities and high-quality curriculum, creating coherence between what the school believes and what it does daily.",
+      "descriptorExplanations": {
+        "establishingVision": "The vision presents a compelling picture of what success looks like for the school, grounded in shared values and beliefs. It should inspire action and provide direction for decision-making.",
+        "communicatingToStakeholders": "Communication goes beyond simply sharing information—it actively fosters stakeholder investment and buy-in. Multiple communication channels and approaches are used to reach diverse stakeholders.",
+        "alignmentToInstruction": "The mission, vision, and goals are directly connected to what happens in classrooms. Instructional priorities and curriculum choices reflect and advance the school's stated beliefs."
+      },
+      "evidenceExamples": [
+        "Mission and vision statements displayed throughout the school",
+        "Communication artifacts (newsletters, social media, website) referencing mission/vision",
+        "Meeting agendas that connect activities to mission/vision/goals",
+        "Staff and family survey data on understanding and buy-in of school vision",
+        "Instructional focus documents aligned to mission and vision",
+        "New staff orientation materials emphasizing school culture and beliefs"
+      ],
+      "coachingQuestions": [
+        "How did you develop your school's mission and vision? Who was involved?",
+        "How do you ensure all stakeholders understand and embrace the school's vision?",
+        "What evidence do you have that teachers connect their daily work to the school's mission?",
+        "How do you communicate differently with different stakeholder groups?",
+        "How does your instructional focus align with your stated mission and vision?",
+        "How do you revisit and refresh the vision to keep it relevant and inspiring?",
+        "What would students say about your school's mission if asked?",
+        "How do new staff members learn about and internalize the school's values?"
+      ]
+    },
+    {
+      "indicatorCode": "EXP",
+      "indicatorName": "Expectations",
+      "indicatorNumber": "1.3",
+      "domain": "MISSION_VISION_GOALS",
+      "explanation": "Effective leaders advocate for all students, especially those who have been historically underserved, by establishing and modeling high expectations. This requires both setting rigorous academic standards and demonstrating those expectations through personal behavior and decision-making.",
+      "descriptorExplanations": {
+        "advocacyForAll": "Leaders actively champion the success of all students, with particular attention to those who have been historically marginalized—students from low-income families, students with disabilities, English Learners, and students of color.",
+        "academicStandards": "High expectations are operationalized through demanding academic standards that align to state standards and high-quality curriculum. These expectations are clear, consistently applied, and supported with appropriate resources.",
+        "modelingExpectations": "Leaders demonstrate expectations through their own behavior, decision-making, and priorities. They hold themselves to the same standards they set for others."
+      },
+      "evidenceExamples": [
+        "Equity-focused language in school improvement plans and communications",
+        "Master schedule ensuring equitable access to rigorous coursework",
+        "Leader participation in professional learning alongside teachers",
+        "Decision-making processes that prioritize student needs",
+        "Leader presence in classrooms and at school events",
+        "Recognition systems that celebrate high expectations and achievement"
+      ],
+      "coachingQuestions": [
+        "How do you ensure historically underserved students have access to the same opportunities as their peers?",
+        "What specific actions have you taken to advocate for students with disabilities and English Learners?",
+        "How do you communicate high expectations to teachers and students?",
+        "How do you model the expectations you set for others?",
+        "What systems do you have to identify and address inequitable practices?",
+        "How do you respond when expectations are not being met?",
+        "What does 'high expectations' look like in your school on a daily basis?",
+        "How do you balance high expectations with appropriate support?"
+      ]
+    },
+    {
+      "indicatorCode": "CA",
+      "indicatorName": "Curriculum and Assessment",
+      "indicatorNumber": "2.1",
+      "domain": "INSTRUCTIONAL_LEADERSHIP",
+      "explanation": "Instructional leaders ensure the school uses high-quality instructional materials aligned to state standards and implements assessment systems that inform instruction. This requires providing professional learning on curriculum implementation and using collaborative structures to analyze student work and enhance practice.",
+      "descriptorExplanations": {
+        "hqimSystem": "Leaders ensure teachers have access to and use high-quality instructional materials that are fully aligned to Louisiana state standards. HQIM provides the foundation for rigorous, standards-aligned instruction.",
+        "clearObjectives": "Learning objectives and expectations are clear to both teachers and students. The rigor of objectives matches the depth of the standards and curriculum.",
+        "assessmentSystems": "Both formative and summative assessment systems are in place to track student progress, identify learning gaps, and inform instructional decisions and interventions.",
+        "professionalLearning": "Leaders provide ongoing professional learning focused on effective curriculum implementation. Teachers understand the curriculum deeply and can implement it with fidelity while making appropriate adaptations.",
+        "tcAndIltStructures": "Teacher Collaboration and Instructional Leadership Team structures focus on curriculum and assessment implementation. Teams analyze student work to inform professional learning and improve practice."
+      },
+      "evidenceExamples": [
+        "HQIM implementation plans and monitoring tools",
+        "Assessment calendars with formative, interim, and summative assessments",
+        "Professional learning plans focused on curriculum implementation",
+        "TC and ILT agendas showing focus on curriculum and student work analysis",
+        "Student work analysis protocols and artifacts",
+        "Data reports showing student progress toward standards mastery",
+        "Teacher lesson plans showing HQIM implementation"
+      ],
+      "coachingQuestions": [
+        "How do you ensure all teachers have access to and use high-quality instructional materials?",
+        "What systems do you have for monitoring HQIM implementation fidelity?",
+        "How do teachers know if their learning objectives match the rigor of the standards?",
+        "What is your assessment strategy, and how do different assessments work together?",
+        "How do assessment results inform instructional decisions?",
+        "What professional learning have you provided on curriculum implementation?",
+        "How do TC and ILT structures support curriculum implementation?",
+        "What does effective student work analysis look like in your school?"
+      ]
+    },
+    {
+      "indicatorCode": "TE",
+      "indicatorName": "Teacher Effectiveness",
+      "indicatorNumber": "2.2",
+      "domain": "INSTRUCTIONAL_LEADERSHIP",
+      "explanation": "Leaders develop themselves and their leadership team to effectively use the evaluation system to improve teacher practice. This includes using observational data for coaching, providing evidence-based feedback, and creating differentiated support plans based on individual teacher needs.",
+      "descriptorExplanations": {
+        "leadershipTeamDevelopment": "The principal develops a leadership team (assistant principals, instructional coaches, teacher leaders) who can use the Louisiana Educator Rubric and evaluation system with fidelity and consistency.",
+        "observationalData": "Leaders use data from classroom observations in coaching conversations and formal evaluations. Feedback is based on observed evidence, not assumptions or impressions.",
+        "evidenceBasedFeedback": "Feedback is grounded in state standards, high-quality instructional materials, and a deep understanding of the Louisiana Educator Rubric. Leaders can cite specific evidence and connect it to rubric language.",
+        "differentiatedSupport": "Professional learning and coaching plans are individualized based on teacher needs identified through the evaluation system. One-size-fits-all approaches are avoided.",
+        "collaborativeOpportunities": "Teachers have both formal and informal opportunities to collaborate on instruction through ILT and TC structures. Collaboration is purposeful and focused on improving practice."
+      },
+      "evidenceExamples": [
+        "Calibration activities with leadership team on Louisiana Educator Rubric",
+        "Observation schedules and tracking systems",
+        "Post-observation feedback forms with specific evidence cited",
+        "Individualized professional growth plans for teachers",
+        "TC and ILT meeting schedules and agendas",
+        "Teacher learning walks and peer observation protocols",
+        "Professional learning plans differentiated by teacher need"
+      ],
+      "coachingQuestions": [
+        "How do you ensure your leadership team applies the evaluation rubric consistently?",
+        "What calibration activities do you engage in with your team?",
+        "How do you use observational data in coaching conversations?",
+        "What does evidence-based feedback look like in practice?",
+        "How do you differentiate support based on individual teacher needs?",
+        "What opportunities exist for teachers to collaborate on instruction?",
+        "How do you balance accountability and support in evaluations?",
+        "How do you know if your feedback is leading to improved teacher practice?"
+      ]
+    },
+    {
+      "indicatorCode": "MSN",
+      "indicatorName": "Meeting Student Needs",
+      "indicatorNumber": "2.3",
+      "domain": "INSTRUCTIONAL_LEADERSHIP",
+      "explanation": "Leaders use data to ensure all students receive appropriate intervention and acceleration support. This requires systematic identification and monitoring of student needs, ensuring teachers differentiate instruction, and maintaining access to rigorous grade-level content for all students including those with disabilities and English Learners.",
+      "descriptorExplanations": {
+        "dataInformedIntervention": "Leaders use student data to identify who needs intervention or acceleration, what supports are needed, and how to provide them effectively. Data drives decisions rather than assumptions.",
+        "systemForMonitoring": "A systematic process exists for identifying students, matching them to interventions, and monitoring progress. This is not ad hoc but structured and consistent.",
+        "differentiationSupport": "Leaders ensure teachers adjust instruction for individual students using the differentiation supports built into HQIM. Teachers know how to use scaffolds, extensions, and accommodations effectively.",
+        "accessForAll": "All students, including students with disabilities and English Learners, have access to rigorous, on-grade-level curriculum. Support is additive rather than replacing grade-level content."
+      },
+      "evidenceExamples": [
+        "RTI/MTSS documentation and monitoring systems",
+        "Intervention schedules and student assignments",
+        "Progress monitoring data for students receiving intervention",
+        "IEP and 504 plan implementation documentation",
+        "English Learner support plans and progress tracking",
+        "Teacher lesson plans showing differentiation strategies",
+        "Student schedules showing access to grade-level content"
+      ],
+      "coachingQuestions": [
+        "What data do you use to identify students who need intervention or acceleration?",
+        "How do you match students to the right interventions?",
+        "What system do you have for monitoring intervention effectiveness?",
+        "How do you ensure teachers effectively use differentiation supports in HQIM?",
+        "How do you ensure students with disabilities have access to grade-level content?",
+        "How do you support English Learners while maintaining rigorous instruction?",
+        "What is your approach to acceleration versus remediation?",
+        "How do you prevent intervention from replacing core instruction time?"
+      ]
+    },
+    {
+      "indicatorCode": "IF",
+      "indicatorName": "Instructional Focus",
+      "indicatorNumber": "2.4",
+      "domain": "INSTRUCTIONAL_LEADERSHIP",
+      "explanation": "Leaders maintain an instructional focus by creating schedules that maximize learning time, prioritizing instructional leadership in their own work, ensuring HQIM access and implementation, and distributing leadership responsibilities effectively.",
+      "descriptorExplanations": {
+        "schoolSchedule": "The master schedule is designed to maximize time for instruction. Transitions, non-instructional activities, and interruptions are minimized.",
+        "leaderSchedule": "The school leader's personal schedule prioritizes instructional leadership activities—classroom observations, coaching, TC/ILT facilitation, and professional learning.",
+        "hqimAccess": "All instructional staff have access to high-quality instructional materials, understand how to use them, and are monitored for effective implementation.",
+        "alignedDecisions": "Day-to-day decisions are made through the lens of instructional focus and school goals. Leaders resist distractions that pull away from priorities.",
+        "distributedLeadership": "Leadership responsibilities are shared across the team to maintain instructional focus. The principal is not the only instructional leader.",
+        "adultLearning": "Professional development is designed using principles of adult learning—active participation, connection to practice, relevance to teacher work."
+      },
+      "evidenceExamples": [
+        "Master schedule analysis showing instructional time allocation",
+        "Principal calendar showing time spent on instructional leadership",
+        "HQIM access documentation and implementation monitoring tools",
+        "Decision-making protocols referencing instructional focus",
+        "Leadership team role descriptions and responsibilities",
+        "Professional development plans incorporating adult learning principles",
+        "Classroom observation schedules and tracking"
+      ],
+      "coachingQuestions": [
+        "How does your master schedule maximize instructional time?",
+        "What percentage of your time do you spend on instructional leadership?",
+        "How do you protect time for classroom observations and coaching?",
+        "How do you monitor HQIM implementation across classrooms?",
+        "How do you ensure decisions align with your instructional focus?",
+        "How have you distributed leadership responsibilities?",
+        "How do you apply adult learning principles in professional development?",
+        "What gets in the way of maintaining your instructional focus, and how do you address it?"
+      ]
+    },
+    {
+      "indicatorCode": "RP",
+      "indicatorName": "Reflective Practices",
+      "indicatorNumber": "3.1",
+      "domain": "CAPACITY_BUILDING",
+      "explanation": "Effective leaders engage in ongoing self-reflection, set rigorous goals, and adjust plans based on feedback and data. They collaborate with system leadership while maintaining ownership of their growth.",
+      "descriptorExplanations": {
+        "transparentReflection": "Leaders engage in open, honest self-reflection with their evaluator, leadership team, and staff. They acknowledge areas for growth and model continuous improvement.",
+        "rigorousGoals": "Goals focus on the school's most critical needs and are sufficiently rigorous to drive meaningful improvement. Leaders follow through on their commitments.",
+        "adjustingPlans": "Leaders use feedback from various sources and ongoing data analysis to adjust action plans and strategies. They are responsive rather than rigid.",
+        "systemCollaboration": "Leaders work collaboratively with district/system leadership to address issues and achieve goals. They leverage system support effectively."
+      },
+      "evidenceExamples": [
+        "Principal self-assessment and reflection documentation",
+        "Professional growth plan with rigorous goals",
+        "Evidence of action plan adjustments based on data",
+        "Meeting notes from supervisor/evaluator conferences",
+        "Leadership team meeting agendas showing collaborative reflection",
+        "Progress reports on principal goals"
+      ],
+      "coachingQuestions": [
+        "How do you engage in self-reflection? How often?",
+        "How do you share your growth areas with your team?",
+        "What process do you use to set your professional goals?",
+        "How do you know when to adjust your plans?",
+        "How do you collaborate with your supervisor on school improvement?",
+        "What feedback sources do you use to inform your practice?",
+        "How do you model continuous improvement for your staff?",
+        "What is your greatest area of growth this year, and what are you doing about it?"
+      ]
+    },
+    {
+      "indicatorCode": "LD",
+      "indicatorName": "Leadership Development",
+      "indicatorNumber": "3.2",
+      "domain": "CAPACITY_BUILDING",
+      "explanation": "Leaders develop other leaders by building their capacity to use observational data and the evaluation system, fostering reflection through coaching, and creating career pipeline systems to identify and develop teacher leaders.",
+      "descriptorExplanations": {
+        "developingObservationalSkills": "School leaders are developed to use observational data effectively in coaching conversations and evaluations. This requires calibration, practice, and feedback.",
+        "fosteringReflection": "Leaders create conditions for school leaders to reflect on their practice through collaboration, coaching conversations, and professional learning communities.",
+        "careerPipeline": "Systems exist to identify potential teacher leaders, provide development opportunities, and support their growth into leadership roles.",
+        "professionalLearningOpportunities": "Staff have access to professional learning that helps them enhance their practice and grow professionally."
+      },
+      "evidenceExamples": [
+        "Leadership team development plans and activities",
+        "Calibration protocols and artifacts",
+        "Coaching logs showing leader-to-leader coaching",
+        "Career pipeline identification and development systems",
+        "Professional learning participation records",
+        "Teacher leader role descriptions and training materials"
+      ],
+      "coachingQuestions": [
+        "How do you develop your leadership team's capacity to observe and provide feedback?",
+        "What calibration activities do you engage in with your team?",
+        "How do you coach your assistant principals and teacher leaders?",
+        "What system do you have for identifying potential leaders?",
+        "How do you develop teacher leaders?",
+        "What professional learning opportunities do you provide for staff?",
+        "How do you create conditions for leaders to reflect on their practice?",
+        "What does your career pipeline look like?"
+      ]
+    },
+    {
+      "indicatorCode": "CP",
+      "indicatorName": "Collaborative Practices",
+      "indicatorNumber": "3.3",
+      "domain": "CAPACITY_BUILDING",
+      "explanation": "Leaders implement structured collaboration through TC and ILT that focuses on examining student learning. Teachers actively contribute to meaningful collaboration, and leaders monitor and adjust the quality of collaborative work.",
+      "descriptorExplanations": {
+        "structuredCollaboration": "ILT and TC provide structured time for examining student learning. Collaboration follows protocols and has clear purposes tied to improving instruction.",
+        "meaningfulTeacherContribution": "Teachers are active participants, not passive recipients. They contribute to data analysis, action planning, lesson internalization, and practice-based learning.",
+        "monitoringQuality": "Leaders monitor the quality of TC and ILT content and processes. They make adjustments based on teacher and student learning needs."
+      },
+      "evidenceExamples": [
+        "TC and ILT schedules and structures",
+        "Meeting agendas, protocols, and artifacts",
+        "Teacher collaboration products (action plans, analyzed student work)",
+        "TC/ILT observation notes and feedback",
+        "Quality monitoring tools and data",
+        "Adjustments made to collaborative structures based on feedback"
+      ],
+      "coachingQuestions": [
+        "What structures do you have for TC and ILT?",
+        "How do you ensure collaboration focuses on student learning?",
+        "How do teachers actively contribute to collaborative work?",
+        "What protocols do you use for data analysis and student work analysis?",
+        "How do you monitor the quality of TC and ILT?",
+        "What adjustments have you made based on monitoring?",
+        "How do you know if collaboration is actually improving instruction?",
+        "What is the relationship between ILT work and TC work?"
+      ]
+    },
+    {
+      "indicatorCode": "CI",
+      "indicatorName": "Continuous Improvement",
+      "indicatorNumber": "3.4",
+      "domain": "CAPACITY_BUILDING",
+      "explanation": "Leaders support continuous improvement through induction and mentoring systems for new staff, job-embedded professional learning aligned to individual needs, and application of adult learning principles.",
+      "descriptorExplanations": {
+        "inductionMentoring": "Systems are in place to support new and/or struggling staff. This includes formal mentoring relationships, structured induction activities, and ongoing support.",
+        "jobEmbeddedLearning": "Professional learning is connected to daily work and aligned to individual needs identified through coaching and evaluation. It is not generic or one-size-fits-all.",
+        "adultLearningPrinciples": "Professional development applies adult learning principles: active participation, connection to prior knowledge and experience, self-direction, links to school goals, explicit relevance, and respect for existing expertise."
+      },
+      "evidenceExamples": [
+        "New teacher induction plans and schedules",
+        "Mentor matching and training documentation",
+        "Individualized professional learning plans",
+        "Professional learning aligned to coaching plan goals",
+        "Professional development designs showing adult learning principles",
+        "Feedback from staff on professional learning quality"
+      ],
+      "coachingQuestions": [
+        "What induction system do you have for new teachers?",
+        "How do you identify and train mentors?",
+        "How do you support struggling teachers?",
+        "How is professional learning individualized to teacher needs?",
+        "How does professional learning connect to daily classroom practice?",
+        "How do you apply adult learning principles in your PD design?",
+        "How do you gather feedback on professional learning effectiveness?",
+        "What makes professional learning 'job-embedded' in your school?"
+      ]
+    },
+    {
+      "indicatorCode": "SA",
+      "indicatorName": "School Atmosphere",
+      "indicatorNumber": "4.1",
+      "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+      "explanation": "Leaders create and maintain a safe, positive school atmosphere through systematic approaches to safety, effective conflict management, and collaborative leadership structures.",
+      "descriptorExplanations": {
+        "safePositiveCampus": "Systems are in place to ensure physical and emotional safety for all students and staff. The campus has a positive climate and culture.",
+        "conflictManagement": "Leaders manage conflict effectively to build relationships rather than damage them. Conflict is addressed directly and professionally.",
+        "leadershipTeamCollaboration": "Structures exist for school leaders to collaborate as a team. Leadership is shared and coordinated."
+      },
+      "evidenceExamples": [
+        "Safety plans and protocols",
+        "Climate survey data and action plans",
+        "Conflict resolution documentation",
+        "Leadership team meeting structures and schedules",
+        "Staff and student feedback on school climate",
+        "Emergency procedures and drills documentation"
+      ],
+      "coachingQuestions": [
+        "What systems do you have to ensure campus safety?",
+        "How do you create a positive school climate?",
+        "How do you address conflict among staff?",
+        "How does your leadership team function collaboratively?",
+        "What climate data do you collect and how do you use it?",
+        "How do students and staff perceive the school atmosphere?",
+        "What does emotional safety look like in your school?",
+        "How do you build relationships that can withstand conflict?"
+      ]
+    },
+    {
+      "indicatorCode": "CE",
+      "indicatorName": "Community Engagement",
+      "indicatorNumber": "4.2",
+      "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+      "explanation": "Leaders develop relationships with stakeholders, communicate effectively, and provide varied opportunities for families and community members to engage with and support the school.",
+      "descriptorExplanations": {
+        "stakeholderRelationships": "Leaders actively develop and maintain relationships with families, community members, business leaders, and other stakeholders.",
+        "communicationForLearning": "Communication with stakeholders is focused on enhancing student learning, not just sharing information.",
+        "servicesAndProgramming": "The school provides services and programs that support student success and family engagement during and beyond school hours.",
+        "diverseEngagement": "Engagement opportunities are varied to reach diverse stakeholder groups. Different approaches are used for different communities."
+      },
+      "evidenceExamples": [
+        "Family and community communication artifacts",
+        "Community partnership documentation",
+        "Family engagement event schedules and participation data",
+        "Extended services and programming information",
+        "Outreach to diverse community groups",
+        "Stakeholder satisfaction surveys"
+      ],
+      "coachingQuestions": [
+        "How do you build relationships with families and community members?",
+        "How does your communication enhance student learning?",
+        "What services do you offer to support families?",
+        "How do you engage families who are harder to reach?",
+        "What community partnerships have you developed?",
+        "How do you gather input from diverse stakeholder groups?",
+        "What happens at your school beyond school hours?",
+        "How do you know if families feel welcomed and engaged?"
+      ]
+    },
+    {
+      "indicatorCode": "DIS",
+      "indicatorName": "Discipline",
+      "indicatorNumber": "4.3",
+      "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+      "explanation": "Leaders develop and implement discipline systems that are fair, positive, and focused on developing student problem-solving skills. They also coach teachers on classroom management to prevent unnecessary office referrals.",
+      "descriptorExplanations": {
+        "disciplineSystem": "A campus-wide discipline system and behavior plan are in place. Expectations are clear and consistently applied.",
+        "fairConsequences": "Student misconduct is handled positively and fairly with appropriate consequences. Discipline is not punitive but restorative.",
+        "problemSolvingSkills": "The focus is on developing students' ability to solve problems and make better choices. Restorative practices are emphasized.",
+        "teacherCoaching": "Leaders coach teachers on effective classroom management to minimize office referrals. Most behavior is managed in the classroom."
+      },
+      "evidenceExamples": [
+        "School-wide discipline plan and behavior expectations",
+        "Discipline data disaggregated by student group",
+        "Restorative practices documentation",
+        "Teacher professional learning on classroom management",
+        "Office referral trends and analysis",
+        "Student conference and re-entry protocols"
+      ],
+      "coachingQuestions": [
+        "What is your campus-wide discipline system?",
+        "How do you ensure discipline is fair and equitable?",
+        "What restorative practices do you use?",
+        "How do you develop students' problem-solving skills?",
+        "What professional learning do teachers receive on classroom management?",
+        "How do you analyze discipline data?",
+        "What do you do about disproportionality in discipline?",
+        "How do you coach teachers to reduce office referrals?"
+      ]
+    },
+    {
+      "indicatorCode": "AHQ",
+      "indicatorName": "Access to High-Quality Education",
+      "indicatorNumber": "4.4",
+      "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+      "explanation": "Leaders ensure all students have access to effective teachers and appropriate academic and social supports. They help connect students and families to resources that address barriers to learning.",
+      "descriptorExplanations": {
+        "accessToEffectiveTeachers": "Systems ensure all students, including those in high-need categories, have access to effective teachers. Teacher assignments are strategic.",
+        "learningOpportunities": "Students have access to learning opportunities with both academic and social supports appropriate to their needs.",
+        "resourceIdentification": "Leaders help teachers, students, and families identify and access resources (Title I services, social workers, counselors, community resources) to address barriers to learning."
+      },
+      "evidenceExamples": [
+        "Teacher assignment protocols and data",
+        "Support services available to students",
+        "Resource allocation documentation",
+        "Student support team processes",
+        "Community resource partnerships",
+        "Family resource guides and communication"
+      ],
+      "coachingQuestions": [
+        "How do you ensure all students have access to effective teachers?",
+        "How do you make teacher assignment decisions?",
+        "What support services are available to students?",
+        "How do you identify students who need additional support?",
+        "What resources do you connect families to?",
+        "How do you address barriers to learning?",
+        "How do social-emotional supports work in your school?",
+        "What community partnerships support student needs?"
+      ]
+    },
+    {
+      "indicatorCode": "RS",
+      "indicatorName": "Responsiveness to Stakeholders",
+      "indicatorNumber": "4.5",
+      "domain": "SCHOOL_COMMUNITY_ENVIRONMENT",
+      "explanation": "Leaders demonstrate commitment to all students, incorporate community context into the school's work, and develop structures that empower staff and community members.",
+      "descriptorExplanations": {
+        "commitmentToAll": "The school's mission, vision, and goals demonstrate commitment to the success of all students, not just some.",
+        "communityContext": "Community history, values, and culture are incorporated into curriculum and instruction. The school reflects its community.",
+        "empoweringStructures": "Organizational structures empower staff and community members to contribute to school improvement. Leadership is shared."
+      },
+      "evidenceExamples": [
+        "Mission/vision statements showing commitment to all students",
+        "Curriculum connections to community and culture",
+        "Staff and parent leadership structures",
+        "Advisory councils or committees",
+        "Community input processes",
+        "Culturally responsive practices documentation"
+      ],
+      "coachingQuestions": [
+        "How does your mission/vision demonstrate commitment to all students?",
+        "How do you incorporate community history and values?",
+        "What structures empower staff to lead?",
+        "How do you include community voice in decision-making?",
+        "How is your school culturally responsive?",
+        "What leadership opportunities exist for parents and community?",
+        "How do you ensure your school reflects its community?",
+        "How do you respond to stakeholder concerns and input?"
+      ]
+    },
+    {
+      "indicatorCode": "PN",
+      "indicatorName": "Professional Norms",
+      "indicatorNumber": "5.1",
+      "domain": "PROFESSIONALISM_INTEGRITY",
+      "explanation": "Leaders create professional environments characterized by openness, productivity, care, and trust. They hold themselves and others accountable for student success.",
+      "descriptorExplanations": {
+        "professionalEnvironment": "The school environment is open, productive, caring, professional, and trusting. Adults model these characteristics in interactions with students, families, and each other.",
+        "accountabilityForSuccess": "Leaders hold themselves and staff accountable for student success. Accountability is balanced with support and focused on continuous improvement."
+      },
+      "evidenceExamples": [
+        "Staff norms and agreements",
+        "Climate survey data on staff relationships",
+        "Accountability systems and processes",
+        "Leader modeling of professional behavior",
+        "Staff meeting observations",
+        "Family feedback on school professionalism"
+      ],
+      "coachingQuestions": [
+        "How do you create a professional and trusting environment?",
+        "What norms guide adult interactions in your school?",
+        "How do you hold yourself accountable for student success?",
+        "How do you hold staff accountable while maintaining trust?",
+        "How do you model professionalism?",
+        "What does caring look like in your school?",
+        "How do you address unprofessional behavior?",
+        "How do staff describe the school culture?"
+      ]
+    },
+    {
+      "indicatorCode": "PB",
+      "indicatorName": "Professional Behavior",
+      "indicatorNumber": "5.2",
+      "domain": "PROFESSIONALISM_INTEGRITY",
+      "explanation": "Leaders demonstrate professional behavior characterized by integrity, trust, collaboration, perseverance, and continuous improvement. All decisions are centered on what is best for children.",
+      "descriptorExplanations": {
+        "respectedResponsibleConduct": "Leaders behave respectfully and responsibly in all interactions. They demonstrate integrity, build trust, collaborate effectively, persevere through challenges, and model continuous improvement.",
+        "childCenteredDecisions": "Decision-making is guided by what is best for students. When facing difficult choices, the impact on children is the primary consideration."
+      },
+      "evidenceExamples": [
+        "Stakeholder feedback on leader behavior",
+        "Decision documentation showing child-centered rationale",
+        "Leader response to challenges and setbacks",
+        "Collaborative work with staff and community",
+        "Professional growth activities",
+        "Ethical decision-making examples"
+      ],
+      "coachingQuestions": [
+        "How do you demonstrate integrity in your work?",
+        "How do you build trust with stakeholders?",
+        "How do you collaborate with others?",
+        "How do you persevere through challenges?",
+        "How do you model continuous improvement?",
+        "How do you ensure decisions are child-centered?",
+        "How would staff describe your professional behavior?",
+        "What ethical dilemmas have you faced and how did you handle them?"
+      ]
+    },
+    {
+      "indicatorCode": "POL",
+      "indicatorName": "Policy",
+      "indicatorNumber": "5.3",
+      "domain": "PROFESSIONALISM_INTEGRITY",
+      "explanation": "Leaders understand and implement school and system policies while ensuring compliance with federal, state, and local laws and regulations.",
+      "descriptorExplanations": {
+        "policyImplementation": "Leaders have thorough knowledge of school and system policies and implement them consistently and appropriately.",
+        "compliance": "Leaders ensure the school complies with all applicable federal, state, and local laws and regulations. Compliance is proactive, not reactive."
+      },
+      "evidenceExamples": [
+        "Policy implementation documentation",
+        "Compliance monitoring and reporting",
+        "Staff training on policies and regulations",
+        "Audit results and corrective actions",
+        "Policy communication to stakeholders",
+        "Legal consultation documentation as needed"
+      ],
+      "coachingQuestions": [
+        "How do you stay current on policies and regulations?",
+        "How do you communicate policies to staff?",
+        "What systems do you have for ensuring compliance?",
+        "How do you handle policy conflicts or unclear situations?",
+        "What training do staff receive on policies?",
+        "How do you monitor compliance proactively?",
+        "What compliance challenges have you faced?",
+        "How do you balance policy compliance with doing what's right for students?"
+      ]
+    },
+    {
+      "indicatorCode": "AO",
+      "indicatorName": "Administrative Operations",
+      "indicatorNumber": "6.1",
+      "domain": "SCHOOL_OPERATIONS",
+      "explanation": "Leaders effectively manage school governance, recruit and retain qualified diverse staff, and ensure staff productivity is focused on student needs.",
+      "descriptorExplanations": {
+        "governanceManagement": "School governance processes are managed effectively. Meetings are productive, decisions are transparent, and stakeholders understand their roles.",
+        "staffingDiversity": "Leaders actively recruit, hire, and retain qualified educators who reflect the diversity of the student population.",
+        "staffProductivity": "Leaders ensure staff time and energy are focused on meeting student needs rather than administrative tasks that don't improve learning."
+      },
+      "evidenceExamples": [
+        "Governance meeting documentation",
+        "Hiring and retention data",
+        "Diversity in staffing analysis",
+        "Staff time allocation analysis",
+        "Staff satisfaction and retention data",
+        "Recruitment strategies and outcomes"
+      ],
+      "coachingQuestions": [
+        "How do you manage school governance effectively?",
+        "What strategies do you use to recruit diverse staff?",
+        "How do you retain your best teachers?",
+        "How do you ensure staff focus on student-centered work?",
+        "What does your staffing data show about diversity?",
+        "How do you eliminate non-essential demands on staff time?",
+        "What makes your school attractive to prospective teachers?",
+        "How do governance structures support school improvement?"
+      ]
+    },
+    {
+      "indicatorCode": "FPM",
+      "indicatorName": "Fiscal and Physical Management",
+      "indicatorNumber": "6.2",
+      "domain": "SCHOOL_OPERATIONS",
+      "explanation": "Leaders effectively acquire and manage resources to support student learning. Resource allocation decisions are informed by data and aligned to school priorities.",
+      "descriptorExplanations": {
+        "resourceManagement": "Leaders acquire and manage fiscal and physical resources effectively to support student learning and community engagement.",
+        "dataInformedAllocation": "Resource allocation decisions are based on data about student needs, school priorities, and effectiveness of current resource use."
+      },
+      "evidenceExamples": [
+        "Budget documents aligned to school priorities",
+        "Resource allocation analysis",
+        "Grant acquisition and management",
+        "Facility use and maintenance records",
+        "Data-driven budget decisions documentation",
+        "Resource effectiveness evaluations"
+      ],
+      "coachingQuestions": [
+        "How do you align budget to school priorities?",
+        "What data informs your resource allocation decisions?",
+        "How do you acquire additional resources for your school?",
+        "How do you evaluate whether resources are being used effectively?",
+        "How do you manage physical facilities to support learning?",
+        "What trade-offs have you made in resource allocation?",
+        "How do you involve stakeholders in budget decisions?",
+        "What resources do you need but don't currently have?"
+      ]
+    }
+  ],
+  "evaluationGuidance": {
+    "evaluationProcess": {
+      "overview": "The Louisiana Leader Evaluation Process includes beginning-of-year, middle-of-year, and end-of-year conferences between the school leader and their evaluator. Evidence is collected throughout the year through observations, data analysis, and stakeholder feedback.",
+      "components": [
+        {
+          "name": "Beginning-of-Year (BOY) Conference",
+          "purpose": "Establish goals and priorities for the year based on school data and leader professional growth needs.",
+          "activities": [
+            "Review school data and identify priority areas",
+            "Set measurable goals for student outcomes and leader growth",
+            "Identify evidence sources and collection methods",
+            "Establish communication and support expectations"
+          ]
+        },
+        {
+          "name": "Middle-of-Year (MOY) Conference",
+          "purpose": "Monitor progress toward goals, review evidence, and make adjustments as needed.",
+          "activities": [
+            "Review progress data on school and leader goals",
+            "Discuss evidence collected to date",
+            "Identify successes and challenges",
+            "Adjust strategies and action plans as needed",
+            "Identify additional support needed"
+          ]
+        },
+        {
+          "name": "End-of-Year (EOY) Conference",
+          "purpose": "Conduct summative evaluation, reflect on the year, and plan for continued growth.",
+          "activities": [
+            "Review all evidence collected throughout the year",
+            "Determine summative ratings on each indicator",
+            "Reflect on accomplishments and areas for growth",
+            "Identify priorities for the following year",
+            "Complete evaluation documentation"
+          ]
+        }
+      ]
+    },
+    "evidenceCollection": {
+      "overview": "Evidence for leader evaluation comes from multiple sources collected throughout the year. Evaluators should gather evidence systematically and maintain documentation.",
+      "evidenceSources": [
+        "Classroom observations and learning walks",
+        "TC and ILT meeting observations",
+        "School improvement plans and data",
+        "Student achievement data",
+        "Teacher effectiveness data",
+        "Stakeholder surveys",
+        "School documentation and artifacts",
+        "Direct observation of leader activities",
+        "Interviews with stakeholders"
+      ],
+      "documentationGuidance": "Evidence should be specific, objective, and connected to rubric indicators. Evaluators should collect evidence across all domains throughout the year rather than waiting until evaluation conferences."
+    },
+    "scoringGuidance": {
+      "overview": "Evaluators determine performance levels based on the preponderance of evidence collected. Ratings should reflect consistent patterns of behavior, not isolated instances.",
+      "levelDetermination": [
+        "Level 5 (Exemplary): Evidence shows the leader consistently and effectively demonstrates all descriptors. Performance is strategic and systematic.",
+        "Level 4: Evidence shows performance between Proficient and Exemplary. Many descriptors are strong, but not enough consistency for Level 5.",
+        "Level 3 (Proficient): Evidence shows the leader usually and effectively demonstrates the descriptors. This is the expected level of performance.",
+        "Level 2: Evidence shows performance between Unsatisfactory and Proficient. Stronger than Level 1 but not enough evidence for Level 3.",
+        "Level 1 (Unsatisfactory): Evidence shows the leader inconsistently and/or ineffectively demonstrates the descriptors. Significant improvement is needed."
+      ]
+    }
+  },
+  "adultLearningPrinciples": {
+    "overview": "The Louisiana Leader Rubric emphasizes the application of adult learning principles in professional development design and delivery. Effective leaders understand how adults learn differently from children and design learning experiences accordingly.",
+    "principles": [
+      {
+        "principle": "Active Participation",
+        "description": "Adults learn best when they are actively engaged in the learning process rather than passive recipients of information. Professional learning should include opportunities for discussion, practice, and application."
+      },
+      {
+        "principle": "Connection to Experience",
+        "description": "Adults bring prior knowledge and experiences to learning. Effective professional development connects new learning to what adults already know and have experienced."
+      },
+      {
+        "principle": "Self-Direction",
+        "description": "Adults are self-directed learners who want control over their learning. Professional development should allow for choice and autonomy where appropriate."
+      },
+      {
+        "principle": "Goal Orientation",
+        "description": "Adults are motivated by learning that is linked to school goals and helps them achieve important outcomes. Professional learning should have clear connections to school improvement."
+      },
+      {
+        "principle": "Relevance",
+        "description": "Adults want learning that is explicitly related and useful to their daily work with students. Professional development should have obvious classroom application."
+      },
+      {
+        "principle": "Respect for Expertise",
+        "description": "Adults have existing knowledge and expertise that should be honored and leveraged. Professional learning should build on the expertise already present on campus."
+      }
+    ]
+  },
+  "researchBasis": {
+    "nietFoundation": "The Louisiana Leader Rubric is grounded in NIET's research-based leadership standards, which draw from 20 years of experience supporting school leaders across 21 states.",
+    "keyResearch": [
+      "Leithwood, K., Louis, K.S., Anderson, S., & Wahlstrom, K. (2004). How leadership influences student learning.",
+      "Marzano, R.J., Waters, T., & McNulty, B.A. (2005). School leadership that works: From research to results.",
+      "Wallace Foundation. (2013). The school principal as leader: Guiding schools to better teaching and learning.",
+      "Grissom, J.A., Egalite, A.J., & Lindsay, C.A. (2021). How principals affect students and schools: A systematic synthesis of two decades of research.",
+      "National Policy Board for Educational Administration. (2015). Professional Standards for Educational Leaders."
+    ],
+    "connectionToTeacherRubric": "The Louisiana Leader Rubric is designed to complement and support the Louisiana Educator Rubric. Leaders are expected to deeply understand the teacher rubric in order to provide effective feedback and coaching to teachers."
+  }
+}
