@@ -1,22 +1,28 @@
 /**
  * GRASSROOTS LAUNCH NOTE:
- * 
+ *
  * This email template is for NETWORK PARTNERSHIP OUTREACH and is NOT used for
  * the initial 5-user grassroots launch.
- * 
+ *
  * This template will be useful when scaling beyond 100 users and establishing
  * partnerships with Louisiana education organizations (LDOE, parishes, professional
  * organizations). For now, it's kept in the codebase for future use but is not
  * actively used.
- * 
+ *
  * Status: DEPRIORITIZED for 5-user launch, READY for partnership phase
  */
 
+import { Section, Text } from "@react-email/components";
 import {
+  BaseEmailTemplate,
   Heading,
-  Text,
-} from "@react-email/components";
-import { BaseEmailTemplate, InfoBox, HighlightBox, ActionBox, CTAButton, textStyles } from "./BaseEmailTemplate";
+  Paragraph,
+  Card,
+  HighlightBox,
+  CTAButton,
+  ListItem,
+  Signature,
+} from "./BaseEmailTemplate";
 
 interface NetworkPartnerEmailProps {
   organizationName?: string;
@@ -32,160 +38,143 @@ export function NetworkPartnerEmail({
       previewText="Partner Opportunity: AI Guidance Platform for Louisiana Educators"
       headerTitle="Partner Opportunity"
       headerSubtitle="AI Guidance for Louisiana Educators"
+      variant="default"
     >
-      <Text style={textStyles.paragraph}>
-        Hi {contactName},
-      </Text>
+      <Paragraph>Hi {contactName},</Paragraph>
 
-      <Text style={textStyles.paragraph}>
-        I'm reaching out to {organizationName} because we share a common mission: supporting Louisiana educators as they navigate the challenges of modern teaching.
-      </Text>
+      <Paragraph>
+        I'm reaching out to {organizationName} because we share a common mission:
+        supporting Louisiana educators as they navigate the challenges of modern
+        teaching.
+      </Paragraph>
 
       {/* Partnership Angle */}
       <HighlightBox>
-        <Heading style={textStyles.h2}>Pelican AI: Platform-Agnostic AI Guidance for Louisiana Educators</Heading>
-        <Text style={textStyles.paragraph}>
-          Pelican AI helps Louisiana educators use <strong>ANY AI tool</strong> their district provides more effectively. We're not another AI platform—we're a guidance system that teaches educators how to get better results from the tools they already have access to.
+        <Heading as="h2" className="mt-0">
+          Pelican AI: Platform-Agnostic AI Guidance
+        </Heading>
+        <Paragraph>
+          Pelican AI helps Louisiana educators use <strong>ANY AI tool</strong>{" "}
+          their district provides more effectively. We're not another AI
+          platform—we're a guidance system that teaches educators how to get
+          better results from the tools they already have access to.
+        </Paragraph>
+        <Text className="text-slate-700 text-base font-semibold mb-3">
+          What makes us different:
         </Text>
-        <Text style={textStyles.paragraph}>
-          <strong>What makes us different:</strong>
-        </Text>
-        <Text style={listItem}>
-          • Louisiana-specific: Aligned to state standards and Louisiana Educator Rubric
-        </Text>
-        <Text style={listItem}>
-          • Platform-agnostic: Works with MagicSchool AI, Brisk, SchoolAI, Gemini, ChatGPT, and others
-        </Text>
-        <Text style={listItem}>
-          • Time-saving: Helps educators reclaim 3-5 hours per week
-        </Text>
-        <Text style={listItem}>
-          • Ethical: Built-in guardrails for responsible AI use
-        </Text>
+        <ListItem icon="bullet">
+          <strong>Louisiana-specific:</strong> Aligned to state standards and
+          Louisiana Educator Rubric
+        </ListItem>
+        <ListItem icon="bullet">
+          <strong>Platform-agnostic:</strong> Works with MagicSchool AI, Brisk,
+          SchoolAI, Gemini, ChatGPT, and others
+        </ListItem>
+        <ListItem icon="bullet">
+          <strong>Time-saving:</strong> Helps educators reclaim 3-5 hours per week
+        </ListItem>
+        <ListItem icon="bullet">
+          <strong>Ethical:</strong> Built-in guardrails for responsible AI use
+        </ListItem>
       </HighlightBox>
 
       {/* Collaboration Benefits */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>How We Can Support {organizationName} Members</Heading>
-        <Text style={textStyles.paragraph}>
-          <strong>For Your Members:</strong>
-        </Text>
-        <Text style={listItem}>
-          ✓ Immediate access to 10+ AI guidance frameworks aligned to Louisiana standards
-        </Text>
-        <Text style={listItem}>
-          ✓ Practical workshops on AI integration in Louisiana classrooms
-        </Text>
-        <Text style={listItem}>
-          ✓ Co-creation opportunities to shape frameworks based on member needs
-        </Text>
-        <Text style={listItem}>
-          ✓ Platform-agnostic approach (works with any AI tool districts provide)
-        </Text>
+      <Card variant="default">
+        <Heading as="h2" className="mt-0">
+          🤝 How We Can Support {organizationName} Members
+        </Heading>
 
-        <Text style={textStyles.paragraph}>
-          <strong>For {organizationName}:</strong>
+        <Text className="text-slate-700 text-base font-semibold mb-2 mt-4">
+          For Your Members:
         </Text>
-        <Text style={listItem}>
-          ✓ Co-branded resources and materials
+        <ListItem icon="check">
+          Immediate access to our conversational coaching assistant that generates Louisiana-aligned prompts
+        </ListItem>
+        <ListItem icon="check">
+          Practical workshops on using AI effectively in Louisiana classrooms with any tool districts provide
+        </ListItem>
+        <ListItem icon="check">
+          Co-creation opportunities to shape the coaching experience based on member needs
+        </ListItem>
+        <ListItem icon="check">
+          Platform-agnostic approach (works with any AI tool districts provide—ChatGPT, Claude, Gemini, MagicSchool AI, etc.)
+        </ListItem>
+
+        <Text className="text-slate-700 text-base font-semibold mb-2 mt-6">
+          For {organizationName}:
         </Text>
-        <Text style={listItem}>
-          ✓ Custom frameworks tailored to your members' specific needs
-        </Text>
-        <Text style={listItem}>
-          ✓ Analytics and insights on how members benefit from the platform
-        </Text>
-        <Text style={listItem}>
-          ✓ Joint professional development opportunities
-        </Text>
-      </InfoBox>
+        <ListItem icon="check">Co-branded resources and materials</ListItem>
+        <ListItem icon="check">
+          Custom coaching experiences tailored to your members' specific needs
+        </ListItem>
+        <ListItem icon="check">
+          Analytics and insights on how members benefit from the platform
+        </ListItem>
+        <ListItem icon="check">Joint professional development opportunities</ListItem>
+      </Card>
 
       {/* Beta Program Invitation */}
-      <ActionBox>
-        <Heading style={textStyles.h2}>Beta Program Launch</Heading>
-        <Text style={textStyles.paragraph}>
-          We're launching our beta program now and would love to include {organizationName} members as early participants. Beta testers get:
-        </Text>
-        <Text style={listItem}>
-          • Immediate platform access
-        </Text>
-        <Text style={listItem}>
-          • Direct influence on framework development
-        </Text>
-        <Text style={listItem}>
-          • Priority support and feedback opportunities
-        </Text>
-        <Text style={listItem}>
-          • Early access to new frameworks as they're developed
-        </Text>
-      </ActionBox>
+      <Card variant="action">
+        <Heading as="h2" className="mt-0">🚀 Beta Program Launch</Heading>
+        <Paragraph>
+          We're launching our beta program now and would love to include{" "}
+          {organizationName} members as early participants. Beta testers get:
+        </Paragraph>
+        <ListItem icon="star">Immediate platform access</ListItem>
+        <ListItem icon="star">Direct influence on coaching experience development</ListItem>
+        <ListItem icon="star">Priority support and feedback opportunities</ListItem>
+        <ListItem icon="star">Early access to new features as they're developed</ListItem>
+      </Card>
 
       {/* Partnership Inquiry */}
-      <div style={ctaSection}>
-        <Text style={textStyles.paragraph}>
-          We'd love to explore how Pelican AI can support your members' professional growth. Would you be open to a brief conversation about potential collaboration?
-        </Text>
-        <CTAButton href="https://pelicanai.org">
+      <Section className="text-center my-8">
+        <Paragraph className="text-center">
+          We'd love to explore how Pelican AI can support your members'
+          professional growth. Would you be open to a brief conversation about
+          potential collaboration?
+        </Paragraph>
+        <CTAButton href="https://pelicanai.org" size="lg">
           Schedule a Conversation
         </CTAButton>
-        <Text style={smallText}>
+        <Text className="text-slate-500 text-sm mt-4 mb-0">
           Or simply reply to this email to discuss partnership opportunities.
         </Text>
-      </div>
+      </Section>
 
       {/* Value Proposition for Organization */}
-      <InfoBox>
-        <Heading style={textStyles.h2}>Why Louisiana Education Organizations Partner with Us</Heading>
-        <Text style={textStyles.paragraph}>
+      <Card variant="highlight">
+        <Heading as="h2" className="mt-0">
+          Why Louisiana Education Organizations Partner with Us
+        </Heading>
+        <Paragraph>
           We understand that Louisiana educators face unique challenges:
-        </Text>
-        <Text style={listItem}>
-          • Aligning with Louisiana state standards and LER rubric requirements
-        </Text>
-        <Text style={listItem}>
-          • Working within district-imposed AI tool constraints
-        </Text>
-        <Text style={listItem}>
-          • Balancing innovation with academic integrity
-        </Text>
-        <Text style={textStyles.paragraph}>
-          Our frameworks address these challenges directly, making AI more practical and accessible for Louisiana educators.
-        </Text>
-      </InfoBox>
+        </Paragraph>
+        <ListItem icon="bullet">
+          Aligning with Louisiana state standards and LER rubric requirements
+        </ListItem>
+        <ListItem icon="bullet">
+          Working within district-imposed AI tool constraints
+        </ListItem>
+        <ListItem icon="bullet">
+          Balancing innovation with academic integrity
+        </ListItem>
+        <Paragraph className="mt-4 mb-0">
+          Our conversational coaching assistant addresses these challenges directly, helping Louisiana educators
+          generate better prompts that make AI more practical and accessible.
+        </Paragraph>
+      </Card>
 
-      <Text style={textStyles.paragraph}>
-        I'd welcome the opportunity to discuss how Pelican AI can support {organizationName} and your members.
-      </Text>
+      <Paragraph className="mt-6">
+        I'd welcome the opportunity to discuss how Pelican AI can support{" "}
+        {organizationName} and your members.
+      </Paragraph>
 
-      <Text style={textStyles.paragraph}>
-        Best regards,
-        <br />
-        The Pelican AI Team
-        <br />
-        <em>Built by Louisiana educators, for Louisiana educators</em>
-      </Text>
+      <Signature
+        name="The Pelican AI Team"
+        title="Built by Louisiana educators, for Louisiana educators"
+      />
     </BaseEmailTemplate>
   );
 }
 
-// Styles specific to this email template
-const listItem = {
-  color: "#374151",
-  fontSize: "14px",
-  lineHeight: "22px",
-  margin: "8px 0",
-};
-
-const ctaSection = {
-  textAlign: "center" as const,
-  margin: "32px 0",
-};
-
-const smallText = {
-  color: "#6b7280",
-  fontSize: "14px",
-  margin: "16px 0 0",
-};
-
 export default NetworkPartnerEmail;
-

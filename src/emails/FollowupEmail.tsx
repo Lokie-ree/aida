@@ -1,22 +1,28 @@
 /**
  * GRASSROOTS LAUNCH NOTE:
- * 
+ *
  * This email template is for COLD FOLLOW-UP and is NOT used for the initial
  * 5-user grassroots launch (personal conversations instead of automated follow-ups).
- * 
+ *
  * This template will be useful when scaling to 30-100 users and following up with
  * educators who showed interest but haven't engaged. For now, it's kept in the
  * codebase for future use but is not actively used.
- * 
+ *
  * Status: DEPRIORITIZED for 5-user launch, READY for scaling phase
  */
 
+import { Section, Text } from "@react-email/components";
 import {
+  BaseEmailTemplate,
   Heading,
-  Link,
-  Text,
-} from "@react-email/components";
-import { BaseEmailTemplate, Card, CTAButton, textStyles } from "./BaseEmailTemplate";
+  Paragraph,
+  Card,
+  CTAButton,
+  PromptBox,
+  ListItem,
+  Testimonial,
+  Signature,
+} from "./BaseEmailTemplate";
 
 interface FollowupEmailProps {
   recipientName?: string;
@@ -30,132 +36,84 @@ export function FollowupEmail({
       previewText="Quick Follow-up: AI Guidance for Louisiana Educators"
       headerTitle="Quick Follow-up"
       headerSubtitle="AI Guidance for Louisiana Educators"
+      variant="minimal"
     >
-      <Text style={textStyles.paragraph}>
-        Hi {recipientName},
-      </Text>
+      <Paragraph>Hi {recipientName},</Paragraph>
 
-      <Text style={textStyles.paragraph}>
-        I wanted to follow up briefly about Pelican AI—we're launching our beta program specifically for Louisiana educators, and I thought you might be interested.
-      </Text>
+      <Paragraph>
+        I wanted to follow up briefly about Pelican AI—we're launching our beta
+        program specifically for Louisiana educators, and I thought you might be
+        interested.
+      </Paragraph>
 
       {/* Light Touch Value Focus */}
-      <Card>
-        <Heading style={textStyles.h2}>3 Ways Pelican AI Helps Louisiana Educators</Heading>
-        <Text style={listItem}>
-          <strong>1. Save Time:</strong> 3-5 hours per week on planning and prep tasks
-        </Text>
-        <Text style={listItem}>
-          <strong>2. Louisiana-Aligned:</strong> Every framework aligns with Louisiana standards and the LER rubric
-        </Text>
-        <Text style={listItem}>
-          <strong>3. Platform-Agnostic:</strong> Works with ANY AI tool—MagicSchool AI, Brisk, SchoolAI, Gemini, etc.
-        </Text>
+      <Card variant="default">
+        <Heading as="h2" className="mt-0">
+          3 Ways Pelican AI Helps Louisiana Educators
+        </Heading>
+        <ListItem icon="number" number={1}>
+          <strong>Conversational Coach:</strong> Just describe what you're teaching, and our AI coach asks clarifying questions like a colleague—then generates Louisiana-aligned prompts
+        </ListItem>
+        <ListItem icon="number" number={2}>
+          <strong>Louisiana-Aligned:</strong> Every generated prompt demonstrates knowledge of Louisiana standards, the LER rubric, and LEADS framework
+        </ListItem>
+        <ListItem icon="number" number={3}>
+          <strong>Platform-Agnostic:</strong> Works with ANY AI tool—ChatGPT, Claude, Gemini, MagicSchool AI, Brisk, or whatever your district provides
+        </ListItem>
       </Card>
 
       {/* Real Example */}
-      <Card>
-        <Heading style={textStyles.h2}>Try This Example Right Now</Heading>
-        <Text style={textStyles.paragraph}>
-          Copy this prompt and paste it into any AI tool you have access to:
-        </Text>
-        <Text style={promptBox}>
-          "Act as a Louisiana curriculum specialist. Analyze this Louisiana state standard and help me unpack it for lesson planning:
-          <br /><br />
-          **Standard:** [Paste your standard here]
-          <br />
-          **Grade Level:** [Your grade]
-          <br />
-          **Subject:** [Your subject]
-          <br /><br />
-          Please provide:
-          1. A clear explanation in student-friendly language
-          2. Three differentiated 'I can' statements (approaching, meeting, exceeding)
-          3. Key vocabulary students need
-          4. Potential misconceptions"
-        </Text>
-        <Text style={textStyles.paragraph}>
-          This framework saves 7-12 minutes per lesson. With 5-10 lessons per week, that's 35-120 minutes saved.
-        </Text>
+      <Card variant="highlight">
+        <Heading as="h2" className="mt-0">🧪 Try This Example Right Now</Heading>
+        <Paragraph>
+          Here's a sample Louisiana-aligned prompt you can copy and paste into any AI tool you have access to:
+        </Paragraph>
+
+        <PromptBox>
+          {`"Act as a Louisiana curriculum specialist. Analyze this Louisiana state standard and help me unpack it for lesson planning:
+
+**Standard:** [Paste your standard here]
+**Grade Level:** [Your grade]
+**Subject:** [Your subject]
+
+Please provide:
+1. A clear explanation in student-friendly language
+2. Three differentiated 'I can' statements (approaching, meeting, exceeding)
+3. Key vocabulary students need
+4. Potential misconceptions"`}
+        </PromptBox>
+
+        <Paragraph>
+          <strong>Or better yet:</strong> Use our conversational coach! Just describe what you're teaching,
+          and it will ask clarifying questions and generate a prompt tailored to your specific context.
+        </Paragraph>
+        <Paragraph className="mb-0">
+          This approach saves 7-12 minutes per lesson. With 5-10 lessons per week,
+          that's <strong>35-120 minutes saved</strong>.
+        </Paragraph>
       </Card>
 
       {/* Social Proof */}
-      <Card>
-        <Heading style={textStyles.h2}>What Louisiana Educators Are Saying</Heading>
-        <Text style={testimonialStyle}>
-          "I finally feel confident using AI tools. The Louisiana-specific guidance makes all the difference."
-        </Text>
-        <Text style={testimonialAuthor}>
-          — Middle School Teacher, Jefferson Parish
-        </Text>
-      </Card>
+      <Testimonial
+        quote="I finally feel confident using AI tools. The Louisiana-specific guidance makes all the difference."
+        author="Middle School Teacher"
+        role="Jefferson Parish"
+      />
 
       {/* Soft CTA */}
-      <div style={ctaSection}>
-        <Text style={textStyles.paragraph}>
+      <Section className="text-center my-8">
+        <Text className="text-slate-700 text-base mb-4">
           If this sounds helpful, we'd love to have you in our beta program:
         </Text>
-        <CTAButton href="https://pelicanai.org">
-          Learn More & Join Beta
-        </CTAButton>
-        <Text style={smallText}>
+        <CTAButton href="https://pelicanai.org">Learn More & Join Beta</CTAButton>
+        <Text className="text-slate-500 text-sm mt-4 mb-0">
           Or simply reply to this email if you have questions.
         </Text>
-      </div>
+      </Section>
 
-      <Text style={textStyles.paragraph}>
-        Best,
-        <br />
-        The Pelican AI Team
-      </Text>
+      <Signature name="The Pelican AI Team" title="Built by Louisiana educators, for Louisiana educators" />
     </BaseEmailTemplate>
   );
 }
 
-// Styles specific to this email template
-const listItem = {
-  color: "#374151",
-  fontSize: "14px",
-  lineHeight: "22px",
-  margin: "8px 0",
-};
-
-const promptBox = {
-  color: "#1e40af",
-  fontSize: "14px",
-  fontFamily: "monospace",
-  lineHeight: "20px",
-  margin: "16px 0",
-  padding: "16px",
-  backgroundColor: "#f8fafc",
-  border: "1px solid #e2e8f0",
-  borderRadius: "6px",
-};
-
-const ctaSection = {
-  textAlign: "center" as const,
-  margin: "32px 0",
-};
-
-const testimonialStyle = {
-  color: "#1e40af",
-  fontSize: "16px",
-  fontStyle: "italic",
-  lineHeight: "24px",
-  margin: "16px 0 8px",
-};
-
-const testimonialAuthor = {
-  color: "#6b7280",
-  fontSize: "14px",
-  margin: "0 0 16px",
-};
-
-const smallText = {
-  color: "#6b7280",
-  fontSize: "14px",
-  margin: "16px 0 0",
-};
-
 export default FollowupEmail;
-
