@@ -39,6 +39,13 @@ function ProfileSettings() {
         gradeLevel: userProfile.gradeLevel || "",
         role: userProfile.role || "teacher",
       });
+      // Auto-enable edit mode for incomplete profiles
+      if (!userProfile.gradeLevel || !userProfile.subject) {
+        setIsEditing(true);
+      }
+    } else {
+      // New user - auto-enable edit mode
+      setIsEditing(true);
     }
   }, [userProfile]);
 
@@ -95,10 +102,41 @@ function ProfileSettings() {
     );
   }
 
+  // Check if profile is incomplete
+  const isIncomplete = !userProfile || !userProfile.gradeLevel || !userProfile.subject;
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {/* Enhanced Welcome Card for New/Incomplete Profiles */}
+      {isIncomplete && (
+        <Card className="border-primary/20 bg-linear-to-br from-primary/5 to-primary/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-primary" />
+              Complete Your Profile
+            </CardTitle>
+            <CardDescription>
+              Help us personalize your coaching experience
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Your profile information helps us:
+            </p>
+            <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+              <li>Align prompts to your specific grade level and subject</li>
+              <li>Reference relevant Louisiana Student Standards automatically</li>
+              <li>Connect you with Louisiana Educator Rubric indicators</li>
+            </ul>
+            <p className="text-xs text-muted-foreground pt-2">
+              This takes about 30 seconds to complete.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Profile Completion Alert */}
-      {state?.message && (
+      {state?.message && !isIncomplete && (
         <Alert>
           <ArrowRight className="h-4 w-4" />
           <AlertDescription>{state.message}</AlertDescription>
@@ -249,9 +287,14 @@ function ProfileSettings() {
                     </Button>
                   </>
                 ) : (
-                  <Button onClick={() => setIsEditing(true)}>
-                    Edit Profile
-                  </Button>
+                  <>
+                    <Button onClick={() => setIsEditing(true)}>
+                      Edit Profile
+                    </Button>
+                    <Button variant="outline" onClick={() => navigate("/coach")}>
+                      Go to Coach
+                    </Button>
+                  </>
                 )}
               </ButtonGroup>
             </CardContent>

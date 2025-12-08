@@ -15,6 +15,7 @@ export type InnovationFormData = z.infer<typeof innovationFormSchema>;
 export const authFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   name: z.string().optional(),
+  gradeLevel: z.string().optional(),
 });
 
 export type AuthFormData = z.infer<typeof authFormSchema>;
