@@ -9,6 +9,8 @@ import { v } from "convex/values";
 import { WeeklyPromptEmail } from "../src/emails/WeeklyPromptEmail";
 import { BetaWelcomeEmail } from "../src/emails/BetaWelcomeEmail";
 import { PlatformAccessEmail } from "../src/emails/PlatformAccessEmail";
+import { MagicLinkEmail } from "../src/emails/MagicLinkEmail";
+import { ApprovalNotificationEmail } from "../src/emails/ApprovalNotificationEmail";
 import { render } from "@react-email/render";
 import { components, internal } from "./_generated/api";
 import { api } from "./_generated/api";
@@ -178,18 +180,16 @@ export const sendPlatformAccessEmail = action({
  * This feature is ready for when you scale to 30-100 users. Enable via env var:
  * `npx convex env set WEEKLY_EMAILS_ENABLED true`
  * 
- * Sends a curated AI prompt with time estimate, difficulty level, and ethical guardrails.
+ * Sends a curated Louisiana-aligned AI prompt with use case description and ethical guardrails.
  * Used for weekly engagement and value delivery to beta testers.
  * 
  * **Scaling Feature:** Scheduled via cron job every Monday 6am CT when enabled.
  * 
  * @param {string} args.userEmail - Recipient email address
  * @param {string} args.userName - Recipient name for personalization
- * @param {string} args.frameworkTitle - Title of the AI framework/prompt
- * @param {string} args.frameworkId - Framework ID for tracking
+ * @param {string} args.promptTitle - Title of the prompt
  * @param {string} args.samplePrompt - The actual prompt text
- * @param {number} args.timeEstimate - Estimated time savings in minutes
- * @param {string} args.difficultyLevel - Difficulty level (beginner/intermediate/advanced)
+ * @param {string} args.useCase - Description of what the prompt helps with
  * @param {number} args.weekNumber - Week number since beta launch
  * 
  * @returns {Object} Result containing:
@@ -202,11 +202,9 @@ export const sendPlatformAccessEmail = action({
  * await ctx.runAction(api.email.sendWeeklyPromptEmail, {
  *   userEmail: "teacher@school.edu",
  *   userName: "Jane",
- *   frameworkTitle: "Lesson Objective Unpacker",
- *   frameworkId: "AIB-001",
+ *   promptTitle: "Lesson Objective Unpacker",
  *   samplePrompt: "Break down this objective...",
- *   timeEstimate: 15,
- *   difficultyLevel: "beginner",
+ *   useCase: "Unpacking Louisiana standards and creating differentiated objectives",
  *   weekNumber: 3
  * });
  */
@@ -214,11 +212,9 @@ export const sendWeeklyPromptEmail = action({
   args: {
     userEmail: v.string(),
     userName: v.string(),
-    frameworkTitle: v.string(),
-    frameworkId: v.string(),
+    promptTitle: v.string(),
     samplePrompt: v.string(),
-    timeEstimate: v.number(),
-    difficultyLevel: v.string(),
+    useCase: v.string(),
     weekNumber: v.number(),
   },
   returns: v.object({
@@ -230,11 +226,9 @@ export const sendWeeklyPromptEmail = action({
       const emailHtml = await render(
         WeeklyPromptEmail({
           userName: args.userName,
-          frameworkTitle: args.frameworkTitle,
-          frameworkId: args.frameworkId,
+          promptTitle: args.promptTitle,
           samplePrompt: args.samplePrompt,
-          timeEstimate: args.timeEstimate,
-          difficultyLevel: args.difficultyLevel,
+          useCase: args.useCase,
           weekNumber: args.weekNumber,
         })
       );
@@ -242,7 +236,7 @@ export const sendWeeklyPromptEmail = action({
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.userEmail,
-        subject: `This Week's Productivity Prompt: ${args.frameworkTitle}`,
+        subject: `Week ${args.weekNumber}: ${args.promptTitle} - Navigate AI with Confidence`,
         html: emailHtml,
         replyTo: REPLY_TO,
       });
@@ -305,6 +299,7 @@ export const sendWeeklyEmailsToAllUsers = action({
  * 
  * @param email - Recipient email address
  * @param url - Magic link URL
+ * @param name - Optional recipient name (defaults to "Educator")
  * 
  * @returns Object containing success status and email ID
  */
@@ -312,6 +307,7 @@ export const sendMagicLinkEmail = action({
   args: {
     email: v.string(),
     url: v.string(),
+    name: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -325,21 +321,20 @@ export const sendMagicLinkEmail = action({
         return { success: true, emailId: "test-mode-skipped" };
       }
 
-      // Send magic link email using Resend
+      // Render the React email component to HTML
+      const emailHtml = await render(
+        MagicLinkEmail({
+          url: args.url,
+          name: args.name || "Educator",
+        })
+      );
+
+      // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.email,
         subject: "Your Pelican AI sign-in link (expires in 5 min)",
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #1e40af;">Pelican AI</h1>
-            <p>Hey there! 👋</p>
-            <p>Click the button below to sign in and start creating Louisiana-aligned prompts:</p>
-            <p><a href="${args.url}" style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Sign In</a></p>
-            <p style="color: #6b7280; font-size: 14px;">This link will expire in 5 minutes.</p>
-            <p style="color: #6b7280; font-size: 14px;">Questions? Just reply—I read every one.<br>– Pelican AI Team</p>
-          </div>
-        `,
+        html: emailHtml,
         replyTo: REPLY_TO,
       });
 
@@ -368,6 +363,7 @@ export const sendMagicLinkEmail = action({
  * 
  * @param email - Recipient email address
  * @param name - Optional recipient name (defaults to "Educator")
+ * @param siteUrl - Optional site URL for sign-in link (defaults to env var or localhost)
  * 
  * @returns Object containing success status and email ID
  */
@@ -375,6 +371,7 @@ export const sendApprovalNotificationEmail = action({
   args: {
     email: v.string(),
     name: v.optional(v.string()),
+    siteUrl: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -389,26 +386,22 @@ export const sendApprovalNotificationEmail = action({
       }
 
       // Get the frontend URL for the sign-in link
-      const siteUrl = process.env.SITE_URL || "http://localhost:5173";
-      const displayName = args.name || "Educator";
+      const siteUrl = args.siteUrl || process.env.SITE_URL || "https://pelicanai.org";
 
-      // Send approval notification email using Resend
+      // Render the React email component to HTML
+      const emailHtml = await render(
+        ApprovalNotificationEmail({
+          name: args.name || "Educator",
+          siteUrl,
+        })
+      );
+
+      // Send the email using the Convex Resend component
       const emailId = await resend.sendEmail(ctx, {
         from: FROM_ADDRESS,
         to: args.email,
         subject: "You're in! Sign in to Pelican AI",
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #1e40af;">Pelican AI</h1>
-            <p>Hey ${displayName}! 👋</p>
-            <p>Great news - your beta access has been approved!</p>
-            <p>You're one of a small group of Louisiana educators helping shape Pelican AI. Your feedback will directly influence how this tool supports teachers across the state.</p>
-            <p>Ready to get started? Click below to sign in:</p>
-            <p><a href="${siteUrl}" style="background-color: #1e40af; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">Sign In to Pelican AI</a></p>
-            <p style="color: #6b7280; font-size: 14px;">On the sign-in page, enter your email address and we'll send you a secure link to access your account.</p>
-            <p style="color: #6b7280; font-size: 14px;">Questions? Just reply to this email—I read every one.<br>– Pelican AI Team</p>
-          </div>
-        `,
+        html: emailHtml,
         replyTo: REPLY_TO,
       });
 

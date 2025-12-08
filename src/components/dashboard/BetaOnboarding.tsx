@@ -89,11 +89,11 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
     if (currentStep === 2) {
       // Complete onboarding (final step)
       toast.success("Onboarding complete! Welcome to Pelican AI!");
-      // Close modal and redirect to dashboard
+      // Close modal and redirect to coach
       onComplete();
-      // Redirect to dashboard if currently on /onboarding route
+      // Redirect to coach if currently on /onboarding route
       if (window.location.pathname === "/onboarding") {
-        window.location.href = "/dashboard";
+        window.location.href = "/coach";
       }
       return;
     }

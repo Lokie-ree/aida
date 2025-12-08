@@ -40,7 +40,7 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                 <div>
                   <h4 className="font-medium text-foreground">Usage Data</h4>
                   <p className="text-muted-foreground">
-                    We track how you interact with our platform, including which frameworks you access, time spent on different sections, and feedback you provide. This helps us improve our services and develop better resources for Louisiana educators.
+                    We track how you interact with our platform, including conversations with our coaching assistant, prompts you generate and save, time spent on different sections, and feedback you provide. This helps us improve our services and develop better resources for Louisiana educators.
                   </p>
                 </div>
                 
@@ -60,7 +60,7 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
                   <strong>Important:</strong> Pelican AI is designed specifically for educators and does not collect, store, or process any student personally identifiable information (PII) as defined by FERPA.
                 </p>
                 <p className="text-muted-foreground">
-                  Our platform focuses on providing guidance and frameworks for educators to use AI tools responsibly. We do not require or encourage the input of student data, and our systems are not designed to handle student information.
+                  Our platform focuses on providing conversational coaching to help educators generate better prompts for AI tools. We do not require or encourage the input of student data, and our systems are not designed to handle student information.
                 </p>
                 <p className="text-muted-foreground">
                   If you choose to use our guidance with student work, you are responsible for ensuring compliance with your school district's FERPA policies and procedures.
@@ -71,7 +71,7 @@ export function PrivacyPolicyModal({ isOpen, onClose }: PrivacyPolicyModalProps)
             <section>
               <h3 className="text-lg font-semibold text-foreground mb-3">How We Use Your Information</h3>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                <li>Provide personalized AI guidance frameworks aligned with Louisiana standards</li>
+                <li>Provide personalized conversational coaching to help you generate Louisiana-aligned prompts</li>
                 <li>Send you weekly prompt emails and platform updates</li>
                 <li>Improve our services based on usage patterns and feedback</li>
                 <li>Communicate with you about your account and our services</li>

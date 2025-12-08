@@ -40,12 +40,12 @@ export function TermsOfServiceModal({ isOpen, onClose }: TermsOfServiceModalProp
                 Pelican AI provides:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                <li>AI guidance frameworks aligned with Louisiana educational standards</li>
-                <li>Platform-agnostic guidance for using ANY AI tool effectively</li>
-                <li>Ethical guardrails for responsible AI use in education</li>
+                <li>A conversational coaching assistant that helps you generate Louisiana-aligned prompts for any AI tool</li>
+                <li>Platform-agnostic guidance for using ANY AI tool effectively (ChatGPT, Claude, Gemini, MagicSchool AI, etc.)</li>
+                <li>Louisiana-specific intelligence that understands the Louisiana Educator Rubric, Louisiana Student Standards, and LEADS framework</li>
+                <li>Prompt library to save and manage your generated prompts</li>
                 <li>Weekly prompt emails and educational resources</li>
-                <li>Community features for sharing innovations and best practices</li>
-                <li>Time tracking tools to measure productivity gains</li>
+                <li>Community features for sharing innovations and best practices (post-beta)</li>
               </ul>
             </section>
 
@@ -89,7 +89,7 @@ export function TermsOfServiceModal({ isOpen, onClose }: TermsOfServiceModalProp
                   The content, features, and functionality of Pelican AI are owned by us and are protected by copyright, trademark, and other intellectual property laws.
                 </p>
                 <p className="text-muted-foreground">
-                  You may use our guidance frameworks and resources for your educational purposes. However, you may not reproduce, distribute, or create derivative works without our express written permission.
+                  You may use the prompts generated through our conversational coach and our resources for your educational purposes. However, you may not reproduce, distribute, or create derivative works of our platform's content without our express written permission.
                 </p>
                 <p className="text-muted-foreground">
                   Any content you share through our community features remains yours, but you grant us a license to use, display, and distribute such content in connection with our platform.
@@ -120,7 +120,7 @@ export function TermsOfServiceModal({ isOpen, onClose }: TermsOfServiceModalProp
               <h3 className="text-lg font-semibold text-foreground mb-3">Disclaimers</h3>
               <div className="space-y-3">
                 <p className="text-muted-foreground">
-                  <strong>Educational Guidance Only:</strong> Our platform provides guidance and frameworks for using AI tools in education. We do not guarantee specific outcomes or results from following our guidance.
+                  <strong>Educational Guidance Only:</strong> Our platform provides conversational coaching to help you generate better prompts for AI tools. We do not guarantee specific outcomes or results from using the prompts generated through our service.
                 </p>
                 <p className="text-muted-foreground">
                   <strong>Platform Agnostic:</strong> While we provide guidance for various AI tools, we are not affiliated with or responsible for the functionality, availability, or terms of service of third-party AI platforms.

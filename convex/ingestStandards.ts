@@ -23,13 +23,14 @@ const standardDataValidator = v.object({
   text: v.string(),
   cognitiveDepth: v.optional(
     v.union(
-      v.literal("recall"),
-      v.literal("skill"),
-      v.literal("conceptual"),
-      v.literal("application"),
-      v.literal("analysis"),
-      v.literal("synthesis"),
-      v.literal("evaluation")
+      v.literal("recall"),       // Basic knowledge retrieval
+      v.literal("skill"),        // Math: procedural fluency
+      v.literal("conceptual"),   // Math: understanding concepts
+      v.literal("application"),  // Applying knowledge to new situations
+      v.literal("analysis"),     // Breaking down and examining components
+      v.literal("synthesis"),    // Combining elements to create new understanding
+      v.literal("evaluation"),   // Making judgments based on criteria
+      v.literal("strategic")     // Social Studies: complex reasoning
     )
   ),
   // Subject-specific metadata

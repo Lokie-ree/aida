@@ -25,6 +25,7 @@ const applicationTables = {
     name: v.optional(v.string()),
     school: v.optional(v.string()),
     subject: v.optional(v.string()),
+    gradeLevel: v.optional(v.string()),
     status: v.union(
       v.literal("pending"),
       v.literal("approved"),
@@ -51,6 +52,8 @@ const applicationTables = {
       v.literal("admin"),
       v.literal("coach")
     )),
+    onboardingComplete: v.optional(v.boolean()),
+    onboardingCompletedAt: v.optional(v.number()),
   }).index("by_user", ["userId"])
     .index("by_role", ["role"]),
 

@@ -210,14 +210,17 @@ src/              # React frontend
 ├── App.tsx       # Root component with routing
 └── main.tsx      # Application entry point
 
-knowledge/        # Louisiana education data (markdown source files)
+knowledge/        # Louisiana education data (JSON source files for RAG ingestion)
 ├── schemas/      # JSON schemas for data validation
-├── la-ela.md     # Louisiana ELA standards
-├── la-math.md    # Louisiana Math standards
-└── la-ler-rubric.md # Louisiana Educator Rubric
+├── la-ela-standards.json      # Louisiana ELA standards
+├── la-math-standards.json     # Louisiana Math standards
+├── la-science-standards.json  # Louisiana Science standards (NGSS-aligned)
+├── la-social-studies-standards.json # Louisiana Social Studies standards
+├── la-rubric-evaluation-handbook.json # Louisiana Educator Rubric (LER) with coaching questions
+└── la-leader-handbook.json    # Louisiana Leader Rubric (LLR) - coaching strategies & adult learning
 
 docs/             # Technical documentation
-└── RAG_PLAN.md   # RAG implementation plan (Phase 2-3, NOT Week 1)
+└── IT-WHITELISTING.md   # IT security whitelisting guide
 ```
 
 ### Convex Backend Architecture

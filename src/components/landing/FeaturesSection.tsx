@@ -42,9 +42,9 @@ export function FeaturesSection() {
             </GradientText>
           </motion.div>
           <motion.p variants={fadeInUp} className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-primary">
-            We're not another AI tool to learn. We're Louisiana educators helping Louisiana educators 
-            <span className="text-foreground font-semibold"> use whatever AI platform you already have {" "}</span> 
-            more effectively, ethically, and aligned to our state standards.
+            We're not another AI tool to learn. We're a <span className="text-foreground font-semibold">conversational coaching assistant</span> that helps Louisiana educators 
+            <span className="text-foreground font-semibold"> generate better prompts</span> for whatever AI platform you already use—ChatGPT, Claude, Gemini, or others. 
+            <span className="text-foreground font-semibold"> Just describe what you're teaching</span>, and we guide you to Louisiana-aligned prompts that improve your practice.
           </motion.p>
         </motion.div>
 
