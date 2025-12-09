@@ -135,16 +135,16 @@ export function BaseEmailTemplate({
             fontWeight={400}
             fontStyle="normal"
           />
-          <meta name="color-scheme" content="light dark" />
-          <meta name="supported-color-schemes" content="light dark" />
+          <meta name="color-scheme" content="dark" />
+          <meta name="supported-color-schemes" content="dark" />
         </Head>
         <Preview>{previewText}</Preview>
-        <Body className="bg-slate-100 font-body m-0 p-0">
+        <Body className="bg-slate-900 font-body m-0 p-0">
           {/* Outer wrapper with background pattern */}
           <Section className="py-8 px-4">
             <Container className="max-w-[600px] mx-auto">
               {/* Main card */}
-              <Section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <Section className="bg-slate-800 rounded-2xl shadow-lg overflow-hidden">
                 {/* Header */}
                 {showHeader && (
                   <Header
@@ -186,11 +186,11 @@ function Header({ title, subtitle, emoji, variant = "default" }: HeaderProps) {
   const bgStyle = variant === "celebration"
     ? "bg-gradient-to-br from-brand-primary via-brand-louisiana to-brand-primary-dark"
     : variant === "minimal"
-    ? "bg-slate-50 border-b border-slate-200"
+    ? "bg-slate-700 border-b border-slate-600"
     : "bg-gradient-to-r from-brand-primary to-brand-louisiana";
 
-  const textColor = variant === "minimal" ? "text-slate-800" : "text-white";
-  const subtitleColor = variant === "minimal" ? "text-slate-500" : "text-white/90";
+  const textColor = variant === "minimal" ? "text-slate-100" : "text-white";
+  const subtitleColor = variant === "minimal" ? "text-slate-300" : "text-white/90";
 
   return (
     <Section className={`${bgStyle} px-8 py-10 text-center`}>
@@ -202,7 +202,7 @@ function Header({ title, subtitle, emoji, variant = "default" }: HeaderProps) {
             alt="Pelican AI"
             width={56}
             height={56}
-            className="rounded-xl mx-auto shadow-md"
+            className="rounded-xl mx-auto"
           />
         </Column>
       </Row>
@@ -246,21 +246,21 @@ function Footer({ content }: { content?: React.ReactNode }) {
         </Column>
       </Row>
 
-      <Text className="text-slate-500 text-sm m-0 mb-2">
+      <Text className="text-slate-300 text-sm m-0 mb-2">
         Created with 💙 by educators, for educators
       </Text>
 
-      <Text className="text-slate-400 text-sm m-0 mb-4">
-        <Link href="https://pelicanai.org" className="text-brand-primary underline">
+      <Text className="text-slate-300 text-sm m-0 mb-4">
+        <Link href="https://pelicanai.org" className="text-brand-primary-light underline">
           pelicanai.org
         </Link>
         <span className="mx-2">•</span>
-        <Link href="mailto:hello@pelicanai.org" className="text-brand-primary underline">
+        <Link href="mailto:hello@pelicanai.org" className="text-brand-primary-light underline">
           hello@pelicanai.org
         </Link>
       </Text>
 
-      <Hr className="border-slate-200 my-4 mx-8" />
+      <Hr className="border-slate-600 my-4 mx-8" />
 
       <Text className="text-slate-400 text-xs m-0">
         Pelican AI • Louisiana educator-built guidance for AI in education
@@ -282,9 +282,9 @@ interface HeadingProps {
 export function Heading({ children, as = "h2", className = "" }: HeadingProps) {
   const baseStyles = "font-heading font-bold leading-tight";
   const sizeStyles = {
-    h1: "text-2xl text-brand-louisiana mb-4",
-    h2: "text-xl text-brand-louisiana mt-6 mb-3",
-    h3: "text-lg text-slate-800 mt-4 mb-2",
+    h1: "text-2xl text-brand-primary-light mb-4",
+    h2: "text-xl text-brand-primary-light mt-6 mb-3",
+    h3: "text-lg text-slate-100 mt-4 mb-2",
   };
 
   return (
@@ -301,7 +301,7 @@ interface ParagraphProps {
 }
 
 export function Paragraph({ children, className = "", muted = false }: ParagraphProps) {
-  const color = muted ? "text-slate-500" : "text-slate-700";
+  const color = muted ? "text-slate-300" : "text-slate-100";
   return (
     <Text className={`${color} text-base leading-relaxed mb-4 ${className}`}>
       {children}
@@ -321,12 +321,12 @@ interface CardProps {
 
 export function Card({ children, variant = "default", className = "" }: CardProps) {
   const variants = {
-    default: "bg-white border border-slate-200",
-    highlight: "bg-sky-50/80 border border-sky-200 border-l-4 border-l-brand-primary",
-    success: "bg-emerald-50/80 border border-emerald-200 border-l-4 border-l-emerald-500",
-    warning: "bg-amber-50/80 border border-amber-200 border-l-4 border-l-amber-500",
-    action: "bg-slate-50 border-2 border-dashed border-slate-300",
-    glass: "bg-white/80 backdrop-blur border border-white/20 shadow-lg",
+    default: "bg-slate-700 border border-slate-600",
+    highlight: "bg-sky-900/50 border border-sky-700 border-l-4 border-l-brand-primary",
+    success: "bg-emerald-900/50 border border-emerald-700 border-l-4 border-l-emerald-400",
+    warning: "bg-amber-900/50 border border-amber-700 border-l-4 border-l-amber-400",
+    action: "bg-slate-700 border-2 border-dashed border-slate-500",
+    glass: "bg-slate-700/80 backdrop-blur border border-slate-600/20 shadow-lg",
   };
 
   return (
@@ -377,8 +377,8 @@ export function CTAButton({
 }: CTAButtonProps) {
   const variants = {
     primary: "bg-brand-primary text-white",
-    secondary: "bg-white text-brand-primary border-2 border-brand-primary",
-    ghost: "bg-transparent text-brand-primary",
+    secondary: "bg-slate-700 text-brand-primary-light border-2 border-brand-primary",
+    ghost: "bg-transparent text-brand-primary-light",
   };
 
   const sizes = {
@@ -438,7 +438,7 @@ export function Step({ number, title, description, isLast = false }: StepProps) 
             w-8 h-8 leading-8 text-center text-sm font-bold rounded-full m-0
             ${isLast
               ? "bg-brand-primary text-white"
-              : "bg-sky-100 text-brand-primary"
+              : "bg-sky-900 text-brand-primary-light"
             }
           `}
         >
@@ -446,11 +446,11 @@ export function Step({ number, title, description, isLast = false }: StepProps) 
         </Text>
       </Column>
       <Column className="pl-3">
-        <Text className="text-slate-800 font-semibold text-base m-0 mb-1">
+        <Text className="text-slate-100 font-semibold text-base m-0 mb-1">
           {title}
         </Text>
         {description && (
-          <Text className="text-slate-500 text-sm m-0 leading-relaxed">
+          <Text className="text-slate-300 text-sm m-0 leading-relaxed">
             {description}
           </Text>
         )}
@@ -477,7 +477,7 @@ export function ListItem({ children, icon = "bullet", number }: ListItemProps) {
   const iconColor = icon === "check" ? "text-emerald-500" : "text-brand-primary";
 
   return (
-    <Text className="text-slate-700 text-base leading-relaxed my-2 pl-6">
+    <Text className="text-slate-100 text-base leading-relaxed my-2 pl-6">
       <span className={`${iconColor} font-bold mr-3`}>
         {icon === "number" ? number : icons[icon]}
       </span>
@@ -500,20 +500,20 @@ export function Feature({ icon, title, description }: FeatureProps) {
   return (
     <Column className="text-center px-3 py-4">
       <Text className="text-3xl m-0 mb-2">{icon}</Text>
-      <Text className="text-slate-800 font-semibold text-sm m-0 mb-1">{title}</Text>
-      <Text className="text-slate-500 text-xs m-0 leading-snug">{description}</Text>
+      <Text className="text-slate-100 font-semibold text-sm m-0 mb-1">{title}</Text>
+      <Text className="text-slate-300 text-xs m-0 leading-snug">{description}</Text>
     </Column>
   );
 }
 
 export function FeatureCard({ icon, title, description }: FeatureProps) {
   return (
-    <Section className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-center">
+    <Section className="bg-slate-700 border border-slate-600 rounded-xl p-5 text-center">
       <Text className="text-4xl m-0 mb-3">{icon}</Text>
-      <Text className="text-slate-800 font-heading font-semibold text-base m-0 mb-2">
+      <Text className="text-slate-100 font-heading font-semibold text-base m-0 mb-2">
         {title}
       </Text>
-      <Text className="text-slate-600 text-sm m-0 leading-relaxed">{description}</Text>
+      <Text className="text-slate-200 text-sm m-0 leading-relaxed">{description}</Text>
     </Section>
   );
 }
@@ -532,10 +532,10 @@ export function StatsRow({ stats }: StatsRowProps) {
     <Row className="my-6">
       {stats.map((stat, index) => (
         <Column key={index} className="text-center px-4">
-          <Text className="text-brand-primary text-3xl font-heading font-bold m-0">
+          <Text className="text-brand-primary-light text-3xl font-heading font-bold m-0">
             {stat.value}
           </Text>
-          <Text className="text-slate-500 text-sm mt-1 mb-0">{stat.label}</Text>
+          <Text className="text-slate-300 text-sm mt-1 mb-0">{stat.label}</Text>
         </Column>
       ))}
     </Row>
@@ -554,11 +554,11 @@ interface TestimonialProps {
 
 export function Testimonial({ quote, author, role }: TestimonialProps) {
   return (
-    <Section className="bg-sky-50 border-l-4 border-brand-primary rounded-r-xl p-5 my-6 italic">
-      <Text className="text-brand-louisiana text-base leading-relaxed m-0">
+    <Section className="bg-sky-900/50 border-l-4 border-brand-primary rounded-r-xl p-5 my-6 italic">
+      <Text className="text-brand-primary-light text-base leading-relaxed m-0">
         "{quote}"
       </Text>
-      <Text className="text-slate-500 text-sm mt-3 mb-0 not-italic">
+      <Text className="text-slate-300 text-sm mt-3 mb-0 not-italic">
         — {author}{role && `, ${role}`}
       </Text>
     </Section>
@@ -572,10 +572,10 @@ interface BadgeProps {
 
 export function Badge({ children, variant = "default" }: BadgeProps) {
   const variants = {
-    default: "bg-slate-200 text-slate-700",
-    primary: "bg-sky-100 text-brand-primary",
-    success: "bg-emerald-100 text-emerald-700",
-    warning: "bg-amber-100 text-amber-700",
+    default: "bg-slate-600 text-slate-100",
+    primary: "bg-sky-900 text-brand-primary-light",
+    success: "bg-emerald-900 text-emerald-200",
+    warning: "bg-amber-900 text-amber-200",
   };
 
   return (
@@ -596,17 +596,17 @@ export function Signature({
 }: SignatureProps) {
   return (
     <Section className="mt-6">
-      <Text className="text-slate-700 text-base m-0">
+      <Text className="text-slate-100 text-base m-0">
         {name}
         <br />
-        <span className="text-slate-500 text-sm italic">{title}</span>
+        <span className="text-slate-300 text-sm italic">{title}</span>
       </Text>
     </Section>
   );
 }
 
 export function Divider() {
-  return <Hr className="border-slate-200 my-8" />;
+  return <Hr className="border-slate-600 my-8" />;
 }
 
 // =============================================================================
@@ -620,13 +620,13 @@ interface PromptBoxProps {
 
 export function PromptBox({ children, label }: PromptBoxProps) {
   return (
-    <Section className="bg-slate-50 border border-slate-200 border-l-4 border-l-brand-primary rounded-lg p-4 my-4">
+    <Section className="bg-slate-700 border border-slate-600 border-l-4 border-l-brand-primary rounded-lg p-4 my-4">
       {label && (
-        <Text className="text-slate-500 text-xs font-semibold uppercase tracking-wide m-0 mb-2">
+        <Text className="text-slate-300 text-xs font-semibold uppercase tracking-wide m-0 mb-2">
           {label}
         </Text>
       )}
-      <Text className="text-slate-700 font-mono text-sm leading-relaxed m-0 whitespace-pre-wrap">
+      <Text className="text-slate-100 font-mono text-sm leading-relaxed m-0 whitespace-pre-wrap">
         {children}
       </Text>
     </Section>
@@ -656,10 +656,10 @@ interface TimelineItemProps {
 
 export function TimelineItem({ title, description, isActive = false, isCompleted = false }: TimelineItemProps) {
   const dotStyle = isCompleted
-    ? "text-emerald-500"
+    ? "text-emerald-400"
     : isActive
-    ? "text-brand-primary"
-    : "text-slate-300";
+    ? "text-brand-primary-light"
+    : "text-slate-500";
 
   const dot = isCompleted ? "●" : isActive ? "●" : "○";
 
@@ -669,8 +669,8 @@ export function TimelineItem({ title, description, isActive = false, isCompleted
         <Text className={`${dotStyle} text-base m-0 font-bold`}>{dot}</Text>
       </Column>
       <Column className="pl-2">
-        <Text className="text-slate-800 font-semibold text-sm m-0 mb-1">{title}</Text>
-        <Text className="text-slate-500 text-sm m-0 leading-relaxed">{description}</Text>
+        <Text className="text-slate-100 font-semibold text-sm m-0 mb-1">{title}</Text>
+        <Text className="text-slate-300 text-sm m-0 leading-relaxed">{description}</Text>
       </Column>
     </Row>
   );

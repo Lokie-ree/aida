@@ -1,14 +1,13 @@
 /**
  * ✅ ACTIVE - Used in production
- * Functions: sendBetaWelcomeEmail, sendPlatformAccessEmail, sendMagicLinkEmail, sendApprovalNotificationEmail
+ * Functions: sendMagicLinkEmail, sendApprovalNotificationEmail
  * 🚫 FEATURE-FLAGGED: sendWeeklyPromptEmail, sendWeeklyEmailsToAllUsers (disabled for grassroots launch, enable at 30-100 users)
+ * ❌ REMOVED: sendBetaWelcomeEmail, sendPlatformAccessEmail (defined but never called - ApprovalNotificationEmail used instead)
  */
 "use node";
 import { action } from "./_generated/server";
 import { v } from "convex/values";
 import { WeeklyPromptEmail } from "../src/emails/WeeklyPromptEmail";
-import { BetaWelcomeEmail } from "../src/emails/BetaWelcomeEmail";
-import { PlatformAccessEmail } from "../src/emails/PlatformAccessEmail";
 import { MagicLinkEmail } from "../src/emails/MagicLinkEmail";
 import { ApprovalNotificationEmail } from "../src/emails/ApprovalNotificationEmail";
 import { render } from "@react-email/render";
@@ -30,144 +29,6 @@ export const isTestMode = (process.env.RESEND_TEST_MODE ?? "true") !== "false";
 export const resend: Resend = new Resend(components.resend, {
   testMode: isTestMode,
   onEmailEvent: internal.emailEvents.handleEmailEvent,
-});
-
-
-/**
- * Action: Send grassroots welcome email to one of the initial 5 educators.
- * 
- * Grassroots Launch Context: You're one of 5 educators building this together.
- * Your feedback literally shapes everything. This is a personal invitation, not
- * corporate automation.
- * 
- * @param {string} args.email - Recipient email address
- * @param {string} [args.name] - Recipient name (defaults to "Educator")
- * @param {string} [args.school] - School name (included in email)
- * 
- * @returns {Object} Result containing:
- *   - success: boolean indicating email sent status
- *   - emailId: Resend email ID for tracking
- * 
- * @throws {Error} If email sending fails
- * 
- * @example
- * await ctx.runAction(api.email.sendBetaWelcomeEmail, {
- *   email: "teacher@school.edu",
- *   name: "Jane Teacher",
- *   school: "Lincoln High"
- * });
- */
-export const sendBetaWelcomeEmail = action({
-  args: {
-    email: v.string(),
-    name: v.optional(v.string()),
-    school: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    emailId: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    try {
-      // In test mode, only allow @resend.dev addresses
-      if (isTestMode && !args.email.endsWith("@resend.dev")) {
-        console.warn(`Test mode: Skipping email to ${args.email} (not a @resend.dev test address)`);
-        return { success: true, emailId: "test-mode-skipped" };
-      }
-
-      // Render the React email component to HTML
-      const emailHtml = await render(
-        BetaWelcomeEmail({
-          name: args.name || "Educator",
-          school: args.school,
-        })
-      );
-
-      // Send the email using the Convex Resend component
-      const emailId = await resend.sendEmail(ctx, {
-        from: FROM_ADDRESS,
-        to: args.email,
-        subject: "Ready to dive in? - Pelican AI",
-        html: emailHtml,
-        replyTo: REPLY_TO,
-      });
-
-      return { success: true, emailId };
-    } catch (error) {
-      console.error("Error sending beta welcome email:", error);
-      // In test mode, don't throw - just log and continue
-      if (isTestMode) {
-        console.warn("Test mode: Email sending failed, but continuing execution");
-        return { success: false, emailId: "test-mode-error" };
-      }
-      throw new Error("Failed to send beta welcome email");
-    }
-  },
-});
-
-/**
- * Action: Send platform access email to one of the initial 5 educators.
- * 
- * Grassroots Launch: Personal access email for building together. No corporate
- * jargon - just straightforward access information with a personal touch.
- * 
- * @param email - Recipient email address
- * @param name - Optional recipient name (defaults to "Educator")
- * @param magicLinkUrl - Magic link URL for platform access
- * 
- * @returns Object containing success status and Resend email ID
- * 
- * @throws {Error} If email sending fails
- * 
- * @see PlatformAccessEmail component for email template
- */
-export const sendPlatformAccessEmail = action({
-  args: {
-    email: v.string(),
-    name: v.optional(v.string()),
-    magicLinkUrl: v.optional(v.string()),
-  },
-  returns: v.object({
-    success: v.boolean(),
-    emailId: v.string(),
-  }),
-  handler: async (ctx, args) => {
-    try {
-      // In test mode, only allow @resend.dev addresses
-      if (isTestMode && !args.email.endsWith("@resend.dev")) {
-        console.warn(`Test mode: Skipping email to ${args.email} (not a @resend.dev test address)`);
-        return { success: true, emailId: "test-mode-skipped" };
-      }
-
-      // Render the React email component to HTML
-      const emailHtml = await render(
-        PlatformAccessEmail({
-          email: args.email,
-          name: args.name || "Educator",
-          magicLinkUrl: args.magicLinkUrl,
-        })
-      );
-
-      // Send the email using the Convex Resend component
-      const emailId = await resend.sendEmail(ctx, {
-        from: FROM_ADDRESS,
-        to: args.email,
-        subject: "You're in - Let's get started",
-        html: emailHtml,
-        replyTo: REPLY_TO,
-      });
-
-      return { success: true, emailId };
-    } catch (error) {
-      console.error("Error sending platform access email:", error);
-      // In test mode, don't throw - just log and continue
-      if (isTestMode) {
-        console.warn("Test mode: Email sending failed, but continuing execution");
-        return { success: false, emailId: "test-mode-error" };
-      }
-      throw new Error("Failed to send platform access email");
-    }
-  },
 });
 
 
