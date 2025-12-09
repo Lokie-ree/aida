@@ -10,6 +10,7 @@ import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { AuthModal } from "@/components/auth/AuthModal";
+import { Metadata } from "@/components/shared/Metadata";
 
 function LandingPage() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -45,13 +46,18 @@ function LandingPage() {
           showLabel: true,
         },
       ],
-      showThemeToggle: false,
+      showThemeToggle: true,
     }),
     []
   );
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <Metadata 
+        title="Pelican AI - Intelligent Coaching for Louisiana Educators"
+        description="Conversational AI coach that helps Louisiana K-12 educators generate high-quality, Louisiana-aligned prompts for ChatGPT, Claude, Gemini, and more. Demonstrates knowledge of LER, LSS, and LEADS evaluation framework."
+        url="/"
+      />
       {/* Header */}
       <AppHeader config={navConfig} logoHref="/" animated />
 

@@ -37,7 +37,7 @@ export function AppHeader({
         <motion.a
           href={logoHref}
           onClick={handleLogoClick}
-          className="flex items-center gap-2.5 group shrink-0"
+          className="flex items-center gap-2 sm:gap-2.5 group shrink-0"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -49,7 +49,7 @@ export function AppHeader({
             />
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
-          <span className="font-bold text-lg sm:text-xl tracking-tight text-foreground hidden sm:inline">
+          <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight text-foreground">
             Pelican AI
           </span>
         </motion.a>
