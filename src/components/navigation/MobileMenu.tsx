@@ -151,23 +151,26 @@ export function MobileMenu({
             </nav>
           )}
 
-          {/* Spacer */}
-          <div className="flex-1" />
+          {/* Spacer - only show if we have both nav items and actions/theme toggle */}
+          {(hasNavItems && (hasActions || showThemeToggle)) && <div className="flex-1" />}
 
-          {/* Account Section */}
+          {/* Actions & Theme Section - More compact when logged out */}
           {(hasActions || showThemeToggle) && (
-            <div className="px-4 py-5 border-t border-border/50 bg-muted/30 mt-auto">
-              <p className="px-3 mb-3 text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
-                Account
-              </p>
+            <div className={`px-4 ${hasNavItems ? 'py-5 border-t border-border/50 bg-muted/30' : 'py-4'}`}>
+              {hasNavItems && (
+                <p className="px-3 mb-3 text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">
+                  Account
+                </p>
+              )}
 
+              {/* Theme Toggle - More prominent when no nav items */}
               {showThemeToggle && (
                 <motion.div
                   custom={navItems?.length || 0}
                   initial="hidden"
                   animate="visible"
                   variants={menuItemVariants}
-                  className="flex items-center justify-between px-3 py-2.5 mb-1.5 rounded-xl hover:bg-accent/50 transition-colors"
+                  className={`flex items-center justify-between ${hasNavItems ? 'px-3 py-2.5 mb-1.5' : 'px-3 py-3 mb-2'} rounded-xl hover:bg-accent/50 transition-colors`}
                 >
                   <span className="text-sm font-medium text-foreground">Theme</span>
                   <AnimatedThemeToggler className="h-8 w-8 p-1.5 rounded-md hover:bg-accent transition-colors" />
@@ -188,14 +191,18 @@ export function MobileMenu({
                     variants={menuItemVariants}
                   >
                     <Button
-                      variant="ghost"
+                      variant={isDestructive ? "destructive" : action.variant || "default"}
                       onClick={() => handleAction(action.onClick)}
                       className={`
                         w-full justify-start h-11 px-3 rounded-xl
                         transition-all duration-200
+                        ${!hasNavItems && !isDestructive && action.variant !== "ghost" 
+                          ? "font-medium" 
+                          : ""
+                        }
                         ${isDestructive 
                           ? "text-destructive hover:text-destructive hover:bg-destructive/10 font-medium" 
-                          : "hover:bg-accent/50"
+                          : ""
                         }
                       `}
                     >

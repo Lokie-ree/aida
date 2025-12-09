@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import App from "./App";
 import "./index.css";
 import { ConvexReactClient } from "convex/react";
@@ -26,8 +27,10 @@ const convex = new ConvexReactClient(convexUrl, {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <App />
-    </ConvexBetterAuthProvider>
+    <HelmetProvider>
+      <ConvexBetterAuthProvider client={convex} authClient={authClient}>
+        <App />
+      </ConvexBetterAuthProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );

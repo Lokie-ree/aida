@@ -7,6 +7,7 @@ import { ChatInterface } from "./ChatInterface";
 import { PromptLibrary } from "./PromptLibrary";
 import { InlineProfilePrompt } from "./InlineProfilePrompt";
 import { AppHeader, type NavConfig } from "@/components/navigation";
+import { Metadata } from "@/components/shared/Metadata";
 import { Id } from "../../../convex/_generated/dataModel";
 import { spacing } from "@/lib/spacing";
 import { MessageSquare, Library, PlusCircle, User, LogOut } from "lucide-react";
@@ -85,6 +86,12 @@ export default function PromptCoach() {
 
   return (
     <div className="h-dvh flex flex-col bg-background">
+      <Metadata 
+        title="Prompt Coach - Pelican AI"
+        description="Get personalized AI coaching to generate Louisiana-aligned prompts for your lessons. Our conversational coach helps you create high-quality prompts for ChatGPT, Claude, Gemini, and more."
+        url="/coach"
+        noindex={true}
+      />
       <AppHeader config={navConfig} onLogoClick={handleLogoClick} />
 
       <main className="flex-1 min-h-0 overflow-hidden flex flex-col">

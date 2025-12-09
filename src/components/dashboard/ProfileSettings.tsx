@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User, School, BookOpen, GraduationCap, MapPin, Shield, ArrowRight } from "lucide-react";
 import { LoadingSpinner } from "../shared/LoadingStates";
+import { Metadata } from "../shared/Metadata";
 import { toast } from "sonner";
 
 function ProfileSettings() {
@@ -107,6 +108,12 @@ function ProfileSettings() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <Metadata 
+        title="Profile Settings - Pelican AI"
+        description="Manage your Pelican AI profile settings. Update your grade level, subject, school, and role to get personalized coaching recommendations."
+        url="/profile"
+        noindex={true}
+      />
       {/* Enhanced Welcome Card for New/Incomplete Profiles */}
       {isIncomplete && (
         <Card className="border-primary/30 bg-linear-to-br from-primary/10 via-primary/5 to-accent/5 shadow-md">
