@@ -3,14 +3,25 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { LoadingSpinner } from '../shared/LoadingStates';
+import { authClient } from '@/lib/auth-client';
 
 interface CoachRouteProps {
   children: React.ReactNode;
 }
 
 export default function CoachRoute({ children }: CoachRouteProps) {
+  const { isPending: isAuthLoading } = authClient.useSession();
   const profile = useQuery(api.userProfiles.getUserProfile);
   const location = useLocation();
+
+  // Wait for auth to be ready (especially important when processing magic link tokens)
+  if (isAuthLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
   // Wait for profile to load
   if (profile === undefined) {

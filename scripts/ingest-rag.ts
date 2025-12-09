@@ -7,6 +7,7 @@
  *
  * Usage:
  *   pnpm ingest-rag                       # Ingest all files (uses .env.local)
+ *   pnpm ingest-rag --clean               # Clear existing data, then ingest (RECOMMENDED)
  *   pnpm ingest-rag --dry-run             # Preview without ingesting
  *   pnpm ingest-rag --subjects ela,math   # Ingest specific subjects only
  *   pnpm ingest-rag --rubric-only         # Ingest only the educator rubric
@@ -14,14 +15,15 @@
  *   pnpm ingest-rag --leader-handbook-only # Ingest only leader handbook coaching content
  *   pnpm ingest-rag --production          # Ingest to production (requires CONVEX_URL)
  *
+ * Clean Ingestion (to avoid duplicates):
+ *   pnpm ingest-rag --clean               # Clear all namespaces, then ingest everything
+ *   pnpm ingest-rag --clean --standards-only  # Clear standards only, then ingest
+ *   pnpm ingest-rag --clean --rubric-only     # Clear rubric only, then ingest
+ *
  * Production Deployment:
- *   # Option 1: Set CONVEX_URL environment variable
- *   CONVEX_URL=https://outgoing-partridge-914.convex.cloud pnpm ingest-rag
+ *   # Clear and ingest to production
+ *   CONVEX_URL=https://outgoing-partridge-914.convex.cloud pnpm ingest-rag --clean
  *
- *   # Option 2: Use --production flag (prompts for URL)
- *   pnpm ingest-rag --production
- *
- *   # Option 3: Temporarily modify .env.local
  *   # See PRODUCTION-DEPLOYMENT.md for details
  */
 
@@ -47,6 +49,7 @@ const isStandardsOnly = args.includes("--standards-only");
 const isRubricOnly = args.includes("--rubric-only");
 const isLeaderHandbookOnly = args.includes("--leader-handbook-only");
 const isProduction = args.includes("--production");
+const shouldClean = args.includes("--clean");
 const subjectsArg = args.find((arg) => arg.startsWith("--subjects="));
 const selectedSubjects = subjectsArg
   ? subjectsArg.split("=")[1].split(",")
@@ -182,6 +185,42 @@ async function main() {
   const client = new ConvexHttpClient(convexUrl);
 
   try {
+    // Clean existing RAG data if --clean flag is set
+    if (shouldClean && !isDryRun) {
+      console.log(`${colors.bright}${colors.yellow}🧹 Cleaning existing RAG data...${colors.reset}\n`);
+      
+      try {
+        // Determine which namespaces to clean based on mode
+        let cleanAction: string;
+        if (isStandardsOnly) {
+          cleanAction = "clearStandardsNamespaces";
+        } else if (isRubricOnly || isLeaderHandbookOnly) {
+          cleanAction = "clearRubricNamespaces";
+        } else {
+          cleanAction = "clearAllNamespaces";
+        }
+        
+        const result = await client.action(api.ragCleanup[cleanAction as keyof typeof api.ragCleanup], {});
+        
+        if ('summary' in result) {
+          console.log(`  ${colors.green}✅ Cleanup complete:${colors.reset}`);
+          console.log(`     Deleted: ${result.summary.deleted} namespaces`);
+          console.log(`     Not found: ${result.summary.notFound} namespaces`);
+          if (result.summary.errors > 0) {
+            console.log(`     ${colors.yellow}Errors: ${result.summary.errors}${colors.reset}`);
+          }
+        } else if ('results' in result) {
+          const deleted = result.results.filter((r: { status: string }) => r.status === "deleted").length;
+          console.log(`  ${colors.green}✅ Cleaned ${deleted} namespaces${colors.reset}`);
+        }
+        console.log();
+      } catch (error) {
+        console.log(`  ${colors.yellow}⚠️  Cleanup skipped (namespaces may not exist yet)${colors.reset}\n`);
+      }
+    } else if (shouldClean && isDryRun) {
+      console.log(`${colors.yellow}🧹 Would clean existing RAG data (dry run)${colors.reset}\n`);
+    }
+
     // Process standards (unless rubric-only or leader-handbook-only)
     if (!isRubricOnly && !isLeaderHandbookOnly) {
       await processStandards(client);

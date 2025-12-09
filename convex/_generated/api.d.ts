@@ -14,10 +14,12 @@ import type * as devHelpers from "../devHelpers.js";
 import type * as email from "../email.js";
 import type * as emailEvents from "../emailEvents.js";
 import type * as http from "../http.js";
+import type * as ingestLeaderHandbook from "../ingestLeaderHandbook.js";
 import type * as ingestRubric from "../ingestRubric.js";
 import type * as ingestStandards from "../ingestStandards.js";
 import type * as promptCoach from "../promptCoach.js";
 import type * as rag from "../rag.js";
+import type * as ragCleanup from "../ragCleanup.js";
 import type * as testHelpers from "../testHelpers.js";
 import type * as userProfiles from "../userProfiles.js";
 
@@ -34,10 +36,12 @@ declare const fullApi: ApiFromModules<{
   email: typeof email;
   emailEvents: typeof emailEvents;
   http: typeof http;
+  ingestLeaderHandbook: typeof ingestLeaderHandbook;
   ingestRubric: typeof ingestRubric;
   ingestStandards: typeof ingestStandards;
   promptCoach: typeof promptCoach;
   rag: typeof rag;
+  ragCleanup: typeof ragCleanup;
   testHelpers: typeof testHelpers;
   userProfiles: typeof userProfiles;
 }>;

@@ -36,6 +36,8 @@ export const createAuth = (
       siteUrl,
       // Also trust apex domain if SITE_URL is set to www.
       siteUrl.replace("https://www.", "https://"),
+      // Also trust www version if SITE_URL is set to apex
+      siteUrl.replace(/^https:\/\//, "https://www."),
       "http://localhost:5173", // Frontend dev server
       "http://localhost:5174", // Alternative port
       "http://localhost:4173", // Vite preview default port
