@@ -12,7 +12,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
   }
 
   return (
-    <nav className="hidden md:flex items-center gap-1 bg-muted/50 rounded-full px-1.5 py-1">
+    <nav className="hidden md:flex items-center gap-1 bg-muted/50 rounded-full px-1.5 py-1 backdrop-blur-sm">
       {items.map((item, index) => {
         const Icon = item.icon;
         const isActive = item.active;
@@ -28,16 +28,16 @@ export function DesktopNav({ items }: DesktopNavProps) {
               size="sm"
               onClick={item.onClick}
               className={`
-                h-8 px-4 rounded-full transition-all duration-200
+                h-8 px-4 rounded-xl transition-all duration-200
                 ${isActive 
-                  ? "shadow-sm" 
-                  : "hover:bg-background/80"
+                  ? "shadow-sm border border-primary/20" 
+                  : "hover:bg-background/80 hover:border-border"
                 }
               `}
             >
               {Icon && (
                 <Icon
-                  className={`h-4 w-4 mr-2 ${
+                  className={`h-4 w-4 mr-1.5 transition-colors ${
                     isActive ? "text-primary-foreground" : "text-muted-foreground"
                   }`}
                 />
@@ -45,6 +45,15 @@ export function DesktopNav({ items }: DesktopNavProps) {
               <span className="text-sm font-medium tracking-tight">
                 {item.label}
               </span>
+              {item.badge !== undefined && item.badge !== null && (
+                <span className={`ml-1.5 px-2 py-0.5 text-[10px] font-semibold rounded-full ${
+                  isActive 
+                    ? "bg-primary-foreground/20 text-primary-foreground" 
+                    : "bg-muted text-muted-foreground"
+                }`}>
+                  {item.badge}
+                </span>
+              )}
             </Button>
           </motion.div>
         );

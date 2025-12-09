@@ -23,9 +23,7 @@ const applicationTables = {
   betaSignups: defineTable({
     email: v.string(),
     name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-    gradeLevel: v.optional(v.string()),
+    // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
     status: v.union(
       v.literal("pending"),
       v.literal("approved"),

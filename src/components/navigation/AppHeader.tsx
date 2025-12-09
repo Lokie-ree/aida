@@ -29,15 +29,15 @@ export function AppHeader({
   };
 
   const HeaderContent = (
-    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl backdrop-saturate-150 shrink-0">
+    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl backdrop-saturate-150 shrink-0 supports-backdrop-filter:bg-background/80">
       <div
-        className={`${spacing.chartContainer} ${spacing.container} h-16 flex items-center justify-between`}
+        className={`w-full ${spacing.container} h-16 flex items-center justify-between gap-2 sm:gap-4`}
       >
         {/* Left: Logo */}
         <motion.a
           href={logoHref}
           onClick={handleLogoClick}
-          className="flex items-center gap-2.5 group"
+          className="flex items-center gap-2.5 group shrink-0"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
@@ -49,7 +49,7 @@ export function AppHeader({
             />
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
-          <span className="font-bold text-xl tracking-tight text-foreground">
+          <span className="font-bold text-lg sm:text-xl tracking-tight text-foreground hidden sm:inline">
             Pelican AI
           </span>
         </motion.a>

@@ -18,6 +18,8 @@ export interface NavItem {
   variant?: "default" | "ghost";
   /** Whether this item is currently active/selected */
   active?: boolean;
+  /** Optional badge to display next to the label (e.g., count) */
+  badge?: number | string;
 }
 
 /**

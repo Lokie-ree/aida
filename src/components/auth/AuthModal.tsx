@@ -30,13 +30,23 @@ interface AuthModalProps {
 export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModalProps) {
   const [flow, setFlow] = useState<"signIn" | "signUp">(initialMode);
   const [emailValue, setEmailValue] = useState("");
+  const [debouncedEmail, setDebouncedEmail] = useState("");
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
   const navigate = useNavigate();
 
-  // Query beta signup status when email is entered (for both sign-in and sign-up modes)
+  // Debounce email query to reduce API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedEmail(emailValue.trim());
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [emailValue]);
+
+  // Query beta signup status when debounced email is available (for both sign-in and sign-up modes)
   const betaSignup = useQuery(
     api.betaSignup.getBetaSignupByEmail,
-    emailValue.trim() ? { email: emailValue.trim() } : "skip"
+    debouncedEmail ? { email: debouncedEmail } : "skip"
   );
   
   // Update flow when initialMode prop changes
@@ -50,7 +60,6 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
     defaultValues: {
       email: "",
       name: "",
-      gradeLevel: undefined,
     },
   });
 
@@ -77,7 +86,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
         }
 
         if (betaSignup.status === "pending") {
-          toast.info("Your application is pending approval. We'll notify you via email once approved.");
+          toast.info("Your application is being reviewed. We'll notify you via email once approved (usually within 24-48 hours).", {
+            duration: 5000,
+          });
           onClose();
           form.reset();
           setEmailValue("");
@@ -122,7 +133,9 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
         if (betaSignup) {
           // Email already exists in betaSignups
           if (betaSignup.status === "pending") {
-            toast.info("Your application is pending approval. We'll notify you via email once approved.");
+            toast.info("Your application is being reviewed. We'll notify you via email once approved (usually within 24-48 hours).", {
+              duration: 5000,
+            });
             onClose();
             form.reset();
             setEmailValue("");
@@ -149,16 +162,15 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
             signupForBeta({
               email: data.email,
               name: data.name || undefined,
-              school: undefined,
-              subject: undefined,
-              gradeLevel: data.gradeLevel || undefined,
             }),
             timeoutPromise,
           ]) as any;
           
           if (result.success) {
             console.log("Beta signup created successfully");
-            toast.success(result.message);
+            toast.success("Application submitted! We'll review within 24-48 hours and email you when approved.", {
+              duration: 6000,
+            });
             onClose();
             form.reset();
             setEmailValue("");
@@ -236,65 +248,24 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
             <Form {...form}>
               <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
                 {flow === "signUp" && (
-                  <>
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name (optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter your name"
-                              disabled={submitting}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="gradeLevel"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Grade Level (optional)</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name (optional)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter your name"
                             disabled={submitting}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select grade level" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="Pre-K">Pre-K</SelectItem>
-                              <SelectItem value="K">Kindergarten</SelectItem>
-                              <SelectItem value="1">1st Grade</SelectItem>
-                              <SelectItem value="2">2nd Grade</SelectItem>
-                              <SelectItem value="3">3rd Grade</SelectItem>
-                              <SelectItem value="4">4th Grade</SelectItem>
-                              <SelectItem value="5">5th Grade</SelectItem>
-                              <SelectItem value="6">6th Grade</SelectItem>
-                              <SelectItem value="7">7th Grade</SelectItem>
-                              <SelectItem value="8">8th Grade</SelectItem>
-                              <SelectItem value="9">9th Grade</SelectItem>
-                              <SelectItem value="10">10th Grade</SelectItem>
-                              <SelectItem value="11">11th Grade</SelectItem>
-                              <SelectItem value="12">12th Grade</SelectItem>
-                              <SelectItem value="Multiple">Multiple Grades</SelectItem>
-                              <SelectItem value="Other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </>
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
                 <FormField
                   control={form.control}

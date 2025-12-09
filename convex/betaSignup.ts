@@ -57,9 +57,6 @@ export const signupForBeta = mutation({
   args: {
     email: v.string(),
     name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-    gradeLevel: v.optional(v.string()),
   },
   returns: v.object({
     success: v.boolean(),
@@ -92,12 +89,10 @@ export const signupForBeta = mutation({
 
     // Create new beta signup
     // Store trimmed email to ensure consistency with queries
+    // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
     const signupId = await ctx.db.insert("betaSignups", {
       email: args.email.trim(),
       name: args.name || "",
-      school: args.school,
-      subject: args.subject,
-      gradeLevel: args.gradeLevel,
       status: "pending", // Require manual approval for Phase 1 MVP
       signupDate: Date.now(),
     });
@@ -227,9 +222,7 @@ export const getPendingSignups = query({
     _creationTime: v.number(), // System field
     email: v.string(),
     name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-    gradeLevel: v.optional(v.string()),
+    // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
     signupDate: v.number(),
     status: v.string(),
     notes: v.optional(v.string()),
@@ -250,9 +243,7 @@ export const getBetaSignupById = query({
       _creationTime: v.number(),
       email: v.string(),
       name: v.optional(v.string()),
-      school: v.optional(v.string()),
-      subject: v.optional(v.string()),
-      gradeLevel: v.optional(v.string()),
+      // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
       status: v.string(),
       signupDate: v.number(),
       notes: v.optional(v.string()),
@@ -272,9 +263,7 @@ export const getBetaSignupByEmail = query({
       _creationTime: v.number(),
       email: v.string(),
       name: v.optional(v.string()),
-      school: v.optional(v.string()),
-      subject: v.optional(v.string()),
-      gradeLevel: v.optional(v.string()),
+      // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
       status: v.string(),
       signupDate: v.number(),
       notes: v.optional(v.string()),
@@ -297,9 +286,7 @@ export const getAllBetaSignups = query({
     _creationTime: v.number(),
     email: v.string(),
     name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
-    gradeLevel: v.optional(v.string()),
+    // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
     status: v.string(),
     signupDate: v.number(),
     notes: v.optional(v.string()),
@@ -340,8 +327,7 @@ export const recoverDeletedUser = mutation({
     email: v.string(),
     userId: v.string(),
     name: v.optional(v.string()),
-    school: v.optional(v.string()),
-    subject: v.optional(v.string()),
+    // Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
     originalSignupDate: v.optional(v.number()),
   },
   returns: v.object({
@@ -369,12 +355,11 @@ export const recoverDeletedUser = mutation({
 
       // Create beta signup record
       // Store trimmed email to ensure consistency with queries
+      // Profile data will be collected during onboarding
       const signupDate = args.originalSignupDate || Date.now();
       const betaSignupId = await ctx.db.insert("betaSignups", {
         email: trimmedEmail,
         name: args.name || args.email.split('@')[0],
-        school: args.school || "",
-        subject: args.subject || "",
         status: "approved", // User already has account
         signupDate: signupDate,
         notes: "Recovered from accidental deletion",
