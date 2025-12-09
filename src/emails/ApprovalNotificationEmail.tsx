@@ -52,7 +52,7 @@ export function ApprovalNotificationEmail({
       </Card>
 
       {/* What to Expect */}
-      <Section className="bg-slate-50 rounded-xl p-6 mt-8">
+      <Section className="bg-slate-700 rounded-xl p-6 mt-8">
         <Heading as="h3" className="mt-0">What to Expect</Heading>
         <Paragraph className="mb-0">
           Once you're in, you'll have access to our conversational coaching assistant.
@@ -62,7 +62,7 @@ export function ApprovalNotificationEmail({
         </Paragraph>
       </Section>
 
-      <Paragraph className="mt-8 text-slate-600 text-sm">
+      <Paragraph className="mt-8 text-slate-200 text-sm">
         Questions? Just reply to this email—I read every one.
       </Paragraph>
 

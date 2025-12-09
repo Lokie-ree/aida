@@ -21,7 +21,6 @@ interface BetaWelcomeEmailProps {
 
 export function BetaWelcomeEmail({
   name = "Educator",
-  school,
 }: BetaWelcomeEmailProps) {
   return (
     <BaseEmailTemplate
@@ -50,16 +49,16 @@ export function BetaWelcomeEmail({
 
         <Row className="mt-6">
           <Column className="text-center px-3 py-4">
-            <Text className="text-brand-primary text-xl font-bold m-0 mb-1">LER</Text>
-            <Text className="text-slate-500 text-xs m-0">Louisiana Educator Rubric</Text>
+            <Text className="text-brand-primary-light text-xl font-bold m-0 mb-1">LER</Text>
+            <Text className="text-slate-300 text-xs m-0">Louisiana Educator Rubric</Text>
           </Column>
           <Column className="text-center px-3 py-4">
-            <Text className="text-brand-primary text-xl font-bold m-0 mb-1">LSS</Text>
-            <Text className="text-slate-500 text-xs m-0">Louisiana Student Standards</Text>
+            <Text className="text-brand-primary-light text-xl font-bold m-0 mb-1">LSS</Text>
+            <Text className="text-slate-300 text-xs m-0">Louisiana Student Standards</Text>
           </Column>
           <Column className="text-center px-3 py-4">
-            <Text className="text-brand-primary text-xl font-bold m-0 mb-1">LEADS</Text>
-            <Text className="text-slate-500 text-xs m-0">Evaluation Framework</Text>
+            <Text className="text-brand-primary-light text-xl font-bold m-0 mb-1">LEADS</Text>
+            <Text className="text-slate-300 text-xs m-0">Evaluation Framework</Text>
           </Column>
         </Row>
       </HighlightBox>
@@ -103,7 +102,7 @@ export function BetaWelcomeEmail({
           <strong>Get a Louisiana-aligned prompt</strong> you can copy/paste into any AI tool
         </ListItem>
 
-        <Text className="text-slate-700 text-base mt-6 mb-0 font-semibold bg-sky-50 rounded-lg p-4">
+        <Text className="text-slate-100 text-base mt-6 mb-0 font-semibold bg-sky-900/30 rounded-lg p-4">
           That's it. The conversation should feel natural, not like filling out a form.
         </Text>
       </Card>
@@ -151,7 +150,7 @@ export function BetaWelcomeEmail({
           feel like an intelligent colleague who understands Louisiana education?
         </Paragraph>
 
-        <Text className="text-slate-700 text-base font-semibold mb-3">
+        <Text className="text-slate-100 text-base font-semibold mb-3">
           What Makes a Good Prompt Coach:
         </Text>
 
@@ -162,7 +161,7 @@ export function BetaWelcomeEmail({
       </Card>
 
       {/* Personal Appeal */}
-      <Section className="bg-slate-50 rounded-xl p-6 mt-8">
+      <Section className="bg-slate-700 rounded-xl p-6 mt-8">
         <Heading as="h3" className="mt-0">💬 Real Talk</Heading>
         <Paragraph className="mb-4">
           With 5 beta testers, your feedback literally shapes everything. Did the coach

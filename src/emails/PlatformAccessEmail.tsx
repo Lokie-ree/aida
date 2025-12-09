@@ -40,13 +40,13 @@ export function PlatformAccessEmail({
       </Paragraph>
 
       {/* Magic Link CTA - Prominent */}
-      <Section className="text-center my-8 py-8 px-6 bg-linear-to-br from-sky-50 to-slate-50 rounded-2xl border border-sky-100">
+      <Section className="text-center my-8 py-8 px-6 bg-sky-900/30 rounded-2xl border border-sky-700">
         <Text className="text-4xl m-0 mb-4">🚀</Text>
         <CTAButton href={loginUrl} size="lg">
           Log In to Pelican AI
         </CTAButton>
         {magicLinkUrl && (
-          <Text className="text-slate-500 text-sm mt-4 mb-0">
+          <Text className="text-slate-300 text-sm mt-4 mb-0">
             This link is valid for 24 hours. If it expires, request a new one from the login page.
           </Text>
         )}
@@ -133,11 +133,11 @@ export function PlatformAccessEmail({
       <Signature />
 
       {/* Backup Link */}
-      <Section className="mt-10 py-5 px-6 bg-slate-50 rounded-xl text-center">
-        <Text className="text-slate-500 text-xs m-0">
+      <Section className="mt-10 py-5 px-6 bg-slate-700 rounded-xl text-center">
+        <Text className="text-slate-300 text-xs m-0">
           Button not working? Copy and paste this link:
         </Text>
-        <Text className="text-brand-primary text-xs mt-2 mb-0 break-all font-mono">
+        <Text className="text-brand-primary-light text-xs mt-2 mb-0 break-all font-mono">
           {loginUrl}
         </Text>
       </Section>

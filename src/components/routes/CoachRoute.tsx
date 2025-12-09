@@ -20,12 +20,12 @@ export default function CoachRoute({ children }: CoachRouteProps) {
   // Show onboarding if profile is loaded and:
   // 1. Profile doesn't exist (null) - new user, OR
   // 2. Profile exists but onboarding not complete (onboardingComplete flag is false/undefined), OR
-  // 3. Profile is incomplete (missing required fields: school, subject, or gradeLevel)
+  // 3. Profile is incomplete (missing required fields: subject or gradeLevel)
+  // Note: school is optional, only subject and gradeLevel are required
   const shouldShowOnboarding = 
     profile !== undefined && (
       profile === null ||
       !profile.onboardingComplete || 
-      !profile.school ||
       !profile.gradeLevel || 
       !profile.subject
     );

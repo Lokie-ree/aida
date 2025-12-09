@@ -69,9 +69,8 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
     },
   ];
 
-  // Validate profile step before proceeding - school, subject, and gradeLevel are all required
+  // Validate profile step before proceeding - subject and gradeLevel are required, school is optional
   const canProceedFromProfile = 
-    profileData.school?.trim() !== "" && 
     profileData.subject?.trim() !== "" && 
     profileData.gradeLevel?.trim() !== "";
 
@@ -267,7 +266,7 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2 md:col-span-2">
                     <Label htmlFor="school">
-                      School <span className="text-destructive">*</span>
+                      School (optional)
                     </Label>
                     <Input
                       id="school"
@@ -275,7 +274,6 @@ export function BetaOnboarding({ isOpen, onClose, onComplete }: BetaOnboardingPr
                       value={profileData.school}
                       onChange={(e) => setProfileData(prev => ({ ...prev, school: e.target.value }))}
                       placeholder="Enter your school name"
-                      className={!profileData.school && currentStep === 1 ? "border-destructive" : ""}
                     />
                   </div>
                   <div className="space-y-2">

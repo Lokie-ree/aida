@@ -1,7 +1,6 @@
 import { Section, Text } from "@react-email/components";
 import {
   BaseEmailTemplate,
-  Heading,
   Paragraph,
   CTAButton,
   Signature,
@@ -32,16 +31,16 @@ export function MagicLinkEmail({
       </Paragraph>
 
       {/* Magic Link CTA */}
-      <Section className="text-center my-8 py-8 px-6 bg-linear-to-br from-sky-50 to-slate-50 rounded-2xl border border-sky-100">
+      <Section className="text-center my-8 py-8 px-6 bg-sky-900/30 rounded-2xl border border-sky-700">
         <CTAButton href={url} size="lg">
           Sign In to Pelican AI
         </CTAButton>
-        <Text className="text-slate-500 text-sm mt-4 mb-0">
+        <Text className="text-slate-300 text-sm mt-4 mb-0">
           This link will expire in 5 minutes.
         </Text>
       </Section>
 
-      <Paragraph className="text-slate-600 text-sm">
+      <Paragraph className="text-slate-200 text-sm">
         Questions? Just reply—I read every one.
       </Paragraph>
 
