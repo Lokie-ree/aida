@@ -155,6 +155,7 @@ export const updateUserProfile = mutation({
     subject: v.optional(v.string()),
     gradeLevel: v.optional(v.string()),
     role: v.optional(v.union(v.literal("teacher"), v.literal("admin"), v.literal("coach"))),
+    onboardingComplete: v.optional(v.boolean()),
   },
   returns: v.null(),
   handler: async (ctx, args) => {
@@ -175,10 +176,14 @@ export const updateUserProfile = mutation({
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .first();
 
-    // Check if profile is complete (has required fields)
-    const isComplete = !!(args.gradeLevel && args.subject);
-    const wasComplete = !!(profile?.gradeLevel && profile?.subject);
+    // Check if profile is complete (has all required fields: school, subject, gradeLevel)
+    const isComplete = !!(args.school && args.gradeLevel && args.subject);
+    const wasComplete = !!(profile?.school && profile?.gradeLevel && profile?.subject);
     const shouldMarkComplete = isComplete && !wasComplete;
+    
+    // Only auto-complete if onboardingComplete is explicitly set to true
+    // Never auto-complete based on field presence alone - user must explicitly complete onboarding
+    const markOnboardingComplete = args.onboardingComplete === true;
 
     if (!profile) {
       // Create profile if it doesn't exist
@@ -188,21 +193,37 @@ export const updateUserProfile = mutation({
         subject: args.subject,
         gradeLevel: args.gradeLevel,
         role: args.role || "teacher",
-        onboardingComplete: isComplete ? true : undefined,
-        onboardingCompletedAt: isComplete ? Date.now() : undefined,
+        onboardingComplete: markOnboardingComplete ? true : undefined,
+        onboardingCompletedAt: markOnboardingComplete ? Date.now() : undefined,
       });
     } else {
-      // Update existing profile
-      await ctx.db.patch(profile._id, {
-        school: args.school,
-        subject: args.subject,
-        gradeLevel: args.gradeLevel,
-        role: args.role,
-        ...(shouldMarkComplete && {
-          onboardingComplete: true,
-          onboardingCompletedAt: Date.now(),
-        }),
-      });
+      // Update existing profile - only update fields that are explicitly provided
+      const updateData: any = {};
+      
+      // Only include fields in update if they're provided (not undefined)
+      if (args.school !== undefined) {
+        updateData.school = args.school;
+      }
+      if (args.subject !== undefined) {
+        updateData.subject = args.subject;
+      }
+      if (args.gradeLevel !== undefined) {
+        updateData.gradeLevel = args.gradeLevel;
+      }
+      if (args.role !== undefined) {
+        updateData.role = args.role;
+      }
+      
+      // Only update onboardingComplete if explicitly set or if profile just became complete
+      if (markOnboardingComplete) {
+        updateData.onboardingComplete = true;
+        updateData.onboardingCompletedAt = Date.now();
+      }
+      
+      // Only patch if there's something to update
+      if (Object.keys(updateData).length > 0) {
+        await ctx.db.patch(profile._id, updateData);
+      }
     }
 
     return null;
@@ -259,6 +280,11 @@ export const initializeProfileForBeta = mutation({
   },
 });
 
+/**
+ * @deprecated No longer needed - profiles are created automatically by updateUserProfile
+ * This function is kept for backwards compatibility but should not be used.
+ * Profile creation happens automatically when onboarding saves profile data.
+ */
 export const initializeNewUser = mutation({
   args: {},
   returns: v.union(
@@ -273,63 +299,11 @@ export const initializeNewUser = mutation({
     })
   ),
   handler: async (ctx) => {
-    let user;
-    try {
-      user = await authComponent.getAuthUser(ctx);
-    } catch (error) {
-      console.error("initializeNewUser: Failed to get auth user", error);
-      return { success: false, message: "User must be authenticated" };
-    }
-    if (!user) {
-      console.error("initializeNewUser: No user found");
-      return { success: false, message: "User must be authenticated" };
-    }
-
-    console.log("initializeNewUser: Starting for user", { userId: user._id, email: user.email });
-
-    // Check if already initialized
-    const existingProfile = await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user", (q) => q.eq("userId", user._id))
-      .first();
-
-    if (existingProfile) {
-      console.log("initializeNewUser: Profile already exists", existingProfile._id);
-      return { success: false, message: "User already initialized" };
-    }
-
-    // Get beta signup data
-    // Trim email to ensure consistency (signupForBeta stores trimmed emails)
-    const betaSignup = await ctx.db
-      .query("betaSignups")
-      .withIndex("by_email", (q) => q.eq("email", user.email.trim()))
-      .first();
-
-    if (!betaSignup) {
-      console.error("initializeNewUser: No beta signup found for email", user.email);
-      return { success: false, message: "No beta signup found" };
-    }
-
-    if (betaSignup.status !== "approved") {
-      console.error("initializeNewUser: Beta signup not approved", { email: user.email, status: betaSignup.status });
-      return { success: false, message: `Beta signup status is '${betaSignup.status}', not 'approved'` };
-    }
-
-    // Create user profile with data from betaSignup
-    const profileId = await ctx.db.insert("userProfiles", {
-      userId: user._id,
-      school: betaSignup.school,
-      subject: betaSignup.subject,
-      gradeLevel: betaSignup.gradeLevel,
-      role: "teacher",
-    });
-
-    console.log("initializeNewUser: SUCCESS", { profileId, userId: user._id });
-
-    return {
-      success: true,
-      profileId,
-      message: "User initialized successfully"
+    // This function is deprecated - profiles are created automatically by updateUserProfile
+    // when onboarding saves profile data. No need to pre-create empty profiles.
+    return { 
+      success: false, 
+      message: "Profile initialization is handled automatically during onboarding" 
     };
   },
 });

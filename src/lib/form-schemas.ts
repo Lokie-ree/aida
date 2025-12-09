@@ -12,10 +12,10 @@ export const innovationFormSchema = z.object({
 export type InnovationFormData = z.infer<typeof innovationFormSchema>;
 
 // Auth Form Schema (passwordless)
+// Profile data (school, subject, gradeLevel) is collected during onboarding, not signup
 export const authFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   name: z.string().optional(),
-  gradeLevel: z.string().optional(),
 });
 
 export type AuthFormData = z.infer<typeof authFormSchema>;

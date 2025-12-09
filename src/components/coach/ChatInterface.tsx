@@ -11,13 +11,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
-import { spacing } from "@/lib/spacing";
 
 interface ChatInterfaceProps {
   conversationId: Id<"promptConversations"> | null;
   onStartNew: () => void;
 }
 
+/**
+ * Chat interface component for the conversational prompt coach.
+ * Handles message display, sending, prompt generation, and saving prompts to library.
+ */
 export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -28,6 +31,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
   // Save prompt dialog state
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [promptToSave, setPromptToSave] = useState<string>("");
+  const [promptToSaveIndex, setPromptToSaveIndex] = useState<number | null>(null);
   const [saveContext, setSaveContext] = useState({ grade: "", subject: "", topic: "" });
   const [promptRatings, setPromptRatings] = useState<Map<number, "positive" | "negative">>(new Map());
 
@@ -35,6 +39,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     conversationId ? { conversationId } : "skip"
   );
   const userProfile = useQuery(api.userProfiles.getUserProfile);
+  const conversations = useQuery(api.promptCoach.listConversations);
   
   const sendMessage = useAction(api.promptCoach.sendMessage);
   const savePromptMutation = useMutation(api.promptCoach.savePrompt);
@@ -63,6 +68,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     if (!inputValue.trim() || !conversationId) return;
 
     const message = inputValue;
+    const messageToSend = message; // Store for potential retry
     setInputValue("");
     setIsSending(true);
 
@@ -70,7 +76,11 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
       await sendMessage({ conversationId, message });
     } catch (error) {
       console.error("Failed to send message:", error);
-      toast.error("Failed to send message. Please try again.");
+      // Restore input value for retry
+      setInputValue(messageToSend);
+      toast.error("Unable to send message. Please check your connection and try again.", {
+        duration: 5000,
+      });
     } finally {
       setIsSending(false);
     }
@@ -88,8 +98,9 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
   };
 
-  const openSaveDialog = (text: string) => {
+  const openSaveDialog = (text: string, messageIndex?: number) => {
     setPromptToSave(text);
+    setPromptToSaveIndex(messageIndex ?? null);
     // Pre-fill with profile context
     setSaveContext({
       grade: userProfile?.gradeLevel || "",
@@ -103,12 +114,18 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     if (!conversationId) return;
     
     // Find the rating for this prompt (if any)
-    const messageIndex = conversation?.messages.findIndex(msg => 
-      msg.role === "assistant" && msg.content === promptToSave
-    );
-    const rating = messageIndex !== undefined && messageIndex !== -1 
-      ? promptRatings.get(messageIndex) 
-      : undefined;
+    // First try using the stored index, then fall back to content matching
+    let rating: "positive" | "negative" | undefined = undefined;
+    if (promptToSaveIndex !== null) {
+      rating = promptRatings.get(promptToSaveIndex);
+    } else {
+      const messageIndex = conversation?.messages.findIndex(msg => 
+        msg.role === "assistant" && msg.content === promptToSave
+      );
+      if (messageIndex !== undefined && messageIndex !== -1) {
+        rating = promptRatings.get(messageIndex);
+      }
+    }
     
     try {
       await savePromptMutation({
@@ -119,10 +136,15 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
       });
       toast.success("Prompt saved to your library");
       setIsSaveDialogOpen(false);
+      setPromptToSave("");
+      setPromptToSaveIndex(null);
       setSaveContext({ grade: "", subject: "", topic: "" });
     } catch (error) {
       console.error("Failed to save prompt:", error);
-      toast.error("Failed to save prompt");
+      toast.error("Unable to save prompt. Please check your connection and try again.", {
+        duration: 5000,
+      });
+      // Keep dialog open so user can retry
     }
   };
 
@@ -139,167 +161,263 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     });
   };
 
-  // Empty state - no conversation started
+  // Suggestion chips for empty state
+  const suggestionChips = [
+    { text: "Analyze LEAP data", icon: Search },
+    { text: "Differentiate for IEP", icon: Target },
+    { text: "LER evidence for PIC", icon: Scale },
+    { text: "Internalize standards", icon: BookOpen },
+  ];
+
+  // Handle suggestion chip click
+  const handleSuggestionClick = (text: string) => {
+    onStartNew();
+    setTimeout(() => {
+      setInputValue(text);
+      inputRef.current?.focus();
+    }, 150);
+  };
+
+  // Empty state - show chat interface with welcome message
   if (!conversationId) {
-    const starterPrompts = [
-      {
-        icon: Search,
-        text: "Analyze LEAP data to identify misconceptions",
-        category: "Assessment Data"
-      },
-      {
-        icon: Target,
-        text: "Differentiate science lab for IEP students",
-        category: "Special Education"
-      },
-      {
-        icon: Scale,
-        text: "Highly effective actions for PIC in STEM",
-        category: "LER Evidence"
-      },
-      {
-        icon: BookOpen,
-        text: "Internalize 7th grade math standards",
-        category: "Curriculum Mastery"
-      }
-    ];
-
+    const isNewUser = conversations !== undefined && (conversations?.length ?? 0) === 0;
+    
     return (
-      <div className="flex flex-col h-full overflow-hidden">
-        {/* Welcome content */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center overflow-y-auto relative">
-          {/* Subtle decorative background */}
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 md:w-64 md:h-64 bg-blue-600/5 rounded-full blur-3xl" />
+      <div className="flex flex-col h-full min-h-0">
+        {/* Chat card - same structure as active chat */}
+        <div className="flex-1 min-h-0 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
+          {/* Welcome content in messages area */}
+          <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-4">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-4 max-w-md"
+              >
+                <div className="flex justify-center">
+                  <div className="bg-primary/10 p-3 rounded-full">
+                    <Bot className="h-8 w-8 text-primary" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {isNewUser ? (
+                    <>
+                      <h2 className="text-xl font-semibold text-foreground">
+                        Welcome to Pelican AI!
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        Start a conversation about what you're teaching. I'll help you craft Louisiana-aligned prompts 
+                        you can use in ChatGPT, Claude, Gemini, or any AI tool you prefer.
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        No new tools to learn—just better prompts that improve your practice.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-lg font-semibold text-foreground">
+                        What are you teaching?
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        I'll help you craft a Louisiana-aligned prompt for any AI tool.
+                      </p>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </div>
 
-          <div className={spacing.sectionGapSmall + " relative z-10 w-full max-w-3xl"}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="bg-linear-to-br from-blue-500/10 to-blue-600/10 p-4 md:p-5 rounded-full ring-2 ring-blue-500/20 mx-auto w-fit"
-            >
-              <Bot className="h-10 w-10 md:h-12 md:w-12 text-blue-600" />
-            </motion.div>
-
-            <div className="space-y-1">
-              <h2 className="text-xl md:text-2xl font-bold text-foreground">
-                Welcome to Prompt Coach
-              </h2>
-              <p className="text-muted-foreground text-xs md:text-sm px-2">
-                Built by Louisiana teachers, for Louisiana teachers. Craft prompts aligned to
-                <span className="font-semibold text-foreground"> Louisiana Student Standards</span> and the
-                <span className="font-semibold text-foreground"> Louisiana Educator Rubric</span>.
-              </p>
+          {/* Input Area with suggestion chips */}
+          <div className="p-3 md:p-4 border-t bg-background">
+            {/* Suggestion chips */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {suggestionChips.map((chip, idx) => {
+                const IconComponent = chip.icon;
+                return (
+                  <motion.button
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, delay: idx * 0.05 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleSuggestionClick(chip.text)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/30 transition-colors"
+                  >
+                    <IconComponent className="h-3 w-3" />
+                    {chip.text}
+                  </motion.button>
+                );
+              })}
             </div>
 
-            <div className="space-y-3">
-              <p className="text-xs text-muted-foreground font-medium">
-                Try these examples:
-              </p>
-              <div className={`grid grid-cols-1 md:grid-cols-2 ${spacing.gridGapSmall} items-stretch`}>
-                {starterPrompts.map((prompt, idx) => {
-                  const IconComponent = prompt.icon;
-                  return (
-                    <motion.button
-                      key={idx}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => {
-                        onStartNew();
-                        setTimeout(() => {
-                          setInputValue(prompt.text);
-                          inputRef.current?.focus();
-                        }, 150);
-                      }}
-                      className="text-left p-3 md:p-4 rounded-lg border-2 bg-linear-to-br from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 border-primary/20 hover:border-primary/40 transition-all duration-300 group shadow-sm hover:shadow-md h-full"
-                    >
-                      <div className="flex items-start gap-2 md:gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors shadow-sm shrink-0">
-                          <IconComponent className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1 space-y-0.5 min-w-0">
-                          <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider">{prompt.category}</p>
-                          <p className="text-xs md:text-sm text-foreground font-medium leading-snug">{prompt.text}</p>
-                        </div>
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
+            {/* Input field */}
+            <div className="flex gap-2">
+              <Input
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey && inputValue.trim()) {
+                    e.preventDefault();
+                    onStartNew();
+                    setTimeout(() => {
+                      inputRef.current?.focus();
+                    }, 150);
+                  }
+                }}
+                placeholder="Example: I'm teaching RL.5.3 and students confuse character traits with feelings..."
+                className="flex-1 text-xs md:text-sm"
+                autoFocus
+              />
+              <Button
+                onClick={() => {
+                  if (inputValue.trim()) {
+                    onStartNew();
+                  }
+                }}
+                disabled={!inputValue.trim()}
+                size="sm"
+                className="shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
-
-            <p className="text-[10px] md:text-xs text-muted-foreground max-w-lg mx-auto">
-              I'll ask clarifying questions to understand your context, then generate a Louisiana-aligned prompt
-              you can use in ChatGPT, Claude, Gemini, or any AI tool.
-            </p>
+            <div className="flex items-center gap-2 text-[10px] md:text-xs text-muted-foreground mt-2 px-1">
+              <Lightbulb className="h-3 w-3 md:h-3.5 md:w-3.5 shrink-0" />
+              <span>Press Enter to start • Mention your grade level or Louisiana standard code</span>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // Determine conversation phase
+  /**
+   * Determines the current phase of the conversation based on message content.
+   * Simplified to only show "completed" when a prompt is actually generated.
+   * Otherwise shows generic "In Conversation" to avoid false progress indicators.
+   */
   const getConversationPhase = () => {
     if (!conversation?.messages || conversation.messages.length === 0) {
       return { phase: "starting", label: "Ready to start", icon: MessageCircle, color: "bg-gray-100 dark:bg-gray-800" };
     }
 
-    const msgCount = conversation.messages.length;
+    // Check if any message contains an actual prompt
     const hasPrompt = conversation.messages.some(msg =>
       msg.role === "assistant" && (
         msg.content.includes("PROMPT:") ||
         msg.content.includes("**PROMPT:**") ||
         msg.content.includes("Here's your prompt") ||
-        msg.content.includes("Here is your prompt")
+        msg.content.includes("Here is your prompt") ||
+        msg.content.includes("Here's a prompt") ||
+        msg.content.includes("Here is a prompt")
       )
     );
 
     if (hasPrompt) {
       return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200" };
-    } else if (msgCount >= 6) {
-      return { phase: "generating", label: "Preparing Your Prompt", icon: Target, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
-    } else if (msgCount >= 3) {
-      return { phase: "clarifying", label: "Identifying Your Challenge", icon: Search, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
     } else {
-      return { phase: "understanding", label: "Understanding Your Context", icon: MessageCircle, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
+      // Don't try to guess progress - just show we're in conversation
+      return { phase: "conversing", label: "In Conversation", icon: MessageCircle, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
     }
   };
 
   const currentPhase = getConversationPhase();
 
+  /**
+   * Gets a contextual progress message based on the current conversation phase.
+   * Simplified to avoid false progress indicators.
+   */
+  const getProgressMessage = () => {
+    if (!conversation?.messages) return null;
+    
+    if (currentPhase.phase === "completed") {
+      return null;
+    } else {
+      // Don't show progress estimates - they're often inaccurate
+      // Just show that we're working on it
+      return null;
+    }
+  };
+
+  const progressMessage = getProgressMessage();
+
+  /**
+   * Gets a contextual loading message based on conversation phase.
+   * Rotates through different messages to provide variety and context.
+   */
+  const getLoadingMessage = () => {
+    const messages = [
+      "Searching Louisiana Student Standards...",
+      "Analyzing Louisiana Educator Rubric alignment...",
+      "Finding relevant LER indicators...",
+      "Crafting your Louisiana-aligned prompt...",
+    ];
+    
+    // Use phase to determine message, or rotate based on message count
+    if (currentPhase.phase === "generating") {
+      return messages[3]; // "Crafting your Louisiana-aligned prompt..."
+    } else if (currentPhase.phase === "clarifying") {
+      return messages[1]; // "Analyzing Louisiana Educator Rubric alignment..."
+    } else if (currentPhase.phase === "understanding") {
+      return messages[0]; // "Searching Louisiana Student Standards..."
+    }
+    
+    // Default: rotate based on message count
+    const msgCount = conversation?.messages.length || 0;
+    return messages[msgCount % messages.length];
+  };
+
+  const loadingMessage = getLoadingMessage();
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       {/* Chat card */}
-      <div className="flex-1 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
+      <div className="flex-1 min-h-0 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
         {/* Conversation Phase Header */}
         {conversation && conversation.messages.length > 0 && (
           <div className="border-b px-3 md:px-4 py-2 md:py-3 bg-muted/30 shrink-0">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2 md:gap-3">
-                <div className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}>
+                <motion.div
+                  layout
+                  initial={false}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}
+                >
                   <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
                   {currentPhase.label}
-                </div>
+                </motion.div>
                 <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:inline">
                   {currentPhase.phase === "completed"
                     ? "Ready to copy and use in any AI tool"
-                    : "Louisiana standards & rubric being searched"}
+                    : "Ask questions to understand your needs"}
                 </span>
               </div>
+              {progressMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[10px] md:text-xs text-muted-foreground"
+                >
+                  {progressMessage}
+                </motion.div>
+              )}
             </div>
           </div>
         )}
 
       {/* Messages Area - Using native overflow instead of Radix ScrollArea */}
-      <div 
+      <div
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-3 md:p-4"
+        className="flex-1 min-h-0 overflow-y-auto p-3 md:p-4 scroll-smooth"
       >
-        <div className="space-y-6 pb-4">
+        <div className="space-y-5 md:space-y-6 pb-4">
           {/* Louisiana context indicator */}
           {conversation?.messages && conversation.messages.length === 0 && (
             <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
@@ -319,12 +437,15 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           )}
 
           {conversation?.messages.map((msg, idx) => {
+            // Only mark as prompt if it explicitly contains prompt markers
+            // This prevents false positives from clarifying questions
             const isPrompt = msg.role === "assistant" && (
               msg.content.includes("PROMPT:") ||
               msg.content.includes("**PROMPT:**") ||
               msg.content.includes("Here's your prompt") ||
               msg.content.includes("Here is your prompt") ||
-              (msg.content.length > 300 && msg.content.includes("Louisiana"))
+              msg.content.includes("Here's a prompt") ||
+              msg.content.includes("Here is a prompt")
             );
 
             return (
@@ -337,11 +458,11 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
               >
                 <div
                   className={cn(
-                    "flex h-7 w-7 md:h-8 md:w-8 shrink-0 select-none items-center justify-center rounded-full border shadow-sm",
+                    "flex h-7 w-7 md:h-8 md:w-8 shrink-0 select-none items-center justify-center rounded-full border shadow-sm transition-all",
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground border-primary/30"
                       : isPrompt
-                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400"
+                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md"
                         : "bg-muted border-border"
                   )}
                 >
@@ -353,67 +474,91 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                   msg.role === "user" ? "items-end" : "items-start"
                 )}>
                   {isPrompt && (
-                    <div className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    <motion.div 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400"
+                    >
                       <Sparkles className="h-3.5 w-3.5" />
                       <span>Louisiana-Aligned Prompt Generated</span>
-                    </div>
+                    </motion.div>
                   )}
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
                     className={cn(
-                      "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap",
+                      "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap leading-relaxed",
                       msg.role === "user"
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-primary text-primary-foreground shadow-sm"
                         : isPrompt
                           ? "bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
                           : "bg-muted text-foreground border border-border"
                     )}
                   >
                     {msg.content}
-                  </div>
+                  </motion.div>
 
                   {msg.role === "assistant" && (
-                    <div className="flex gap-2">
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="flex gap-1.5 mt-1"
+                    >
                       {isPrompt && (
                         <>
-                          <Button
-                            variant={promptRatings.get(idx) === "positive" ? "default" : "ghost"}
-                            size="icon"
-                            className="h-7 w-7 hover:bg-primary/10"
-                            onClick={() => handleRating(idx, "positive")}
-                            title="This prompt is helpful"
-                          >
-                            <ThumbsUp className="h-3.5 w-3.5" />
-                          </Button>
-                          <Button
-                            variant={promptRatings.get(idx) === "negative" ? "default" : "ghost"}
-                            size="icon"
-                            className="h-7 w-7 hover:bg-primary/10"
-                            onClick={() => handleRating(idx, "negative")}
-                            title="This prompt needs improvement"
-                          >
-                            <ThumbsDown className="h-3.5 w-3.5" />
-                          </Button>
+                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant={promptRatings.get(idx) === "positive" ? "default" : "ghost"}
+                              size="icon"
+                              className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                              onClick={() => handleRating(idx, "positive")}
+                              title="This prompt is helpful"
+                              aria-label="Rate this prompt as helpful"
+                            >
+                              <ThumbsUp className="h-3.5 w-3.5" />
+                            </Button>
+                          </motion.div>
+                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                              variant={promptRatings.get(idx) === "negative" ? "default" : "ghost"}
+                              size="icon"
+                              className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                              onClick={() => handleRating(idx, "negative")}
+                              title="This prompt needs improvement"
+                              aria-label="Rate this prompt as needing improvement"
+                            >
+                              <ThumbsDown className="h-3.5 w-3.5" />
+                            </Button>
+                          </motion.div>
                         </>
                       )}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 hover:bg-primary/10"
-                        onClick={() => handleCopy(msg.content)}
-                        title="Copy to clipboard"
-                      >
-                        <Copy className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 hover:bg-primary/10"
-                        onClick={() => openSaveDialog(msg.content)}
-                        title="Save to library"
-                      >
-                        <Save className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
+                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                          onClick={() => handleCopy(msg.content)}
+                          title="Copy to clipboard"
+                          aria-label="Copy prompt to clipboard"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                          onClick={() => openSaveDialog(msg.content, idx)}
+                          title="Save to library"
+                          aria-label="Save prompt to library"
+                        >
+                          <Save className="h-3.5 w-3.5" />
+                        </Button>
+                      </motion.div>
+                    </motion.div>
                   )}
                 </div>
               </div>
@@ -421,15 +566,19 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           })}
           
           {isSending && (
-            <div className="flex w-full gap-4">
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-sm">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex w-full gap-4"
+            >
+              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md">
                 <Bot className="h-4 w-4" />
               </div>
-              <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border">
+              <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border shadow-sm">
                 <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                <span className="text-sm text-muted-foreground">Searching Louisiana standards and rubric...</span>
+                <span className="text-sm text-muted-foreground">{loadingMessage}</span>
               </div>
-            </div>
+            </motion.div>
           )}
           
           <div ref={messagesEndRef} />

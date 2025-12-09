@@ -109,13 +109,15 @@ function ProfileSettings() {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Enhanced Welcome Card for New/Incomplete Profiles */}
       {isIncomplete && (
-        <Card className="border-primary/20 bg-linear-to-br from-primary/5 to-primary/10">
+        <Card className="border-primary/30 bg-linear-to-br from-primary/10 via-primary/5 to-accent/5 shadow-md">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-primary">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <User className="h-5 w-5 text-primary" />
+              </div>
               Complete Your Profile
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-muted-foreground">
               Help us personalize your coaching experience
             </CardDescription>
           </CardHeader>
@@ -123,10 +125,10 @@ function ProfileSettings() {
             <p className="text-sm text-muted-foreground">
               Your profile information helps us:
             </p>
-            <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
-              <li>Align prompts to your specific grade level and subject</li>
-              <li>Reference relevant Louisiana Student Standards automatically</li>
-              <li>Connect you with Louisiana Educator Rubric indicators</li>
+            <ul className="text-sm text-foreground space-y-1.5 list-disc list-inside">
+              <li className="text-primary/90">Align prompts to your specific grade level and subject</li>
+              <li className="text-primary/90">Reference relevant Louisiana Student Standards automatically</li>
+              <li className="text-primary/90">Connect you with Louisiana Educator Rubric indicators</li>
             </ul>
             <p className="text-xs text-muted-foreground pt-2">
               This takes about 30 seconds to complete.
@@ -152,7 +154,7 @@ function ProfileSettings() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1">
+          <Badge variant="secondary" className="flex items-center gap-1 border-primary/30 bg-primary/10 text-primary">
             <Shield className="h-3 w-3" />
             {formData.role.charAt(0).toUpperCase() + formData.role.slice(1)}
           </Badge>
@@ -162,10 +164,12 @@ function ProfileSettings() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Information */}
         <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
+          <Card className="shadow-sm">
+            <CardHeader className="border-b">
+              <CardTitle className="flex items-center gap-2 text-foreground">
+                <div className="p-1.5 rounded-lg bg-primary/10">
+                  <User className="h-5 w-5 text-primary" />
+                </div>
                 Professional Information
               </CardTitle>
               <CardDescription>
@@ -185,9 +189,9 @@ function ProfileSettings() {
                       placeholder="Enter your school name"
                     />
                   ) : (
-                    <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
-                      <School className="h-4 w-4 text-muted-foreground" />
-                      <span>{formData.school || "Not specified"}</span>
+                    <div className="flex items-center gap-2 p-3 border border-primary/20 rounded-md bg-primary/5">
+                      <School className="h-4 w-4 text-primary" />
+                      <span className="text-foreground">{formData.school || "Not specified"}</span>
                     </div>
                   )}
                 </div>
@@ -205,9 +209,9 @@ function ProfileSettings() {
                       placeholder="e.g., Mathematics, English, Science"
                     />
                   ) : (
-                    <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
-                      <BookOpen className="h-4 w-4 text-muted-foreground" />
-                      <span>{formData.subject || "Not specified"}</span>
+                    <div className="flex items-center gap-2 p-3 border border-primary/20 rounded-md bg-primary/5">
+                      <BookOpen className="h-4 w-4 text-primary" />
+                      <span className="text-foreground">{formData.subject || "Not specified"}</span>
                     </div>
                   )}
                 </div>
@@ -242,9 +246,9 @@ function ProfileSettings() {
                       </SelectContent>
                     </Select>
                   ) : (
-                    <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
-                      <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                      <span>{formData.gradeLevel || "Not specified"}</span>
+                    <div className="flex items-center gap-2 p-3 border border-primary/20 rounded-md bg-primary/5">
+                      <GraduationCap className="h-4 w-4 text-primary" />
+                      <span className="text-foreground">{formData.gradeLevel || "Not specified"}</span>
                     </div>
                   )}
                 </div>
@@ -268,9 +272,9 @@ function ProfileSettings() {
                     </SelectContent>
                   </Select>
                 ) : (
-                  <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/50">
-                    <Shield className="h-4 w-4 text-muted-foreground" />
-                    <span className="capitalize">{formData.role}</span>
+                  <div className="flex items-center gap-2 p-3 border border-primary/20 rounded-md bg-primary/5">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <span className="capitalize text-foreground">{formData.role}</span>
                   </div>
                 )}
               </div>
@@ -279,19 +283,19 @@ function ProfileSettings() {
               <ButtonGroup spacing="md" className="pt-4">
                 {isEditing ? (
                   <>
-                    <Button onClick={handleSave}>
+                    <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
                       Save Changes
                     </Button>
-                    <Button variant="outline" onClick={handleCancel}>
+                    <Button variant="outline" onClick={handleCancel} className="border-primary/30 hover:bg-primary/10 hover:text-primary">
                       Cancel
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button onClick={() => setIsEditing(true)}>
+                    <Button onClick={() => setIsEditing(true)} className="bg-primary hover:bg-primary/90">
                       Edit Profile
                     </Button>
-                    <Button variant="outline" onClick={() => navigate("/coach")}>
+                    <Button variant="outline" onClick={() => navigate("/coach")} className="border-primary/30 hover:bg-primary/10 hover:text-primary">
                       Go to Coach
                     </Button>
                   </>
@@ -303,9 +307,9 @@ function ProfileSettings() {
 
         {/* Account Information */}
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Information</CardTitle>
+          <Card className="shadow-sm">
+            <CardHeader className="border-b">
+              <CardTitle className="text-foreground">Account Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -326,14 +330,19 @@ function ProfileSettings() {
           </Card>
 
           {/* Building Together */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Building Together</CardTitle>
+          <Card className="shadow-sm">
+            <CardHeader className="border-b">
+              <CardTitle className="text-foreground flex items-center gap-2">
+                <div className="p-1 rounded bg-accent/20">
+                  <GraduationCap className="h-4 w-4 text-accent" />
+                </div>
+                Building Together
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm">One of 5 Educators</span>
+                <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-foreground">One of 5 Educators</span>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
                 You're one of 5 Louisiana educators building this together. Your feedback literally shapes everything.
