@@ -176,9 +176,16 @@ export const updateUserProfile = mutation({
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .first();
 
-    // Check if profile is complete (has all required fields: school, subject, gradeLevel)
-    const isComplete = !!(args.school && args.gradeLevel && args.subject);
-    const wasComplete = !!(profile?.school && profile?.gradeLevel && profile?.subject);
+    // Calculate final state after update (merge existing profile with args)
+    // This ensures we check completeness based on the final combined state, not just args
+    const finalSchool = args.school !== undefined ? args.school : profile?.school;
+    const finalSubject = args.subject !== undefined ? args.subject : profile?.subject;
+    const finalGradeLevel = args.gradeLevel !== undefined ? args.gradeLevel : profile?.gradeLevel;
+    
+    // Check if profile is complete (has required fields: subject and gradeLevel)
+    // Note: school is optional - only subject and gradeLevel are required for completion
+    const isComplete = !!(finalSubject && finalGradeLevel);
+    const wasComplete = !!(profile?.subject && profile?.gradeLevel);
     const shouldMarkComplete = isComplete && !wasComplete;
     
     // Only auto-complete if onboardingComplete is explicitly set to true
