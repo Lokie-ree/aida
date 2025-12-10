@@ -60,7 +60,7 @@ The **Conversational Prompt Coach** is the primary product experience. It provid
 - RAG (`@convex-dev/rag`) for Louisiana Student Standards and Louisiana Educator Rubric
 - AI Agents (`@convex-dev/agent`) for conversational prompt coaching
 - Workflows (`@convex-dev/workflow`) for multi-step processes
-- OpenAI (GPT-4o, text-embedding-3-small)
+- OpenAI (GPT-5.1-2025-11-13, text-embedding-3-small)
 
 ## 📦 Getting Started
 
@@ -91,7 +91,7 @@ The **Conversational Prompt Coach** is the primary product experience. It provid
    This will prompt you to create a Convex project if you don't have one.
 
 4. **Configure environment variables in Convex Dashboard:**
-   - `OPENAI_API_KEY` - OpenAI API key for GPT-4o and embeddings
+   - `OPENAI_API_KEY` - OpenAI API key for GPT-5.1-2025-11-13 and embeddings
    - `RESEND_API_KEY` - Resend API key for transactional emails
    - Better Auth configuration (see `convex/auth.config.ts`)
 

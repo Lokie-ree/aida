@@ -120,7 +120,7 @@ See `VISION.md` for complete product vision and strategic context.
 - [ ] Run `pnpm test` to ensure backend tests pass
 - [ ] Run `pnpm lint` to check TypeScript/build issues
 - [ ] Verify environment variables in Convex dashboard:
-  - `OPENAI_API_KEY` (for GPT-4o and embeddings)
+  - `OPENAI_API_KEY` (for GPT-5.1-2025-11-13 and embeddings)
   - `RESEND_API_KEY` (for transactional emails)
   - Better Auth configuration
 - [ ] Test on multiple browsers (Chrome, Firefox, Safari)
@@ -177,7 +177,7 @@ See `VISION.md` for complete product vision and strategic context.
 - **Workflows:** `@convex-dev/workflow` for multi-step processes (e.g., Alignment Scorecard)
 - **Rate Limiting:** `@convex-dev/rate-limiter` for API call management
 - **Email:** `@convex-dev/resend` for transactional emails
-- **AI Models:** OpenAI (GPT-4o, text-embedding-3-small) via `@ai-sdk/openai`
+- **AI Models:** OpenAI (GPT-5.1-2025-11-13, text-embedding-3-small) via `@ai-sdk/openai`
 
 ## Architecture Overview
 
@@ -618,7 +618,7 @@ See `knowledge/` folder for complete standards markdown files.
 
 Required environment variables (configured in Convex dashboard):
 
-- `OPENAI_API_KEY`: OpenAI API key for embeddings and GPT-4o
+- `OPENAI_API_KEY`: OpenAI API key for embeddings and GPT-5.1-2025-11-13
 - `RESEND_API_KEY`: Resend API key for transactional emails
 - Better Auth environment variables (configured via `convex/auth.config.ts`)
 
@@ -749,7 +749,7 @@ When generating prompts, the coach uses RAG to:
 ### Technical Constraints
 - RAG search: 256 results max per query
 - OpenAI rate limits: Monitor usage during beta
-- Agent response time: GPT-4o can take 2-5 seconds for complex prompts
+- Agent response time: GPT-5.1-2025-11-13 can take 2-5 seconds for complex prompts (may be faster due to improved performance)
 
 ## Additional Resources
 

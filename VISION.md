@@ -178,7 +178,7 @@ We're promising: "Better aligned, more thoughtful, Louisiana-specific prompts th
    - Clear indication when AI is "thinking"
 
 2. **Intelligent Prompt Generation**
-   - GPT-4o integration with Louisiana-aligned RAG
+   - GPT-5.1-2025-11-13 integration with Louisiana-aligned RAG
    - System prompt that embodies teacher-to-teacher voice
    - Ability to ask clarifying questions
    - Output formatted as copy-pasteable prompt
