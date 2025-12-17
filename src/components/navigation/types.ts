@@ -41,6 +41,20 @@ export interface NavAction {
 }
 
 /**
+ * Recent session item for mobile menu display.
+ */
+export interface RecentSession {
+  /** Unique session ID */
+  id: string;
+  /** Display title for the session */
+  title: string;
+  /** Relative time string (e.g., "2 hours ago") */
+  timeAgo: string;
+  /** Whether this session is currently active */
+  isActive?: boolean;
+}
+
+/**
  * Complete navigation configuration for a page/route.
  * Pass this to AppHeader to configure the entire navigation.
  */
@@ -51,6 +65,14 @@ export interface NavConfig {
   actions?: NavAction[];
   /** Whether to show the theme toggle button (default: true) */
   showThemeToggle?: boolean;
+  /** Recent sessions to display in mobile menu */
+  recentSessions?: RecentSession[];
+  /** Handler when a recent session is selected */
+  onSelectSession?: (id: string) => void;
+  /** Handler when a session is renamed */
+  onRenameSession?: (id: string, newTitle: string) => void;
+  /** Handler when a session is deleted */
+  onDeleteSession?: (id: string) => void;
 }
 
 /**

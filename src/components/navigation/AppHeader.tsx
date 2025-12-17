@@ -69,6 +69,10 @@ export function AppHeader({
             navItems={config.navItems}
             actions={config.actions}
             showThemeToggle={config.showThemeToggle}
+            recentSessions={config.recentSessions}
+            onSelectSession={config.onSelectSession}
+            onRenameSession={config.onRenameSession}
+            onDeleteSession={config.onDeleteSession}
           />
         </div>
       </div>

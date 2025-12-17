@@ -12,6 +12,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { spacing } from "@/lib/spacing";
 import { MessageSquare, Library, PlusCircle, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { formatDistanceToNow } from "date-fns";
 
 export default function PromptCoach() {
   const [activeView, setActiveView] = useState<"chat" | "library">("chat");
@@ -19,8 +20,11 @@ export default function PromptCoach() {
   const navigate = useNavigate();
 
   const startConversation = useMutation(api.promptCoach.startConversation);
+  const renameConversation = useMutation(api.promptCoach.renameConversation);
+  const deleteConversation = useMutation(api.promptCoach.deleteConversation);
   const savedPrompts = useQuery(api.promptCoach.getSavedPrompts);
   const userProfile = useQuery(api.userProfiles.getUserProfile);
+  const conversations = useQuery(api.promptCoach.listConversations);
 
   const handleStartNew = useCallback(async () => {
     const newId = await startConversation({ title: "New Coaching Session" });
@@ -41,6 +45,62 @@ export default function PromptCoach() {
   const handleProfileClick = () => {
     navigate("/profile");
   };
+
+  const handleSelectConversation = useCallback(
+    (id: Id<"promptConversations">) => {
+      setCurrentConversationId(id);
+      setActiveView("chat");
+    },
+    []
+  );
+
+  // Build recent sessions for mobile menu
+  const recentSessions = useMemo(() => {
+    if (!conversations) return [];
+    return conversations.map((conv) => {
+      const firstUserMessage = conv.messages?.find((m) => m.role === "user");
+      const title = conv.title ||
+        (firstUserMessage?.content
+          ? firstUserMessage.content.slice(0, 40) + (firstUserMessage.content.length > 40 ? "…" : "")
+          : "Untitled session");
+      return {
+        id: conv._id,
+        title,
+        timeAgo: formatDistanceToNow(conv.lastUpdated, { addSuffix: true }),
+        isActive: currentConversationId === conv._id,
+      };
+    });
+  }, [conversations, currentConversationId]);
+
+  const handleMenuSelectSession = useCallback((id: string) => {
+    setCurrentConversationId(id as Id<"promptConversations">);
+    setActiveView("chat");
+  }, []);
+
+  const handleRenameSession = useCallback(async (id: string, newTitle: string) => {
+    try {
+      await renameConversation({
+        conversationId: id as Id<"promptConversations">,
+        title: newTitle,
+      });
+    } catch (error) {
+      console.error("Failed to rename session:", error);
+    }
+  }, [renameConversation]);
+
+  const handleDeleteSession = useCallback(async (id: string) => {
+    try {
+      // If we're deleting the current conversation, clear it
+      if (currentConversationId === id) {
+        setCurrentConversationId(null);
+      }
+      await deleteConversation({
+        conversationId: id as Id<"promptConversations">,
+      });
+    } catch (error) {
+      console.error("Failed to delete session:", error);
+    }
+  }, [deleteConversation, currentConversationId]);
 
   const navConfig: NavConfig = useMemo(
     () => ({
@@ -80,8 +140,12 @@ export default function PromptCoach() {
         },
       ],
       showThemeToggle: true,
+      recentSessions,
+      onSelectSession: handleMenuSelectSession,
+      onRenameSession: handleRenameSession,
+      onDeleteSession: handleDeleteSession,
     }),
-    [activeView, handleStartNew, savedPrompts?.length]
+    [activeView, handleStartNew, savedPrompts?.length, recentSessions, handleMenuSelectSession, handleRenameSession, handleDeleteSession]
   );
 
   return (
@@ -115,6 +179,7 @@ export default function PromptCoach() {
                   <ChatInterface
                     conversationId={currentConversationId}
                     onStartNew={handleStartNew}
+                    onSelectConversation={handleSelectConversation}
                   />
                 </motion.div>
               ) : (

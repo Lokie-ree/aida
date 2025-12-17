@@ -7,6 +7,62 @@ import { components } from "./_generated/api";
 import { Agent } from "@convex-dev/agent";
 import { openai } from "@ai-sdk/openai";
 
+/**
+ * Generates a meaningful conversation title from the user's first message.
+ * Extraction priority:
+ * 1. Louisiana standard codes (e.g., "RL.5.3" → "RL.5.3 Character Traits")
+ * 2. Grade + subject keywords (e.g., "5th grade fractions" → "5th Grade Fractions")
+ * 3. Fallback: First 40 characters of message, cleaned up
+ */
+function generateConversationTitle(message: string): string {
+  // Try to find Louisiana standard codes (e.g., RL.5.3, W.8.2, 5.NF.A.1)
+  const standardCodeMatch = message.match(/\b([A-Z]{1,4}\.\d+\.\d+(?:\.[A-Z]\.\d+)?|\d+\.[A-Z]{1,4}\.[A-Z]\.\d+)\b/i);
+  if (standardCodeMatch) {
+    const code = standardCodeMatch[1].toUpperCase();
+    // Extract some context around the code
+    const words = message.split(/\s+/).slice(0, 8);
+    const context = words.filter(w => !w.match(/^[A-Z]{1,4}\.\d+/i)).slice(0, 3).join(" ");
+    if (context.length > 3) {
+      return `${code} ${context.charAt(0).toUpperCase() + context.slice(1)}`.slice(0, 50);
+    }
+    return code;
+  }
+
+  // Try to find grade + subject pattern (e.g., "5th grade math", "8th grade ELA")
+  const gradeSubjectMatch = message.match(/(\d+(?:st|nd|rd|th)?)\s*grade\s+(\w+)/i);
+  if (gradeSubjectMatch) {
+    const grade = gradeSubjectMatch[1];
+    const subject = gradeSubjectMatch[2];
+    // Find any additional context
+    const restOfMessage = message.slice(gradeSubjectMatch.index! + gradeSubjectMatch[0].length).trim();
+    const contextWords = restOfMessage.split(/\s+/).slice(0, 3).filter(w => w.length > 2).join(" ");
+    if (contextWords.length > 3) {
+      return `${grade} Grade ${subject.charAt(0).toUpperCase() + subject.slice(1)} - ${contextWords}`.slice(0, 50);
+    }
+    return `${grade} Grade ${subject.charAt(0).toUpperCase() + subject.slice(1)}`;
+  }
+
+  // Fallback: Clean up first 40 characters
+  const cleaned = message
+    .replace(/^(hi|hello|hey|i'm|i am|can you|could you|help me|please)/i, "")
+    .trim()
+    .replace(/[^\w\s'-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (cleaned.length <= 40) {
+    return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+  }
+
+  // Truncate at word boundary
+  const truncated = cleaned.slice(0, 40);
+  const lastSpace = truncated.lastIndexOf(" ");
+  if (lastSpace > 20) {
+    return truncated.slice(0, lastSpace).trim() + "…";
+  }
+  return truncated + "…";
+}
+
 const PELICAN_SYSTEM_PROMPT = `You are Pelican AI, an intelligent coaching assistant built by a Louisiana teacher for Louisiana teachers. You help teachers generate high-quality, Louisiana-aligned prompts for ANY teaching task—lesson planning, assessment data analysis, parent communication, grading rubrics, IEP accommodations, internalizing curriculum resources, identifying highly effective teacher/student actions from the rubric, and more. You DO NOT generate lesson plans, worksheets, handouts, scripts, or material lists—only the prompt teachers can use in ChatGPT, Claude, Gemini, or any AI tool to generate those materials. 
 
 DESIRED BEHAVIOR:
@@ -140,7 +196,7 @@ export const listConversations = query({
       .query("promptConversations")
       .withIndex("by_user", (q) => q.eq("userId", user._id))
       .order("desc")
-      .take(20);
+      .take(50);
   },
 });
 
@@ -192,6 +248,16 @@ export const sendMessage = action({
       role: "user",
       content: args.message,
     });
+
+    // 2.5. Auto-generate title on first user message
+    const isFirstMessage = !conversation.messages || conversation.messages.length === 0;
+    if (isFirstMessage) {
+      const generatedTitle = generateConversationTitle(args.message);
+      await ctx.runMutation(internal.promptCoach.updateConversationTitle, {
+        conversationId: args.conversationId,
+        title: generatedTitle,
+      });
+    }
 
     // 3. Initialize Agent
     const agent = new Agent(components.agent, {
@@ -379,6 +445,70 @@ export const updateThreadId = internalMutation({
         await ctx.db.patch(args.conversationId, {
             threadId: args.threadId,
         });
+    }
+});
+
+// Internal mutation to update conversation title
+export const updateConversationTitle = internalMutation({
+    args: {
+        conversationId: v.id("promptConversations"),
+        title: v.string(),
+    },
+    handler: async (ctx, args) => {
+        await ctx.db.patch(args.conversationId, {
+            title: args.title,
+        });
+    }
+});
+
+// Mutation to rename a conversation
+export const renameConversation = mutation({
+    args: {
+        conversationId: v.id("promptConversations"),
+        title: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const user = await authComponent.getAuthUser(ctx);
+        if (!user) throw new Error("Not authenticated");
+
+        const conversation = await ctx.db.get(args.conversationId);
+        if (!conversation || conversation.userId !== user._id) {
+            throw new Error("Conversation not found or access denied");
+        }
+
+        await ctx.db.patch(args.conversationId, {
+            title: args.title,
+            lastUpdated: Date.now(),
+        });
+    }
+});
+
+// Mutation to delete a conversation
+export const deleteConversation = mutation({
+    args: {
+        conversationId: v.id("promptConversations"),
+    },
+    handler: async (ctx, args) => {
+        const user = await authComponent.getAuthUser(ctx);
+        if (!user) throw new Error("Not authenticated");
+
+        const conversation = await ctx.db.get(args.conversationId);
+        if (!conversation || conversation.userId !== user._id) {
+            throw new Error("Conversation not found or access denied");
+        }
+
+        // Delete any saved prompts associated with this conversation
+        const prompts = await ctx.db
+            .query("generatedPrompts")
+            .withIndex("by_conversation", (q) => q.eq("conversationId", args.conversationId))
+            .collect();
+
+        for (const prompt of prompts) {
+            await ctx.db.delete(prompt._id);
+        }
+
+        // Delete the conversation
+        await ctx.db.delete(args.conversationId);
     }
 });
 
