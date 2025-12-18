@@ -1,4 +1,4 @@
-import ProfileSettings from "@/components/dashboard/ProfileSettings";
+import ProfileSettings from "@/components/shared/ProfileSettings";
 
 export function ProfilePage() {
   return (

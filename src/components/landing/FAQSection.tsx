@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
 import GradientText from "@/components/shared/GradientText";
 import { ChevronDown } from "lucide-react";
-import { faqs } from "@/data/landingPageContent";
+import { faqs } from "./landing-page-content";
 
 export function FAQSection() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);

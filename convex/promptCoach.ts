@@ -529,6 +529,22 @@ export const savePrompt = mutation({
     const user = await authComponent.getAuthUser(ctx);
     if (!user) throw new Error("Not authenticated");
 
+    // Check for duplicate: same conversation + same prompt text
+    const existingPrompts = await ctx.db
+      .query("generatedPrompts")
+      .withIndex("by_conversation", (q) => q.eq("conversationId", args.conversationId))
+      .collect();
+
+    const isDuplicate = existingPrompts.some(
+      (p) => p.promptText === args.promptText
+    );
+
+    if (isDuplicate) {
+      // Return the existing prompt ID instead of creating a duplicate
+      const existing = existingPrompts.find((p) => p.promptText === args.promptText);
+      return existing!._id;
+    }
+
     return await ctx.db.insert("generatedPrompts", {
       userId: user._id,
       conversationId: args.conversationId,

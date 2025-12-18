@@ -76,20 +76,6 @@ export { ApprovalNotificationEmail } from "./ApprovalNotificationEmail";
 export { WeeklyPromptEmail } from "./WeeklyPromptEmail";
 
 // =============================================================================
-// UNUSED EMAIL TEMPLATES (Defined but not called - kept for future use)
-// =============================================================================
-
-// Note: These templates exist but their corresponding send functions were removed
-// because ApprovalNotificationEmail and MagicLinkEmail handle the same use cases.
-// Keep these files if you want to use them in the future, or delete if not needed.
-
-// export { BetaWelcomeEmail } from "./BetaWelcomeEmail";
-// export { PlatformAccessEmail } from "./PlatformAccessEmail";
-// export { OutreachEmail } from "./OutreachEmail";
-// export { FollowupEmail } from "./FollowupEmail";
-// export { NetworkPartnerEmail } from "./NetworkPartnerEmail";
-
-// =============================================================================
 // TYPE EXPORTS
 // =============================================================================
 

@@ -9,7 +9,7 @@ import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamples
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { CTASection } from "@/components/landing/CTASection";
-import { AuthModal } from "@/components/auth/AuthModal";
+import { AuthModal } from "@/components/shared/AuthModal";
 import { Metadata } from "@/components/shared/Metadata";
 
 function LandingPage() {

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
 import GradientText from "@/components/shared/GradientText";
-import { features } from "@/data/landingPageContent";
+import { features } from "./landing-page-content";
 
 export function FeaturesSection() {
   // Animation variants
