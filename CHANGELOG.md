@@ -8,6 +8,72 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Codebase Cleanup & Bug Fixes
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** December 18, 2025
+
+**Impact:** Fixed duplicate prompt saving bug, reorganized component structure for better maintainability, removed unused code, and standardized file naming conventions.
+
+**Key Changes:**
+
+**Bug Fixes:**
+- ✅ **Duplicate Prompts Fix:** Added backend deduplication in `savePrompt` mutation
+  - Checks for existing prompt with same `conversationId` and `promptText` before inserting
+  - Returns existing prompt ID if duplicate is found
+  - Previously, local state tracking (`savedPromptIndices`) reset on page refresh causing duplicates
+
+**Component Reorganization:**
+- ✅ **Auth/Dashboard/Routes → Shared:** Consolidated single-use folders into `shared/`
+  - `auth/AuthModal.tsx` → `shared/AuthModal.tsx`
+  - `dashboard/ProfileSettings.tsx` → `shared/ProfileSettings.tsx`
+  - `routes/ProtectedRoute.tsx` → `shared/ProtectedRoute.tsx`
+  - Removed empty `auth/`, `dashboard/`, `routes/` folders
+- ✅ **Landing Page Consolidation:** Grouped all landing-related files in `landing/`
+  - `shared/LandingPage.tsx` → `landing/LandingPage.tsx`
+  - `data/landingPageContent.ts` → `landing/landing-page-content.ts`
+  - Removed empty `data/` folder
+
+**File Naming Conventions:**
+- ✅ **Kebab-case for data files:** `landingPageContent.ts` → `landing-page-content.ts`
+
+**Barrel Exports:**
+- ✅ **Added index.ts to component folders:** Consistent exports across codebase
+  - `src/components/landing/index.ts` - All landing components + content
+  - `src/components/coach/index.ts` - ChatInterface, InlineProfilePrompt, PromptLibrary
+  - `src/components/shared/index.ts` - All shared components
+
+**Email Template Cleanup:**
+- ✅ **Removed 5 unused email templates:**
+  - `BetaWelcomeEmail.tsx` - Replaced by ApprovalNotificationEmail
+  - `PlatformAccessEmail.tsx` - Replaced by ApprovalNotificationEmail
+  - `OutreachEmail.tsx` - Cold outreach (deprioritized)
+  - `FollowupEmail.tsx` - Cold follow-up (deprioritized)
+  - `NetworkPartnerEmail.tsx` - Partnerships (deprioritized)
+- ✅ **Active email templates:** MagicLinkEmail, ApprovalNotificationEmail, WeeklyPromptEmail (feature-flagged)
+
+**Files Modified:**
+- `convex/promptCoach.ts` (duplicate fix)
+- `src/App.tsx` (import paths)
+- `src/pages/ProfilePage.tsx` (import paths)
+- `src/components/landing/*.tsx` (import paths)
+- `src/emails/index.ts` (removed unused exports)
+
+**Files Added:**
+- `src/components/landing/index.ts`
+- `src/components/coach/index.ts`
+- `src/components/shared/index.ts`
+
+**Files Removed:**
+- `src/emails/BetaWelcomeEmail.tsx`
+- `src/emails/PlatformAccessEmail.tsx`
+- `src/emails/OutreachEmail.tsx`
+- `src/emails/FollowupEmail.tsx`
+- `src/emails/NetworkPartnerEmail.tsx`
+
+---
+
 ### Beta Launch Preparation - Coach UX & System Prompt Enhancements
 
 **Status:** ✅ **COMPLETED**

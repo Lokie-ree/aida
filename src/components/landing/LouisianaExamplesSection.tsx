@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import GradientText from "@/components/shared/GradientText";
 import { Sparkles } from "lucide-react";
-import { louisianaExamples } from "@/data/landingPageContent";
+import { louisianaExamples } from "./landing-page-content";
 
 export function LouisianaExamplesSection() {
   // Animation variants

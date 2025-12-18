@@ -5,13 +5,13 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { LoadingPage } from "./components/shared/LoadingStates";
-import ProtectedRoute from "./components/routes/ProtectedRoute";
+import ProtectedRoute from "./components/shared/ProtectedRoute";
 import { AuthenticatedLayout } from "./components/layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Lazy load route components
-const LandingPage = lazy(() => import("./components/shared/LandingPage"));
+const LandingPage = lazy(() => import("./components/landing/LandingPage"));
 const CoachPage = lazy(() =>
   import("./pages").then((m) => ({ default: m.CoachPage }))
 );

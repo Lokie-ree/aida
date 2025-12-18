@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/marquee";
 import GradientText from "@/components/shared/GradientText";
 import { Quote } from "lucide-react";
-import { testimonials } from "@/data/landingPageContent";
+import { testimonials } from "./landing-page-content";
 
 export function TestimonialsSection() {
   // Animation variants
