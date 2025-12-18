@@ -6,14 +6,21 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 import { ErrorBoundary } from "./components/shared/ErrorBoundary";
 import { LoadingPage } from "./components/shared/LoadingStates";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
-import CoachRoute from "./components/routes/CoachRoute";
-import {Analytics} from "@vercel/analytics/react";
-import {SpeedInsights} from "@vercel/speed-insights/react";
+import { AuthenticatedLayout } from "./components/layout";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Lazy load route components
 const LandingPage = lazy(() => import("./components/shared/LandingPage"));
-const PromptCoach = lazy(() => import("./components/coach/PromptCoach"));
-const ProfileSettings = lazy(() => import("./components/dashboard/ProfileSettings"));
+const CoachPage = lazy(() =>
+  import("./pages").then((m) => ({ default: m.CoachPage }))
+);
+const PromptsPage = lazy(() =>
+  import("./pages").then((m) => ({ default: m.PromptsPage }))
+);
+const ProfilePage = lazy(() =>
+  import("./pages").then((m) => ({ default: m.ProfilePage }))
+);
 
 export default function App() {
   return (
@@ -23,25 +30,18 @@ export default function App() {
           <Authenticated>
             <Suspense fallback={<LoadingPage />}>
               <Routes>
-                {/* Main app route - Coach is the default */}
                 <Route
-                  path="/coach"
                   element={
                     <ProtectedRoute>
-                      <CoachRoute>
-                        <PromptCoach />
-                      </CoachRoute>
+                      <AuthenticatedLayout />
                     </ProtectedRoute>
                   }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <ProfileSettings />
-                    </ProtectedRoute>
-                  }
-                />
+                >
+                  <Route path="/coach" element={<CoachPage />} />
+                  <Route path="/coach/:conversationId" element={<CoachPage />} />
+                  <Route path="/prompts" element={<PromptsPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                </Route>
                 {/* Redirect all other routes to coach */}
                 <Route path="*" element={<Navigate to="/coach" replace />} />
               </Routes>

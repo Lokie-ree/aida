@@ -9,6 +9,38 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
+/**
+ * Detects if a message contains a generated prompt.
+ * Uses multiple patterns to catch various AI phrasings.
+ */
+function isGeneratedPrompt(content: string): boolean {
+  const lowerContent = content.toLowerCase();
+
+  // Explicit prompt markers
+  if (content.includes("PROMPT:") || content.includes("**PROMPT:**")) {
+    return true;
+  }
+
+  // Common phrases the AI uses when delivering a prompt
+  const promptPhrases = [
+    "here's your prompt",
+    "here is your prompt",
+    "here's a prompt",
+    "here is a prompt",
+    "here's the prompt",
+    "here is the prompt",
+    "try this prompt",
+    "use this prompt",
+    "copy this prompt",
+    "paste this prompt",
+    "prompt you can use",
+    "prompt for you",
+    "your ai prompt",
+  ];
+
+  return promptPhrases.some(phrase => lowerContent.includes(phrase));
+}
+
 interface ChatInterfaceProps {
   conversationId: Id<"promptConversations"> | null;
   onStartNew: () => void;
@@ -305,21 +337,14 @@ export function ChatInterface({
 
     // Check if any message contains an actual prompt
     const hasPrompt = conversation.messages.some(msg =>
-      msg.role === "assistant" && (
-        msg.content.includes("PROMPT:") ||
-        msg.content.includes("**PROMPT:**") ||
-        msg.content.includes("Here's your prompt") ||
-        msg.content.includes("Here is your prompt") ||
-        msg.content.includes("Here's a prompt") ||
-        msg.content.includes("Here is a prompt")
-      )
+      msg.role === "assistant" && isGeneratedPrompt(msg.content)
     );
 
     if (hasPrompt) {
-      return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200" };
+      return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-primary/10 text-primary" };
     } else {
       // Don't try to guess progress - just show we're in conversation
-      return { phase: "conversing", label: "In Conversation", icon: MessageCircle, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
+      return { phase: "conversing", label: "In Conversation", icon: MessageCircle, color: "bg-muted text-muted-foreground" };
     }
   };
 
@@ -418,14 +443,14 @@ export function ChatInterface({
         <div className="space-y-5 md:space-y-6 pb-4">
           {/* Louisiana context indicator */}
           {conversation?.messages && conversation.messages.length === 0 && (
-            <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-4">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                  <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <GraduationCap className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 text-sm">
-                  <p className="font-semibold text-blue-900 dark:text-blue-100">Louisiana-Aligned Coaching</p>
-                  <p className="text-blue-700 dark:text-blue-300 mt-1">
+                  <p className="font-semibold text-foreground">Louisiana-Aligned Coaching</p>
+                  <p className="text-muted-foreground mt-1">
                     I'll ask clarifying questions about your grade, subject, and teaching challenge before generating a prompt.
                     All prompts reference specific LER indicators and Louisiana standards.
                   </p>
@@ -437,14 +462,7 @@ export function ChatInterface({
           {conversation?.messages.map((msg, idx) => {
             // Only mark as prompt if it explicitly contains prompt markers
             // This prevents false positives from clarifying questions
-            const isPrompt = msg.role === "assistant" && (
-              msg.content.includes("PROMPT:") ||
-              msg.content.includes("**PROMPT:**") ||
-              msg.content.includes("Here's your prompt") ||
-              msg.content.includes("Here is your prompt") ||
-              msg.content.includes("Here's a prompt") ||
-              msg.content.includes("Here is a prompt")
-            );
+            const isPrompt = msg.role === "assistant" && isGeneratedPrompt(msg.content);
 
             return (
               <div
@@ -460,7 +478,7 @@ export function ChatInterface({
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground border-primary/30"
                       : isPrompt
-                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md"
+                        ? "bg-primary text-primary-foreground border-primary/30 shadow-md"
                         : "bg-muted border-border"
                   )}
                 >
@@ -472,10 +490,10 @@ export function ChatInterface({
                   msg.role === "user" ? "items-end" : "items-start"
                 )}>
                   {isPrompt && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400"
+                      className="flex items-center gap-2 text-xs font-semibold text-primary"
                     >
                       <Sparkles className="h-3.5 w-3.5" />
                       <span>Louisiana-Aligned Prompt Generated</span>
@@ -490,7 +508,7 @@ export function ChatInterface({
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : isPrompt
-                          ? "bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
+                          ? "bg-primary/5 border-2 border-primary/20 text-foreground shadow-sm"
                           : "bg-muted text-foreground border border-border"
                     )}
                   >
@@ -552,12 +570,12 @@ export function ChatInterface({
           })}
           
           {isSending && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex w-full gap-4"
             >
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md">
+              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-primary text-primary-foreground border-primary/30 shadow-md">
                 <Bot className="h-4 w-4" />
               </div>
               <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border shadow-sm">
