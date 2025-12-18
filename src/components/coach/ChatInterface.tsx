@@ -4,36 +4,68 @@ import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, User, Bot, Loader2, Save, MessageSquare, Copy, GraduationCap, BookOpen, Scale, Target, Sparkles, Lightbulb, MessageCircle, Search, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, MessageCircle, ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
+
+/**
+ * Detects if a message contains a generated prompt.
+ * Uses multiple patterns to catch various AI phrasings.
+ */
+function isGeneratedPrompt(content: string): boolean {
+  const lowerContent = content.toLowerCase();
+
+  // Explicit prompt markers
+  if (content.includes("PROMPT:") || content.includes("**PROMPT:**")) {
+    return true;
+  }
+
+  // Common phrases the AI uses when delivering a prompt
+  const promptPhrases = [
+    "here's your prompt",
+    "here is your prompt",
+    "here's a prompt",
+    "here is a prompt",
+    "here's the prompt",
+    "here is the prompt",
+    "try this prompt",
+    "use this prompt",
+    "copy this prompt",
+    "paste this prompt",
+    "prompt you can use",
+    "prompt for you",
+    "your ai prompt",
+  ];
+
+  return promptPhrases.some(phrase => lowerContent.includes(phrase));
+}
 
 interface ChatInterfaceProps {
   conversationId: Id<"promptConversations"> | null;
   onStartNew: () => void;
+  onSelectConversation: (id: Id<"promptConversations">) => void;
 }
 
 /**
  * Chat interface component for the conversational prompt coach.
  * Handles message display, sending, prompt generation, and saving prompts to library.
  */
-export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps) {
+export function ChatInterface({
+  conversationId,
+  onStartNew,
+  onSelectConversation,
+}: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
-  // Save prompt dialog state
-  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
-  const [promptToSave, setPromptToSave] = useState<string>("");
-  const [promptToSaveIndex, setPromptToSaveIndex] = useState<number | null>(null);
-  const [saveContext, setSaveContext] = useState({ grade: "", subject: "", topic: "" });
+
+  // Track ratings for prompts
   const [promptRatings, setPromptRatings] = useState<Map<number, "positive" | "negative">>(new Map());
+  // Track which prompts have been saved (to avoid duplicate saves)
+  const [savedPromptIndices, setSavedPromptIndices] = useState<Set<number>>(new Set());
 
   const conversation = useQuery(api.promptCoach.getConversation, 
     conversationId ? { conversationId } : "skip"
@@ -93,58 +125,68 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     }
   };
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
-  };
+  /**
+   * Extracts a topic from the conversation's first user message.
+   * Looks for standard codes or meaningful keywords.
+   */
+  const extractTopicFromConversation = useCallback(() => {
+    if (!conversation?.messages) return "";
 
-  const openSaveDialog = (text: string, messageIndex?: number) => {
-    setPromptToSave(text);
-    setPromptToSaveIndex(messageIndex ?? null);
-    // Pre-fill with profile context
-    setSaveContext({
-      grade: userProfile?.gradeLevel || "",
-      subject: userProfile?.subject || "",
-      topic: "", // Still manual
-    });
-    setIsSaveDialogOpen(true);
-  };
+    const firstUserMessage = conversation.messages.find(m => m.role === "user");
+    if (!firstUserMessage) return "";
 
-  const handleSavePrompt = async () => {
-    if (!conversationId) return;
-    
-    // Find the rating for this prompt (if any)
-    // First try using the stored index, then fall back to content matching
-    let rating: "positive" | "negative" | undefined = undefined;
-    if (promptToSaveIndex !== null) {
-      rating = promptRatings.get(promptToSaveIndex);
-    } else {
-      const messageIndex = conversation?.messages.findIndex(msg => 
-        msg.role === "assistant" && msg.content === promptToSave
-      );
-      if (messageIndex !== undefined && messageIndex !== -1) {
-        rating = promptRatings.get(messageIndex);
-      }
+    const content = firstUserMessage.content;
+
+    // Look for Louisiana standard codes (e.g., RL.5.3, W.8.2)
+    const standardMatch = content.match(/\b([A-Z]{1,4}\.\d+\.\d+(?:\.[A-Z]\.\d+)?|\d+\.[A-Z]{1,4}\.[A-Z]\.\d+)\b/i);
+    if (standardMatch) {
+      return standardMatch[1].toUpperCase();
     }
-    
-    try {
-      await savePromptMutation({
-        conversationId,
-        promptText: promptToSave,
-        context: saveContext,
-        rating,
-      });
-      toast.success("Prompt saved to your library");
-      setIsSaveDialogOpen(false);
-      setPromptToSave("");
-      setPromptToSaveIndex(null);
-      setSaveContext({ grade: "", subject: "", topic: "" });
-    } catch (error) {
-      console.error("Failed to save prompt:", error);
-      toast.error("Unable to save prompt. Please check your connection and try again.", {
-        duration: 5000,
-      });
-      // Keep dialog open so user can retry
+
+    // Extract key words from the message (up to 40 chars)
+    const cleaned = content
+      .replace(/^(hi|hello|hey|i'm|i am|can you|could you|help me|please)/i, "")
+      .trim()
+      .slice(0, 40);
+
+    return cleaned.trim();
+  }, [conversation?.messages]);
+
+  /**
+   * Handles copy + auto-save for generated prompts.
+   * Only saves prompts (messages with prompt markers), not regular responses.
+   */
+  const handleCopy = async (text: string, messageIndex: number, isPrompt: boolean) => {
+    // Always copy to clipboard
+    navigator.clipboard.writeText(text);
+
+    // Only auto-save actual generated prompts, not regular assistant responses
+    if (isPrompt && conversationId && !savedPromptIndices.has(messageIndex)) {
+      try {
+        const rating = promptRatings.get(messageIndex);
+        const topic = extractTopicFromConversation();
+
+        await savePromptMutation({
+          conversationId,
+          promptText: text,
+          context: {
+            grade: userProfile?.gradeLevel || "",
+            subject: userProfile?.subject || "",
+            topic,
+          },
+          rating,
+        });
+
+        // Mark as saved to avoid duplicate saves
+        setSavedPromptIndices(prev => new Set(prev).add(messageIndex));
+        toast.success("Copied! Saved to My Prompts");
+      } catch (error) {
+        console.error("Failed to auto-save prompt:", error);
+        // Still show copy success even if save fails
+        toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
+      }
+    } else {
+      toast.success("Copied! Paste into ChatGPT, Claude, or your preferred AI tool.");
     }
   };
 
@@ -161,22 +203,6 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
     });
   };
 
-  // Suggestion chips for empty state
-  const suggestionChips = [
-    { text: "Analyze LEAP data", icon: Search },
-    { text: "Differentiate for IEP", icon: Target },
-    { text: "LER evidence for PIC", icon: Scale },
-    { text: "Internalize standards", icon: BookOpen },
-  ];
-
-  // Handle suggestion chip click
-  const handleSuggestionClick = (text: string) => {
-    onStartNew();
-    setTimeout(() => {
-      setInputValue(text);
-      inputRef.current?.focus();
-    }, 150);
-  };
 
   // Empty state - show chat interface with welcome message
   if (!conversationId) {
@@ -187,7 +213,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
         {/* Chat card - same structure as active chat */}
         <div className="flex-1 min-h-0 flex flex-col bg-card rounded-lg border shadow-sm overflow-hidden">
           {/* Welcome content in messages area */}
-          <div className="flex-1 min-h-0 overflow-y-auto p-3 md:p-4">
+          <div className="flex-1 min-h-0 overflow-y-auto px-3 py-6 md:px-4 md:py-8">
             <div className="flex flex-col items-center justify-center h-full text-center">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -207,7 +233,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                         Welcome to Pelican AI!
                       </h2>
                       <p className="text-sm text-muted-foreground">
-                        Start a conversation about what you're teaching. I'll help you craft Louisiana-aligned prompts 
+                        Start a conversation about what you're teaching. I'll help you craft Louisiana-aligned prompts
                         you can use in ChatGPT, Claude, Gemini, or any AI tool you prefer.
                       </p>
                       <p className="text-xs text-muted-foreground mt-2">
@@ -222,6 +248,35 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                       <p className="text-sm text-muted-foreground">
                         I'll help you craft a Louisiana-aligned prompt for any AI tool.
                       </p>
+                      {/* Recent sessions as simple text links */}
+                      {conversations && conversations.length > 0 && (
+                        <div className="pt-4">
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <span className="h-px flex-1 bg-border" />
+                            <span>or continue</span>
+                            <span className="h-px flex-1 bg-border" />
+                          </div>
+                          <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 mt-3">
+                            {conversations.slice(0, 3).map((conv, idx) => {
+                              const firstUserMessage = conv.messages?.find(m => m.role === "user");
+                              const title = conv.title ||
+                                (firstUserMessage?.content
+                                  ? firstUserMessage.content.slice(0, 30) + (firstUserMessage.content.length > 30 ? "…" : "")
+                                  : "Untitled");
+                              return (
+                                <button
+                                  key={conv._id}
+                                  type="button"
+                                  onClick={() => onSelectConversation(conv._id)}
+                                  className="text-xs text-primary hover:text-primary/80 hover:underline transition-colors"
+                                >
+                                  {title}{idx < Math.min(conversations.length, 3) - 1 && <span className="text-muted-foreground ml-3">•</span>}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -229,30 +284,8 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
             </div>
           </div>
 
-          {/* Input Area with suggestion chips */}
+          {/* Input Area */}
           <div className="p-3 md:p-4 border-t bg-background">
-            {/* Suggestion chips */}
-            <div className="flex flex-wrap gap-2 mb-3">
-              {suggestionChips.map((chip, idx) => {
-                const IconComponent = chip.icon;
-                return (
-                  <motion.button
-                    key={idx}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, delay: idx * 0.05 }}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => handleSuggestionClick(chip.text)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/30 transition-colors"
-                  >
-                    <IconComponent className="h-3 w-3" />
-                    {chip.text}
-                  </motion.button>
-                );
-              })}
-            </div>
-
             {/* Input field */}
             <div className="flex gap-2">
               <Input
@@ -263,9 +296,6 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                   if (e.key === "Enter" && !e.shiftKey && inputValue.trim()) {
                     e.preventDefault();
                     onStartNew();
-                    setTimeout(() => {
-                      inputRef.current?.focus();
-                    }, 150);
                   }
                 }}
                 placeholder="Example: I'm teaching RL.5.3 and students confuse character traits with feelings..."
@@ -307,21 +337,14 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
 
     // Check if any message contains an actual prompt
     const hasPrompt = conversation.messages.some(msg =>
-      msg.role === "assistant" && (
-        msg.content.includes("PROMPT:") ||
-        msg.content.includes("**PROMPT:**") ||
-        msg.content.includes("Here's your prompt") ||
-        msg.content.includes("Here is your prompt") ||
-        msg.content.includes("Here's a prompt") ||
-        msg.content.includes("Here is a prompt")
-      )
+      msg.role === "assistant" && isGeneratedPrompt(msg.content)
     );
 
     if (hasPrompt) {
-      return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200" };
+      return { phase: "completed", label: "Prompt Generated", icon: Sparkles, color: "bg-primary/10 text-primary" };
     } else {
       // Don't try to guess progress - just show we're in conversation
-      return { phase: "conversing", label: "In Conversation", icon: MessageCircle, color: "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200" };
+      return { phase: "conversing", label: "In Conversation", icon: MessageCircle, color: "bg-muted text-muted-foreground" };
     }
   };
 
@@ -420,14 +443,14 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
         <div className="space-y-5 md:space-y-6 pb-4">
           {/* Louisiana context indicator */}
           {conversation?.messages && conversation.messages.length === 0 && (
-            <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-4">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                  <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <GraduationCap className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 text-sm">
-                  <p className="font-semibold text-blue-900 dark:text-blue-100">Louisiana-Aligned Coaching</p>
-                  <p className="text-blue-700 dark:text-blue-300 mt-1">
+                  <p className="font-semibold text-foreground">Louisiana-Aligned Coaching</p>
+                  <p className="text-muted-foreground mt-1">
                     I'll ask clarifying questions about your grade, subject, and teaching challenge before generating a prompt.
                     All prompts reference specific LER indicators and Louisiana standards.
                   </p>
@@ -439,14 +462,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           {conversation?.messages.map((msg, idx) => {
             // Only mark as prompt if it explicitly contains prompt markers
             // This prevents false positives from clarifying questions
-            const isPrompt = msg.role === "assistant" && (
-              msg.content.includes("PROMPT:") ||
-              msg.content.includes("**PROMPT:**") ||
-              msg.content.includes("Here's your prompt") ||
-              msg.content.includes("Here is your prompt") ||
-              msg.content.includes("Here's a prompt") ||
-              msg.content.includes("Here is a prompt")
-            );
+            const isPrompt = msg.role === "assistant" && isGeneratedPrompt(msg.content);
 
             return (
               <div
@@ -462,7 +478,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground border-primary/30"
                       : isPrompt
-                        ? "bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md"
+                        ? "bg-primary text-primary-foreground border-primary/30 shadow-md"
                         : "bg-muted border-border"
                   )}
                 >
@@ -474,10 +490,10 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                   msg.role === "user" ? "items-end" : "items-start"
                 )}>
                   {isPrompt && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400"
+                      className="flex items-center gap-2 text-xs font-semibold text-primary"
                     >
                       <Sparkles className="h-3.5 w-3.5" />
                       <span>Louisiana-Aligned Prompt Generated</span>
@@ -492,7 +508,7 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : isPrompt
-                          ? "bg-linear-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/40 dark:to-blue-900/30 border-2 border-blue-200 dark:border-blue-700 text-foreground shadow-sm"
+                          ? "bg-primary/5 border-2 border-primary/20 text-foreground shadow-sm"
                           : "bg-muted text-foreground border border-border"
                     )}
                   >
@@ -539,23 +555,11 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
                           variant="ghost"
                           size="icon"
                           className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
-                          onClick={() => handleCopy(msg.content)}
-                          title="Copy to clipboard"
-                          aria-label="Copy prompt to clipboard"
+                          onClick={() => handleCopy(msg.content, idx, isPrompt)}
+                          title={isPrompt && !savedPromptIndices.has(idx) ? "Copy & save to library" : "Copy to clipboard"}
+                          aria-label={isPrompt ? "Copy prompt and save to library" : "Copy to clipboard"}
                         >
                           <Copy className="h-3.5 w-3.5" />
-                        </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
-                          onClick={() => openSaveDialog(msg.content, idx)}
-                          title="Save to library"
-                          aria-label="Save prompt to library"
-                        >
-                          <Save className="h-3.5 w-3.5" />
                         </Button>
                       </motion.div>
                     </motion.div>
@@ -566,12 +570,12 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           })}
           
           {isSending && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex w-full gap-4"
             >
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-linear-to-br from-blue-500 to-blue-600 text-white border-blue-400 shadow-md">
+              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border bg-primary text-primary-foreground border-primary/30 shadow-md">
                 <Bot className="h-4 w-4" />
               </div>
               <div className="flex items-center gap-3 bg-muted/50 px-4 py-3 rounded-xl border border-border shadow-sm">
@@ -606,55 +610,6 @@ export function ChatInterface({ conversationId, onStartNew }: ChatInterfaceProps
           <span className="line-clamp-2 md:line-clamp-1">Tip: Press Enter to send • Mention your grade level, Louisiana standard code, or teaching challenge for best results</span>
         </div>
       </div>
-
-        {/* Save Dialog */}
-        <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Save to My Prompts</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label>Prompt Content</Label>
-                <Textarea 
-                  value={promptToSave} 
-                  onChange={(e) => setPromptToSave(e.target.value)} 
-                  className="h-32"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Grade Level</Label>
-                  <Input 
-                    placeholder="e.g. 8th Grade" 
-                    value={saveContext.grade}
-                    onChange={(e) => setSaveContext({...saveContext, grade: e.target.value})}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subject</Label>
-                  <Input 
-                    placeholder="e.g. Math" 
-                    value={saveContext.subject}
-                    onChange={(e) => setSaveContext({...saveContext, subject: e.target.value})}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Topic</Label>
-                <Input 
-                  placeholder="e.g. Systems of Equations" 
-                  value={saveContext.topic}
-                  onChange={(e) => setSaveContext({...saveContext, topic: e.target.value})}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsSaveDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleSavePrompt}>Save Prompt</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );

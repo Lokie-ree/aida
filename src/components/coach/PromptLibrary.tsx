@@ -249,9 +249,9 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
                     {prompt.feedback?.rating && (
                       <div className="flex items-center gap-0.5 mr-1">
                         {prompt.feedback.rating === "positive" ? (
-                          <ThumbsUp className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                          <ThumbsUp className="h-3.5 w-3.5 text-primary" />
                         ) : (
-                          <ThumbsDown className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
+                          <ThumbsDown className="h-3.5 w-3.5 text-destructive" />
                         )}
                       </div>
                     )}

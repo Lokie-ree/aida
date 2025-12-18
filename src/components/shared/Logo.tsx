@@ -15,10 +15,10 @@ export const Logo = ({ className }: { className?: string }) => {
 // Pelican Icon - Just the pelican icon
 export const LogoIcon = ({ className }: { className?: string }) => {
     return (
-        <img 
-            src="/icon.png" 
-            alt="Pelican AI Icon" 
-            className={cn('h-8 w-8', className)}
+        <img
+            src="/icon.png"
+            alt="Pelican AI Icon"
+            className={cn('h-8 w-8 shrink-0 object-contain', className)}
             loading="lazy"
         />
     )
