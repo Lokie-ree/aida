@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
       'react',
       'react-dom',
       'react-router-dom',
-      'framer-motion',
+      // Removed framer-motion from initial deps - lazy loaded
       'lucide-react',
       'class-variance-authority',
       'clsx',
@@ -34,6 +34,8 @@ export default defineConfig(({ mode }) => ({
     esbuildOptions: {
       // Preserve function/class names to avoid Better Auth mangling issues
       keepNames: true,
+      // Enable tree-shaking
+      treeShaking: true,
     },
   },
   build: {
@@ -56,6 +58,7 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@radix-ui')) {
               return 'ui-vendor';
             }
+            // framer-motion is lazy loaded, so it will be in its own chunk when needed
             if (id.includes('framer-motion')) {
               return 'animation-vendor';
             }
@@ -86,8 +89,6 @@ export default defineConfig(({ mode }) => ({
       // Preserve module structure for Better Auth
       preserveEntrySignatures: 'strict',
     },
-    // Increase chunk size warning limit since we're using manual chunks
-    chunkSizeWarningLimit: 1000,
     // Use esbuild minification (better ESM support than terser)
     // Note: esbuild still minifies but handles ESM better
     minify: mode === 'production' ? 'esbuild' : false,
@@ -103,5 +104,9 @@ export default defineConfig(({ mode }) => ({
     assetsInlineLimit: 4096, // Inline assets smaller than 4kb
     cssCodeSplit: true,
     sourcemap: mode === 'development',
+    // Enable compression hints
+    reportCompressedSize: true,
+    // Optimize chunk size limits
+    chunkSizeWarningLimit: 600, // Reduced from 1000 to catch larger chunks earlier
   },
 }));

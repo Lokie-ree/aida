@@ -49,8 +49,11 @@ convex/              # Backend: queries, mutations, actions, schema
 
 src/
 ├── components/
-│   ├── coach/       # CORE: PromptCoach, ChatInterface, PromptLibrary
+│   ├── coach/       # CORE: ChatInterface, PromptLibrary
+│   ├── layout/      # AuthenticatedLayout, AppSidebar, MobileHeader
+│   ├── shared/      # Shared components (dialogs, Logo, etc.)
 │   └── ui/          # shadcn/ui components
+├── pages/           # Page components (CoachPage, PromptsPage, ProfilePage)
 ├── lib/             # Utilities (auth-client, form-schemas, etc.)
 └── App.tsx          # Root routing
 
@@ -72,7 +75,6 @@ export const myAction = action({ args: {...}, handler: async (ctx, args) => {...
 ### RAG Namespaces
 - `louisiana_standards_ela`, `louisiana_standards_math`, etc. — Louisiana Student Standards
 - `louisiana_rubric_instruction`, `louisiana_rubric_planning`, etc. — LER indicators by domain
-- `louisiana_rubric_coaching` — Coaching questions for conversation modeling
 
 ## Louisiana Education Context
 
@@ -85,10 +87,11 @@ The coach references these naturally in conversation:
 
 ### Critical Rules for the Prompt Coach
 1. **NEVER generate lesson plans, worksheets, or materials**—only generate prompts
-2. **Always match standards to grade level** (never assign high school standards to middle school)
-3. **Use EXACT rubric language** from retrieved RAG context, not paraphrases
-4. **Keep output under ~900 tokens**—one strong prompt, not multiple alternatives
-5. **Teacher-to-teacher voice**—collegial, not corporate EdTech
+2. **NEVER ask clarifying questions before the first prompt**—generate immediately with smart defaults
+3. **Always match standards to grade level** (never assign high school standards to middle school)
+4. **Use EXACT rubric language** from retrieved RAG context, not paraphrases
+5. **Keep output under 400 tokens**—prompt block + one follow-up line only
+6. **Teacher-to-teacher voice**—collegial, not corporate EdTech
 
 ## Auth Pattern
 
@@ -101,6 +104,13 @@ The coach references these naturally in conversation:
 const user = await authComponent.getAuthUser(ctx);
 if (!user) throw new Error("Not authenticated");
 ```
+
+## Layout Pattern
+
+All authenticated routes use `AuthenticatedLayout` which provides:
+- Desktop: Persistent sidebar with navigation, Recent Sessions, and profile actions
+- Mobile: Header with hamburger menu (aligned with sidebar structure)
+- Routes: `/coach`, `/coach/:conversationId`, `/prompts`, `/profile`
 
 ## Testing Notes
 

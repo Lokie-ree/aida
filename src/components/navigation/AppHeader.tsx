@@ -46,6 +46,10 @@ export function AppHeader({
               src="/icon.png"
               alt="Pelican AI"
               className="h-8 w-8 transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+              width="32"
+              height="32"
+              fetchpriority="high"
             />
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
