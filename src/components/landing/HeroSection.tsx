@@ -1,20 +1,55 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import RotatingText from "@/components/shared/RotatingText";
 import { Sparkles, ArrowRight, ChevronDown } from "lucide-react";
+
+// Lazy load framer-motion to reduce initial bundle size
+let motionModule: typeof import("framer-motion") | null = null;
+let motionLoading = false;
+
+const loadMotion = async () => {
+  if (motionModule || motionLoading) return motionModule;
+  motionLoading = true;
+  motionModule = await import("framer-motion");
+  motionLoading = false;
+  return motionModule;
+};
 
 interface HeroSectionProps {
   onGetStartedClick: () => void;
 }
 
 export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
+  const [motionLoaded, setMotionLoaded] = useState(false);
+  const [MotionDiv, setMotionDiv] = useState<React.ComponentType<any>>(() => ({ children, className, ...props }: any) => <div className={className} {...props}>{children}</div>);
+  const [MotionH1, setMotionH1] = useState<React.ComponentType<any>>(() => ({ children, className, ...props }: any) => <h1 className={className} {...props}>{children}</h1>);
+
+  // Load framer-motion after initial render
+  useEffect(() => {
+    // Use requestIdleCallback if available, otherwise setTimeout
+    const loadMotionAsync = async () => {
+      const motion = await loadMotion();
+      if (motion) {
+        setMotionDiv(() => motion.motion.div);
+        setMotionH1(() => motion.motion.h1);
+        setMotionLoaded(true);
+      }
+    };
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(loadMotionAsync, { timeout: 2000 });
+    } else {
+      setTimeout(loadMotionAsync, 100);
+    }
+  }, []);
+
   // Animation variants
-  const fadeInUp = {
+  const fadeInUp = motionLoaded ? {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 }
-  };
+  } : undefined;
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-6">
@@ -27,10 +62,12 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
 
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <MotionDiv
+          {...(motionLoaded ? {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5 }
+          } : {})}
           className="inline-block mb-8"
         >
           <div className="relative px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
@@ -45,24 +82,28 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
               <span className="text-sm font-medium">AI Guidance for Louisiana Educators</span>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Main Headline - More Compelling */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+        <MotionH1
+          {...(motionLoaded ? {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, delay: 0.1 }
+          } : {})}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-foreground leading-tight font-heading"
         >
           Navigate AI with Confidence
           <br />
-        </motion.h1>
+        </MotionH1>
 
         {/* Simplified Rotating Platform Names */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <MotionDiv
+          {...(motionLoaded ? {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, delay: 0.2 }
+          } : {})}
           className="mb-8"
         >
           <div className="text-center">
@@ -80,26 +121,30 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
               staggerDuration={0.03}
             />
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Simplified Value Proposition */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+        <MotionDiv
+          {...(motionLoaded ? {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, delay: 0.3 }
+          } : {})}
           className="mb-12 max-w-3xl mx-auto"
         >
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-primary">
             An intelligent coaching assistant that helps you generate <span className="text-foreground font-semibold">Louisiana-aligned prompts</span> for any AI tool. 
             <span className="text-foreground font-semibold"> Just describe what you're teaching</span>, and our coach asks clarifying questions like a colleague—then gives you a prompt ready to paste into ChatGPT, Claude, or whatever you already use.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* CTA Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+        <MotionDiv
+          {...(motionLoaded ? {
+            initial: { opacity: 0, y: 20 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.5, delay: 0.4 }
+          } : {})}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto"
         >
           <Button
@@ -113,22 +158,23 @@ export function HeroSection({ onGetStartedClick }: HeroSectionProps) {
           <p className="text-sm text-muted-foreground text-center sm:text-left">
             Free for Louisiana educators • Start your first conversation today
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+        <MotionDiv
+          {...(motionLoaded ? {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            transition: { duration: 0.5, delay: 0.5 }
+          } : {})}
           className="mt-16"
         >
           <ChevronDown 
             className="h-6 w-6 mx-auto text-muted-foreground animate-bounce" 
             aria-label="Scroll down for more information"
           />
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );
 }
-

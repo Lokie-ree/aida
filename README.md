@@ -28,20 +28,20 @@ Platform-agnostic guidance that improves teaching practice through Louisiana-spe
 
 The **Conversational Prompt Coach** is the primary product experience. It provides:
 
-1. **Conversational chat interface** where teachers describe what they're teaching
-2. **Intelligent clarifying questions** (like a colleague, not a form)
-3. **Louisiana-aligned prompt generation** teachers can copy/paste into ChatGPT, Claude, Gemini, etc.
-4. **Prompt library** to save and reuse successful prompts
-5. **Feedback loop** for refinement and improvement
+1. **Prompt-first chat interface** - Generates usable prompts immediately with smart defaults (no interrogation mode)
+2. **Louisiana-aligned prompt generation** - Teachers copy/paste prompts into ChatGPT, Claude, Gemini, etc.
+3. **Auto-save on copy** - Prompts automatically saved to library when copied
+4. **Conversation management** - Auto-generated titles, rename/delete sessions, persistent sidebar
+5. **Unified authenticated layout** - Desktop sidebar + mobile menu with Recent Sessions
 
 **Access:** Navigate to `/coach` after signing in.
 
 ### ✅ Supporting Features
 
 - **User Profiles** - Personalize coach recommendations based on grade/subject
-- **Generated Prompts Library** - Save and reuse prompts from coaching conversations
-- **Framework Library** - Pre-built exemplar prompts (populated from successful beta conversations)
-- **RAG Integration** - 🚧 **IN PROGRESS** - Louisiana standards and rubric data ingestion planned (see `docs/RAG_INGESTION_PLAN.md`)
+- **Generated Prompts Library** (`/prompts`) - Save and reuse prompts from coaching conversations
+- **RAG Integration** - ✅ **COMPLETE** - Louisiana Student Standards and LER rubric indicators integrated
+- **Authenticated Layout** - Persistent sidebar (desktop) and mobile menu with session management
 
 ## 🛠️ Tech Stack
 
@@ -181,9 +181,11 @@ convex/           # Convex backend (serverless functions)
 src/              # React frontend
 ├── components/
 │   ├── coach/    # Prompt Coach UI (CORE PRODUCT)
-│   ├── framework/ # Framework Library
+│   ├── layout/   # AuthenticatedLayout, AppSidebar, MobileHeader, etc.
+│   ├── shared/   # Shared components (dialogs, Logo, etc.)
 │   ├── dashboard/ # Dashboard components
 │   └── ...
+├── pages/        # Page components (CoachPage, PromptsPage, ProfilePage)
 ├── App.tsx       # Root component with routing
 └── main.tsx      # Application entry point
 
@@ -195,12 +197,14 @@ knowledge/        # Louisiana education data (markdown source files)
 
 ## 🔑 Key Features
 
-### Conversational Prompt Coach
+### Prompt-First Conversational Coach
 The core product experience. Teachers describe what they're teaching, and the AI coach:
-- Asks clarifying questions (like a colleague, not a form)
-- Demonstrates knowledge of Louisiana Educator Rubric and Louisiana Student Standards
-- Generates platform-agnostic prompts for any AI tool
-- Saves successful prompts to a personal library
+- **Generates prompts immediately** - No interrogation mode, uses smart defaults
+- **Concise output** - Prompt in code block + one follow-up line (under 400 tokens)
+- **Louisiana-aligned** - Demonstrates knowledge of Louisiana Educator Rubric and Louisiana Student Standards
+- **Platform-agnostic** - Works with ChatGPT, Claude, Gemini, or any AI tool
+- **Auto-save on copy** - Prompts automatically saved to library when copied
+- **Session management** - Auto-generated titles, rename/delete, persistent sidebar navigation
 
 ### Louisiana-Specific Intelligence
 Every generated prompt demonstrates knowledge of:
@@ -219,9 +223,37 @@ Generated prompts work in:
 
 ## 📖 Documentation
 
-- **Product Vision:** `VISION.md` - Complete product strategy and beta testing plan
 - **Development Guide:** `CLAUDE.md` - AI assistant guide for working with this codebase
+- **Design Plans:** `docs/plans/` - Recent implementation plans and design decisions
 - **Changelog:** `CHANGELOG.md` - All notable changes to the project
+
+## ✅ Recently Completed (December 2025)
+
+### Prompt-First Redesign
+- ✅ Updated system prompt to generate prompts immediately (no interrogation)
+- ✅ Removed coaching questions RAG retrieval (standards + rubric only)
+- ✅ Concise output format: prompt block + one follow-up line
+- ✅ Smart defaults for missing context (grade, subject, standards)
+
+### Chat Interface Cleanup
+- ✅ Removed conversation history cards from ChatInterface
+- ✅ Added Recent Sessions to mobile menu
+- ✅ Implemented auto-save on copy functionality
+- ✅ Auto-generated conversation titles from first message
+
+### Authenticated Layout with Sidebar
+- ✅ Unified layout with persistent desktop sidebar
+- ✅ Mobile menu aligned with sidebar structure
+- ✅ Session management (rename/delete with kebab menus)
+- ✅ Route structure: `/coach`, `/coach/:conversationId`, `/prompts`, `/profile`
+- ✅ Shared dialog components for session management
+
+## 🎯 What's Next
+
+- **Testing & Polish** - E2E test coverage for new layout and prompt-first flow
+- **Performance** - Optimize RAG retrieval and response times
+- **User Feedback** - Gather teacher feedback on prompt-first approach
+- **Analytics** - Track prompt generation success rates and user engagement
 
 ## 🤝 Contributing
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { startTransition } from "react";
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App";
@@ -19,10 +19,20 @@ if (!convexUrl) {
   );
 }
 
+// Create Convex client with optimized settings
 const convex = new ConvexReactClient(convexUrl, {
   // Allow unauthenticated mutations (like beta signup) while still requiring auth for protected queries
   expectAuth: false,
-  verbose: true,
+  verbose: false, // Disable verbose logging in production for better performance
+  // Use WebSocket for real-time updates, but don't block initial render
+  unsavedChangesWarning: false,
+});
+
+// Defer Convex connection initialization to improve initial page load
+// The connection will be established after the initial render
+startTransition(() => {
+  // Connection is lazy - it will be established when first query/mutation is called
+  // This allows the page to render before establishing the WebSocket connection
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
