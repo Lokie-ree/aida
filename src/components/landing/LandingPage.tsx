@@ -1,16 +1,29 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, lazy, Suspense } from "react";
 import { LogIn, UserPlus } from "lucide-react";
 import { AppHeader, type NavConfig } from "@/components/navigation";
 import { PrivacyPolicyModal } from "@/components/shared/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/shared/TermsOfServiceModal";
 import { HeroSection } from "@/components/landing/HeroSection";
-import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { LouisianaExamplesSection } from "@/components/landing/LouisianaExamplesSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { CTASection } from "@/components/landing/CTASection";
+import { LazySection } from "@/components/shared/LazySection";
 import { AuthModal } from "@/components/shared/AuthModal";
 import { Metadata } from "@/components/shared/Metadata";
+
+// Lazy load below-the-fold sections to improve initial page load
+const FeaturesSection = lazy(() =>
+  import("./FeaturesSection").then((m) => ({ default: m.FeaturesSection }))
+);
+const LouisianaExamplesSection = lazy(() =>
+  import("./LouisianaExamplesSection").then((m) => ({ default: m.LouisianaExamplesSection }))
+);
+const TestimonialsSection = lazy(() =>
+  import("./TestimonialsSection").then((m) => ({ default: m.TestimonialsSection }))
+);
+const FAQSection = lazy(() =>
+  import("./FAQSection").then((m) => ({ default: m.FAQSection }))
+);
+const CTASection = lazy(() =>
+  import("./CTASection").then((m) => ({ default: m.CTASection }))
+);
 
 function LandingPage() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -64,11 +77,31 @@ function LandingPage() {
       {/* Main Content */}
       <main id="main-content">
         <HeroSection onGetStartedClick={handleGetStartedClick} />
-        <FeaturesSection />
-        <LouisianaExamplesSection />
-        <TestimonialsSection />
-        <FAQSection />
-        <CTASection onGetStartedClick={handleGetStartedClick} />
+        <LazySection>
+          <Suspense fallback={null}>
+            <FeaturesSection />
+          </Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}>
+            <LouisianaExamplesSection />
+          </Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}>
+            <TestimonialsSection />
+          </Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}>
+            <FAQSection />
+          </Suspense>
+        </LazySection>
+        <LazySection>
+          <Suspense fallback={null}>
+            <CTASection onGetStartedClick={handleGetStartedClick} />
+          </Suspense>
+        </LazySection>
       </main>
 
       {/* Footer */}
@@ -79,7 +112,14 @@ function LandingPage() {
             <div className="md:col-span-1">
               <div className="mb-4">
                 <div className="flex items-center gap-3">
-                  <img src="/icon.png" alt="Pelican AI" className="h-8 w-8" />
+                  <img 
+                    src="/icon.png" 
+                    alt="Pelican AI" 
+                    className="h-8 w-8" 
+                    loading="lazy"
+                    width="32"
+                    height="32"
+                  />
                   <span className="text-xl font-bold text-foreground">
                     Pelican AI
                   </span>

@@ -4,7 +4,14 @@ import { cn } from '@/lib/utils'
 export const Logo = ({ className }: { className?: string }) => {
     return (
         <div className={cn('flex items-center gap-3', className)}>
-            <img src="/icon.png" alt="Pelican AI" className="h-10 w-10" loading="lazy" />
+            <img 
+                src="/icon.png" 
+                alt="Pelican AI" 
+                className="h-10 w-10" 
+                loading="lazy"
+                width="40"
+                height="40"
+            />
             <span className="text-xl font-bold text-foreground font-heading">
                 Pelican AI
             </span>
@@ -20,6 +27,8 @@ export const LogoIcon = ({ className }: { className?: string }) => {
             alt="Pelican AI Icon"
             className={cn('h-8 w-8 shrink-0 object-contain', className)}
             loading="lazy"
+            width="32"
+            height="32"
         />
     )
 }

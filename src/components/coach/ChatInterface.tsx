@@ -21,6 +21,12 @@ function isGeneratedPrompt(content: string): boolean {
     return true;
   }
 
+  // Markdown code blocks - the primary format used by the prompt coach
+  // The AI outputs prompts in triple backtick blocks
+  if (content.includes("```")) {
+    return true;
+  }
+
   // Common phrases the AI uses when delivering a prompt
   const promptPhrases = [
     "here's your prompt",
