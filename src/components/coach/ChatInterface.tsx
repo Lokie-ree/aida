@@ -8,6 +8,7 @@ import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, Mes
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { RefinementButtons } from "./RefinementButtons";
 
 /**
  * Detects if a message contains a generated prompt.
@@ -72,6 +73,8 @@ export function ChatInterface({
   const [promptRatings, setPromptRatings] = useState<Map<number, "positive" | "negative">>(new Map());
   // Track which prompts have been saved (to avoid duplicate saves)
   const [savedPromptIndices, setSavedPromptIndices] = useState<Set<number>>(new Set());
+  // Track applied refinements per message index
+  const [appliedRefinements, setAppliedRefinements] = useState<Map<number, Set<string>>>(new Map());
 
   const conversation = useQuery(api.promptCoach.getConversation, 
     conversationId ? { conversationId } : "skip"
@@ -520,6 +523,25 @@ export function ChatInterface({
                   >
                     {msg.content}
                   </motion.div>
+
+                  {/* Refinement buttons for generated prompts */}
+                  {msg.role === "assistant" && isPrompt && conversationId && (
+                    <RefinementButtons
+                      promptText={msg.content}
+                      conversationId={conversationId}
+                      messageIndex={idx}
+                      userProfile={userProfile}
+                      onRefinementApplied={(refId) => {
+                        setAppliedRefinements((prev) => {
+                          const newMap = new Map(prev);
+                          const existing = newMap.get(idx) || new Set();
+                          newMap.set(idx, new Set(existing).add(refId));
+                          return newMap;
+                        });
+                      }}
+                      appliedRefinements={appliedRefinements.get(idx) || new Set()}
+                    />
+                  )}
 
                   {msg.role === "assistant" && (
                     <motion.div 
