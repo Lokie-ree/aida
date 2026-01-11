@@ -4,11 +4,17 @@ import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, MessageCircle, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, MessageCircle, ThumbsUp, ThumbsDown, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { RefinementButtons } from "./RefinementButtons";
+import {
+  detectProfileFromMessage,
+  hasOfferedProfileDetection,
+  markProfileDetectionOffered,
+  type DetectedProfile,
+} from "@/lib/profile-detection";
 
 /**
  * Detects if a message contains a generated prompt.
@@ -75,6 +81,10 @@ export function ChatInterface({
   const [savedPromptIndices, setSavedPromptIndices] = useState<Set<number>>(new Set());
   // Track applied refinements per message index
   const [appliedRefinements, setAppliedRefinements] = useState<Map<number, Set<string>>>(new Map());
+  // Smart profile detection state
+  const [detectedProfile, setDetectedProfile] = useState<DetectedProfile | null>(null);
+  const [showProfileSavePrompt, setShowProfileSavePrompt] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
 
   const conversation = useQuery(api.promptCoach.getConversation, 
     conversationId ? { conversationId } : "skip"
@@ -84,6 +94,7 @@ export function ChatInterface({
   
   const sendMessage = useAction(api.promptCoach.sendMessage);
   const savePromptMutation = useMutation(api.promptCoach.savePrompt);
+  const updateUserProfile = useMutation(api.userProfiles.updateUserProfile);
 
   // Simple scroll to bottom - using native scrolling instead of Radix
   const scrollToBottom = useCallback(() => {
@@ -104,6 +115,41 @@ export function ChatInterface({
       return () => clearTimeout(timer);
     }
   }, [messageCount, scrollToBottom]);
+
+  // Smart profile detection: check first user message after AI responds
+  useEffect(() => {
+    // Only run when we have exactly 2 messages (user + AI response)
+    if (conversation?.messages?.length !== 2) return;
+    
+    // Skip if profile already has grade AND subject
+    if (userProfile?.gradeLevel && userProfile?.subject) return;
+    
+    // Skip if we've already offered this user profile detection
+    if (hasOfferedProfileDetection()) return;
+    
+    // Get the first user message
+    const firstUserMessage = conversation.messages.find(m => m.role === "user");
+    if (!firstUserMessage) return;
+    
+    // Try to detect profile info from the message
+    const detected = detectProfileFromMessage(firstUserMessage.content);
+    
+    // Only show prompt if we detected something with reasonable confidence
+    if (detected && detected.confidence !== "low") {
+      // Only offer fields that are missing from the profile
+      const offerGrade = detected.gradeLevel && !userProfile?.gradeLevel;
+      const offerSubject = detected.subject && !userProfile?.subject;
+      
+      if (offerGrade || offerSubject) {
+        setDetectedProfile({
+          gradeLevel: offerGrade ? detected.gradeLevel : undefined,
+          subject: offerSubject ? detected.subject : undefined,
+          confidence: detected.confidence,
+        });
+        setShowProfileSavePrompt(true);
+      }
+    }
+  }, [conversation?.messages?.length, userProfile?.gradeLevel, userProfile?.subject]);
 
   const handleSend = async () => {
     if (!inputValue.trim() || !conversationId) return;
@@ -210,6 +256,50 @@ export function ChatInterface({
       }
       return newMap;
     });
+  };
+
+  /**
+   * Handles saving detected profile info from the user's first message.
+   * Updates the user profile and dismisses the prompt.
+   */
+  const handleSaveDetectedProfile = async () => {
+    if (!detectedProfile) return;
+    
+    setIsSavingProfile(true);
+    try {
+      await updateUserProfile({
+        ...(detectedProfile.gradeLevel && { gradeLevel: detectedProfile.gradeLevel }),
+        ...(detectedProfile.subject && { subject: detectedProfile.subject }),
+      });
+      
+      // Mark as offered so we don't prompt again
+      markProfileDetectionOffered();
+      setShowProfileSavePrompt(false);
+      setDetectedProfile(null);
+      
+      const savedFields = [
+        detectedProfile.gradeLevel,
+        detectedProfile.subject,
+      ].filter(Boolean).join(" • ");
+      
+      toast.success(`Profile updated: ${savedFields}`, {
+        description: "Your prompts will now be personalized to your teaching context.",
+      });
+    } catch (error) {
+      console.error("Failed to save profile:", error);
+      toast.error("Unable to save profile. Please try again.");
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
+
+  /**
+   * Dismisses the profile detection prompt without saving.
+   */
+  const handleDismissProfilePrompt = () => {
+    markProfileDetectionOffered();
+    setShowProfileSavePrompt(false);
+    setDetectedProfile(null);
   };
 
 
@@ -596,6 +686,62 @@ export function ChatInterface({
               </div>
             );
           })}
+
+          {/* Smart Profile Detection Prompt */}
+          <AnimatePresence>
+            {showProfileSavePrompt && detectedProfile && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="bg-primary/5 border border-primary/20 rounded-lg p-3 md:p-4 my-3"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 shrink-0">
+                    <UserCheck className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground">
+                      We noticed you're teaching{" "}
+                      {[detectedProfile.gradeLevel, detectedProfile.subject]
+                        .filter(Boolean)
+                        .join(" ")}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Save this to your profile for better-aligned prompts and unlocked refinement options.
+                    </p>
+                    <div className="flex gap-2 mt-3">
+                      <Button
+                        size="sm"
+                        onClick={handleSaveDetectedProfile}
+                        disabled={isSavingProfile}
+                        className="h-8 text-xs"
+                      >
+                        {isSavingProfile ? (
+                          <>
+                            <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
+                            Saving...
+                          </>
+                        ) : (
+                          "Save to Profile"
+                        )}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={handleDismissProfilePrompt}
+                        disabled={isSavingProfile}
+                        className="h-8 text-xs"
+                      >
+                        Not now
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           
           {isSending && (
             <motion.div
