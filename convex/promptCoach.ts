@@ -6,6 +6,7 @@ import { internal } from "./_generated/api";
 import { components } from "./_generated/api";
 import { Agent } from "@convex-dev/agent";
 import { openai } from "@ai-sdk/openai";
+import type { Id } from "./_generated/dataModel";
 
 /**
  * Generates a meaningful conversation title from the user's first message.
@@ -217,6 +218,151 @@ export const appendMessage = internalMutation({
   },
 });
 
+/**
+ * Core message handling logic - extracted for reuse by sendMessage and refineFromLibrary.
+ * 
+ * @param ctx - Action context
+ * @param userId - Authenticated user ID
+ * @param conversationId - Conversation to send message to
+ * @param message - The message content
+ * @returns The AI response text
+ */
+async function sendMessageHandler(
+  ctx: ActionCtx,
+  userId: string,
+  conversationId: Id<"promptConversations">,
+  message: string
+): Promise<string> {
+  // 1. Get conversation to find threadId
+  const conversation = await ctx.runQuery(internal.promptCoach.getConversationInternal, {
+    conversationId
+  });
+
+  if (!conversation) throw new Error("Conversation not found");
+
+  // 1.5. Get user profile for context (grade level, subject)
+  const userProfile = await ctx.runQuery(internal.userProfiles.getUserProfileByUserId, {
+    userId
+  });
+
+  // 2. Save user message to our sync table (frontend compatibility)
+  await ctx.runMutation(internal.promptCoach.appendMessage, {
+    conversationId,
+    role: "user",
+    content: message,
+  });
+
+  // 2.5. Auto-generate title on first user message (skip if title already set, e.g., from refineFromLibrary)
+  const isFirstMessage = !conversation.messages || conversation.messages.length === 0;
+  const hasDefaultTitle = conversation.title === "New Conversation";
+  if (isFirstMessage && hasDefaultTitle) {
+    const generatedTitle = generateConversationTitle(message);
+    await ctx.runMutation(internal.promptCoach.updateConversationTitle, {
+      conversationId,
+      title: generatedTitle,
+    });
+  }
+
+  // 3. Initialize Agent
+  const agent = new Agent(components.agent, {
+    name: "PelicanCoach",
+    languageModel: openai("gpt-5.1-2025-11-13"),
+    instructions: PELICAN_SYSTEM_PROMPT,
+  });
+
+  // 4. Retrieve Louisiana standards with grade-level filtering
+  const standardResults = await searchStandardsWithGradeFilter(
+    ctx, 
+    message, 
+    userProfile?.gradeLevel,
+    userProfile?.subject
+  );
+
+  // 5. Retrieve Louisiana Educator Rubric indicators
+  const rubricResults = await searchRubricIndicators(ctx, message);
+
+  const relevantStandards = standardResults
+    .map((r) => r.content?.[0]?.text)
+    .filter(Boolean)
+    .join("\n\n");
+
+  const relevantRubricIndicators = rubricResults
+    .map((r) => r.content?.[0]?.text)
+    .filter(Boolean)
+    .join("\n\n");
+
+  // 6. Build the prompt with profile and Louisiana context
+  let promptWithContext = "";
+
+  // Inject teacher profile context FIRST (critical for grade-level matching)
+  if (userProfile?.gradeLevel || userProfile?.subject) {
+    promptWithContext += "TEACHER PROFILE:\n";
+    if (userProfile.gradeLevel) {
+      promptWithContext += `- Grade Level: ${userProfile.gradeLevel}\n`;
+    }
+    if (userProfile.subject) {
+      promptWithContext += `- Subject: ${userProfile.subject}\n`;
+    }
+    if (userProfile.school) {
+      promptWithContext += `- School: ${userProfile.school}\n`;
+    }
+    promptWithContext += "\n";
+  }
+
+  // Add the teacher's message
+  promptWithContext += `TEACHER REQUEST:\n${message}`;
+
+  // Add Louisiana context (standards + rubric indicators)
+  if (relevantStandards || relevantRubricIndicators) {
+    promptWithContext += "\n\n---\nLOUISIANA CONTEXT (use ONLY if matching teacher's grade level):";
+    
+    if (relevantStandards) {
+      promptWithContext += `\n\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
+    }
+    if (relevantRubricIndicators) {
+      promptWithContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
+    }
+
+    // Reinforce grade-level matching instruction
+    const gradeReminder = userProfile?.gradeLevel 
+      ? `\n\nIMPORTANT: The teacher is ${userProfile.gradeLevel}. ONLY use standards that match this grade level. If the retrieved standards above don't match, ignore them and use your knowledge of ${userProfile.gradeLevel} standards instead.`
+      : "\n\nUse EXACT language from the rubric indicators. Reference standard codes naturally in the generated prompt.";
+    
+    promptWithContext += gradeReminder;
+  }
+
+  // 7. Ensure thread exists
+  let threadId = conversation.threadId;
+  if (!threadId) {
+     const threadResult = await agent.createThread(ctx, {});
+     threadId = threadResult.threadId;
+     await ctx.runMutation(internal.promptCoach.updateThreadId, {
+       conversationId,
+       threadId: threadId,
+     });
+  }
+
+  // 8. Run Agent
+  const response = await agent.generateText(ctx, {
+    threadId,
+  }, {
+    model: openai("gpt-5.1-2025-11-13"),
+    prompt: promptWithContext,
+    maxOutputTokens: 1200, // Increased slightly to avoid cutoff issues
+  });
+
+  const responseText = response.text;
+
+  // 9. Save assistant response to our sync table
+  await ctx.runMutation(internal.promptCoach.appendMessage, {
+    conversationId,
+    role: "assistant",
+    content: responseText,
+  });
+
+  return responseText;
+}
+
 // Action to handle sending a message (using Agent component)
 export const sendMessage = action({
   args: {
@@ -227,133 +373,7 @@ export const sendMessage = action({
     const user = await authComponent.getAuthUser(ctx);
     if (!user) throw new Error("Not authenticated");
 
-    // 1. Get conversation to find threadId
-    const conversation = await ctx.runQuery(internal.promptCoach.getConversationInternal, {
-      conversationId: args.conversationId
-    });
-
-    if (!conversation) throw new Error("Conversation not found");
-
-    // 1.5. Get user profile for context (grade level, subject)
-    const userProfile = await ctx.runQuery(internal.userProfiles.getUserProfileByUserId, {
-      userId: user._id
-    });
-
-    // 2. Save user message to our sync table (frontend compatibility)
-    await ctx.runMutation(internal.promptCoach.appendMessage, {
-      conversationId: args.conversationId,
-      role: "user",
-      content: args.message,
-    });
-
-    // 2.5. Auto-generate title on first user message
-    const isFirstMessage = !conversation.messages || conversation.messages.length === 0;
-    if (isFirstMessage) {
-      const generatedTitle = generateConversationTitle(args.message);
-      await ctx.runMutation(internal.promptCoach.updateConversationTitle, {
-        conversationId: args.conversationId,
-        title: generatedTitle,
-      });
-    }
-
-    // 3. Initialize Agent
-    const agent = new Agent(components.agent, {
-      name: "PelicanCoach",
-      languageModel: openai("gpt-5.1-2025-11-13"),
-      instructions: PELICAN_SYSTEM_PROMPT,
-    });
-
-    // 4. Retrieve Louisiana standards with grade-level filtering
-    const standardResults = await searchStandardsWithGradeFilter(
-      ctx, 
-      args.message, 
-      userProfile?.gradeLevel,
-      userProfile?.subject
-    );
-
-    // 5. Retrieve Louisiana Educator Rubric indicators
-    const rubricResults = await searchRubricIndicators(ctx, args.message);
-
-    const relevantStandards = standardResults
-      .map((r) => r.content?.[0]?.text)
-      .filter(Boolean)
-      .join("\n\n");
-
-    const relevantRubricIndicators = rubricResults
-      .map((r) => r.content?.[0]?.text)
-      .filter(Boolean)
-      .join("\n\n");
-
-    // 6. Build the prompt with profile and Louisiana context
-    let promptWithContext = "";
-
-    // Inject teacher profile context FIRST (critical for grade-level matching)
-    if (userProfile?.gradeLevel || userProfile?.subject) {
-      promptWithContext += "TEACHER PROFILE:\n";
-      if (userProfile.gradeLevel) {
-        promptWithContext += `- Grade Level: ${userProfile.gradeLevel}\n`;
-      }
-      if (userProfile.subject) {
-        promptWithContext += `- Subject: ${userProfile.subject}\n`;
-      }
-      if (userProfile.school) {
-        promptWithContext += `- School: ${userProfile.school}\n`;
-      }
-      promptWithContext += "\n";
-    }
-
-    // Add the teacher's message
-    promptWithContext += `TEACHER REQUEST:\n${args.message}`;
-
-    // Add Louisiana context (standards + rubric indicators)
-    if (relevantStandards || relevantRubricIndicators) {
-      promptWithContext += "\n\n---\nLOUISIANA CONTEXT (use ONLY if matching teacher's grade level):";
-      
-      if (relevantStandards) {
-        promptWithContext += `\n\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
-      }
-      if (relevantRubricIndicators) {
-        promptWithContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
-      }
-
-      // Reinforce grade-level matching instruction
-      const gradeReminder = userProfile?.gradeLevel 
-        ? `\n\nIMPORTANT: The teacher is ${userProfile.gradeLevel}. ONLY use standards that match this grade level. If the retrieved standards above don't match, ignore them and use your knowledge of ${userProfile.gradeLevel} standards instead.`
-        : "\n\nUse EXACT language from the rubric indicators. Reference standard codes naturally in the generated prompt.";
-      
-      promptWithContext += gradeReminder;
-    }
-
-    // 7. Ensure thread exists
-    let threadId = conversation.threadId;
-    if (!threadId) {
-       const threadResult = await agent.createThread(ctx, {});
-       threadId = threadResult.threadId;
-       await ctx.runMutation(internal.promptCoach.updateThreadId, {
-         conversationId: args.conversationId,
-         threadId: threadId,
-       });
-    }
-
-    // 8. Run Agent
-    const response = await agent.generateText(ctx, {
-      threadId,
-    }, {
-      model: openai("gpt-5.1-2025-11-13"),
-      prompt: promptWithContext,
-      maxOutputTokens: 1200, // Increased slightly to avoid cutoff issues
-    });
-
-    const responseText = response.text;
-
-    // 9. Save assistant response to our sync table
-    await ctx.runMutation(internal.promptCoach.appendMessage, {
-      conversationId: args.conversationId,
-      role: "assistant",
-      content: responseText,
-    });
-
-    return responseText;
+    return await sendMessageHandler(ctx, user._id, args.conversationId, args.message);
   },
 });
 
@@ -718,5 +738,88 @@ export const setPromptRating = mutation({
             }
         });
     }
+});
+
+// =============================================================================
+// Library Refinement Functions (Phase 2)
+// =============================================================================
+
+/**
+ * Internal query to get a saved prompt by ID.
+ * Used by refineFromLibrary action.
+ */
+export const getSavedPromptInternal = internalQuery({
+    args: { promptId: v.id("generatedPrompts") },
+    handler: async (ctx, args) => {
+        return await ctx.db.get(args.promptId);
+    }
+});
+
+/**
+ * Internal mutation to create a conversation without auth check.
+ * Used by refineFromLibrary action.
+ */
+export const createConversationInternal = internalMutation({
+    args: { 
+        userId: v.string(), 
+        title: v.string() 
+    },
+    handler: async (ctx, args) => {
+        // Create thread for Agent
+        const agent = new Agent(components.agent, {
+            name: "PelicanCoach",
+            languageModel: openai("gpt-5.1-2025-11-13"),
+        });
+        const { threadId } = await agent.createThread(ctx, {});
+
+        return await ctx.db.insert("promptConversations", {
+            userId: args.userId,
+            title: args.title,
+            messages: [],
+            threadId,
+            status: "active",
+            lastUpdated: Date.now(),
+        });
+    }
+});
+
+/**
+ * Action to refine a saved prompt from the library.
+ * Creates a new conversation with the saved prompt as context,
+ * applies the refinement modifier, and returns the new conversation ID.
+ */
+export const refineFromLibrary = action({
+    args: {
+        promptId: v.id("generatedPrompts"),
+        refinementId: v.string(),
+        refinementModifier: v.string(),
+    },
+    handler: async (ctx, args): Promise<Id<"promptConversations">> => {
+        const user = await authComponent.getAuthUser(ctx);
+        if (!user) throw new Error("Not authenticated");
+
+        // 1. Get the saved prompt
+        const savedPrompt = await ctx.runQuery(internal.promptCoach.getSavedPromptInternal, {
+            promptId: args.promptId,
+        });
+        if (!savedPrompt || savedPrompt.userId !== user._id) {
+            throw new Error("Prompt not found or access denied");
+        }
+
+        // 2. Create new conversation with descriptive title
+        const title = `Refining: ${savedPrompt.context?.topic || "Saved prompt"}`;
+        const newConversationId = await ctx.runMutation(internal.promptCoach.createConversationInternal, {
+            userId: user._id,
+            title,
+        });
+
+        // 3. Build refinement message with original prompt as context
+        const refinementMessage = `I have this prompt I'd like to refine:\n\n---\n${savedPrompt.promptText}\n---\n\n${args.refinementModifier}`;
+
+        // 4. Send the refinement request (triggers AI response)
+        await sendMessageHandler(ctx, user._id, newConversationId, refinementMessage);
+
+        return newConversationId;
+    },
 });
 

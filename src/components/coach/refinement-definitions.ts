@@ -166,3 +166,18 @@ export const REFINEMENTS: Record<string, RefinementButton> = {
     promptModifier: PROMPT_MODIFIERS["align-standard"],
   },
 };
+
+// =============================================================================
+// Library Refinements (Phase 2)
+// =============================================================================
+
+/**
+ * Refinement buttons to show in the PromptLibrary.
+ * Curated subset - most useful for iterating on saved prompts.
+ * These are always unlocked since we're refining existing prompts.
+ */
+export const LIBRARY_REFINEMENTS = [
+  REFINEMENTS["make-shorter"],
+  REFINEMENTS["make-detailed"],
+  REFINEMENTS["simplify-language"],
+] as const;
