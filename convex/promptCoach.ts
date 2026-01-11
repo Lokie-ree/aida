@@ -63,73 +63,74 @@ function generateConversationTitle(message: string): string {
   return truncated + "…";
 }
 
+/**
+ * System prompt for Pelican AI Coach.
+ * 
+ * Key principles:
+ * - Generate immediately, don't ask questions first
+ * - Match standards EXACTLY to the teacher's grade level
+ * - Use profile context (grade, subject) when provided
+ * - One prompt, one follow-up line, nothing more
+ */
 const PELICAN_SYSTEM_PROMPT = `You are Pelican AI, a prompt generator built by a Louisiana teacher for Louisiana teachers. You create high-quality, Louisiana-aligned prompts that teachers copy-paste into ANY AI tool (ChatGPT, Claude, Gemini, etc.).
 
-WHAT YOU DO:
-- Generate prompts for lesson planning, assessments, parent communication, IEP accommodations, rubric creation, data analysis, and more
-- Embed relevant Louisiana Student Standards and LER indicators into prompts
-- Match standards to the correct grade level and subject
+YOUR PURPOSE:
+Generate prompts for lesson planning, assessments, parent communication, IEP accommodations, rubric creation, and data analysis. You do NOT generate the actual materials—only the prompts to create them.
 
-WHAT YOU DON'T DO:
-- Generate lesson plans, worksheets, or materials directly—only the prompts to create them
-- Ask multiple clarifying questions before delivering value
-- Write lengthy explanations or multiple alternatives
-
-CORE BEHAVIOR:
-Generate a usable prompt IMMEDIATELY when a teacher messages you. Use smart defaults for any missing context (grade level, subject focus, specific standards). The teacher will tell you if something needs adjustment.
-
-RESPONSE FORMAT:
+RESPONSE FORMAT (STRICT):
 1. A copy-pasteable prompt in a markdown code block
 2. One sentence: "Let me know if you'd like me to adjust anything."
 
-That's it. No preamble, no explanation, no alternatives.
+That's it. No preamble, no explanation, no alternatives, no questions before the first prompt.
 
-EXAMPLE RESPONSE:
+EXAMPLE:
 \`\`\`
-Act as a 5th grade ELA teacher in Louisiana. Create a close reading lesson for RL.5.3 (comparing and contrasting characters, settings, or events) using a grade-appropriate literary text. Include:
-- Text-dependent questions that build from literal to inferential
-- Opportunities for students to cite textual evidence
-- A culminating written response aligned to W.5.9
-Focus on student actions: students independently annotate, discuss with partners using accountable talk stems, and produce written analysis with text evidence.
+Act as an 8th grade Math teacher in Louisiana. Create a lesson introducing one-step inequalities (8.EE.B.7) that includes:
+- A real-world context relevant to Louisiana students
+- Guided practice with number line representations  
+- Exit ticket with 3 problems checking for understanding
+Focus on students explaining their reasoning and justifying solutions.
 \`\`\`
 
 Let me know if you'd like me to adjust anything.
 
-WHEN TEACHER ASKS FOR REFINEMENT:
-Regenerate the prompt with their feedback incorporated. Same format: prompt block + one-line follow-up.
+CRITICAL: GRADE-LEVEL MATCHING
+This is the most important rule. Standards MUST match the teacher's grade level:
+- If teacher says "8th grade" → ONLY use 8th grade standards (8.EE, 8.NS, etc.)
+- If teacher says "5th grade ELA" → ONLY use 5th grade ELA standards (RL.5, RI.5, W.5, etc.)
+- NEVER suggest a 6th grade standard for an 8th grade teacher
+- NEVER suggest middle school standards for elementary teachers
+- When retrieved standards don't match the grade level, IGNORE them and use your knowledge
 
-SMART DEFAULTS:
-When information is missing, make reasonable assumptions and generate anyway:
-- No grade specified → infer from context clues, or use a common grade range (e.g., 4th-5th for elementary math)
-- No specific standard → select the most relevant Louisiana Student Standard for the topic/grade
-- No LER focus → embed student-action language naturally without forcing a specific indicator
-- Vague request → interpret generously and deliver something useful
+TEACHER PROFILE CONTEXT:
+You may receive the teacher's profile information (grade level, subject). When provided:
+- ALWAYS use this as the primary context for the prompt
+- The profile grade level overrides any ambiguity in the message
+- Generate prompts appropriate for that specific grade level
 
-USING LOUISIANA CONTEXT:
-You receive retrieved Louisiana Student Standards and LER indicators relevant to the teacher's request. Use them to:
-- Reference specific standard codes (e.g., RL.5.3, 4.NF.A.1) in the generated prompt
-- Include exact rubric language for student/teacher actions (e.g., "students independently apply strategies," "teacher provides specific academic feedback")
-- Match standards to the grade level mentioned or inferred—never assign high school standards to middle school
+USING RETRIEVED CONTEXT:
+You receive Louisiana Student Standards and LER rubric indicators. Use them ONLY if they match the teacher's grade level:
+- ✅ Teacher: "8th grade inequalities" + Retrieved: "8.EE.B.7" → Use it
+- ❌ Teacher: "8th grade inequalities" + Retrieved: "6.EE.B.8" → IGNORE IT, find appropriate 8th grade standard
 
-If retrieved context doesn't match the teacher's request, ignore it and use your knowledge of Louisiana frameworks instead.
+When incorporating standards:
+- Reference specific standard codes in the prompt
+- Use exact rubric language (e.g., "students independently apply strategies")
+- Match cognitive depth to grade expectations
+
+REFINEMENT REQUESTS:
+When a teacher asks to adjust, shorten, add differentiation, etc.:
+- Regenerate the full prompt with changes incorporated
+- Same format: prompt block + one follow-up line
+- Don't explain what you changed—just deliver the improved prompt
 
 VOICE:
 - Teacher-to-teacher, not corporate EdTech
 - Concise and direct—respect their time
-- Use LER short codes naturally when relevant (SO, MS, LS, QU, etc.) but don't force them
-- Warm but efficient—no filler phrases like "Great question!" or "I'd be happy to help!"
-
-CRITICAL RULES:
-1. NEVER generate lesson plans, worksheets, or materials—only prompts
-2. NEVER ask clarifying questions before the first prompt—generate immediately
-3. NEVER provide multiple alternatives—one strong prompt only
-4. ALWAYS match standards to grade level (no high school standards for middle school)
-5. ALWAYS use exact rubric language from retrieved context, not paraphrases
-6. Keep total response under 400 tokens—the prompt itself plus one follow-up line
+- Warm but efficient—no "Great question!" or "I'd be happy to help!"
 
 WHEN IN DOUBT:
-Generate something useful. A prompt the teacher needs to tweak is better than no prompt while you ask questions.
-`;
+Generate something useful at the correct grade level. A prompt the teacher needs to tweak is better than no prompt while you ask questions.`;
 
 
 // Mutation to start a new conversation
@@ -233,6 +234,11 @@ export const sendMessage = action({
 
     if (!conversation) throw new Error("Conversation not found");
 
+    // 1.5. Get user profile for context (grade level, subject)
+    const userProfile = await ctx.runQuery(internal.userProfiles.getUserProfileByUserId, {
+      userId: user._id
+    });
+
     // 2. Save user message to our sync table (frontend compatibility)
     await ctx.runMutation(internal.promptCoach.appendMessage, {
       conversationId: args.conversationId,
@@ -257,81 +263,16 @@ export const sendMessage = action({
       instructions: PELICAN_SYSTEM_PROMPT,
     });
 
-    // Retrieve BOTH Louisiana standards AND LER rubric indicators for authentic context
-    const searchTerms = args.message;
+    // 4. Retrieve Louisiana standards with grade-level filtering
+    const standardResults = await searchStandardsWithGradeFilter(
+      ctx, 
+      args.message, 
+      userProfile?.gradeLevel,
+      userProfile?.subject
+    );
 
-    // Search for Louisiana Student Standards
-    // Standards data is stored in subject-specific namespaces:
-    // - louisiana_standards_ela
-    // - louisiana_standards_math
-    // - louisiana_standards_science
-    // - louisiana_standards_social_studies
-    // Search across all subject namespaces and combine results
-    const standardNamespaces = [
-      "louisiana_standards_ela",
-      "louisiana_standards_math",
-      "louisiana_standards_science",
-      "louisiana_standards_social_studies",
-    ];
-    
-    const allStandardResults = [];
-    for (const namespace of standardNamespaces) {
-      try {
-        const { results } = await rag.search(ctx, {
-          namespace,
-          query: searchTerms,
-          limit: 2, // Get top 2 from each namespace
-          filters: [
-            { name: "contentType", value: "louisiana_standard" }
-          ]
-        });
-        allStandardResults.push(...results);
-      } catch (error) {
-        // If a namespace doesn't exist yet (e.g., not ingested), skip it
-        console.warn(`Standards namespace ${namespace} not found, skipping`);
-      }
-    }
-    
-    // Sort by score (highest first) and take top 5
-    const standardResults = allStandardResults
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5);
-
-    // Search for Louisiana Educator Rubric indicators
-    // Rubric data is stored in multiple namespaces:
-    // - louisiana_rubric_system (LEADS system and overview)
-    // - louisiana_rubric_instruction, planning, environment, professionalism (domain-specific)
-    // Search across all rubric namespaces and combine results
-    const rubricNamespaces = [
-      "louisiana_rubric_system",
-      "louisiana_rubric_instruction",
-      "louisiana_rubric_planning",
-      "louisiana_rubric_environment",
-      "louisiana_rubric_professionalism",
-    ];
-    
-    const allRubricResults = [];
-    for (const namespace of rubricNamespaces) {
-      try {
-        const { results } = await rag.search(ctx, {
-          namespace,
-          query: searchTerms,
-          limit: 2, // Get top 2 from each namespace
-          filters: [
-            { name: "contentType", value: "rubric_indicator" }
-          ]
-        });
-        allRubricResults.push(...results);
-      } catch (error) {
-        // If a namespace doesn't exist yet (e.g., not ingested), skip it
-        console.warn(`Rubric namespace ${namespace} not found, skipping`);
-      }
-    }
-    
-    // Sort by score (highest first) and take top 4
-    const rubricResults = allRubricResults
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 4);
+    // 5. Retrieve Louisiana Educator Rubric indicators
+    const rubricResults = await searchRubricIndicators(ctx, args.message);
 
     const relevantStandards = standardResults
       .map((r) => r.content?.[0]?.text)
@@ -343,45 +284,69 @@ export const sendMessage = action({
       .filter(Boolean)
       .join("\n\n");
 
-    let promptWithContext = args.message;
+    // 6. Build the prompt with profile and Louisiana context
+    let promptWithContext = "";
 
-    // Build Louisiana-specific context (standards + rubric indicators)
-    let louisianaContext = "";
-    if (relevantStandards) {
-       louisianaContext += `\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
-    }
-    if (relevantRubricIndicators) {
-       louisianaContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
+    // Inject teacher profile context FIRST (critical for grade-level matching)
+    if (userProfile?.gradeLevel || userProfile?.subject) {
+      promptWithContext += "TEACHER PROFILE:\n";
+      if (userProfile.gradeLevel) {
+        promptWithContext += `- Grade Level: ${userProfile.gradeLevel}\n`;
+      }
+      if (userProfile.subject) {
+        promptWithContext += `- Subject: ${userProfile.subject}\n`;
+      }
+      if (userProfile.school) {
+        promptWithContext += `- School: ${userProfile.school}\n`;
+      }
+      promptWithContext += "\n";
     }
 
-    if (louisianaContext) {
-       promptWithContext += `\n\n---\nLOUISIANA CONTEXT:${louisianaContext}\n\nUse EXACT language from the rubric indicators above (e.g., "students independently apply strategies"). Reference standard codes and LER short codes naturally in the generated prompt.`;
+    // Add the teacher's message
+    promptWithContext += `TEACHER REQUEST:\n${args.message}`;
+
+    // Add Louisiana context (standards + rubric indicators)
+    if (relevantStandards || relevantRubricIndicators) {
+      promptWithContext += "\n\n---\nLOUISIANA CONTEXT (use ONLY if matching teacher's grade level):";
+      
+      if (relevantStandards) {
+        promptWithContext += `\n\nRELEVANT LOUISIANA STUDENT STANDARDS:\n${relevantStandards}`;
+      }
+      if (relevantRubricIndicators) {
+        promptWithContext += `\n\nRELEVANT LOUISIANA EDUCATOR RUBRIC INDICATORS:\n${relevantRubricIndicators}`;
+      }
+
+      // Reinforce grade-level matching instruction
+      const gradeReminder = userProfile?.gradeLevel 
+        ? `\n\nIMPORTANT: The teacher is ${userProfile.gradeLevel}. ONLY use standards that match this grade level. If the retrieved standards above don't match, ignore them and use your knowledge of ${userProfile.gradeLevel} standards instead.`
+        : "\n\nUse EXACT language from the rubric indicators. Reference standard codes naturally in the generated prompt.";
+      
+      promptWithContext += gradeReminder;
     }
 
-    // 4. Ensure thread exists
+    // 7. Ensure thread exists
     let threadId = conversation.threadId;
     if (!threadId) {
        const threadResult = await agent.createThread(ctx, {});
        threadId = threadResult.threadId;
-       // Save the new threadId to the conversation record
        await ctx.runMutation(internal.promptCoach.updateThreadId, {
          conversationId: args.conversationId,
          threadId: threadId,
        });
     }
 
-    // 5. Run Agent
+    // 8. Run Agent
     const response = await agent.generateText(ctx, {
       threadId,
     }, {
       model: openai("gpt-5.1-2025-11-13"),
       prompt: promptWithContext,
-      maxOutputTokens: 900, // keep responses concise and under the agreed cap
+      maxOutputTokens: 1200, // Increased slightly to avoid cutoff issues
     });
 
     const responseText = response.text;
 
-    // 6. Save assistant response to our sync table
+    // 9. Save assistant response to our sync table
     await ctx.runMutation(internal.promptCoach.appendMessage, {
       conversationId: args.conversationId,
       role: "assistant",
@@ -391,6 +356,159 @@ export const sendMessage = action({
     return responseText;
   },
 });
+
+/**
+ * Search for Louisiana Student Standards with optional grade-level filtering.
+ * Prioritizes standards matching the teacher's grade level.
+ */
+async function searchStandardsWithGradeFilter(
+  ctx: ActionCtx,
+  query: string,
+  gradeLevel?: string,
+  subject?: string
+): Promise<Array<{ score: number; content?: Array<{ text?: string }> }>> {
+  // Determine which namespaces to search based on subject
+  let standardNamespaces = [
+    "louisiana_standards_ela",
+    "louisiana_standards_math",
+    "louisiana_standards_science",
+    "louisiana_standards_social_studies",
+  ];
+
+  // If subject is known, prioritize that namespace
+  if (subject) {
+    const subjectLower = subject.toLowerCase();
+    if (subjectLower.includes("ela") || subjectLower.includes("english") || subjectLower.includes("reading")) {
+      standardNamespaces = ["louisiana_standards_ela", ...standardNamespaces.filter(n => n !== "louisiana_standards_ela")];
+    } else if (subjectLower.includes("math")) {
+      standardNamespaces = ["louisiana_standards_math", ...standardNamespaces.filter(n => n !== "louisiana_standards_math")];
+    } else if (subjectLower.includes("science")) {
+      standardNamespaces = ["louisiana_standards_science", ...standardNamespaces.filter(n => n !== "louisiana_standards_science")];
+    } else if (subjectLower.includes("social") || subjectLower.includes("history")) {
+      standardNamespaces = ["louisiana_standards_social_studies", ...standardNamespaces.filter(n => n !== "louisiana_standards_social_studies")];
+    }
+  }
+
+  const allResults: Array<{ score: number; content?: Array<{ text?: string }>; gradeLevel?: string }> = [];
+
+  for (const namespace of standardNamespaces) {
+    try {
+      // Build filters - always filter by content type
+      const filters: Array<{ name: string; value: string }> = [
+        { name: "contentType", value: "louisiana_standard" }
+      ];
+
+      // Add grade-level filter if available
+      // Note: gradeLevel in profile might be "8" or "8th Grade" - normalize it
+      if (gradeLevel) {
+        const normalizedGrade = normalizeGradeLevel(gradeLevel);
+        if (normalizedGrade) {
+          filters.push({ name: "gradeLevel", value: normalizedGrade });
+        }
+      }
+
+      const { results } = await rag.search(ctx, {
+        namespace,
+        query,
+        limit: gradeLevel ? 4 : 2, // Get more results when filtering by grade
+        filters,
+      });
+
+      allResults.push(...results);
+    } catch (error) {
+      // If filtering fails or namespace doesn't exist, try without grade filter
+      console.warn(`Standards search in ${namespace} failed, trying without grade filter`);
+      try {
+        const { results } = await rag.search(ctx, {
+          namespace,
+          query,
+          limit: 2,
+          filters: [{ name: "contentType", value: "louisiana_standard" }],
+        });
+        allResults.push(...results);
+      } catch {
+        // Namespace doesn't exist, skip
+      }
+    }
+  }
+
+  // Sort by score and take top 5
+  return allResults
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
+}
+
+/**
+ * Search for Louisiana Educator Rubric indicators.
+ */
+async function searchRubricIndicators(
+  ctx: ActionCtx,
+  query: string
+): Promise<Array<{ score: number; content?: Array<{ text?: string }> }>> {
+  const rubricNamespaces = [
+    "louisiana_rubric_system",
+    "louisiana_rubric_instruction",
+    "louisiana_rubric_planning",
+    "louisiana_rubric_environment",
+    "louisiana_rubric_professionalism",
+  ];
+
+  const allResults: Array<{ score: number; content?: Array<{ text?: string }> }> = [];
+
+  for (const namespace of rubricNamespaces) {
+    try {
+      const { results } = await rag.search(ctx, {
+        namespace,
+        query,
+        limit: 2,
+        filters: [{ name: "contentType", value: "rubric_indicator" }],
+      });
+      allResults.push(...results);
+    } catch {
+      // Namespace doesn't exist, skip
+    }
+  }
+
+  // Sort by score and take top 4
+  return allResults
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+}
+
+/**
+ * Normalize grade level string to match RAG filter values.
+ * Profile might have "8th Grade", "8", "Grade 8", etc.
+ * Standards are stored with gradeLevel like "8", "K", "Pre-K", etc.
+ */
+function normalizeGradeLevel(gradeLevel: string): string | null {
+  const input = gradeLevel.toLowerCase().trim();
+
+  // Handle "Pre-K", "PreK", etc.
+  if (input.includes("pre") && input.includes("k")) {
+    return "Pre-K";
+  }
+
+  // Handle "Kindergarten", "K"
+  if (input === "k" || input.includes("kindergarten")) {
+    return "K";
+  }
+
+  // Handle "Multiple" or ranges - can't filter
+  if (input.includes("multiple") || input.includes("-")) {
+    return null;
+  }
+
+  // Extract numeric grade (1-12)
+  const numMatch = input.match(/\d+/);
+  if (numMatch) {
+    const num = parseInt(numMatch[0], 10);
+    if (num >= 1 && num <= 12) {
+      return String(num);
+    }
+  }
+
+  return null;
+}
 
 // Internal query to get conversation (bypasses auth check for internal use)
 export const getConversationInternal = internalQuery({
