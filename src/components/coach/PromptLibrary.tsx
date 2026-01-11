@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -15,11 +15,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2, CheckCircle, Copy, Library, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Trash2, CheckCircle, Copy, Library, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { LIBRARY_REFINEMENTS } from "./refinement-definitions";
 
 /**
  * Type for a generated prompt from the database
@@ -50,6 +53,14 @@ interface PromptLibraryProps {
 }
 
 /**
+ * Tracks which prompt+refinement combo is currently loading
+ */
+type RefiningState = {
+  promptId: Id<"generatedPrompts">;
+  refinementId: string;
+} | null;
+
+/**
  * Prompt library component displaying all saved prompts.
  * Supports expanding long prompts, rating display, and prompt management (copy, delete, mark as worked).
  */
@@ -57,8 +68,11 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
   const prompts = useQuery(api.promptCoach.getSavedPrompts);
   const deletePrompt = useMutation(api.promptCoach.deleteSavedPrompt);
   const toggleWorked = useMutation(api.promptCoach.toggleWorkedInClassroom);
+  const refineFromLibrary = useAction(api.promptCoach.refineFromLibrary);
+  const navigate = useNavigate();
   const [deleteId, setDeleteId] = useState<Id<"generatedPrompts"> | null>(null);
   const [expandedPrompts, setExpandedPrompts] = useState<Set<Id<"generatedPrompts">>>(new Set());
+  const [refining, setRefining] = useState<RefiningState>(null);
 
   const handleDelete = async (id: Id<"generatedPrompts">) => {
     try {
@@ -101,6 +115,32 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
       }
       return next;
     });
+  };
+
+  /**
+   * Handles clicking a refinement button on a saved prompt.
+   * Creates a new conversation with the refinement and navigates to it.
+   */
+  const handleRefine = async (
+    promptId: Id<"generatedPrompts">,
+    refinementId: string,
+    refinementModifier: string
+  ) => {
+    setRefining({ promptId, refinementId });
+    try {
+      const conversationId = await refineFromLibrary({
+        promptId,
+        refinementId,
+        refinementModifier,
+      });
+      toast.success("Starting refinement...");
+      navigate(`/coach/${conversationId}`);
+    } catch (error) {
+      console.error("Failed to refine prompt:", error);
+      toast.error("Unable to start refinement. Please try again.");
+    } finally {
+      setRefining(null);
+    }
   };
 
   /**
@@ -242,6 +282,44 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
                         )}
                       </Button>
                     )}
+
+                    {/* Refinement buttons row */}
+                    <TooltipProvider delayDuration={300}>
+                      <div className="flex gap-1.5 pt-2 border-t border-primary/10 mt-3 overflow-x-auto scrollbar-hide">
+                        <span className="text-xs text-muted-foreground shrink-0 self-center mr-1">Refine:</span>
+                        {LIBRARY_REFINEMENTS.map((refinement) => {
+                          const Icon = refinement.icon;
+                          const isLoading = refining?.promptId === prompt._id && refining?.refinementId === refinement.id;
+                          
+                          return (
+                            <Tooltip key={refinement.id}>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-7 px-2 sm:px-3 text-xs shrink-0 gap-1 border-primary/20 hover:bg-primary/10 hover:border-primary/40"
+                                  onClick={() => handleRefine(prompt._id, refinement.id, refinement.promptModifier)}
+                                  disabled={refining !== null}
+                                >
+                                  {isLoading ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <Icon className="h-3 w-3" />
+                                  )}
+                                  <span className="hidden sm:inline">{refinement.shortLabel}</span>
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom" className="max-w-xs">
+                                <p className="font-medium">{refinement.label}</p>
+                                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                  {refinement.promptModifier.slice(0, 100)}...
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        })}
+                      </div>
+                    </TooltipProvider>
                   </div>
                 </CardContent>
                 <CardFooter className="pt-0 flex justify-between p-3 mt-auto">

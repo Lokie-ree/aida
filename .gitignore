@@ -40,3 +40,6 @@ coverage/
 .semgrep/*
 .convexignore
 .mcp.json
+
+# Personal notes
+NOTES.txt

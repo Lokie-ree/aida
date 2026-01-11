@@ -1,9 +1,9 @@
 /**
  * ✅ ACTIVE - Used in production
- * Functions: getUserProfile, updateUserProfile, initializeNewUser
+ * Functions: getUserProfile, updateUserProfile, initializeNewUser, getUserProfileByUserId
  */
 import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
+import { query, mutation, internalQuery } from "./_generated/server";
 import { authComponent } from "./auth";
 import { api } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
@@ -72,6 +72,36 @@ export const getUserProfile = query({
       role: profile.role,
       onboardingComplete: profile.onboardingComplete,
       onboardingCompletedAt: profile.onboardingCompletedAt,
+    };
+  },
+});
+
+/**
+ * Internal query to get user profile by userId.
+ * Used by promptCoach to inject profile context into AI prompts.
+ * 
+ * @param userId - The user's ID from auth
+ * @returns User profile or null if not found
+ */
+export const getUserProfileByUserId = internalQuery({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const profile = await ctx.db
+      .query("userProfiles")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .first();
+
+    if (!profile) {
+      return null;
+    }
+
+    return {
+      _id: profile._id,
+      userId: profile.userId,
+      school: profile.school,
+      subject: profile.subject,
+      gradeLevel: profile.gradeLevel,
+      role: profile.role,
     };
   },
 });

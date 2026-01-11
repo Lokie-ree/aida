@@ -8,6 +8,57 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Quick Refinement Buttons & Smart Profile Detection
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 10-11, 2026
+
+**Impact:** Major UX improvements for prompt refinement and profile completion. Users can now refine prompts with one click, and new users get automatic profile detection from their first message.
+
+**Key Features:**
+
+**Quick Refinement Buttons (Phase 1 & 2):**
+- ✅ **One-Click Refinements in Chat:** After each generated prompt, users see refinement buttons
+  - Universal: "Make shorter", "Add details", "Simplify"
+  - Profile-locked: "Differentiate", "Align to standard" (unlock by completing profile)
+- ✅ **Refinement Buttons in Prompt Library:** Refine saved prompts directly from My Prompts page
+  - Creates new conversation with refined prompt
+  - No hunting through chat history to iterate on saved work
+- ✅ **Mobile-Responsive Design:** Icon-only buttons on mobile, horizontal scroll
+
+**Smart Profile Detection:**
+- ✅ **Auto-Detect Grade & Subject:** Parses user's first message for grade level and subject
+  - Supports: "5th grade", "grade 5", "kindergarten", "pre-k", "middle school", etc.
+  - Detects: Math, ELA, Science, Social Studies, Special Education, Arts, PE, World Languages
+- ✅ **One-Click Profile Save:** Inline prompt offers to save detected info to profile
+  - "We noticed you're teaching 5th Grade ELA. Save to profile?"
+  - Immediately unlocks profile-locked refinement buttons
+- ✅ **Non-Intrusive:** Only shows once, dismisses permanently with "Not now"
+
+**Prompt Generation Improvements:**
+- ✅ **Grade-Level RAG Filtering:** Standards search now filters by user's grade level
+- ✅ **Profile Context Injection:** AI prompts include teacher's grade, subject, and school
+- ✅ **Increased Token Limit:** Raised from 900 to 1200 to prevent prompt cutoff
+
+**New Files:**
+- `src/lib/profile-detection.ts` - Grade/subject detection patterns and localStorage utilities
+- `src/components/coach/RefinementButtons.tsx` - Container for refinement button row
+- `src/components/coach/RefinementButton.tsx` - Individual button with locked/unlocked states
+- `src/components/coach/refinement-definitions.ts` - Button configs and prompt modifiers
+- `src/components/ui/popover.tsx` - Radix UI Popover component
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Added refinement buttons, profile detection UI
+- `src/components/coach/PromptLibrary.tsx` - Added refinement buttons to saved prompts
+- `convex/promptCoach.ts` - Added `refineFromLibrary` action, improved RAG filtering
+- `convex/userProfiles.ts` - Added `getUserProfileByUserId` internal query
+
+**Dependencies Added:**
+- `@radix-ui/react-popover` - For locked button popovers
+
+---
+
 ### Codebase Cleanup & Bug Fixes
 
 **Status:** ✅ **COMPLETED**
