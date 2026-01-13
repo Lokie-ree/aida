@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Trash2, CheckCircle, Copy, Library, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Loader2 } from "lucide-react";
+import { LoadingCard } from "@/components/shared/LoadingStates";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -152,21 +153,11 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
   if (prompts === undefined) {
     return (
       <div className="flex flex-col h-full min-h-0">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex-1 flex items-center justify-center text-muted-foreground"
-        >
-          <div className="flex flex-col items-center gap-3">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            >
-              <Library className="h-6 w-6" />
-            </motion.div>
-            <span className="text-sm">Loading your prompts...</span>
-          </div>
-        </motion.div>
+        <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-4 p-1">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <LoadingCard key={i} showHeader={true} lines={4} />
+          ))}
+        </div>
       </div>
     );
   }
@@ -208,9 +199,18 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
+            className="flex flex-col sm:flex-row gap-3"
           >
             <Button onClick={() => onSelectPrompt(null)} size="lg" className="font-medium bg-primary hover:bg-primary/90">
               Start Coaching Session
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => navigate("/coach")}
+              className="font-medium"
+            >
+              See How It Works
             </Button>
           </motion.div>
         </motion.div>
@@ -257,11 +257,18 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
                 </CardHeader>
                 <CardContent className="flex-1 pb-3">
                   <div className="space-y-2">
-                    <p className={`text-sm text-foreground whitespace-pre-wrap font-mono bg-primary/5 p-3 rounded-lg border border-primary/20 leading-relaxed ${
-                      !expandedPrompts.has(prompt._id) && needsExpansion(prompt.promptText) ? "line-clamp-4" : ""
-                    }`}>
-                      {prompt.promptText}
-                    </p>
+                    <motion.div
+                      initial={false}
+                      animate={{ 
+                        height: expandedPrompts.has(prompt._id) || !needsExpansion(prompt.promptText) ? "auto" : "6rem",
+                      }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-sm text-foreground whitespace-pre-wrap font-mono bg-primary/5 p-3 rounded-lg border border-primary/20 leading-relaxed">
+                        {prompt.promptText}
+                      </p>
+                    </motion.div>
                     {needsExpansion(prompt.promptText) && (
                       <Button
                         variant="ghost"
@@ -285,39 +292,41 @@ export function PromptLibrary({ onSelectPrompt }: PromptLibraryProps) {
 
                     {/* Refinement buttons row */}
                     <TooltipProvider delayDuration={300}>
-                      <div className="flex gap-1.5 pt-2 border-t border-primary/10 mt-3 overflow-x-auto scrollbar-hide">
-                        <span className="text-xs text-muted-foreground shrink-0 self-center mr-1">Refine:</span>
-                        {LIBRARY_REFINEMENTS.map((refinement) => {
-                          const Icon = refinement.icon;
-                          const isLoading = refining?.promptId === prompt._id && refining?.refinementId === refinement.id;
-                          
-                          return (
-                            <Tooltip key={refinement.id}>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-7 px-2 sm:px-3 text-xs shrink-0 gap-1 border-primary/20 hover:bg-primary/10 hover:border-primary/40"
-                                  onClick={() => handleRefine(prompt._id, refinement.id, refinement.promptModifier)}
-                                  disabled={refining !== null}
-                                >
-                                  {isLoading ? (
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  ) : (
-                                    <Icon className="h-3 w-3" />
-                                  )}
-                                  <span className="hidden sm:inline">{refinement.shortLabel}</span>
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent side="bottom" className="max-w-xs">
-                                <p className="font-medium">{refinement.label}</p>
-                                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                                  {refinement.promptModifier.slice(0, 100)}...
-                                </p>
-                              </TooltipContent>
-                            </Tooltip>
-                          );
-                        })}
+                      <div className="flex flex-col sm:flex-row gap-1.5 pt-2 border-t border-primary/10 mt-3">
+                        <span className="text-xs text-muted-foreground shrink-0 sm:self-center sm:mr-1">Refine:</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {LIBRARY_REFINEMENTS.map((refinement) => {
+                            const Icon = refinement.icon;
+                            const isLoading = refining?.promptId === prompt._id && refining?.refinementId === refinement.id;
+                            
+                            return (
+                              <Tooltip key={refinement.id}>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 px-3 text-xs gap-1.5 border-primary/20 hover:bg-primary/10 hover:border-primary/40"
+                                    onClick={() => handleRefine(prompt._id, refinement.id, refinement.promptModifier)}
+                                    disabled={refining !== null}
+                                  >
+                                    {isLoading ? (
+                                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                    ) : (
+                                      <Icon className="h-3.5 w-3.5" />
+                                    )}
+                                    <span>{refinement.shortLabel}</span>
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent side="bottom" className="max-w-xs">
+                                  <p className="font-medium">{refinement.label}</p>
+                                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                    {refinement.promptModifier.slice(0, 100)}...
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          })}
+                        </div>
                       </div>
                     </TooltipProvider>
                   </div>

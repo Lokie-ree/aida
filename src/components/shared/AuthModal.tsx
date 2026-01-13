@@ -20,6 +20,7 @@ import { authClient } from "@/lib/auth-client";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { authFormSchema, type AuthFormData } from "@/lib/form-schemas";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -33,6 +34,12 @@ export function AuthModal({ isOpen, onClose, initialMode = "signIn" }: AuthModal
   const [debouncedEmail, setDebouncedEmail] = useState("");
   const signupForBeta = useMutation(api.betaSignup.signupForBeta);
   const navigate = useNavigate();
+
+  // Keyboard shortcuts: Escape to close
+  useKeyboardShortcuts({
+    onEscape: isOpen ? onClose : undefined,
+    enabled: isOpen,
+  });
 
   // Debounce email query to reduce API calls
   useEffect(() => {

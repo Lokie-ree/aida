@@ -128,7 +128,7 @@ export function MobileMenu({
 
         <SheetContent
           side="right"
-          className="w-[300px] sm:w-[320px] p-0 border-l border-border/50 bg-background/95 backdrop-blur-xl"
+          className="w-full sm:w-[320px] p-0 border-l border-border/50 bg-background/95 backdrop-blur-xl"
         >
           <SheetHeader className="p-6 pb-4 border-b border-border/50 bg-muted/30">
             <SheetTitle className="text-lg font-semibold tracking-tight text-foreground">
@@ -194,6 +194,7 @@ export function MobileMenu({
                           asChild
                           className="flex-1 justify-start h-auto min-h-10 px-2.5 py-2 rounded-lg"
                           onClick={() => onOpenChange(false)}
+                          title={session.title}
                         >
                           <Link to={`/coach/${session.id}`}>
                             <Clock className="h-4 w-4 mr-2.5 shrink-0 text-muted-foreground" />
@@ -212,7 +213,7 @@ export function MobileMenu({
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-9 w-9 shrink-0 rounded-lg"
+                              className="h-9 w-9 shrink-0 rounded-lg touch-manipulation"
                             >
                               <MoreVertical className="h-4 w-4 text-muted-foreground" />
                               <span className="sr-only">Session options</span>

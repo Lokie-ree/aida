@@ -8,6 +8,196 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Phase 4: UX Polish & Mobile Improvements
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 13, 2026
+
+**Impact:** Enhanced mobile and tablet user experience with improved touch targets, collapsible long messages, better button layouts, and contextual tooltips.
+
+**Key Features:**
+
+**Touch Target Improvements:**
+- ✅ **Example Prompt Chips:** Increased vertical padding from `py-1.5` to `py-2.5` and added `min-h-[44px]` for better mobile tapping
+- ✅ **Button Alignment Fixes (Phase 3.1 Hotfix):** Adjusted button sizes for better visual balance
+  - Rating buttons (thumbs up/down, copy) changed from `h-11 w-11` to `h-9 w-9` with `touch-manipulation`
+  - Mobile menu 3-dot buttons optimized to `h-9 w-9` for better alignment with session rows
+  - Sidebar 3-dot buttons reverted to default styling with built-in touch area expansion
+
+**Content Management:**
+- ✅ **Collapsible Long AI Responses:** Messages over 500 characters now show "Show more/less" toggle
+  - Smooth height animation (6rem collapsed, auto expanded)
+  - Reuses PromptLibrary expand/collapse pattern
+  - Only applies to assistant messages (AI responses)
+  - Improves mobile readability for long generated prompts
+
+**Mobile Layout Improvements:**
+- ✅ **Profile Page Buttons:** Buttons now stack vertically on mobile (`flex-col sm:flex-row`)
+  - Better spacing on small screens
+  - Horizontal layout preserved on tablet+
+- ✅ **Phase Header Tooltip:** Added tooltip to phase badge showing description text on mobile
+  - Provides context where description text is hidden on small screens
+  - Uses consistent `delayDuration={300}` for tooltip timing
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Example chips touch targets, collapsible messages, phase header tooltip
+- `src/components/ui/button-group.tsx` - Responsive button stacking
+- `src/components/layout/MobileMenu.tsx` - Button size adjustments (Phase 3.1)
+- `src/components/layout/ConversationList.tsx` - Button alignment fixes (Phase 3.1)
+
+**Dependencies:** None (used existing tooltip and animation libraries)
+
+---
+
+### Phase 3.1 Hotfix: Button Alignment
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 13, 2026
+
+**Impact:** Fixed button alignment issues identified after Phase 3, improving visual consistency and touch target balance across mobile interface.
+
+**Key Changes:**
+- ✅ **Rating Buttons:** Adjusted from 44px (`h-11 w-11`) to 36px (`h-9 w-9`) with `touch-manipulation` CSS for better visual balance
+- ✅ **Mobile Menu 3-Dot Buttons:** Optimized size for better alignment with multi-line session rows
+- ✅ **Sidebar 3-Dot Buttons:** Reverted to default `SidebarMenuAction` styling which has built-in touch area expansion via pseudo-elements
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Rating button sizes
+- `src/components/layout/MobileMenu.tsx` - 3-dot button sizes
+- `src/components/layout/ConversationList.tsx` - Removed custom sizing override
+
+---
+
+### Phase 3: Mobile Polish
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 13, 2026
+
+**Impact:** Improved mobile user experience with better spacing, full-width menu, responsive refinement buttons, and enhanced touch targets.
+
+**Key Features:**
+
+**Mobile Layout Improvements:**
+- ✅ **Mobile Input Area Spacing:** Added safe area inset padding (`env(safe-area-inset-bottom)`) for notched devices
+  - Prevents content from being cut off by home indicators on modern phones
+  - Improved bottom padding for better thumb accessibility
+- ✅ **Mobile Menu Sheet Width:** Changed from fixed `w-[300px]` to responsive `w-full sm:w-[320px]`
+  - Full-width menu on mobile for better readability
+  - Session titles no longer truncate as aggressively
+  - Better use of screen real estate on small devices
+- ✅ **Prompt Card Refinement Buttons:** Changed to stacked layout on mobile with visible labels
+  - Buttons now stack vertically with labels visible (previously horizontal scroll with icon-only)
+  - Better discoverability and usability on mobile
+  - Horizontal layout preserved on tablet+ screens
+- ✅ **Touch Target Sizes:** Increased to 44px (`h-11 w-11`) for rating, copy, and menu buttons
+  - Meets Apple HIG recommendations for minimum touch target size
+  - Better tap accuracy on mobile devices
+  - Note: Later adjusted in Phase 3.1 hotfix for visual balance
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Input area safe padding, touch target sizes
+- `src/components/coach/PromptLibrary.tsx` - Stacked refinement buttons on mobile
+- `src/components/layout/MobileMenu.tsx` - Full-width menu, touch target sizes
+
+**Dependencies:** None
+
+---
+
+### Phase 2: High-Impact Quick Wins
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 13, 2026
+
+**Impact:** Enhanced user experience with loading states, keyboard shortcuts, better error handling, and improved mobile input behavior.
+
+**Key Features:**
+
+**User Experience Enhancements:**
+- ✅ **Example Prompt Chips:** Added 3 example prompt chips in empty state
+  - Quick-start options for new users
+  - "Help me teach RL.5.3 to struggling readers"
+  - "Create an assessment for adding fractions"
+  - "Differentiation ideas for mixed-ability class"
+- ✅ **Rotating Placeholder Text:** 4 variations that rotate every 4 seconds
+  - Keeps empty state engaging
+  - Provides helpful hints about what to ask
+- ✅ **Loading Skeletons:** Added loading states for conversation list
+  - Shows `LoadingList` component while conversations load
+  - Better perceived performance
+  - Prevents blank screen during data fetching
+- ✅ **Error Retry Mechanism:** Preserves user input on send failure
+  - Input value restored if message send fails
+  - Toast notification with retry action
+  - Better error recovery UX
+- ✅ **Copy Feedback Enhancement:** Visual feedback when copying prompts
+  - Icon changes from Copy to Check on successful copy
+  - Toast notification confirms copy action
+  - Better user confidence in actions
+- ✅ **Keyboard Shortcuts:** Added global keyboard shortcuts
+  - `Cmd/Ctrl + K`: Start new chat
+  - `Escape`: Close modals/dialogs
+  - Power user efficiency improvements
+- ✅ **Mobile Input Improvements:** Enhanced mobile keyboard behavior
+  - `inputMode="text"` for appropriate keyboard
+  - `autoComplete="off"` and `autoCorrect="off"` to prevent interference
+  - `autoCapitalize="sentences"` for natural typing
+- ✅ **Recent Sessions as Text Links:** Added clickable session links in empty state
+  - Quick access to continue previous conversations
+  - Better than hunting through menu
+
+**New Files:**
+- `src/hooks/useKeyboardShortcuts.ts` - Keyboard shortcut hook for global shortcuts
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Example chips, rotating placeholders, error retry, copy feedback, keyboard shortcuts, mobile input attributes, recent sessions
+- `src/components/layout/ConversationList.tsx` - Loading skeletons
+- `src/components/shared/LoadingStates.tsx` - Loading skeleton components
+
+**Dependencies:** None
+
+---
+
+### Phase 1: Critical First Impressions
+
+**Status:** ✅ **COMPLETED**
+
+**Date:** January 13, 2026
+
+**Impact:** Improved accessibility and first-time user experience with better button labels, auto-focus, tooltips, and helpful guidance.
+
+**Key Features:**
+
+**Accessibility Improvements:**
+- ✅ **Send Button Accessible Labels:** Added `aria-label` and `title` attributes
+  - Clear labels for screen readers
+  - Helpful tooltips showing current state (disabled, sending, ready)
+  - Better accessibility compliance
+- ✅ **Input Auto-Focus:** Input field automatically focuses on page load
+  - Immediate typing capability
+  - Better mobile experience (keyboard appears automatically)
+  - Reduces friction for new conversations
+- ✅ **Disabled Send Button Tooltip:** Explains why send button is disabled
+  - "Type a message to send" when input is empty
+  - "Sending..." when message is in flight
+  - Better user guidance
+- ✅ **Conversation Title Tooltips:** Added tooltips to conversation titles
+  - Shows full title on hover/tap in mobile menu
+  - Shows full title on hover in sidebar
+  - Helps when titles are truncated
+
+**Modified Files:**
+- `src/components/coach/ChatInterface.tsx` - Send button labels, auto-focus, tooltips
+- `src/components/layout/MobileMenu.tsx` - Conversation title tooltips
+- `src/components/layout/ConversationList.tsx` - Conversation title tooltips
+
+**Dependencies:** None
+
+---
+
 ### Quick Refinement Buttons & Smart Profile Detection
 
 **Status:** ✅ **COMPLETED**
