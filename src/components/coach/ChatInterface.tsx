@@ -4,17 +4,24 @@ import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, MessageCircle, ThumbsUp, ThumbsDown, UserCheck } from "lucide-react";
+import { Send, User, Bot, Loader2, Copy, GraduationCap, Sparkles, Lightbulb, MessageCircle, ThumbsUp, ThumbsDown, UserCheck, Check, ChevronUp, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { RefinementButtons } from "./RefinementButtons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   detectProfileFromMessage,
   hasOfferedProfileDetection,
   markProfileDetectionOffered,
   type DetectedProfile,
 } from "@/lib/profile-detection";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 /**
  * Detects if a message contains a generated prompt.
@@ -85,6 +92,48 @@ export function ChatInterface({
   const [detectedProfile, setDetectedProfile] = useState<DetectedProfile | null>(null);
   const [showProfileSavePrompt, setShowProfileSavePrompt] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+  // Track which messages were just copied (for visual feedback)
+  const [justCopiedIndices, setJustCopiedIndices] = useState<Set<number>>(new Set());
+  // Track which messages are expanded (for long AI responses)
+  const [expandedMessages, setExpandedMessages] = useState<Set<number>>(new Set());
+
+  // Helper function to determine if a message needs expansion
+  const needsExpansion = (text: string) => text.length > 500;
+
+  // Toggle message expansion
+  const toggleExpand = (messageIndex: number) => {
+    setExpandedMessages(prev => {
+      const next = new Set(prev);
+      if (next.has(messageIndex)) {
+        next.delete(messageIndex);
+      } else {
+        next.add(messageIndex);
+      }
+      return next;
+    });
+  };
+
+  // Rotating placeholder text
+  const placeholderExamples = [
+    "What standard are you teaching?",
+    "Describe a student challenge...",
+    "What lesson needs a prompt?",
+    "Tell me about your class...",
+  ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  // Rotate placeholder every 4 seconds when input is empty
+  useEffect(() => {
+    if (inputValue.trim()) return; // Don't rotate when user is typing
+    
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % placeholderExamples.length);
+    }, 4000);
+    
+    return () => clearInterval(interval);
+  }, [inputValue, placeholderExamples.length]);
+
+  const currentPlaceholder = placeholderExamples[placeholderIndex];
 
   const conversation = useQuery(api.promptCoach.getConversation, 
     conversationId ? { conversationId } : "skip"
@@ -95,6 +144,12 @@ export function ChatInterface({
   const sendMessage = useAction(api.promptCoach.sendMessage);
   const savePromptMutation = useMutation(api.promptCoach.savePrompt);
   const updateUserProfile = useMutation(api.userProfiles.updateUserProfile);
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    onNewChat: onStartNew,
+    enabled: !isSending,
+  });
 
   // Simple scroll to bottom - using native scrolling instead of Radix
   const scrollToBottom = useCallback(() => {
@@ -115,6 +170,18 @@ export function ChatInterface({
       return () => clearTimeout(timer);
     }
   }, [messageCount, scrollToBottom]);
+
+  // Auto-focus input on mount and after sending messages
+  useEffect(() => {
+    // Focus input when component mounts (empty state) or after message is sent
+    if (inputRef.current && !isSending) {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [conversationId, isSending]);
 
   // Smart profile detection: check first user message after AI responds
   useEffect(() => {
@@ -167,9 +234,20 @@ export function ChatInterface({
       setInputValue(messageToSend);
       toast.error("Unable to send message. Please check your connection and try again.", {
         duration: 5000,
+        action: {
+          label: "Retry",
+          onClick: () => {
+            setInputValue(messageToSend);
+            handleSend();
+          },
+        },
       });
     } finally {
       setIsSending(false);
+      // Re-focus input after sending
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     }
   };
 
@@ -215,6 +293,16 @@ export function ChatInterface({
     // Always copy to clipboard
     navigator.clipboard.writeText(text);
 
+    // Show visual feedback
+    setJustCopiedIndices(prev => new Set(prev).add(messageIndex));
+    setTimeout(() => {
+      setJustCopiedIndices(prev => {
+        const next = new Set(prev);
+        next.delete(messageIndex);
+        return next;
+      });
+    }, 2000);
+
     // Only auto-save actual generated prompts, not regular assistant responses
     if (isPrompt && conversationId && !savedPromptIndices.has(messageIndex)) {
       try {
@@ -234,7 +322,12 @@ export function ChatInterface({
 
         // Mark as saved to avoid duplicate saves
         setSavedPromptIndices(prev => new Set(prev).add(messageIndex));
-        toast.success("Copied! Saved to My Prompts");
+        toast.success("Copied! Saved to My Prompts", {
+          action: {
+            label: "View in Library",
+            onClick: () => window.location.href = "/prompts",
+          },
+        });
       } catch (error) {
         console.error("Failed to auto-save prompt:", error);
         // Still show copy success even if save fails
@@ -326,7 +419,7 @@ export function ChatInterface({
                   </div>
                 </div>
                 <div className="space-y-2">
-                  {isNewUser ? (
+                    {isNewUser ? (
                     <>
                       <h2 className="text-xl font-semibold text-foreground">
                         Welcome to Pelican AI!
@@ -338,6 +431,26 @@ export function ChatInterface({
                       <p className="text-xs text-muted-foreground mt-2">
                         No new tools to learn—just better prompts that improve your practice.
                       </p>
+                      {/* Example prompt chips for new users */}
+                      <div className="flex flex-wrap justify-center gap-2 pt-4">
+                        {[
+                          "Help me teach RL.5.3 to struggling readers",
+                          "Create an assessment for adding fractions",
+                          "Differentiation ideas for mixed-ability class",
+                        ].map((example) => (
+                          <button
+                            key={example}
+                            type="button"
+                            onClick={() => {
+                              setInputValue(example);
+                              inputRef.current?.focus();
+                            }}
+                            className="text-xs px-3 py-2.5 rounded-full border border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/50 transition-colors min-h-[44px]"
+                          >
+                            {example}
+                          </button>
+                        ))}
+                      </div>
                     </>
                   ) : (
                     <>
@@ -347,12 +460,32 @@ export function ChatInterface({
                       <p className="text-sm text-muted-foreground">
                         I'll help you craft a Louisiana-aligned prompt for any AI tool.
                       </p>
+                      {/* Example prompt chips */}
+                      <div className="flex flex-wrap justify-center gap-2 pt-3">
+                        {[
+                          "Help me teach RL.5.3 to struggling readers",
+                          "Create an assessment for adding fractions",
+                          "Differentiation ideas for mixed-ability class",
+                        ].map((example) => (
+                          <button
+                            key={example}
+                            type="button"
+                            onClick={() => {
+                              setInputValue(example);
+                              inputRef.current?.focus();
+                            }}
+                            className="text-xs px-3 py-2.5 rounded-full border border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/50 transition-colors min-h-[44px]"
+                          >
+                            {example}
+                          </button>
+                        ))}
+                      </div>
                       {/* Recent sessions as simple text links */}
                       {conversations && conversations.length > 0 && (
                         <div className="pt-4">
                           <div className="flex items-center gap-3 text-xs text-muted-foreground">
                             <span className="h-px flex-1 bg-border" />
-                            <span>or continue</span>
+                            <span>or continue a previous session</span>
                             <span className="h-px flex-1 bg-border" />
                           </div>
                           <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 mt-3">
@@ -368,6 +501,7 @@ export function ChatInterface({
                                   type="button"
                                   onClick={() => onSelectConversation(conv._id)}
                                   className="text-xs text-primary hover:text-primary/80 hover:underline transition-colors"
+                                  title={title}
                                 >
                                   {title}{idx < Math.min(conversations.length, 3) - 1 && <span className="text-muted-foreground ml-3">•</span>}
                                 </button>
@@ -384,7 +518,10 @@ export function ChatInterface({
           </div>
 
           {/* Input Area */}
-          <div className="p-3 md:p-4 border-t bg-background">
+          <div 
+            className="p-3 pb-4 md:p-4 border-t bg-background"
+            style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+          >
             {/* Input field */}
             <div className="flex gap-2">
               <Input
@@ -397,7 +534,7 @@ export function ChatInterface({
                     onStartNew();
                   }
                 }}
-                placeholder="Example: I'm teaching RL.5.3 and students confuse character traits with feelings..."
+                placeholder={currentPlaceholder}
                 className="flex-1 text-xs md:text-sm"
                 autoFocus
               />
@@ -410,6 +547,8 @@ export function ChatInterface({
                 disabled={!inputValue.trim()}
                 size="sm"
                 className="shrink-0"
+                aria-label={!inputValue.trim() ? "Send message (disabled - type a message first)" : "Send message"}
+                title={!inputValue.trim() ? "Type a message to send" : "Send message (Enter)"}
               >
                 <Send className="h-4 w-4" />
               </Button>
@@ -504,16 +643,29 @@ export function ChatInterface({
           <div className="border-b px-3 md:px-4 py-2 md:py-3 bg-muted/30 shrink-0">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2 md:gap-3">
-                <motion.div
-                  layout
-                  initial={false}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
-                  className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full", currentPhase.color)}
-                >
-                  <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                  {currentPhase.label}
-                </motion.div>
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <motion.div
+                        layout
+                        initial={false}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                        className={cn("flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold px-2 md:px-3 py-1 md:py-1.5 rounded-full cursor-help", currentPhase.color)}
+                      >
+                        <currentPhase.icon className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                        {currentPhase.label}
+                      </motion.div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-xs">
+                      <p className="text-xs">
+                        {currentPhase.phase === "completed"
+                          ? "Ready to copy and use in any AI tool"
+                          : "Ask questions to understand your needs"}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
                 <span className="text-[10px] md:text-xs text-muted-foreground hidden sm:inline">
                   {currentPhase.phase === "completed"
                     ? "Ready to copy and use in any AI tool"
@@ -598,21 +750,66 @@ export function ChatInterface({
                       <span>Louisiana-Aligned Prompt Generated</span>
                     </motion.div>
                   )}
-                  <motion.div
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={cn(
-                      "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap leading-relaxed",
-                      msg.role === "user"
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : isPrompt
-                          ? "bg-primary/5 border-2 border-primary/20 text-foreground shadow-sm"
-                          : "bg-muted text-foreground border border-border"
-                    )}
-                  >
-                    {msg.content}
-                  </motion.div>
+                  {msg.role === "assistant" && needsExpansion(msg.content) ? (
+                    <>
+                      <motion.div
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className={cn(
+                          "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap leading-relaxed overflow-hidden",
+                          isPrompt
+                            ? "bg-primary/5 border-2 border-primary/20 text-foreground shadow-sm"
+                            : "bg-muted text-foreground border border-border"
+                        )}
+                      >
+                        <motion.div
+                          initial={false}
+                          animate={{
+                            height: expandedMessages.has(idx) ? "auto" : "6rem",
+                          }}
+                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          {msg.content}
+                        </motion.div>
+                      </motion.div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 text-xs text-muted-foreground hover:text-foreground rounded-lg self-start"
+                        onClick={() => toggleExpand(idx)}
+                      >
+                        {expandedMessages.has(idx) ? (
+                          <>
+                            <ChevronUp className="h-3 w-3 mr-1" />
+                            Show less
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-3 w-3 mr-1" />
+                            Show more
+                          </>
+                        )}
+                      </Button>
+                    </>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className={cn(
+                        "rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm whitespace-pre-wrap leading-relaxed",
+                        msg.role === "user"
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : isPrompt
+                            ? "bg-primary/5 border-2 border-primary/20 text-foreground shadow-sm"
+                            : "bg-muted text-foreground border border-border"
+                      )}
+                    >
+                      {msg.content}
+                    </motion.div>
+                  )}
 
                   {/* Refinement buttons for generated prompts */}
                   {msg.role === "assistant" && isPrompt && conversationId && (
@@ -638,46 +835,53 @@ export function ChatInterface({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
-                      className="flex gap-1.5 mt-1"
+                      className="flex gap-1 mt-1"
                     >
                       {isPrompt && (
                         <>
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
                               variant={promptRatings.get(idx) === "positive" ? "default" : "ghost"}
                               size="icon"
-                              className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                              className="h-9 w-9 hover:bg-primary/10 transition-all rounded-lg touch-manipulation"
                               onClick={() => handleRating(idx, "positive")}
                               title="This prompt is helpful"
                               aria-label="Rate this prompt as helpful"
                             >
-                              <ThumbsUp className="h-3.5 w-3.5" />
+                              <ThumbsUp className="h-4 w-4" />
                             </Button>
                           </motion.div>
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
                               variant={promptRatings.get(idx) === "negative" ? "default" : "ghost"}
                               size="icon"
-                              className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                              className="h-9 w-9 hover:bg-primary/10 transition-all rounded-lg touch-manipulation"
                               onClick={() => handleRating(idx, "negative")}
                               title="This prompt needs improvement"
                               aria-label="Rate this prompt as needing improvement"
                             >
-                              <ThumbsDown className="h-3.5 w-3.5" />
+                              <ThumbsDown className="h-4 w-4" />
                             </Button>
                           </motion.div>
                         </>
                       )}
-                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 hover:bg-primary/10 transition-all rounded-lg"
+                          className={cn(
+                            "h-9 w-9 hover:bg-primary/10 transition-all rounded-lg touch-manipulation",
+                            justCopiedIndices.has(idx) && "bg-primary/20"
+                          )}
                           onClick={() => handleCopy(msg.content, idx, isPrompt)}
                           title={isPrompt && !savedPromptIndices.has(idx) ? "Copy & save to library" : "Copy to clipboard"}
                           aria-label={isPrompt ? "Copy prompt and save to library" : "Copy to clipboard"}
                         >
-                          <Copy className="h-3.5 w-3.5" />
+                          {justCopiedIndices.has(idx) ? (
+                            <Check className="h-4 w-4 text-primary" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
                         </Button>
                       </motion.div>
                     </motion.div>
@@ -764,18 +968,32 @@ export function ChatInterface({
       </div>
 
       {/* Input Area */}
-      <div className="p-3 md:p-4 border-t bg-background">
+      <div 
+        className="p-3 pb-4 md:p-4 border-t bg-background"
+        style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+      >
         <div className="flex gap-2">
-          <Input
-            ref={inputRef}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Example: I'm teaching RL.5.3 and students confuse character traits with feelings..."
-            disabled={isSending}
-            className="flex-1 text-xs md:text-sm"
-          />
-          <Button onClick={handleSend} disabled={isSending || !inputValue.trim()} size="sm" className="shrink-0">
+              <Input
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={currentPlaceholder}
+                disabled={isSending}
+                className="flex-1 text-xs md:text-sm"
+                inputMode="text"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="sentences"
+              />
+          <Button 
+            onClick={handleSend} 
+            disabled={isSending || !inputValue.trim()} 
+            size="sm" 
+            className="shrink-0"
+            aria-label={isSending ? "Sending message..." : !inputValue.trim() ? "Send message (disabled - type a message first)" : "Send message"}
+            title={isSending ? "Sending..." : !inputValue.trim() ? "Type a message to send" : "Send message (Enter)"}
+          >
             {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </Button>
         </div>

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RenameSessionDialog } from "@/components/shared/RenameSessionDialog";
 import { DeleteSessionDialog } from "@/components/shared/DeleteSessionDialog";
+import { LoadingList } from "@/components/shared/LoadingStates";
 import { Id } from "../../../convex/_generated/dataModel";
 
 interface Conversation {
@@ -51,7 +52,16 @@ export function ConversationList({
     title: "",
   });
 
-  if (!conversations || conversations.length === 0) {
+  // Show loading skeleton while conversations are loading
+  if (conversations === undefined) {
+    return (
+      <div className="px-2 py-2">
+        <LoadingList count={5} />
+      </div>
+    );
+  }
+
+  if (conversations.length === 0) {
     return (
       <div className="px-2 py-4 text-center">
         <p className="text-xs text-muted-foreground">No conversations yet</p>
@@ -85,6 +95,7 @@ export function ConversationList({
                 asChild
                 isActive={isActive}
                 className="pr-8"
+                title={title}
               >
                 <Link to={`/coach/${conv._id}`}>
                   <Clock className="h-4 w-4 shrink-0" />

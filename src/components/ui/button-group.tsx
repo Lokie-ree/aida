@@ -15,7 +15,7 @@ const spacingClasses = {
 
 export function ButtonGroup({ children, spacing = "md", className }: ButtonGroupProps) {
   return (
-    <div className={cn("flex items-center", spacingClasses[spacing], className)}>
+    <div className={cn("flex flex-col sm:flex-row items-center", spacingClasses[spacing], className)}>
       {children}
     </div>
   );
