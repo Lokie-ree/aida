@@ -89,9 +89,8 @@ export function ChatInterface({
   // Track applied refinements per message index
   const [appliedRefinements, setAppliedRefinements] = useState<Map<number, Set<string>>>(new Map());
   // Smart profile detection state
-  const [detectedProfile, setDetectedProfile] = useState<DetectedProfile | null>(null);
-  const [showProfileSavePrompt, setShowProfileSavePrompt] = useState(false);
-  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  // null = no offer on screen; otherwise the detected fields and whether a save is in flight
+  const [profileOffer, setProfileOffer] = useState<{ profile: DetectedProfile; saving: boolean } | null>(null);
   // Track which messages were just copied (for visual feedback)
   const [justCopiedIndices, setJustCopiedIndices] = useState<Set<number>>(new Set());
   // Track which messages are expanded (for long AI responses)
@@ -208,12 +207,14 @@ export function ChatInterface({
       const offerSubject = detected.subject && !userProfile?.subject;
       
       if (offerGrade || offerSubject) {
-        setDetectedProfile({
-          gradeLevel: offerGrade ? detected.gradeLevel : undefined,
-          subject: offerSubject ? detected.subject : undefined,
-          confidence: detected.confidence,
+        setProfileOffer({
+          profile: {
+            gradeLevel: offerGrade ? detected.gradeLevel : undefined,
+            subject: offerSubject ? detected.subject : undefined,
+            confidence: detected.confidence,
+          },
+          saving: false,
         });
-        setShowProfileSavePrompt(true);
       }
     }
   }, [conversation?.messages?.length, userProfile?.gradeLevel, userProfile?.subject]);
@@ -356,9 +357,10 @@ export function ChatInterface({
    * Updates the user profile and dismisses the prompt.
    */
   const handleSaveDetectedProfile = async () => {
-    if (!detectedProfile) return;
-    
-    setIsSavingProfile(true);
+    if (!profileOffer || profileOffer.saving) return;
+    const detectedProfile = profileOffer.profile;
+
+    setProfileOffer({ profile: detectedProfile, saving: true });
     try {
       await updateUserProfile({
         ...(detectedProfile.gradeLevel && { gradeLevel: detectedProfile.gradeLevel }),
@@ -367,9 +369,8 @@ export function ChatInterface({
       
       // Mark as offered so we don't prompt again
       markProfileDetectionOffered();
-      setShowProfileSavePrompt(false);
-      setDetectedProfile(null);
-      
+      setProfileOffer(null);
+
       const savedFields = [
         detectedProfile.gradeLevel,
         detectedProfile.subject,
@@ -381,8 +382,7 @@ export function ChatInterface({
     } catch (error) {
       console.error("Failed to save profile:", error);
       toast.error("Unable to save profile. Please try again.");
-    } finally {
-      setIsSavingProfile(false);
+      setProfileOffer({ profile: detectedProfile, saving: false });
     }
   };
 
@@ -391,8 +391,7 @@ export function ChatInterface({
    */
   const handleDismissProfilePrompt = () => {
     markProfileDetectionOffered();
-    setShowProfileSavePrompt(false);
-    setDetectedProfile(null);
+    setProfileOffer(null);
   };
 
 
@@ -893,7 +892,7 @@ export function ChatInterface({
 
           {/* Smart Profile Detection Prompt */}
           <AnimatePresence>
-            {showProfileSavePrompt && detectedProfile && (
+            {profileOffer && (
               <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -908,7 +907,7 @@ export function ChatInterface({
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-foreground">
                       We noticed you're teaching{" "}
-                      {[detectedProfile.gradeLevel, detectedProfile.subject]
+                      {[profileOffer.profile.gradeLevel, profileOffer.profile.subject]
                         .filter(Boolean)
                         .join(" ")}
                     </p>
@@ -919,10 +918,10 @@ export function ChatInterface({
                       <Button
                         size="sm"
                         onClick={handleSaveDetectedProfile}
-                        disabled={isSavingProfile}
+                        disabled={profileOffer.saving}
                         className="h-8 text-xs"
                       >
-                        {isSavingProfile ? (
+                        {profileOffer.saving ? (
                           <>
                             <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
                             Saving...
@@ -935,7 +934,7 @@ export function ChatInterface({
                         size="sm"
                         variant="ghost"
                         onClick={handleDismissProfilePrompt}
-                        disabled={isSavingProfile}
+                        disabled={profileOffer.saving}
                         className="h-8 text-xs"
                       >
                         Not now
